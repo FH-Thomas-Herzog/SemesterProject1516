@@ -1,16 +1,16 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A573B60A-EEEF-444C-A2E6-FBE5A3BB9A8E}</ProjectGuid>
+    <ProjectGuid>{28D506C4-7522-4DF6-8955-6FED83F848A8}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UFO.Server.Data.Api</RootNamespace>
-    <AssemblyName>UFO.Server.Data.Api</AssemblyName>
+    <RootNamespace>UFO.Common.Util</RootNamespace>
+    <AssemblyName>UFO.Common.Util</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,37 +31,11 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.Core" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp">
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attribute\Column.cs" />
-    <Compile Include="Attribute\Entity.cs" />
-    <Compile Include="Dao\BaseDao.cs" />
-    <Compile Include="Dao\IDao.cs" />
-    <Compile Include="Db\BaseDbCommandBuilder.cs" />
-    <Compile Include="Db\BaseQueryBuilder.cs" />
-    <Compile Include="Db\IConnection.cs" />
-    <Compile Include="Db\IDbTypeResolver.cs" />
-    <Compile Include="Entity\BaseEntity.cs" />
-    <Compile Include="Entity\BaseVersionedEntity.cs" />
-    <Compile Include="Entity\IEntity.cs" />
-    <Compile Include="Entity\IVersionedEntity.cs" />
-    <Compile Include="Exception\EntityNotFoundException.cs" />
+    <Compile Include="Attrbiute\AttributeUtil.cs" />
+    <Compile Include="NUnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\UFO.Common.Util\UFO.Common.Util.csproj">
-      <Project>{28d506c4-7522-4df6-8955-6fed83f848a8}</Project>
-      <Name>UFO.Common.Util</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

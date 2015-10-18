@@ -44,6 +44,8 @@
     <Compile Include="Db\MySqlDbCommandBuilder.cs" />
     <Compile Include="Db\MySqlDbConnection.cs" />
     <Compile Include="Db\MySqlDbTypeResolver.cs" />
+    <Compile Include="Db\MySqlQueryBuilder.cs" />
+    <Compile Include="Entity\User.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

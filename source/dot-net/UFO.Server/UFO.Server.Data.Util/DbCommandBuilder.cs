@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UFO.Server.Data.Api.Db;
 
-namespace UFO.Server.Data.Api.Db
+namespace UFO.Server.Data.Util
 {
 
     /// <summary>
@@ -18,27 +18,28 @@ namespace UFO.Server.Data.Api.Db
     /// </summary>
     /// <typeparam name="T">The type of the to create DbCommand</typeparam>
     /// <typeparam name="P">The type of the used DbParameter</typeparam>
-    public abstract class BaseDbCommandBuilder<B, C, T, P, D> where B : DbConnection where C : IConnection<B, T> where T : DbCommand where P : DbParameter
+    public class DbCommandBuilder<B, C, T, P, D> where B : DbConnection where C : IConnection<B, T> where T : DbCommand where P : DbParameter
     {
         IDbTypeResolver<D> typeResolver;
         C connection;
         T command = null;
 
-        public BaseDbCommandBuilder<B, C, T, P, D> WithTypeResolver(IDbTypeResolver<D> typeResolver)
+        public DbCommandBuilder<B, C, T, P, D> WithTypeResolver(IDbTypeResolver<D> typeResolver)
         {
             this.typeResolver = typeResolver;
             return this;
         }
 
-        public BaseDbCommandBuilder<B, C, T, P, D> WithConnection(C connection)
+        public DbCommandBuilder<B, C, T, P, D> WithConnection(C connection)
         {
             Debug.Assert(connection != null, "Cannot set null conection on command");
+            Debug.Assert(command != null, "Cannot set conction on null command. Seems Builder hasn't been started yet");
 
             this.connection = connection;
             return this;
         }
 
-        public BaseDbCommandBuilder<B, C, T, P, D> Start(string query)
+        public DbCommandBuilder<B, C, T, P, D> Start(string query)
         {
             Debug.Assert(typeResolver != null, "You need to call Init(...) before");
             Debug.Assert(query != null, "Cannot start command with null query string");
@@ -49,7 +50,7 @@ namespace UFO.Server.Data.Api.Db
             return this;
         }
 
-        public BaseDbCommandBuilder<B, C, T, P, D> SetParameter(string name, object value)
+        public DbCommandBuilder<B, C, T, P, D> SetParameter(string name, object value)
         {
             Debug.Assert(name != null);
             Debug.Assert(value != null);
@@ -70,9 +71,10 @@ namespace UFO.Server.Data.Api.Db
             return command;
         }
 
-        public BaseDbCommandBuilder<B, C, T, P, D> Clear()
+        public DbCommandBuilder<B, C, T, P, D> Clear()
         {
             command = null;
+            typeResolver = null;
             return this;
         }
 

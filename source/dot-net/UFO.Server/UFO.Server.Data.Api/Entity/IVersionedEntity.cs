@@ -15,7 +15,7 @@ namespace UFO.Server.Data.Api.Entity
         /// <summary>
         /// The date when this entity was created.
         /// </summary>
-        DateTime creationDate { get; set; }
+        DateTime CreationDate { get; set; }
 
         /// <summary>
         /// The user who created this entity.
@@ -25,7 +25,7 @@ namespace UFO.Server.Data.Api.Entity
         /// <summary>
         /// The date when this entity was modified.
         /// </summary>
-        DateTime modificationDate { get; set; }
+        DateTime ModificationDate { get; set; }
 
         /// <summary>
         /// The user who modified this entity last.

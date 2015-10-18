@@ -12,7 +12,7 @@ namespace UFO.Server.Test.Data.Util.MySql
     public class DbCommandBuilderTest
     {
         [Test, CleanupDatabase]
-        public void test()
+        public void Test()
         {
             string query = "select * from user where id = @id";
             MySqlDbCommandBuilder builder = new MySqlDbCommandBuilder();
@@ -21,6 +21,8 @@ namespace UFO.Server.Test.Data.Util.MySql
                                           .Start(query)
                                           .SetParameter("@id", 14)
                                           .Build();
+
+            builder.Clear();
 
             Assert.AreEqual(query, command.CommandText);
             Assert.AreEqual(1, command.Parameters.Count);

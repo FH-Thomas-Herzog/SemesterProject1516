@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UFO.Server.Data.Api.Attribute;
 
 namespace UFO.Server.Data.Api.Entity
 {
@@ -13,6 +14,7 @@ namespace UFO.Server.Data.Api.Entity
     /// <typeparam name="T">The type of the entity id</typeparam>
     public abstract class BaseEntity<T> : IEntity<T>
     {
+        [Column(Name = "id")]
         public T Id { get; set; }
 
         /// <summary>
