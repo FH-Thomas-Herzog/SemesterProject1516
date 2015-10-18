@@ -8,12 +8,10 @@ using System.Threading.Tasks;
 
 namespace UFO.Server.Data.Api.Db
 {
-    public interface IConnection<C, CMD> where C : IDbConnection where CMD : IDbCommand
+    public interface IConnection<C, CMD> where C : DbConnection where CMD : DbCommand
     {
-        C OpenConnection();
+        C GetConnection();
 
         void CloseConnection(C connection);
-
-        CMD CreateCommand(string command);
     }
 }
