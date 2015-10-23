@@ -14,16 +14,32 @@ namespace UFO.Server.Test.Data.Util.MySql
     public class MySqlQueryBuilderTest
     {
         [Test, CleanupDatabase]
-        public void Test()
+        public void TestSelect()
         {
             MySqlQueryBuilder<int, User> queryBuidler = new MySqlQueryBuilder<int, User>();
             try
             {
-                String query = queryBuidler.Select("id")
-                        .Select("creation_date")
-                        .WhereEq("id", 1)
-                        .WhereIn("creation_date", new DateTime(), new DateTime())
-                        .Build();
+                String query = queryBuidler.Select("Id")
+                        .Select("CreationDate")
+                        .WhereEq("Id", 1)
+                        .WhereIn("CreationDate", new DateTime(), new DateTime())
+                        .ToQuery();
+                Console.Out.WriteLine(query);
+            }
+            catch (Exception e)
+            {
+                Console.Out.WriteLine(e.Message);
+            }
+
+        }
+
+        [Test, CleanupDatabase]
+        public void TestSelectAll()
+        {
+            MySqlQueryBuilder<int, User> queryBuidler = new MySqlQueryBuilder<int, User>();
+            try
+            {
+                String query = queryBuidler.SelectAll().ToQuery();
                 Console.Out.WriteLine(query);
             }
             catch (Exception e)

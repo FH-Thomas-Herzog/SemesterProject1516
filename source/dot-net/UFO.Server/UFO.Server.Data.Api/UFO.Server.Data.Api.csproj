@@ -48,6 +48,7 @@
     <Compile Include="Dao\IDao.cs" />
     <Compile Include="Db\BaseDbCommandBuilder.cs" />
     <Compile Include="Db\BaseQueryBuilder.cs" />
+    <Compile Include="Db\EntityBuilder.cs" />
     <Compile Include="Db\IConnection.cs" />
     <Compile Include="Db\IDbTypeResolver.cs" />
     <Compile Include="Entity\BaseEntity.cs" />
