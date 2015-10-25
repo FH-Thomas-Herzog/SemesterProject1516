@@ -11,22 +11,22 @@ using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Server.Data.Api.Db
 {
-    public class EntityBuilder<E, I> where E : IEntity<I>
+    public class EntityBuilder<I, E> where E : IEntity<I>
     {
-        public string TableName { get; set; }
-        public string SequenceName { get; set; }
+        public string tableName;
+        public string sequenceName;
 
         public IDictionary<string, string> ColumnToProperty { get; } = new Dictionary<string, string>();
         public IDictionary<string, string> PropertyToColumn { get; } = new Dictionary<string, string>();
 
-        Type idType;
-        Type entityType;
+        private Type idType;
+        private Type entityType;
 
-        public EntityBuilder<E, I> Init()
+        public EntityBuilder<I, E> Init()
         {
             Clear();
-            entityType = this.GetType().GetGenericArguments()[0];
-            idType = this.GetType().GetGenericArguments()[1];
+            idType = this.GetType().GetGenericArguments()[0];
+            entityType = this.GetType().GetGenericArguments()[1];
 
             IList<Attribute.Entity> entityAttributes = AttributeUtil.GetAttributes<Attribute.Entity>(entityType);
             if (entityAttributes.Count == 0)
@@ -39,18 +39,18 @@ namespace UFO.Server.Data.Api.Db
             {
                 throw new ArgumentException("Entity attribute does not provide an table name");
             }
-            TableName = entityAttr.TableName;
+            tableName = entityAttr.TableName;
 
             // resolve schema
             if (!string.IsNullOrWhiteSpace(entityAttr.Schema))
             {
-                TableName = (entityAttr.Schema + "." + TableName);
+                tableName = (entityAttr.Schema + "." + tableName);
             }
 
             // resolve sequence for id
             if (!string.IsNullOrWhiteSpace(entityAttr.SequenceName))
             {
-                SequenceName = entityAttr.SequenceName;
+                sequenceName = entityAttr.SequenceName;
             }
 
             // resolve entity property names
@@ -58,7 +58,7 @@ namespace UFO.Server.Data.Api.Db
             foreach (var prop in properties)
             {
                 IList<Column> columns = AttributeUtil.GetAttributes<Column>(prop);
-                if (columns.Count != 0)
+                if (columns.Count > 0)
                 {
                     Column col = columns.ElementAt(0);
                     if (!string.IsNullOrWhiteSpace(col.Name))
@@ -81,7 +81,7 @@ namespace UFO.Server.Data.Api.Db
 
         public bool IsPropertyValid(string property)
         {
-            return !this.PropertyToColumn.ContainsKey(property);
+            return PropertyToColumn.ContainsKey(property);
         }
 
         public string ConvertPropertyToColumn(string property)
@@ -105,5 +105,35 @@ namespace UFO.Server.Data.Api.Db
             PropertyToColumn.Clear();
             ColumnToProperty.Clear();
         }
+
+        public E Create(IDictionary<string, object> properties)
+        {
+            Debug.Assert(properties != null, "Properties must not be null for creating an entity");
+
+            E entity = (E)Activator.CreateInstance(entityType);
+            foreach (var entry in properties)
+            {
+                entityType.GetProperty(entry.Key).SetValue(entity, entry.Value);
+            }
+
+            return entity;
+        }
+
+        public IDictionary<string, object> Extract(E entity)
+        {
+            Debug.Assert(entity != null, "Cannot extract properties of null entity");
+
+            IDictionary<string, object> properties = new Dictionary<string, object>();
+            foreach (var entry in PropertyToColumn)
+            {
+                properties[entry.Value] = entityType.GetProperty(entry.Key).GetValue(entity, null);
+            }
+
+            return properties;
+        }
+
+        #region Private
+
+        #endregion
     }
 }

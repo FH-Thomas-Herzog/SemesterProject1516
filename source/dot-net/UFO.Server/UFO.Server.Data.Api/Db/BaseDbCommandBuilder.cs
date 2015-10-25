@@ -64,6 +64,20 @@ namespace UFO.Server.Data.Api.Db
             return this;
         }
 
+        public BaseDbCommandBuilder<B, C, T, P, D> SetArrayParameter<VT>(string name, VT[] values)
+        {
+            Debug.Assert(name != null);
+            Debug.Assert(values != null);
+            if (!command.Parameters.Contains(name))
+            {
+                P parameter = createParameter(name, EvaluateType(values));
+                command.Parameters.Add(parameter);
+            }
+            command.Parameters[name].Value = null;
+
+            return this;
+        }
+
 
         public T Build()
         {
@@ -92,6 +106,7 @@ namespace UFO.Server.Data.Api.Db
         {
             try
             {
+                // TODO: Handle Array type
                 return (D)typeResolver.resolve(value.GetType());
             }
             catch (System.Exception)

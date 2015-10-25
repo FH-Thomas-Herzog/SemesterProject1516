@@ -16,13 +16,16 @@ namespace UFO.Server.Test.Data.Util.MySql
         [Test, CleanupDatabase]
         public void TestSelect()
         {
-            MySqlQueryBuilder<int, User> queryBuidler = new MySqlQueryBuilder<int, User>();
+            MySqlSelectQueryBuilder<int, User> queryBuidler = new MySqlSelectQueryBuilder<int, User>();
             try
             {
                 String query = queryBuidler.Select("Id")
                         .Select("CreationDate")
                         .WhereEq("Id", 1)
-                        .WhereIn("CreationDate", new DateTime(), new DateTime())
+                        .WhereEq("CreationDate", new DateTime())
+                        .WhereEq("ModificationDate", new DateTime())
+                        .WhereEq("ModificationDate", new DateTime())
+                        .WhereIn("FirstName", "Thomas", "Rudi", "Franzi")
                         .ToQuery();
                 Console.Out.WriteLine(query);
             }
@@ -36,10 +39,13 @@ namespace UFO.Server.Test.Data.Util.MySql
         [Test, CleanupDatabase]
         public void TestSelectAll()
         {
-            MySqlQueryBuilder<int, User> queryBuidler = new MySqlQueryBuilder<int, User>();
+            MySqlSelectQueryBuilder<int, User> queryBuidler = new MySqlSelectQueryBuilder<int, User>();
             try
             {
-                String query = queryBuidler.SelectAll().ToQuery();
+                String query = queryBuidler.SelectAll()
+                                            .WhereEq("Id", 1)
+                                            .WhereIn("FirstName", "Thomas", "Rudi", "Franzi")
+                                            .ToQuery();
                 Console.Out.WriteLine(query);
             }
             catch (Exception e)
