@@ -14,8 +14,7 @@ namespace UFO.Server.Data.Api.Entity
     /// <typeparam name="T">The type of the entity id</typeparam>
     public abstract class BaseEntity<T> : IEntity<T>
     {
-        [Column(Name = "id")]
-        public T Id { get; set; }
+        public virtual T Id { get; set; }
 
         /// <summary>
         /// HashCode implementation which includes hold id in the hash code.

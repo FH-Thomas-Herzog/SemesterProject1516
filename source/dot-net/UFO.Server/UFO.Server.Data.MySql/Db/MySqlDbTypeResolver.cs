@@ -12,7 +12,9 @@ namespace UFO.Server.Data.MySql.Db
     public class MySqlDbTypeResolver : IDbTypeResolver<MySqlDbType>
     {
         public static readonly Dictionary<Type, MySqlDbType> TYPE_MAP = new Dictionary<Type, MySqlDbType>{
-            {typeof(int), MySqlDbType.Int64 },
+            {typeof(Int16), MySqlDbType.Int16 },
+            { typeof(Int32), MySqlDbType.Int32 },
+            {typeof(Int64), MySqlDbType.Int64 },
             {typeof(string), MySqlDbType.VarChar},
             {typeof(double), MySqlDbType.Double},
             {typeof(float), MySqlDbType.Float},

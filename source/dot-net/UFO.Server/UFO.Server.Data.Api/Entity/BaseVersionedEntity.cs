@@ -13,19 +13,19 @@ namespace UFO.Server.Data.Api.Entity
     /// <typeparam name="T">The type of the entity id</typeparam>
     public abstract class BaseVersionedEntity<T> : BaseEntity<T>, IVersionedEntity<T>
     {
-        [Column(Name = "creation_date")]
+        [Column(Name = "creation_date", ReadOnly = true)]
         public DateTime CreationDate { get; set; }
 
         [Column(Name = "creation_user_id")]
-        public int CreationUserId { get; set; }
+        public int? CreationUserId { get; set; }
 
-        [Column(Name = "modification_date")]
+        [Column(Name = "modification_date", ReadOnly = true)]
         public DateTime ModificationDate { get; set; }
 
         [Column(Name = "modification_user_id")]
-        public int ModificationUserId { get; set; }
+        public int? ModificationUserId { get; set; }
 
-        [Column(Name = "version")]
+        [Column(Name = "version", ReadOnly = true)]
         public long Version { get; set; }
     }
 }

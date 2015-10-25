@@ -14,13 +14,20 @@ namespace UFO.Server.Data.MySql.Entity
                           Schema = "ufo")]
     public class User : BaseVersionedEntity<int>
     {
-        [Column(Name = "first_name")]
+        [Id(PkType = PkType.AUTO)]
+        [Column(Name = "id", ReadOnly = true)]
+        public override int Id { get; set; }
+
+        [Column(Name = "firstname")]
         public string FirstName { get; set; }
 
-        [Column(Name = "last_name")]
+        [Column(Name = "lastname")]
         public string LastName { get; set; }
 
-        [Column(Name = "user_name")]
+        [Column(Name = "username")]
         public string Username { get; set; }
+
+        [Column(Name = "email")]
+        public string Email { get; set; }
     }
 }

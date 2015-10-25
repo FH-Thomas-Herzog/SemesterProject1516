@@ -6,4 +6,3 @@ C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\
 C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO.Server\UFO.Test.Nunit.Api\bin\Debug\nunit.framework.xml
 C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO.Server\UFO.Test.Nunit.Api\obj\Debug\UFO.Test.Nunit.Api.dll
 C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO.Server\UFO.Test.Nunit.Api\obj\Debug\UFO.Test.Nunit.Api.pdb
-C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO.Server\UFO.Test.Nunit.Api\obj\Debug\UFO.Server.Test.Nunit.Api.csprojResolveAssemblyReference.cache

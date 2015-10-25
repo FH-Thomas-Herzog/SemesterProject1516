@@ -20,7 +20,7 @@ namespace UFO.Server.Data.Api.Entity
         /// <summary>
         /// The user who created this entity.
         /// </summary>
-        int CreationUserId { get; set; }
+        int? CreationUserId { get; set; }
 
         /// <summary>
         /// The date when this entity was modified.
@@ -30,7 +30,7 @@ namespace UFO.Server.Data.Api.Entity
         /// <summary>
         /// The user who modified this entity last.
         /// </summary>
-        int ModificationUserId { get; set; }
+        int? ModificationUserId { get; set; }
 
         /// <summary>
         /// The version of this entity.

@@ -18,19 +18,19 @@ namespace UFO.Server.Data.Api.Db
     /// </summary>
     /// <typeparam name="T">The type of the to create DbCommand</typeparam>
     /// <typeparam name="P">The type of the used DbParameter</typeparam>
-    public abstract class BaseDbCommandBuilder<B, C, T, P, D> where B : DbConnection where C : IConnection<B, T> where T : DbCommand where P : DbParameter
+    public abstract class BaseDbCommandBuilder<B, T, P, D> where B : DbConnection where T : DbCommand where P : DbParameter
     {
         IDbTypeResolver<D> typeResolver;
-        C connection;
+        B connection;
         T command = null;
 
-        public BaseDbCommandBuilder<B, C, T, P, D> WithTypeResolver(IDbTypeResolver<D> typeResolver)
+        public BaseDbCommandBuilder<B, T, P, D> WithTypeResolver(IDbTypeResolver<D> typeResolver)
         {
             this.typeResolver = typeResolver;
             return this;
         }
 
-        public BaseDbCommandBuilder<B, C, T, P, D> WithConnection(C connection)
+        public BaseDbCommandBuilder<B, T, P, D> WithConnection(B connection)
         {
             Debug.Assert(connection != null, "Cannot set null conection on command");
 
@@ -38,18 +38,19 @@ namespace UFO.Server.Data.Api.Db
             return this;
         }
 
-        public BaseDbCommandBuilder<B, C, T, P, D> Start(string query)
+        public BaseDbCommandBuilder<B, T, P, D> WithQuery(string query)
         {
             Debug.Assert(typeResolver != null, "You need to call Init(...) before");
             Debug.Assert(query != null, "Cannot start command with null query string");
 
             command = (T)Activator.CreateInstance(typeof(T));
             command.CommandText = query;
+            command.Connection = connection;
 
             return this;
         }
 
-        public BaseDbCommandBuilder<B, C, T, P, D> SetParameter(string name, object value)
+        public BaseDbCommandBuilder<B, T, P, D> SetParameter(string name, object value)
         {
             Debug.Assert(name != null);
             Debug.Assert(value != null);
@@ -64,7 +65,7 @@ namespace UFO.Server.Data.Api.Db
             return this;
         }
 
-        public BaseDbCommandBuilder<B, C, T, P, D> SetArrayParameter<VT>(string name, VT[] values)
+        public BaseDbCommandBuilder<B, T, P, D> SetArrayParameter<VT>(string name, VT[] values)
         {
             Debug.Assert(name != null);
             Debug.Assert(values != null);
@@ -84,7 +85,17 @@ namespace UFO.Server.Data.Api.Db
             return command;
         }
 
-        public BaseDbCommandBuilder<B, C, T, P, D> Clear()
+        public IDataReader ExecuteReader(CommandBehavior behavior)
+        {
+            return Build().ExecuteReader(behavior);
+        }
+
+        public int ExecuteNonQuery()
+        {
+            return Build().ExecuteNonQuery();
+        }
+
+        public BaseDbCommandBuilder<B, T, P, D> Clear()
         {
             command = null;
             return this;
@@ -109,9 +120,9 @@ namespace UFO.Server.Data.Api.Db
                 // TODO: Handle Array type
                 return (D)typeResolver.resolve(value.GetType());
             }
-            catch (System.Exception)
+            catch (System.Exception e)
             {
-                throw new ArgumentException("idResolver cannot resolve type: '" + value.GetType().Name + "' to proper DbType");
+                throw new ArgumentException("idResolver cannot resolve type: '" + value.GetType().Name + "' to proper DbType", e);
             }
         }
         #endregion

@@ -38,8 +38,9 @@ namespace UFO.Server.Data.Api.Dao
         /// Deletes the entity with the given id.
         /// </summary>
         /// <param name="id">the entity id</param>
+        /// <returns>true if the entity was deleted, false otherwise</returns>
         /// <exception cref="EntityNotFoundException">If the entity could not be found</exception>
-        void Delete(I id);
+        bool Delete(I id);
 
         /// <summary>
         /// Gets the entity by its id.

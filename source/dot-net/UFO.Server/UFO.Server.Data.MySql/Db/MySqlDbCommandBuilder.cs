@@ -8,7 +8,7 @@ using UFO.Server.Data.Api.Db;
 
 namespace UFO.Server.Data.MySql.Db
 {
-    public class MySqlDbCommandBuilder : BaseDbCommandBuilder<MySqlConnection, MySqlDbConnection, MySqlCommand, MySqlParameter,
+    public class MySqlDbCommandBuilder : BaseDbCommandBuilder<MySqlConnection, MySqlCommand, MySqlParameter,
         MySqlDbType>
     {
     }

@@ -31,6 +31,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -42,15 +43,14 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attribute\Id.cs" />
     <Compile Include="Attribute\Column.cs" />
     <Compile Include="Attribute\Entity.cs" />
-    <Compile Include="Dao\BaseDao.cs" />
     <Compile Include="Dao\IDao.cs" />
     <Compile Include="Db\BaseDbCommandBuilder.cs" />
-    <Compile Include="Db\BaseSelectQueryBuilder.cs" />
-    <Compile Include="Db\BaseWhereBuilder.cs" />
+    <Compile Include="Db\EntityMetamodel.cs" />
     <Compile Include="Db\EntityBuilder.cs" />
-    <Compile Include="Db\IConnection.cs" />
+    <Compile Include="Db\DbConnectionFactory.cs" />
     <Compile Include="Db\IDbTypeResolver.cs" />
     <Compile Include="Entity\BaseEntity.cs" />
     <Compile Include="Entity\BaseVersionedEntity.cs" />

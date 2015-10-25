@@ -17,8 +17,8 @@ namespace UFO.Server.Test.Data.Util.MySql
             string query = "select * from user where id = @id";
             MySqlDbCommandBuilder builder = new MySqlDbCommandBuilder();
             MySqlCommand command = builder.WithTypeResolver(new MySqlDbTypeResolver())
-                                          .WithConnection(new MySqlDbConnection())
-                                          .Start(query)
+                                          .WithConnection(new MySqlConnection())
+                                          .WithQuery(query)
                                           .SetParameter("@id", 14)
                                           .Build();
 

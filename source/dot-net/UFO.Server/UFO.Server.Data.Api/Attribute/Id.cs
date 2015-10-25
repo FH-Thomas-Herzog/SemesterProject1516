@@ -6,12 +6,22 @@ using System.Threading.Tasks;
 
 namespace UFO.Server.Data.Api.Attribute
 {
+    public enum PkType
+    {
+        MANUAL = 0,
+        SEQUENCE = 1,
+        AUTO = 2
+    }
+
     [AttributeUsage(AttributeTargets.Property,
                     AllowMultiple = false,
                     Inherited = true)]
-    public class Column : System.Attribute
+    public class Id : System.Attribute
     {
-        public string Name = "";
-        public bool ReadOnly = false;
+
+        public PkType PkType = PkType.MANUAL;
+        public bool Fk = false;
+        public bool manyToOne = false;
+        public bool oneToMany = false;
     }
 }
