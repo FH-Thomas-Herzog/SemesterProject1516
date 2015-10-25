@@ -112,7 +112,7 @@ namespace FO.Server.Data.MySql.Dao
             StringBuilder values = new StringBuilder(" VALUES(");
             sb.Append("INSERT INTO ")
               .Append(metamodel.GetFullyQualifiedTableName());
-            IDictionary<string, object> propertyToValueMap = entityBuilder.ToPropertyValueMap(entity);
+            IDictionary<string, object> propertyToValueMap = entityBuilder.ToPropertyValueMap(entity, false);
             for (int i = 0; i < propertyToValueMap.Count; i++)
             {
                 KeyValuePair<string, object> pair = propertyToValueMap.ElementAt(i);

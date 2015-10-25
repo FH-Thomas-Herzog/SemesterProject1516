@@ -37,7 +37,7 @@ namespace UFO.Server.Data.Api.Db
             return entity;
         }
 
-        public IDictionary<string, object> ToPropertyValueMap(E entity)
+        public IDictionary<string, object> ToPropertyValueMap(E entity, bool includeNull = true)
         {
             Debug.Assert(entity != null, "Cannot read values from null entity");
 
@@ -46,7 +46,12 @@ namespace UFO.Server.Data.Api.Db
             {
                 if (!metamodel.IsReadOnly(property))
                 {
-                    propertyValueMap[property] = metamodel.GetEntityType().GetProperty(property).GetValue(entity);
+                    object value = metamodel.GetEntityType().GetProperty(property).GetValue(entity);
+                    if ((includeNull) || ((!includeNull) && (value != null)))
+                    {
+                        propertyValueMap[property] = value;
+                    }
+
                 }
             }
 
