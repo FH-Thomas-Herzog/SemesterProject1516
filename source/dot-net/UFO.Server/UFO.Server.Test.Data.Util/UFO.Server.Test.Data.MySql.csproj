@@ -39,6 +39,7 @@
   <ItemGroup>
     <Compile Include="Action\CleanupDatabase.cs" />
     <Compile Include="Action\CreateDatabase.cs" />
+    <Compile Include="Dao\BaseDaoTest.cs" />
     <Compile Include="Dao\UserDaoTest.cs" />
     <Compile Include="MySqlDbCommandBuilderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
