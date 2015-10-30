@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UFO.Server.Data.Api.Attribute;
 using UFO.Server.Data.Api.Dao;
 using UFO.Server.Data.Api.Db;
 using UFO.Server.Data.Api.Entity;
@@ -139,7 +140,13 @@ namespace FO.Server.Data.MySql.Dao
                 commandBuilder.SetParameter(entry.Key, entry.Value);
             }
 
-            bool ok = (commandBuilder.ExecuteNonQuery() == 1);
+            MySqlCommand command = commandBuilder.Build();
+            bool ok = (command.ExecuteNonQuery() == 1);
+            // GEt last insert id for auto pk
+            if (metamodel.GetPkType().Equals(PkType.AUTO))
+            {
+                entity.Id = (I)(object)command.LastInsertedId;
+            }
             return ById(entity.Id);
         }
 

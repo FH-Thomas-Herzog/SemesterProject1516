@@ -9,8 +9,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UFO.Server.Data.MySql", "UF
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UFO.Server.Test.Data.MySql", "UFO.Server.Test.Data.Util\UFO.Server.Test.Data.MySql.csproj", "{067456C0-086C-46A8-B37F-1405717B7BFC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UFO.Server.Test.Nunit.Api", "UFO.Test.Nunit.Api\UFO.Server.Test.Nunit.Api.csproj", "{13FF9C08-7CF1-4678-B6F0-E09D7FFA9883}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UFO.Common.Util", "UFO.Common.Util\UFO.Common.Util.csproj", "{28D506C4-7522-4DF6-8955-6FED83F848A8}"
 EndProject
 Global
@@ -31,10 +29,6 @@ Global
 		{067456C0-086C-46A8-B37F-1405717B7BFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{067456C0-086C-46A8-B37F-1405717B7BFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{067456C0-086C-46A8-B37F-1405717B7BFC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{13FF9C08-7CF1-4678-B6F0-E09D7FFA9883}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{13FF9C08-7CF1-4678-B6F0-E09D7FFA9883}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{13FF9C08-7CF1-4678-B6F0-E09D7FFA9883}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{13FF9C08-7CF1-4678-B6F0-E09D7FFA9883}.Release|Any CPU.Build.0 = Release|Any CPU
 		{28D506C4-7522-4DF6-8955-6FED83F848A8}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{28D506C4-7522-4DF6-8955-6FED83F848A8}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28D506C4-7522-4DF6-8955-6FED83F848A8}.Release|Any CPU.ActiveCfg = Release|Any CPU

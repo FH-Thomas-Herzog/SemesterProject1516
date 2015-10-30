@@ -7,16 +7,16 @@ using UFO.Server.Data.Api;
 using UFO.Server.Data.Api.Attribute;
 using UFO.Server.Data.Api.Entity;
 
-namespace UFO.Server.Data.MySql.Entity
+namespace UFO.Server.Data.Api.Entity
 {
     [Api.Attribute.Entity(TableName = "user",
                           SequenceName = "seq_user_id",
                           Schema = "ufo")]
-    public class User : BaseVersionedEntity<int>
+    public class User : BaseVersionedEntity<long?, User, long?>
     {
         [Id(PkType = PkType.AUTO)]
         [Column(Name = "id", ReadOnly = true)]
-        public override int Id { get; set; }
+        public override long? Id { get; set; }
 
         [Column(Name = "firstname")]
         public string FirstName { get; set; }

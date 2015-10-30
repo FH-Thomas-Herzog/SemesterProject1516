@@ -25,7 +25,7 @@ namespace UFO.Server.Data.Api.Db
         private IDictionary<string, string> propertyToColumnMap = new Dictionary<string, string>();
         private IDictionary<string, string> columnToPropertyMap = new Dictionary<string, string>();
         private IDictionary<string, Attribute.Column> idColumns = new Dictionary<string, Attribute.Column>();
-        private IDictionary<string, Attribute.Column> manyToOneFkColumns = new Dictionary<string, Attribute.Column>();
+        private IDictionary<string, Attribute.ManyToOne> manyToOneFkColumns = new Dictionary<string, Attribute.ManyToOne>();
         private IDictionary<string, Attribute.Column> columns = new Dictionary<string, Attribute.Column>();
 
         public EntityMetamodel()
@@ -216,16 +216,30 @@ namespace UFO.Server.Data.Api.Db
                 columnToPropertyMap[col.Name] = property.Name;
 
                 IList<Attribute.Id> idAttributes = AttributeUtil.GetAttributes<Attribute.Id>(property);
+                IList<Attribute.ManyToOne> manyToOneAttributes = AttributeUtil.GetAttributes<Attribute.ManyToOne>(property);
+
                 if (idAttributes.Count == 1)
                 {
                     Attribute.Id idCol = idAttributes.ElementAt(0);
-                    // TODO: handle relation types
                     if (idColumns.Count == 1)
                     {
                         throw new System.Exception("Entity type does declare multiple id columns");
                     }
                     idColumns[property.Name] = col;
                     pkIdAttribute = idCol;
+                }
+                else if (manyToOneAttributes.Count == 1)
+                {
+                    Attribute.ManyToOne manyToOneCol = manyToOneAttributes.ElementAt(0);
+                    if (!IsPropertyValid(manyToOneCol.FkProperty))
+                    {
+                        throw new System.Exception("ManyToOne mapped property is invalid. property: '" + manyToOneCol.FkProperty + "'");
+                    }
+                    if (manyToOneFkColumns.ContainsKey(manyToOneCol.FkProperty))
+                    {
+                        throw new System.Exception("Entity does map a manyToOne property multiple times. property: " + property.Name + "'");
+                    }
+                    manyToOneFkColumns[manyToOneCol.FkProperty] = manyToOneCol;
                 }
             }
             if (idColumns.Count == 0)

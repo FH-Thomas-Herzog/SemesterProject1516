@@ -43,6 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Attribute\ManyToOne.cs" />
     <Compile Include="Attribute\Id.cs" />
     <Compile Include="Attribute\Column.cs" />
     <Compile Include="Attribute\Entity.cs" />
@@ -52,10 +53,16 @@
     <Compile Include="Db\EntityBuilder.cs" />
     <Compile Include="Db\DbConnectionFactory.cs" />
     <Compile Include="Db\IDbTypeResolver.cs" />
+    <Compile Include="Entity\Venue.cs" />
+    <Compile Include="Entity\ArtistGroup.cs" />
+    <Compile Include="Entity\Artist.cs" />
+    <Compile Include="Entity\Performance.cs" />
+    <Compile Include="Entity\ArtCategory.cs" />
     <Compile Include="Entity\BaseEntity.cs" />
     <Compile Include="Entity\BaseVersionedEntity.cs" />
     <Compile Include="Entity\IEntity.cs" />
     <Compile Include="Entity\IVersionedEntity.cs" />
+    <Compile Include="Entity\User.cs" />
     <Compile Include="Exception\EntityNotFoundException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

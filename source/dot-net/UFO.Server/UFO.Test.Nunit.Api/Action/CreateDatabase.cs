@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UFO.Server.Test.Nunit.Api.Action
+namespace UFO.Server.Test.Data.MYSql.Action
 {
-    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class |
-                AttributeTargets.Interface | AttributeTargets.Assembly,
-                AllowMultiple = true)]
+    [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class,
+                AllowMultiple = false)]
     public class CreateDatabase : Attribute, ITestAction
     {
         public ActionTargets Targets { get { return ActionTargets.Default; } }
@@ -21,7 +20,7 @@ namespace UFO.Server.Test.Nunit.Api.Action
 
         public void BeforeTest(TestDetails testDetails)
         {
-            Console.Out.WriteLine("Before test will create database");
+            Console.Out.WriteLine("Creating database for tests");
         }
     }
 }

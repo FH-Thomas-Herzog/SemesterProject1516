@@ -4,7 +4,7 @@ using MySql.Data.MySqlClient;
 using UFO.Server.Data.Api.Db;
 using System.Data.Common;
 using UFO.Server.Data.MySql.Db;
-using UFO.Server.Test.Nunit.Api.Action;
+using UFO.Server.Test.Data.MySql.Action;
 
 namespace UFO.Server.Test.Data.Util.MySql
 {

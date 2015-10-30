@@ -46,7 +46,13 @@ namespace UFO.Server.Data.Api.Db
                 string property = metamodel.ColumnToProperty(name);
                 if (property != null)
                 {
-                    metamodel.GetEntityType().GetProperty(property).SetValue(entity, reader.GetValue(i), null);
+                    var propertyType = metamodel.GetEntityType().GetProperty(property).PropertyType;
+                    object converted = null;
+                    if ((!reader.IsDBNull(i)) && (Nullable.GetUnderlyingType(propertyType) != null))
+                    {
+                        converted = System.Convert.ChangeType(reader.GetValue(i), Nullable.GetUnderlyingType(propertyType));
+                    }
+                    metamodel.GetEntityType().GetProperty(property).SetValue(entity, converted, null);
                 }
             }
             return entity;
@@ -69,6 +75,7 @@ namespace UFO.Server.Data.Api.Db
                 if (!metamodel.IsPropertyReadOnly(property))
                 {
                     object value = metamodel.GetEntityType().GetProperty(property).GetValue(entity);
+
                     if ((includeNull) || ((!includeNull) && (value != null)))
                     {
                         propertyValueMap[property] = value;
