@@ -12,6 +12,13 @@ using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Server.Data.Api.Db
 {
+
+    /// <summary>
+    /// This class is a helper class for creating and reading entity instances.
+    /// It allos to extract and fill entity properties.
+    /// </summary>
+    /// <typeparam name="I">the type of the entity id</typeparam>
+    /// <typeparam name="E">the type of the entity</typeparam>
     public class EntityBuilder<I, E> where E : class, IEntity<I>
     {
         private EntityMetamodel<I, E> metamodel;
@@ -20,6 +27,14 @@ namespace UFO.Server.Data.Api.Db
         {
             metamodel = new EntityMetamodel<I, E>();
         }
+
+
+        /// <summary>
+        /// Creates an entity instance and fills it with the data of the IReader instance.
+        /// </summary>
+        /// <param name="reader">the reader to get property values from</param>
+        /// <param name="alias">the alias used for the selected property</param>
+        /// <returns>the created and filled entity</returns>
         public E CreateFromReader(IDataReader reader, string alias = " ")
         {
             Debug.Assert(reader != null, "Cannot create entity from null reader");
@@ -37,6 +52,13 @@ namespace UFO.Server.Data.Api.Db
             return entity;
         }
 
+
+        /// <summary>
+        /// Extracts the entity properties and maps them to their set values
+        /// </summary>
+        /// <param name="entity">the entity to extract properties from</param>
+        /// <param name="includeNull">true if null values shall be included. default = true</param>
+        /// <returns>the dictonary which maps the property name to the set value</returns>
         public IDictionary<string, object> ToPropertyValueMap(E entity, bool includeNull = true)
         {
             Debug.Assert(entity != null, "Cannot read values from null entity");
@@ -44,7 +66,7 @@ namespace UFO.Server.Data.Api.Db
             IDictionary<string, object> propertyValueMap = new Dictionary<string, object>();
             foreach (var property in metamodel.GetPropertyNames())
             {
-                if (!metamodel.IsReadOnly(property))
+                if (!metamodel.IsPropertyReadOnly(property))
                 {
                     object value = metamodel.GetEntityType().GetProperty(property).GetValue(entity);
                     if ((includeNull) || ((!includeNull) && (value != null)))

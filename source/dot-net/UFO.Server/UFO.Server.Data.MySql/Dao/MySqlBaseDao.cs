@@ -42,7 +42,7 @@ namespace FO.Server.Data.MySql.Dao
             }
 
             commandBuilder.Clear()
-                          .WithQuery(string.Format(SELECT_BY_ID_TEMPLATE, metamodel.GetFullyQualifiedTableName(), metamodel.GetIdColumn()))
+                          .WithQuery(string.Format(SELECT_BY_ID_TEMPLATE, metamodel.GetFullyQualifiedPhysicalTableName(), metamodel.GetIdColumnName()))
                           .SetParameter("?id", id);
 
             using (IDataReader reader = commandBuilder.ExecuteReader(CommandBehavior.Default))
@@ -71,7 +71,7 @@ namespace FO.Server.Data.MySql.Dao
             Debug.Assert(id != null, "Cannot delete entity with null id");
 
             return (commandBuilder.Clear()
-                                  .WithQuery(string.Format(SELECT_BY_ID_TEMPLATE, metamodel.GetFullyQualifiedTableName(), metamodel.GetIdColumn()))
+                                  .WithQuery(string.Format(SELECT_BY_ID_TEMPLATE, metamodel.GetFullyQualifiedPhysicalTableName(), metamodel.GetIdColumnName()))
                                   .SetParameter("?id", id)
                                   .ExecuteNonQuery() == 1);
 
@@ -111,7 +111,7 @@ namespace FO.Server.Data.MySql.Dao
             StringBuilder parameters = new StringBuilder(" (");
             StringBuilder values = new StringBuilder(" VALUES(");
             sb.Append("INSERT INTO ")
-              .Append(metamodel.GetFullyQualifiedTableName());
+              .Append(metamodel.GetFullyQualifiedPhysicalTableName());
             IDictionary<string, object> propertyToValueMap = entityBuilder.ToPropertyValueMap(entity, false);
             for (int i = 0; i < propertyToValueMap.Count; i++)
             {
