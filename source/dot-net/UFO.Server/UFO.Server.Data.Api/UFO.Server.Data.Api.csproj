@@ -52,6 +52,7 @@
     <Compile Include="Db\EntityMetamodel.cs" />
     <Compile Include="Db\EntityBuilder.cs" />
     <Compile Include="Db\DbConnectionFactory.cs" />
+    <Compile Include="Db\EntityMetamodelFactory.cs" />
     <Compile Include="Db\IDbTypeResolver.cs" />
     <Compile Include="Entity\Venue.cs" />
     <Compile Include="Entity\ArtistGroup.cs" />

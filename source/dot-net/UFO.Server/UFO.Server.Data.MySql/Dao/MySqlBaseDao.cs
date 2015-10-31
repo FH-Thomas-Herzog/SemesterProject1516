@@ -29,7 +29,7 @@ namespace FO.Server.Data.MySql.Dao
         protected MySqlBaseDao()
         {
             entityBuilder = new EntityBuilder<I, E>();
-            metamodel = new EntityMetamodel<I, E>();
+            metamodel = EntityMetamodelFactory.GetInstance().GetMetaModel<I, E>();
             commandBuilder = new MySqlDbCommandBuilder();
             commandBuilder.WithTypeResolver(new MySqlDbTypeResolver())
                           .WithConnection(DbConnectionFactory.CreateAndOpenConnection<MySqlConnection>());

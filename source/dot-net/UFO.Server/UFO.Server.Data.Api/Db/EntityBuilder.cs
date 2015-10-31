@@ -25,7 +25,7 @@ namespace UFO.Server.Data.Api.Db
 
         public EntityBuilder()
         {
-            metamodel = new EntityMetamodel<I, E>();
+            metamodel = EntityMetamodelFactory.GetInstance().GetMetaModel<I, E>();
         }
 
 

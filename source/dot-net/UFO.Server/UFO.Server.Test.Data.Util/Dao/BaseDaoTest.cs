@@ -15,7 +15,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
     public class BaseDaoTest<I, E, D> where E : class, IEntity<I> where D : class, IDao<I, E>
     {
         protected D dao = (D)Activator.CreateInstance(typeof(D));
-        protected EntityMetamodel<I, E> metadata = new EntityMetamodel<I, E>();
+        protected EntityMetamodel<I, E> metadata = EntityMetamodelFactory.GetInstance().GetMetaModel<I, E>();
         protected EntityBuilder<I, E> entityBuidler = new EntityBuilder<I, E>();
         protected MySqlDbCommandBuilder builder = new MySqlDbCommandBuilder();
 

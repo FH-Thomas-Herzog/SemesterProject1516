@@ -48,6 +48,8 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Util\EntityInstanceProvider.cs" />
+    <Compile Include="Util\UserEntityProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UFO.Server.Data.Api\UFO.Server.Data.Api.csproj">
