@@ -7,7 +7,9 @@ using UFO.Server.Data.Api.Attribute;
 
 namespace UFO.Server.Data.Api.Entity
 {
-    public class ArtCategory : BaseVersionedEntity<long?, User, long?>
+    [Api.Attribute.Entity(TableName = "artist_category",
+                          Schema = "ufo")]
+    public class ArtistCategory : BaseVersionedEntity<long?, User, long?>
     {
         [Id(PkType = PkType.AUTO)]
         [Column(Name = "id", ReadOnly = true)]

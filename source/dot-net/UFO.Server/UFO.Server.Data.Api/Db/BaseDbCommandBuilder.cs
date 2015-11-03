@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UFO.Server.Data.Api.Db;
+using UFO.Server.Data.Api.Exception;
 
 namespace UFO.Server.Data.Api.Db
 {
@@ -53,11 +54,10 @@ namespace UFO.Server.Data.Api.Db
         public BaseDbCommandBuilder<B, T, P, D> SetParameter(string name, object value)
         {
             Debug.Assert(name != null);
-            Debug.Assert(value != null);
 
             if (!command.Parameters.Contains(name))
             {
-                P parameter = createParameter(name, EvaluateType(value));
+                P parameter = (value != null) ? createParameter(name, EvaluateType(value)) : createParameter(name);
                 command.Parameters.Add(parameter);
             }
             command.Parameters[name].Value = value;
@@ -69,6 +69,7 @@ namespace UFO.Server.Data.Api.Db
         {
             Debug.Assert(name != null);
             Debug.Assert(values != null);
+
             if (!command.Parameters.Contains(name))
             {
                 P parameter = createParameter(name, EvaluateType(values));
@@ -102,17 +103,34 @@ namespace UFO.Server.Data.Api.Db
         }
 
         #region Private
+        private P createParameter(string name)
+        {
+            try
+            {
+                return (P)Activator.CreateInstance(typeof(P), name, (object)null);
+            }
+            catch (System.Exception e)
+            {
+                throw new PersistenceException("Cannot create parameter '"+name+"'", e);
+            }
+        }
+
         private P createParameter(string name, D type)
         {
             try
             {
+                if (type == null)
+                {
+                    return (P)Activator.CreateInstance(typeof(P), name);
+                }
                 return (P)Activator.CreateInstance(typeof(P), name, type);
             }
             catch (System.Exception)
             {
-                throw new ApplicationException("Cannot create parameter '" + nameof(P) + "' ");
+                throw new PersistenceException("Cannot create parameter '" + nameof(P) + "' ");
             }
         }
+
         private D EvaluateType(object value)
         {
             try

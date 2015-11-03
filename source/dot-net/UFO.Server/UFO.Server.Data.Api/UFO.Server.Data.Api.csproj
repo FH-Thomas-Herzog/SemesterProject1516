@@ -58,13 +58,13 @@
     <Compile Include="Entity\ArtistGroup.cs" />
     <Compile Include="Entity\Artist.cs" />
     <Compile Include="Entity\Performance.cs" />
-    <Compile Include="Entity\ArtCategory.cs" />
+    <Compile Include="Entity\ArtistCategory.cs" />
     <Compile Include="Entity\BaseEntity.cs" />
     <Compile Include="Entity\BaseVersionedEntity.cs" />
     <Compile Include="Entity\IEntity.cs" />
     <Compile Include="Entity\IVersionedEntity.cs" />
     <Compile Include="Entity\User.cs" />
-    <Compile Include="Exception\EntityNotFoundException.cs" />
+    <Compile Include="Exception\PersistenceException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

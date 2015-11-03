@@ -51,11 +51,11 @@ ENGINE = InnoDB;
 
 
 -- -----------------------------------------------------
--- Table `UFO`.`ART_CATEGORY`
+-- Table `UFO`.`ARTIST_CATEGORY`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `UFO`.`ART_CATEGORY` ;
+DROP TABLE IF EXISTS `UFO`.`ARTIST_CATEGORY` ;
 
-CREATE TABLE IF NOT EXISTS `UFO`.`ART_CATEGORY` (
+CREATE TABLE IF NOT EXISTS `UFO`.`ARTIST_CATEGORY` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `creation_date` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   `modification_date` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
@@ -124,18 +124,18 @@ CREATE TABLE IF NOT EXISTS `UFO`.`ARTIST` (
   `email` VARCHAR(100) NOT NULL,
   `country_code` VARCHAR(10) NOT NULL,
   `version` INT NOT NULL DEFAULT 1,
-  `art_category_id` INT NOT NULL,
+  `artist_category_id` INT NOT NULL,
   `artist_group_id` INT NOT NULL,
   `creation_user_id` INT NOT NULL,
   `modification_user_id` INT NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_ARTIST_ART_CATEGORY_idx` (`art_category_id` ASC),
+  INDEX `fk_ARTIST_ART_CATEGORY_idx` (`artist_category_id` ASC),
   INDEX `fk_ARTIST_ARTIST_CATEGORY1_idx` (`artist_group_id` ASC),
   INDEX `fk_ARTIST_USER1_idx` (`creation_user_id` ASC),
   INDEX `fk_ARTIST_USER2_idx` (`modification_user_id` ASC),
   CONSTRAINT `fk_ARTIST_ART_CATEGORY`
-    FOREIGN KEY (`art_category_id`)
-    REFERENCES `UFO`.`ART_CATEGORY` (`id`)
+    FOREIGN KEY (`artist_category_id`)
+    REFERENCES `UFO`.`ARTIST_CATEGORY` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_ARTIST_ARTIST_CATEGORY1`

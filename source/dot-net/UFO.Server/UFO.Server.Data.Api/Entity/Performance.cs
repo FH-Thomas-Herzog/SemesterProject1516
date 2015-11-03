@@ -7,6 +7,8 @@ using UFO.Server.Data.Api.Attribute;
 
 namespace UFO.Server.Data.Api.Entity
 {
+    [Api.Attribute.Entity(TableName = "performance",
+                          Schema = "ufo")]
     public class Performance : BaseVersionedEntity<long?, User, long?>
     {
         [Id(PkType = PkType.AUTO)]

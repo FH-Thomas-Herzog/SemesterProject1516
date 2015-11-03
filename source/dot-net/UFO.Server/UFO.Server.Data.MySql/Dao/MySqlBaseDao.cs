@@ -62,7 +62,7 @@ namespace FO.Server.Data.MySql.Dao
 
             if (entity == null)
             {
-                throw new EntityNotFoundException("Entity '" + metamodel.GetEntityType().Name + "' with id: '" + ((id != null) ? id.ToString() : "null") + "' not found");
+                throw new PersistenceException("Entity '" + metamodel.GetEntityType().Name + "' with id: '" + ((id != null) ? id.ToString() : "null") + "' not found");
             }
 
             return entity;
@@ -79,73 +79,93 @@ namespace FO.Server.Data.MySql.Dao
         }
         public E Persist(E entity)
         {
-            Debug.Assert(entity != null, "Cannot persist null entity");
+            try{
+                if (entity == null)
+                {
+                    new ArgumentException("Entity must not be null");
+                }
 
-            switch (metamodel.GetPkType())
-            {
-                case UFO.Server.Data.Api.Attribute.PkType.MANUAL:
-                    if (entity.Id == null)
-                    {
-                        throw new Exception("PkType is AUTO but entity does not proivde an id value");
-                    }
-                    break;
-                case UFO.Server.Data.Api.Attribute.PkType.SEQUENCE:
-                    commandBuilder.Clear()
-                                  .WithQuery(string.Format(NEXT_VAL_TEMPLATE, metamodel.GetFullyQualifiedSequenceName()));
-                    using (IDataReader reader = commandBuilder.ExecuteReader(CommandBehavior.Default))
-                    {
-                        if (!reader.Read())
+                switch (metamodel.GetPkType())
+                {
+                    case UFO.Server.Data.Api.Attribute.PkType.MANUAL:
+                        if (entity.Id == null)
                         {
-                            throw new Exception("Could not obtain sequence value");
+                            throw new ArgumentException("PkType is AUTO but entity does not proivde an id value");
                         }
-                        entity.Id = (I)reader.GetValue(0);
+                        break;
+                    case UFO.Server.Data.Api.Attribute.PkType.SEQUENCE:
+                        if (entity.Id == null)
+                        {
+                            throw new ArgumentException("Entity id is provided via sequence an therefore must not be provided");
+                        }
+                        commandBuilder.Clear()
+                                      .WithQuery(string.Format(NEXT_VAL_TEMPLATE, metamodel.GetFullyQualifiedSequenceName()));
+                        using (IDataReader reader = commandBuilder.ExecuteReader(CommandBehavior.Default))
+                        {
+                            if (!reader.Read())
+                            {
+                                throw new Exception("Could not obtain sequence value for entity#Id");
+                            }
+                            entity.Id = (I)reader.GetValue(0);
+                        }
+                        break;
+                    case UFO.Server.Data.Api.Attribute.PkType.AUTO:
+                        if (entity.Id != null)
+                        {
+                            throw new ArgumentException("Entity id is provided automatically and therefore must not be provided");
+                        }
+                        break;
+                    default:
+                        throw new ArgumentException("Unknown pk type detected '" + metamodel.GetPkType() + "'");
+                }
+
+                StringBuilder sb = new StringBuilder();
+                StringBuilder parameters = new StringBuilder(" (");
+                StringBuilder values = new StringBuilder(" VALUES(");
+                sb.Append("INSERT INTO ")
+                  .Append(metamodel.GetFullyQualifiedPhysicalTableName());
+                IDictionary<string, object> propertyToValueMap = entityBuilder.ToPropertyValueMap(entity);
+                for (int i = 0; i < propertyToValueMap.Count; i++)
+                {
+                    KeyValuePair<string, object> pair = propertyToValueMap.ElementAt(i);
+                    parameters.Append(metamodel.PropertyToColumn(pair.Key));
+                    if (i < (propertyToValueMap.Count - 1))
+                    {
+                        parameters.Append(" , ");
                     }
-                    break;
-                case UFO.Server.Data.Api.Attribute.PkType.AUTO:
-                    // TODO: Do nothing DB will handle
-                    break;
-                default:
-                    throw new Exception("Unknown pk type detected '" + metamodel.GetPkType() + "'");
-            }
-
-            StringBuilder sb = new StringBuilder();
-            StringBuilder parameters = new StringBuilder(" (");
-            StringBuilder values = new StringBuilder(" VALUES(");
-            sb.Append("INSERT INTO ")
-              .Append(metamodel.GetFullyQualifiedPhysicalTableName());
-            IDictionary<string, object> propertyToValueMap = entityBuilder.ToPropertyValueMap(entity, false);
-            for (int i = 0; i < propertyToValueMap.Count; i++)
-            {
-                KeyValuePair<string, object> pair = propertyToValueMap.ElementAt(i);
-                parameters.Append(metamodel.PropertyToColumn(pair.Key));
-                if (i < (propertyToValueMap.Count - 1))
-                {
-                    parameters.Append(" , ");
+                    values.Append("?").Append(pair.Key);
+                    if (i < (propertyToValueMap.Count - 1))
+                    {
+                        values.Append(" , ");
+                    }
                 }
-                values.Append("?").Append(pair.Key);
-                if (i < (propertyToValueMap.Count - 1))
+                parameters.Append(")");
+                values.Append(")");
+                sb.Append(parameters)
+                  .Append(values);
+                commandBuilder.Clear()
+                              .WithQuery(sb.ToString());
+
+                foreach (var entry in propertyToValueMap)
                 {
-                    values.Append(" , ");
+                    commandBuilder.SetParameter(entry.Key, entry.Value);
+                }
+
+                MySqlCommand command = commandBuilder.Build();
+                bool ok = (command.ExecuteNonQuery() == 1);
+                if(!ok)
+                {
+                    throw new Exception("Command could not be executed");
+                }
+                // GEt last insert id for auto pk
+                if (metamodel.GetPkType().Equals(PkType.AUTO))
+                {
+                    entity.Id = (I)(object)command.LastInsertedId;
                 }
             }
-            parameters.Append(")");
-            values.Append(")");
-            sb.Append(parameters)
-              .Append(values);
-            commandBuilder.Clear()
-                          .WithQuery(sb.ToString());
-
-            foreach (var entry in propertyToValueMap)
+            catch(Exception e)
             {
-                commandBuilder.SetParameter(entry.Key, entry.Value);
-            }
-
-            MySqlCommand command = commandBuilder.Build();
-            bool ok = (command.ExecuteNonQuery() == 1);
-            // GEt last insert id for auto pk
-            if (metamodel.GetPkType().Equals(PkType.AUTO))
-            {
-                entity.Id = (I)(object)command.LastInsertedId;
+                throw new PersistenceException(this.GetType().Name + "#Persist(entity) failed", e);
             }
             return ById(entity.Id);
         }

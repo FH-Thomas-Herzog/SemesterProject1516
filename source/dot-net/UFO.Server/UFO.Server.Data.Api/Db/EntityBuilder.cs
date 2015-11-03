@@ -72,7 +72,7 @@ namespace UFO.Server.Data.Api.Db
             IDictionary<string, object> propertyValueMap = new Dictionary<string, object>();
             foreach (var property in metamodel.GetPropertyNames())
             {
-                if (!metamodel.IsPropertyReadOnly(property))
+                if ((!metamodel.IsPropertyReadOnly(property) && (!metamodel.GetIdColumnName().Equals(property))))
                 {
                     object value = metamodel.GetEntityType().GetProperty(property).GetValue(entity);
 

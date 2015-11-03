@@ -10,7 +10,6 @@ using UFO.Server.Data.Api.Entity;
 namespace UFO.Server.Data.Api.Entity
 {
     [Api.Attribute.Entity(TableName = "user",
-                          SequenceName = "seq_user_id",
                           Schema = "ufo")]
     public class User : BaseVersionedEntity<long?, User, long?>
     {

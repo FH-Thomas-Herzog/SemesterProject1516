@@ -1,9 +1,12 @@
-﻿using NUnit.Framework;
+﻿using MySql.Data.MySqlClient;
+using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UFO.Server.Data.Api.Db;
 
 namespace UFO.Server.Test.Data.MySql.Action
 {
@@ -14,14 +17,26 @@ namespace UFO.Server.Test.Data.MySql.Action
     {
         public ActionTargets Targets { get { return ActionTargets.Default; } }
 
+
         public void AfterTest(TestDetails testDetails)
         {
-            Console.Out.WriteLine("After test will clear database");
+            Console.Out.WriteLine("'Cleanup database after tests");
+            //ExecuteScript("deleteDatabase");
         }
 
         public void BeforeTest(TestDetails testDetails)
         {
-            Console.Out.WriteLine("Before test will clear database");
+            Console.Out.WriteLine("Cleanup database for tests");
+            //ExecuteScript("deleteDatabase");
+        }
+
+        private void ExecuteScript(string fileName)
+        {
+            MySqlConnection connection = DbConnectionFactory.CreateAndOpenConnection<MySqlConnection>();
+            string fullPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\Resources\" + fileName + ".sql";
+            MySqlScript script = new MySqlScript(connection, File.ReadAllText(fullPath));
+            script.Delimiter = ";";
+            script.Execute();
         }
     }
 }

@@ -40,7 +40,9 @@
     <Compile Include="Action\CleanupDatabase.cs" />
     <Compile Include="Action\CreateDatabase.cs" />
     <Compile Include="Dao\BaseDaoTest.cs" />
-    <Compile Include="Dao\UserDaoTest.cs" />
+    <Compile Include="Dao\BaseEntityCreator.cs" />
+    <Compile Include="Dao\IEntityCreator.cs" />
+    <Compile Include="Dao\UserEntityCreator.cs" />
     <Compile Include="MySqlDbCommandBuilderTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -48,8 +50,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Util\EntityInstanceProvider.cs" />
-    <Compile Include="Util\UserEntityProvider.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UFO.Server.Data.Api\UFO.Server.Data.Api.csproj">
@@ -77,6 +77,11 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\dropDatabase.sql" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\deleteDatabase.sql">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

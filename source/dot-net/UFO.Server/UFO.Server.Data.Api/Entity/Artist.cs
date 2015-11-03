@@ -7,6 +7,8 @@ using UFO.Server.Data.Api.Attribute;
 
 namespace UFO.Server.Data.Api.Entity
 {
+    [Api.Attribute.Entity(TableName = "artist",
+                          Schema = "ufo")]
     public class Artist : BaseVersionedEntity<long?, User, long?>
     {
         [Id(PkType = PkType.AUTO)]
@@ -32,7 +34,7 @@ namespace UFO.Server.Data.Api.Entity
         public long? ArtCategoryId { get; set; }
 
         [ManyToOne(FkProperty = "ArtCategoryId")]
-        public ArtCategory ArtCategory { get; set; }
+        public ArtistCategory ArtCategory { get; set; }
 
         [ManyToOne(FkProperty = "ArtistGroupId")]
         public ArtistGroup ArtistGroup { get; set; }
