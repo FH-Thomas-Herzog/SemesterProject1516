@@ -9,7 +9,7 @@ namespace UFO.Server.Data.Api.Entity
 {
     [Api.Attribute.Entity(TableName = "artist",
                           Schema = "ufo")]
-    public class Artist : BaseVersionedEntity<long?, User, long?>
+    public class Artist : BaseVersionedEntity<long?, Artist, long?>
     {
         [Id(PkType = PkType.AUTO)]
         [Column(Name = "id", ReadOnly = true)]
@@ -31,10 +31,10 @@ namespace UFO.Server.Data.Api.Entity
         public long? ArtistGroupId { get; set; }
 
         [Column(Name = "artist_category_id")]
-        public long? ArtCategoryId { get; set; }
+        public long? ArtistCategoryId { get; set; }
 
         [ManyToOne(FkProperty = "ArtCategoryId")]
-        public ArtistCategory ArtCategory { get; set; }
+        public ArtistCategory ArtistCategory { get; set; }
 
         [ManyToOne(FkProperty = "ArtistGroupId")]
         public ArtistGroup ArtistGroup { get; set; }

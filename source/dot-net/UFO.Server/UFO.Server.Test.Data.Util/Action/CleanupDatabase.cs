@@ -21,7 +21,7 @@ namespace UFO.Server.Test.Data.MySql.Action
         public void AfterTest(TestDetails testDetails)
         {
             Console.Out.WriteLine("'Cleanup database after tests");
-            //ExecuteScript("deleteDatabase");
+            ExecuteScript("deleteDatabase");
         }
 
         public void BeforeTest(TestDetails testDetails)
@@ -37,6 +37,7 @@ namespace UFO.Server.Test.Data.MySql.Action
             MySqlScript script = new MySqlScript(connection, File.ReadAllText(fullPath));
             script.Delimiter = ";";
             script.Execute();
+            connection.Close();
         }
     }
 }

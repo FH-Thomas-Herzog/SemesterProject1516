@@ -54,6 +54,7 @@
     <Compile Include="Db\DbConnectionFactory.cs" />
     <Compile Include="Db\EntityMetamodelFactory.cs" />
     <Compile Include="Db\IDbTypeResolver.cs" />
+    <Compile Include="Db\IQueryCreator.cs" />
     <Compile Include="Entity\Venue.cs" />
     <Compile Include="Entity\ArtistGroup.cs" />
     <Compile Include="Entity\Artist.cs" />

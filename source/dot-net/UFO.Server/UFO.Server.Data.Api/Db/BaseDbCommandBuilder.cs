@@ -35,15 +35,33 @@ namespace UFO.Server.Data.Api.Db
         {
             Debug.Assert(connection != null, "Cannot set null conection on command");
 
+            ClearWithConnection();
+
             this.connection = connection;
+
             return this;
         }
+        public BaseDbCommandBuilder<B, T, P, D> ClearWithConnection()
+        {
+            // clears command
+            Clear();
+            // clears connection
+            DbConnectionFactory.CloseDisposeConnection(connection);
+            connection = null;
+
+            return this;
+        }
+
 
         public BaseDbCommandBuilder<B, T, P, D> WithQuery(string query)
         {
             Debug.Assert(typeResolver != null, "You need to call Init(...) before");
             Debug.Assert(query != null, "Cannot start command with null query string");
 
+            if(command != null)
+            {
+                Clear();
+            }
             command = (T)Activator.CreateInstance(typeof(T));
             command.CommandText = query;
             command.Connection = connection;
@@ -98,7 +116,12 @@ namespace UFO.Server.Data.Api.Db
 
         public BaseDbCommandBuilder<B, T, P, D> Clear()
         {
+            if(command != null)
+            {
+                command.Dispose();
+            }
             command = null;
+
             return this;
         }
 

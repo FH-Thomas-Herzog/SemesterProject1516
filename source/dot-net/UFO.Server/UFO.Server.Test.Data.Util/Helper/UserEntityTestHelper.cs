@@ -1,14 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UFO.Server.Data.Api.Entity;
+﻿using UFO.Server.Data.Api.Entity;
+using UFO.Server.Test.Data.MySql.Dao;
 
-namespace UFO.Server.Test.Data.MySql.Dao
+namespace UFO.Server.Test.Data.MySql.Helper
 {
-    public class UserEntityCreator : BaseEntityCreator<long?, User>
+    public class UserEntityTestHelper : BaseEntityTestHelper<long?, User>
     {
+        public override void Init()
+        {
+
+        }
+
         public override User CreateInvalidEntity()
         {
             User user = new User();
@@ -34,6 +35,23 @@ namespace UFO.Server.Test.Data.MySql.Dao
             user.ModificationUserId = null;
 
             return user;
+        }
+
+        public override long? getInvalidId()
+        {
+            return -1;
+        }
+
+        public override User UpdateEntity(User entity)
+        {
+            if(entity != null)
+            {
+                entity.FirstName += "firstname_updated";
+                entity.LastName += "firstname_updated";
+                entity.Username += "username_updated";
+            }
+
+            return entity;
         }
     }
 }

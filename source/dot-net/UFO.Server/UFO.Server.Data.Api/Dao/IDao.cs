@@ -56,5 +56,13 @@ namespace UFO.Server.Data.Api.Dao
         /// <param name="id">the entity id</param>
         /// <returns>the found entity or null if the entity does not exist</returns>
         E Find(I id);
+
+
+        /// <summary>
+        /// Answers the question if the entity with the given id exists on the database.
+        /// </summary>
+        /// <param name="id">the entity id</param>
+        /// <returns>true if entity exists, false otherwise</returns>
+        bool EntityExists(I id);
     }
 }

@@ -8,10 +8,10 @@ using UFO.Server.Test.Data.MySql.Action;
 
 namespace UFO.Server.Test.Data.Util.MySql
 {
-    [TestFixture, CreateDatabase]
+    //[TestFixture, CreateDatabase]
     public class DbCommandBuilderTest
     {
-        [Test, CleanupDatabase]
+        //[Test, CleanupDatabase]
         public void Test()
         {
             string query = "select * from user where id = @id";

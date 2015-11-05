@@ -12,10 +12,11 @@ using UFO.Server.Data.Api.Db;
 namespace UFO.Server.Test.Data.MySql.Action
 {
     [AttributeUsage(AttributeTargets.Method | AttributeTargets.Class,
-                AllowMultiple = false)]
-    public class CreateDatabase : Attribute, ITestAction
+                AllowMultiple = true)]
+    public class CreateDatabase : BaseDbAction, ITestAction
     {
         public ActionTargets Targets { get { return ActionTargets.Default; } }
+        
 
         public void AfterTest(TestDetails testDetails)
         {
@@ -27,15 +28,6 @@ namespace UFO.Server.Test.Data.MySql.Action
         {
             Console.Out.WriteLine("Creating database for tests");
             ExecuteScript("createDatabase");
-        }
-
-        private void ExecuteScript(string fileName)
-        {
-            MySqlConnection connection = DbConnectionFactory.CreateAndOpenConnection<MySqlConnection>();
-            string fullPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\Resources\" + fileName + ".sql";
-            MySqlScript script = new MySqlScript(connection, File.ReadAllText(fullPath));
-            script.Delimiter = ";";
-            script.Execute();
         }
     }
 }

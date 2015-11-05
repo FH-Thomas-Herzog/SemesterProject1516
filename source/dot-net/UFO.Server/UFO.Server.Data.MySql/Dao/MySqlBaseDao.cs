@@ -18,7 +18,7 @@ namespace FO.Server.Data.MySql.Dao
 {
     public abstract class MySqlBaseDao<I, E> : IDao<I, E> where E : class, IEntity<I>
     {
-        private EntityBuilder<I, E> entityBuilder;
+        protected IQueryCreator queryCreator = new MySqlQueryCreator();
         private EntityMetamodel<I, E> metamodel;
         private MySqlDbCommandBuilder commandBuilder;
 
@@ -28,7 +28,6 @@ namespace FO.Server.Data.MySql.Dao
 
         protected MySqlBaseDao()
         {
-            entityBuilder = new EntityBuilder<I, E>();
             metamodel = EntityMetamodelFactory.GetInstance().GetMetaModel<I, E>();
             commandBuilder = new MySqlDbCommandBuilder();
             commandBuilder.WithTypeResolver(new MySqlDbTypeResolver())
@@ -37,23 +36,27 @@ namespace FO.Server.Data.MySql.Dao
 
         public E Find(I id)
         {
+            E result = null;
             if (id == null)
             {
-                return default(E);
+                return result;
             }
 
             commandBuilder.Clear()
-                          .WithQuery(string.Format(SELECT_BY_ID_TEMPLATE, metamodel.GetFullyQualifiedPhysicalTableName(), metamodel.GetIdColumnName()))
+                          .WithQuery(queryCreator.CreateFullSelectQuery<I, E>())
                           .SetParameter("?id", id);
 
             using (IDataReader reader = commandBuilder.ExecuteReader(CommandBehavior.Default))
             {
                 if (reader.Read())
                 {
-                    return entityBuilder.CreateFromReader(reader);
+                    result = EntityBuilder.CreateFromReader<I, E>(reader);
                 }
-                return null;
             }
+
+            commandBuilder.Clear();
+
+            return result;
         }
 
         public E ById(I id)
@@ -69,17 +72,35 @@ namespace FO.Server.Data.MySql.Dao
         }
         public bool Delete(I id)
         {
-            Debug.Assert(id != null, "Cannot delete entity with null id");
+            bool result = false;
+            try
+            {
+                if (!EntityExists(id))
+                {
+                    throw new PersistenceException("Entity with id: '" + id.ToString() + "' not found");
+                }
 
-            return (commandBuilder.Clear()
-                                  .WithQuery(string.Format(SELECT_BY_ID_TEMPLATE, metamodel.GetFullyQualifiedPhysicalTableName(), metamodel.GetIdColumnName()))
+                result = (commandBuilder.Clear()
+                                  .WithQuery(queryCreator.CreateDeleteQuery<I, E>())
                                   .SetParameter("?id", id)
                                   .ExecuteNonQuery() == 1);
+            }
+            catch (System.Exception e)
+            {
+                throw new PersistenceException("Could not delete entity", e);
+            }
+            finally
+            {
+                commandBuilder.Clear();
+            }
 
+            return result;
         }
+
         public E Persist(E entity)
         {
-            try{
+            try
+            {
                 if (entity == null)
                 {
                     new ArgumentException("Entity must not be null");
@@ -119,32 +140,9 @@ namespace FO.Server.Data.MySql.Dao
                         throw new ArgumentException("Unknown pk type detected '" + metamodel.GetPkType() + "'");
                 }
 
-                StringBuilder sb = new StringBuilder();
-                StringBuilder parameters = new StringBuilder(" (");
-                StringBuilder values = new StringBuilder(" VALUES(");
-                sb.Append("INSERT INTO ")
-                  .Append(metamodel.GetFullyQualifiedPhysicalTableName());
-                IDictionary<string, object> propertyToValueMap = entityBuilder.ToPropertyValueMap(entity);
-                for (int i = 0; i < propertyToValueMap.Count; i++)
-                {
-                    KeyValuePair<string, object> pair = propertyToValueMap.ElementAt(i);
-                    parameters.Append(metamodel.PropertyToColumn(pair.Key));
-                    if (i < (propertyToValueMap.Count - 1))
-                    {
-                        parameters.Append(" , ");
-                    }
-                    values.Append("?").Append(pair.Key);
-                    if (i < (propertyToValueMap.Count - 1))
-                    {
-                        values.Append(" , ");
-                    }
-                }
-                parameters.Append(")");
-                values.Append(")");
-                sb.Append(parameters)
-                  .Append(values);
+                IDictionary<string, object> propertyToValueMap = EntityBuilder.ToPropertyValueMap<I, E>(entity, true);
                 commandBuilder.Clear()
-                              .WithQuery(sb.ToString());
+                              .WithQuery(queryCreator.CreatePersistQuery<I, E>(entity, propertyToValueMap));
 
                 foreach (var entry in propertyToValueMap)
                 {
@@ -152,8 +150,8 @@ namespace FO.Server.Data.MySql.Dao
                 }
 
                 MySqlCommand command = commandBuilder.Build();
-                bool ok = (command.ExecuteNonQuery() == 1);
-                if(!ok)
+                bool ok = (commandBuilder.ExecuteNonQuery() == 1);
+                if (!ok)
                 {
                     throw new Exception("Command could not be executed");
                 }
@@ -163,17 +161,73 @@ namespace FO.Server.Data.MySql.Dao
                     entity.Id = (I)(object)command.LastInsertedId;
                 }
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 throw new PersistenceException(this.GetType().Name + "#Persist(entity) failed", e);
             }
+            finally
+            {
+                // Clears command and we don't hold reference
+                commandBuilder.Clear();
+            }
+
             return ById(entity.Id);
         }
 
         public E Update(E entity)
         {
+            E result = null;
+            try
+            {
+                if ((entity == null) || (entity.Id == null))
+                {
+                    throw new ArgumentException("Cannot update null entity or entity with null id");
+                }
 
-            return null;
+                if (!EntityExists(entity.Id))
+                {
+                    throw new PersistenceException("Entity with id: '" + entity.Id.ToString() + "' not found");
+                }
+
+                IDictionary<string, object> propertyToValueMap = EntityBuilder.ToPropertyValueMap<I, E>(entity, true);
+                commandBuilder.WithQuery(queryCreator.CreateUpdateQuery<I, E>(entity, propertyToValueMap))
+                              .SetParameter("?id", entity.Id);
+                foreach (var entry in propertyToValueMap)
+                {
+                    commandBuilder.SetParameter(entry.Key, entry.Value);
+                }
+                if(commandBuilder.ExecuteNonQuery() == 1)
+                {
+                    result = ById(entity.Id);
+                }
+            }
+            catch (System.Exception e)
+            {
+                throw new PersistenceException("Could not update entity", e);
+            }
+            finally
+            {
+                commandBuilder.Clear();
+            }
+
+            return result;
+        }
+
+        public bool EntityExists(I id)
+        {
+            bool exists = false;
+            if (id != null)
+            {
+                using (IDataReader reader = commandBuilder.WithQuery(queryCreator.CreateIdSelectQuery<I, E>())
+                                                          .SetParameter("?id", id)
+                                                          .ExecuteReader(CommandBehavior.Default))
+                {
+                    exists = reader.Read();
+                }
+                commandBuilder.Clear();
+            }
+
+            return exists;
         }
     }
 }

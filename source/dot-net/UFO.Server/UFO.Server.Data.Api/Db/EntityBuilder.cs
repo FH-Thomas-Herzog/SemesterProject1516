@@ -19,26 +19,19 @@ namespace UFO.Server.Data.Api.Db
     /// </summary>
     /// <typeparam name="I">the type of the entity id</typeparam>
     /// <typeparam name="E">the type of the entity</typeparam>
-    public class EntityBuilder<I, E> where E : class, IEntity<I>
+    public class EntityBuilder
     {
-        private EntityMetamodel<I, E> metamodel;
-
-        public EntityBuilder()
-        {
-            metamodel = EntityMetamodelFactory.GetInstance().GetMetaModel<I, E>();
-        }
-
-
         /// <summary>
         /// Creates an entity instance and fills it with the data of the IReader instance.
         /// </summary>
         /// <param name="reader">the reader to get property values from</param>
         /// <param name="alias">the alias used for the selected property</param>
         /// <returns>the created and filled entity</returns>
-        public E CreateFromReader(IDataReader reader, string alias = " ")
+        public static E CreateFromReader<I, E>(IDataReader reader, string alias = " ") where E : class, IEntity<I>
         {
             Debug.Assert(reader != null, "Cannot create entity from null reader");
 
+            EntityMetamodel<I, E> metamodel = EntityMetamodelFactory.GetInstance().GetMetaModel<I, E>();
             E entity = (E)Activator.CreateInstance(metamodel.GetEntityType());
             for (int i = 0; i < reader.FieldCount; i++)
             {
@@ -51,6 +44,9 @@ namespace UFO.Server.Data.Api.Db
                     if ((!reader.IsDBNull(i)) && (Nullable.GetUnderlyingType(propertyType) != null))
                     {
                         converted = System.Convert.ChangeType(reader.GetValue(i), Nullable.GetUnderlyingType(propertyType));
+                    }
+                    else if(!reader.IsDBNull(i)){
+                        converted = reader.GetValue(i);
                     }
                     metamodel.GetEntityType().GetProperty(property).SetValue(entity, converted, null);
                 }
@@ -65,10 +61,11 @@ namespace UFO.Server.Data.Api.Db
         /// <param name="entity">the entity to extract properties from</param>
         /// <param name="includeNull">true if null values shall be included. default = true</param>
         /// <returns>the dictonary which maps the property name to the set value</returns>
-        public IDictionary<string, object> ToPropertyValueMap(E entity, bool includeNull = true)
+        public static IDictionary<string, object> ToPropertyValueMap<I, E>(E entity, bool includeNull = true) where E : class, IEntity<I>
         {
             Debug.Assert(entity != null, "Cannot read values from null entity");
 
+            EntityMetamodel<I, E> metamodel = EntityMetamodelFactory.GetInstance().GetMetaModel<I, E>();
             IDictionary<string, object> propertyValueMap = new Dictionary<string, object>();
             foreach (var property in metamodel.GetPropertyNames())
             {
