@@ -1,45 +1,43 @@
-﻿using MySql.Data.MySqlClient;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.Data;
-using UFO.Server.Data.Api.Attribute;
 using UFO.Server.Data.Api.Dao;
-using UFO.Server.Data.Api.Db;
 using UFO.Server.Data.Api.Entity;
 using UFO.Server.Data.Api.Exception;
 using UFO.Server.Data.MySql.Dao;
-using UFO.Server.Data.MySql.Db;
 using UFO.Server.Test.Data.MySql.Action;
 using UFO.Server.Test.Data.MySql.Helper;
 
 namespace UFO.Server.Test.Data.MySql.Dao
 {
+    /// <summary>
+    /// This test class tests the basic DAO operations for each contained entity type.
+    /// </summary>
+    /// <typeparam name="I">the type of the entity id</typeparam>
+    /// <typeparam name="E">the type of the entity</typeparam>
+    /// <typeparam name="D">the type of the to test dao</typeparam>
+    /// <typeparam name="C">th type of the entity backing helper class</typeparam>
     [TestFixture(typeof(long?), typeof(User), typeof(UserDao), typeof(UserEntityTestHelper))]
     [TestFixture(typeof(long?), typeof(ArtistGroup), typeof(ArtistGroupDao), typeof(ArtistGroupEntityTestHelper))]
     [TestFixture(typeof(long?), typeof(ArtistCategory), typeof(ArtistCategoryDao), typeof(ArtistCategoryEntityTestHelper))]
     [TestFixture(typeof(long?), typeof(Artist), typeof(ArtistDao), typeof(ArtistEntityTestHelper))]
+    [TestFixture(typeof(long?), typeof(Venue), typeof(VenueDao), typeof(VenueEntityTestHelper))]
+    [TestFixture(typeof(long?), typeof(Performance), typeof(PerformanceDao), typeof(PerformanceEntityTestHelper))]
     [CreateDatabase]
     public class BaseDaoTest<I, E, D, C> where E : class, IEntity<I> where D : class, IDao<I, E> where C : class, IEntityTestHelper<I, E>
     {
-        protected IQueryCreator queryCreator = new MySqlQueryCreator();
         protected readonly D dao = (D)Activator.CreateInstance(typeof(D));
-        protected readonly EntityMetamodel<I, E> metadata = EntityMetamodelFactory.GetInstance().GetMetaModel<I, E>();
-        protected readonly MySqlDbCommandBuilder builder = new MySqlDbCommandBuilder();
-        protected readonly IEntityTestHelper<I, E> creator = (C)Activator.CreateInstance(typeof(C));
+        protected readonly IEntityTestHelper<I, E> entityHelper = (C)Activator.CreateInstance(typeof(C));
 
         [SetUp]
         public void Init()
         {
-            creator.Init();
-            builder.WithConnection(DbConnectionFactory.CreateAndOpenConnection<MySqlConnection>())
-                      .WithTypeResolver(new MySqlDbTypeResolver());
+            entityHelper.Init();
         }
 
         [TearDown]
         public void Dispose()
         {
-            builder.ClearWithConnection();
         }
 
         #region ById
@@ -61,7 +59,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
         public void ById_IdNotFound()
         {
             // -- Given --
-            I id = creator.getInvalidId();
+            I id = entityHelper.getInvalidId();
 
             // -- When --
             dao.ById(id);
@@ -72,7 +70,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
         public void ById_Valid()
         {
             // -- Given --
-            E entity = Persist(creator.CreateValidEntity());
+            E entity = entityHelper.Persist(entityHelper.CreateValidEntity());
 
             // -- When --
             E loaded = dao.ById(entity.Id);
@@ -101,7 +99,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
         public void Find_InvalidId()
         {
             // -- Given --
-            I id = creator.getInvalidId();
+            I id = entityHelper.getInvalidId();
 
             // -- When --
             Assert.IsNull(dao.Find(id));
@@ -112,7 +110,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
         public void Find_Valid()
         {
             // -- Given --
-            E entity = Persist(creator.CreateValidEntity());
+            E entity = entityHelper.Persist(entityHelper.CreateValidEntity());
 
             // -- When --
             E loaded = dao.Find(entity.Id);
@@ -141,8 +139,8 @@ namespace UFO.Server.Test.Data.MySql.Dao
         public void Update_NotFound()
         {
             // -- Given --
-            E entity = creator.CreateValidEntity();
-            entity.Id = creator.getInvalidId();
+            E entity = entityHelper.CreateValidEntity();
+            entity.Id = entityHelper.getInvalidId();
 
             // -- When --
             dao.Update(entity);
@@ -154,7 +152,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
         public void Update_Valid()
         {
             // -- Given --
-            E entity = Persist(creator.CreateValidEntity());
+            E entity = entityHelper.Persist(entityHelper.CreateValidEntity());
 
             // -- When --
             E loaded = dao.Update(entity);
@@ -184,7 +182,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
         public void Persist_EntityIdInvalid()
         {
             // -- Given --
-            E entity = creator.CreateValidEntity(true);
+            E entity = entityHelper.CreateValidEntity(true);
 
             // -- When --
             dao.Persist(entity);
@@ -196,7 +194,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
         public void Persist_Entity_Invalid()
         {
             // -- Given --
-            E entity = creator.CreateInvalidEntity();
+            E entity = entityHelper.CreateInvalidEntity();
 
             // -- When --
             dao.Persist(entity);
@@ -211,7 +209,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
             IList<E> entities = new List<E>();
             for (int i = 0; i < 100; i++)
             {
-                entities.Add(creator.CreateValidEntity(false, i));
+                entities.Add(entityHelper.CreateValidEntity(false, i));
             }
 
             // -- When --
@@ -225,7 +223,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
             {
                 E entity = entities[i];
                 E persistentEntity = persistet[i];
-                E loadedEntity = LoadById(persistentEntity.Id);
+                E loadedEntity = entityHelper.LoadById(persistentEntity.Id);
                 Assert.AreEqual(persistentEntity, loadedEntity);
             }
         }
@@ -250,7 +248,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
         public void Delete_InvalidId()
         {
             // -- Given --
-            I id = creator.getInvalidId();
+            I id = entityHelper.getInvalidId();
 
             // -- When --
             dao.Delete(id);
@@ -261,7 +259,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
         public void Delete_Valid()
         {
             // -- Given --
-            E entity = Persist(creator.CreateValidEntity());
+            E entity = entityHelper.Persist(entityHelper.CreateValidEntity());
 
             // -- When --
             bool result = dao.Delete(entity.Id);
@@ -291,7 +289,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
         public void EntityExists_InvalidId()
         {
             // -- Given --
-            I id = creator.getInvalidId();
+            I id = entityHelper.getInvalidId();
 
             // -- When --
             bool result = dao.EntityExists(id);
@@ -305,60 +303,13 @@ namespace UFO.Server.Test.Data.MySql.Dao
         public void EntityExists_Valid()
         {
             // -- Given --
-            I id = Persist(creator.CreateValidEntity()).Id;
+            I id = entityHelper.Persist(entityHelper.CreateValidEntity()).Id;
 
             // -- When --
             bool result = dao.EntityExists(id);
 
             // -- Then --
             Assert.IsTrue(result);
-        }
-        #endregion
-
-        #region Utilities
-        protected E LoadById(I id)
-        {
-            E result = null;
-
-            using (IDataReader reader = builder.WithQuery(queryCreator.CreateFullSelectQuery<I, E>())
-                                               .SetParameter("?id", id)
-                                               .ExecuteReader(CommandBehavior.Default))
-            {
-                if (reader.Read())
-                {
-                    result = EntityBuilder.CreateFromReader<I, E>(reader);
-                }
-            }
-            builder.Clear();
-
-            return result;
-        }
-
-        protected E Persist(E entity)
-        {
-            IDictionary<string, object> propertyToValueMap = EntityBuilder.ToPropertyValueMap<I, E>(entity, true);
-            builder.WithQuery(queryCreator.CreatePersistQuery<I, E>(entity, propertyToValueMap));
-
-            foreach (var entry in propertyToValueMap)
-            {
-                builder.SetParameter(entry.Key, entry.Value);
-            }
-
-            using (MySqlCommand command = builder.Build())
-            {
-                bool ok = (command.ExecuteNonQuery() == 1);
-                if (!ok)
-                {
-                    throw new Exception("Command could not be executed");
-                }
-                if (metadata.GetPkType().Equals(PkType.AUTO))
-                {
-                    entity.Id = (I)(object)command.LastInsertedId;
-                }
-            }
-            builder.Clear();
-
-            return (entity.Id != null) ? LoadById(entity.Id) : null;
         }
         #endregion
     }

@@ -44,6 +44,8 @@
     <Compile Include="Dao\BaseEntityTestHelper.cs" />
     <Compile Include="Dao\IEntityTestHelper.cs" />
     <Compile Include="Helper\ArtistCategoryEntityTestHelper.cs" />
+    <Compile Include="Helper\PerformanceEntityTestHelper.cs" />
+    <Compile Include="Helper\VenueEntityTestHelper.cs" />
     <Compile Include="Helper\ArtistGroupEntityTestHelper.cs" />
     <Compile Include="Helper\ArtistEntityTestHelper.cs" />
     <Compile Include="Helper\UserEntityTestHelper.cs" />

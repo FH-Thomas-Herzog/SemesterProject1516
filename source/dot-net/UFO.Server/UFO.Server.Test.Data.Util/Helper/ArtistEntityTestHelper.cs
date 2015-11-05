@@ -10,26 +10,20 @@ namespace UFO.Server.Test.Data.MySql.Helper
         private UserEntityTestHelper userHelper = new UserEntityTestHelper();
         private ArtistGroupEntityTestHelper artistGroupHelper = new ArtistGroupEntityTestHelper();
         private ArtistCategoryEntityTestHelper artistCategoryHelper = new ArtistCategoryEntityTestHelper();
-        private UserDao userDao = new UserDao();
-        private ArtistGroupDao artistGroupDao = new ArtistGroupDao();
-        private ArtistCategoryDao artistCategoryDao = new ArtistCategoryDao();
 
         private int count = 0;
-        private User user;
         private ArtistGroup artistGroup;
         private ArtistCategory artistCategory;
 
         public override void Init()
         {
             count++;
-            User user = userHelper.CreateValidEntity();
-            user.Username = "artistHelper_" + count;
-            user.Email = "artistHelper_" + count + "@helper.com";
-            this.user = userDao.Persist(user);
+            artistGroupHelper.Init();
+            artistCategoryHelper.Init();
 
-            this.artistGroup = artistGroupDao.Persist(artistGroupHelper.CreateValidEntity());
+            this.artistGroup = artistGroupHelper.Persist(artistGroupHelper.CreateValidEntity());
 
-            this.artistCategory = artistCategoryDao.Persist(artistCategoryHelper.CreateValidEntity());
+            this.artistCategory = artistCategoryHelper.Persist(artistCategoryHelper.CreateValidEntity());
         }
 
         public override Artist CreateInvalidEntity()
@@ -43,7 +37,6 @@ namespace UFO.Server.Test.Data.MySql.Helper
 
         public override Artist CreateValidEntity(bool setId = false, int idx = 0)
         {
-            Init();
             Artist artist = new Artist();
             if (setId)
             {
@@ -53,10 +46,14 @@ namespace UFO.Server.Test.Data.MySql.Helper
             artist.Email = "master_" + idx + "@masterhood.at";
             artist.Firstname = "Thomas_" + idx + "";
             artist.Lastname = "Herzog_" + idx + "";
-            artist.CreationUserId = user.Id;
-            artist.ModificationUserId = user.Id;
+            artist.CreationUserId = artistGroup.CreationUserId;
+            artist.ModificationUserId = artistGroup.ModificationUserId;
+            artist.CreationUser = userHelper.LoadById(artistGroup.CreationUserId);
+            artist.ModificationUser = userHelper.LoadById(artistGroup.ModificationUserId);
             artist.ArtistGroupId = artistGroup.Id;
             artist.ArtistCategoryId = artistCategory.Id;
+            artist.ArtistGroup = artistGroup;
+            artist.ArtistCategory = artistCategory;
 
             return artist;
         }

@@ -206,14 +206,18 @@ CREATE TABLE IF NOT EXISTS `UFO`.`PERFORMANCE` (
   `id` INT NOT NULL AUTO_INCREMENT,
   `creation_date` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   `modification_date` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
-  `start_date` TIMESTAMP(6) NULL,
-  `end_date` TIMESTAMP(6) NULL,
+  `start_date` DATETIME NOT NULL,
+  `end_date` DATETIME NOT NULL,
   `artist_id` INT NOT NULL,
   `venue_id` INT NOT NULL,
+  `creation_user_id` INT NOT NULL,
+  `modification_user_id` INT NOT NULL,
   `version` INT NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`),
   INDEX `fk_PERFORMANCE_ARTIST1_idx` (`artist_id` ASC),
   INDEX `fk_PERFORMANCE_VENUE1_idx` (`venue_id` ASC),
+  INDEX `fk_PERFORMANCE_USER1_idx` (`creation_user_id` ASC),
+  INDEX `fk_PERFORMANCE_USER2_idx` (`modification_user_id` ASC),
   CONSTRAINT `fk_PERFORMANCE_ARTIST1`
     FOREIGN KEY (`artist_id`)
     REFERENCES `UFO`.`ARTIST` (`id`)
@@ -222,6 +226,16 @@ CREATE TABLE IF NOT EXISTS `UFO`.`PERFORMANCE` (
   CONSTRAINT `fk_PERFORMANCE_VENUE1`
     FOREIGN KEY (`venue_id`)
     REFERENCES `UFO`.`VENUE` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_PERFORMANCE_USER1`
+    FOREIGN KEY (`creation_user_id`)
+    REFERENCES `UFO`.`USER` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `fk_PERFORMANCE_USER2`
+    FOREIGN KEY (`modification_user_id`)
+    REFERENCES `UFO`.`USER` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB;

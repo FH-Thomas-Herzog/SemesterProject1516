@@ -7,7 +7,6 @@ namespace UFO.Server.Test.Data.MySql.Helper
     public class ArtistGroupEntityTestHelper : BaseEntityTestHelper<long?, ArtistGroup>
     {
         private UserEntityTestHelper userHelper = new UserEntityTestHelper();
-        private UserDao userDao = new UserDao();
 
         private int count = 0;
         private User user;
@@ -15,10 +14,12 @@ namespace UFO.Server.Test.Data.MySql.Helper
         public override void Init()
         {
             count++;
+            userHelper.Init();
+
             User user = userHelper.CreateValidEntity();
             user.Username = "artistGroupHelper_" + count;
             user.Email = "artistGroupoHelper_" + count + "@helper.com";
-            this.user = userDao.Persist(user);
+            this.user = userHelper.Persist(user);
         }
 
         public override ArtistGroup CreateInvalidEntity()
@@ -32,8 +33,6 @@ namespace UFO.Server.Test.Data.MySql.Helper
 
         public override ArtistGroup CreateValidEntity(bool setId = false, int idx = 0)
         {
-            Init();
-
             ArtistGroup group = new ArtistGroup();
             if (setId)
             {

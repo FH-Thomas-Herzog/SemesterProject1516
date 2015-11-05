@@ -9,7 +9,7 @@ namespace UFO.Server.Data.Api.Entity
 {
     [Api.Attribute.Entity(TableName = "venue",
                           Schema = "ufo")]
-    public class Venue : BaseVersionedEntity<long?, Artist, long?>
+    public class Venue : BaseVersionedEntity<long?, User, long?>
     {
         [Id(PkType = PkType.AUTO)]
         [Column(Name = "id", ReadOnly = true)]

@@ -15,5 +15,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
         IList<E> CreateValidEntities(int count);
         I getInvalidId();
         E UpdateEntity(E entity);
+        E LoadById(I id);
+        E Persist(E entity);
     }
 }

@@ -7,7 +7,6 @@ namespace UFO.Server.Test.Data.MySql.Helper
     {
         public override void Init()
         {
-
         }
 
         public override User CreateInvalidEntity()
@@ -44,7 +43,7 @@ namespace UFO.Server.Test.Data.MySql.Helper
 
         public override User UpdateEntity(User entity)
         {
-            if(entity != null)
+            if (entity != null)
             {
                 entity.FirstName += "firstname_updated";
                 entity.LastName += "firstname_updated";

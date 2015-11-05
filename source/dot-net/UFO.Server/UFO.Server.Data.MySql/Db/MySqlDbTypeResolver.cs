@@ -19,7 +19,8 @@ namespace UFO.Server.Data.MySql.Db
             {typeof(double), MySqlDbType.Double},
             {typeof(float), MySqlDbType.Float},
             {typeof(bool), MySqlDbType.Int16},
-            {typeof(DateTime), MySqlDbType.Timestamp}
+            {typeof(DateTime), MySqlDbType.DateTime},
+            {typeof(DateTime?), MySqlDbType.DateTime}
         };
 
         public MySqlDbType resolve(Type type)

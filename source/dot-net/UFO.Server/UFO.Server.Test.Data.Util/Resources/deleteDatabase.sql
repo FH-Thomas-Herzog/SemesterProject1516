@@ -1,6 +1,6 @@
-delete from ufo.venue;
-commit;
 delete from ufo.performance;
+commit;
+delete from ufo.venue;
 commit;
 delete from ufo.artist;
 commit;

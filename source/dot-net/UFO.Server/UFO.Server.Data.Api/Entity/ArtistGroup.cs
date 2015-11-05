@@ -9,7 +9,7 @@ namespace UFO.Server.Data.Api.Entity
 {
     [Api.Attribute.Entity(TableName = "artist_group",
                           Schema = "ufo")]
-    public class ArtistGroup : BaseVersionedEntity<long?, Artist, long?>
+    public class ArtistGroup : BaseVersionedEntity<long?, User, long?>
     {
         [Id(PkType = PkType.AUTO)]
         [Column(Name = "id", ReadOnly = true)]
