@@ -1,0 +1,12 @@
+delete from ufo.performance;
+commit;
+delete from ufo.venue;
+commit;
+delete from ufo.artist;
+commit;
+delete from ufo.artist_category;
+commit;
+delete from ufo.artist_group;
+commit;
+delete from ufo.user;
+commit;
