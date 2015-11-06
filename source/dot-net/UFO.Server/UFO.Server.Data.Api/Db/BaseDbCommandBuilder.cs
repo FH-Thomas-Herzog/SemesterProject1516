@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UFO.Server.Data.Api.Db;
 using UFO.Server.Data.Api.Exception;
 
 namespace UFO.Server.Data.Api.Db
@@ -58,7 +53,7 @@ namespace UFO.Server.Data.Api.Db
             Debug.Assert(typeResolver != null, "You need to call Init(...) before");
             Debug.Assert(query != null, "Cannot start command with null query string");
 
-            if(command != null)
+            if (command != null)
             {
                 Clear();
             }
@@ -114,9 +109,14 @@ namespace UFO.Server.Data.Api.Db
             return Build().ExecuteNonQuery();
         }
 
+        public object ExecuteScalar()
+        {
+            return Build().ExecuteScalar();
+        }
+
         public BaseDbCommandBuilder<B, T, P, D> Clear()
         {
-            if(command != null)
+            if (command != null)
             {
                 command.Dispose();
             }
@@ -134,7 +134,7 @@ namespace UFO.Server.Data.Api.Db
             }
             catch (System.Exception e)
             {
-                throw new PersistenceException("Cannot create parameter '"+name+"'", e);
+                throw new PersistenceException("Cannot create parameter '" + name + "'", e);
             }
         }
 

@@ -45,7 +45,8 @@ namespace UFO.Server.Data.Api.Db
                     {
                         converted = System.Convert.ChangeType(reader.GetValue(i), Nullable.GetUnderlyingType(propertyType));
                     }
-                    else if(!reader.IsDBNull(i)){
+                    else if (!reader.IsDBNull(i))
+                    {
                         converted = reader.GetValue(i);
                     }
                     metamodel.GetEntityType().GetProperty(property).SetValue(entity, converted, null);
@@ -69,7 +70,7 @@ namespace UFO.Server.Data.Api.Db
             IDictionary<string, object> propertyValueMap = new Dictionary<string, object>();
             foreach (var property in metamodel.GetPropertyNames())
             {
-                if ((!metamodel.IsPropertyReadOnly(property) && (!metamodel.GetIdColumnName().Equals(property))))
+                if (!metamodel.IsPropertyReadOnly(property))
                 {
                     object value = metamodel.GetEntityType().GetProperty(property).GetValue(entity);
 

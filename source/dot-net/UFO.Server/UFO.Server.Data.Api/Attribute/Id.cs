@@ -12,8 +12,7 @@ namespace UFO.Server.Data.Api.Attribute
     public enum PkType
     {
         MANUAL = 0,
-        SEQUENCE = 1,
-        AUTO = 2
+        AUTO = 1
     }
 
     /// <summary>

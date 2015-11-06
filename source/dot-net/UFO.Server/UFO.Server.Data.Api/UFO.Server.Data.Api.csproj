@@ -47,7 +47,15 @@
     <Compile Include="Attribute\Id.cs" />
     <Compile Include="Attribute\Column.cs" />
     <Compile Include="Attribute\Entity.cs" />
+    <Compile Include="Dao\BaseDao.cs" />
+    <Compile Include="Dao\DaoFactory.cs" />
+    <Compile Include="Dao\IPerformanceDao.cs" />
+    <Compile Include="Dao\IVenueDao.cs" />
+    <Compile Include="Dao\IArtistCategoryDao.cs" />
+    <Compile Include="Dao\IArtistGroupDao.cs" />
     <Compile Include="Dao\IDao.cs" />
+    <Compile Include="Dao\IArtistDao.cs" />
+    <Compile Include="Dao\IUserDao.cs" />
     <Compile Include="Db\BaseDbCommandBuilder.cs" />
     <Compile Include="Db\EntityMetamodel.cs" />
     <Compile Include="Db\EntityBuilder.cs" />

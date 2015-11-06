@@ -42,10 +42,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Dao\ArtistCategoryDao.cs" />
+    <Compile Include="Dao\MySqlBaseDao.cs" />
     <Compile Include="Dao\PerformanceDao.cs" />
     <Compile Include="Dao\VenueDao.cs" />
     <Compile Include="Dao\ArtistGroupDao.cs" />
-    <Compile Include="Dao\MySqlBaseDao.cs" />
+    <Compile Include="Dao\BaseDao.cs" />
     <Compile Include="Dao\ArtistDao.cs" />
     <Compile Include="Dao\UserDao.cs" />
     <Compile Include="Db\MySqlDbCommandBuilder.cs" />

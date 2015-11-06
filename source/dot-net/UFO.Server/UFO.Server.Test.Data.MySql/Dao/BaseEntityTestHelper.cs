@@ -20,7 +20,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
 
         public BaseEntityTestHelper()
         {
-            builder.WithConnection(DbConnectionFactory.CreateAndOpenConnection<MySqlConnection>())
+            builder.WithConnection((MySqlConnection)DbConnectionFactory.CreateAndOpenConnection())
                .WithTypeResolver(new MySqlDbTypeResolver());
         }
 

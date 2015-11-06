@@ -7,10 +7,11 @@ using System.Threading.Tasks;
 using UFO.Server.Data.Api.Dao;
 using UFO.Server.Data.MySql.Db;
 using UFO.Server.Data.Api.Entity;
+using MySql.Data.MySqlClient;
 
 namespace UFO.Server.Data.MySql.Dao
 {
-    public class ArtistDao : MySqlBaseDao<long?, Artist>
+    public class ArtistDao : MySqlBaseDao<long?, Artist>, IArtistDao
     {
     }
 }

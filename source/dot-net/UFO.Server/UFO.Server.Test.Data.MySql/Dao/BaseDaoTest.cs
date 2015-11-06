@@ -26,8 +26,10 @@ namespace UFO.Server.Test.Data.MySql.Dao
     [CreateDatabase]
     public class BaseDaoTest<I, E, D, C> where E : class, IEntity<I> where D : class, IDao<I, E> where C : class, IEntityTestHelper<I, E>
     {
-        protected readonly D dao = (D)Activator.CreateInstance(typeof(D));
-        protected readonly IEntityTestHelper<I, E> entityHelper = (C)Activator.CreateInstance(typeof(C));
+        // Here we depend on naming convention of factory method names
+        // because here we get the dao from the factory via reflections
+        protected readonly D dao = typeof(DaoFactory).GetMethod("Create" + typeof(D).Name).Invoke(null, null) as D;
+        protected readonly IEntityTestHelper<I, E> entityHelper = Activator.CreateInstance(typeof(C)) as C;
 
         [SetUp]
         public void Init()

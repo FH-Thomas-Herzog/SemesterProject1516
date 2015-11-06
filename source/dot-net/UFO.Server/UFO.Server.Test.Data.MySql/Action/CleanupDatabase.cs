@@ -32,7 +32,7 @@ namespace UFO.Server.Test.Data.MySql.Action
 
         private void ExecuteScript(string fileName)
         {
-            MySqlConnection connection = DbConnectionFactory.CreateAndOpenConnection<MySqlConnection>();
+            MySqlConnection connection = (MySqlConnection)DbConnectionFactory.CreateAndOpenConnection();
             string fullPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\Resources\" + fileName + ".sql";
             MySqlScript script = new MySqlScript(connection, File.ReadAllText(fullPath));
             script.Delimiter = ";";

@@ -12,7 +12,7 @@ namespace UFO.Server.Test.Data.MySql.Action
 {
     public abstract class BaseDbAction: Attribute
     {
-        protected MySqlConnection connection = DbConnectionFactory.CreateAndOpenConnection<MySqlConnection>();
+        protected MySqlConnection connection = (MySqlConnection) DbConnectionFactory.CreateAndOpenConnection();
 
         ~BaseDbAction()
         {
