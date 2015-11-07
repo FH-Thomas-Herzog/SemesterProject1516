@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UFO.Server.Data.Api.Attribute
 {
@@ -16,16 +12,16 @@ namespace UFO.Server.Data.Api.Attribute
         /// <summary>
         /// The physical entity table name
         /// </summary>
-        public string TableName = "";
+        public string TableName;
 
         /// <summary>
         /// The physical entity schema name
         /// </summary>
-        public string Schema = "";
+        public string Schema;
 
         /// <summary>
         /// The physical entity seuence name
         /// </summary>
-        public string SequenceName = "";
+        public string SequenceName;
     }
 }

@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace UFO.Server.Data.Api.Attribute
 {
     /// <summary>
-    /// Enumeration whic specifies the type of the pk.
+    /// Enumeration whic specifies the supported types of the pk.
     /// </summary>
     public enum PkType
     {

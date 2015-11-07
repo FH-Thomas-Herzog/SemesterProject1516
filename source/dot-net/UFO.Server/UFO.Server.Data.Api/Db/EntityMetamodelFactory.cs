@@ -1,14 +1,10 @@
 ﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Server.Data.Api.Db
 {
-
     /// <summary>
     /// This singleton implementation is used for caching and providing the entity meta models.
     /// Therefore that hese models are read only its good to cache them.
