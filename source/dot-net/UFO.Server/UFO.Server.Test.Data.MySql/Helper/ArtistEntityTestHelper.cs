@@ -1,11 +1,8 @@
-﻿using UFO.Server.Data.Api.Dao;
-using UFO.Server.Data.Api.Entity;
-using UFO.Server.Data.MySql.Dao;
-using UFO.Server.Test.Data.MySql.Dao;
+﻿using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Server.Test.Data.MySql.Helper
 {
-    public class ArtistEntityTestHelper : BaseEntityTestHelper<long?, Artist>
+    public class ArtistEntityTestHelper : BaseMySqlEntityHelper<long?, Artist>
     {
         private UserEntityTestHelper userHelper = new UserEntityTestHelper();
         private ArtistGroupEntityTestHelper artistGroupHelper = new ArtistGroupEntityTestHelper();
@@ -58,7 +55,7 @@ namespace UFO.Server.Test.Data.MySql.Helper
             return artist;
         }
 
-        public override long? getInvalidId()
+        public override long? CreateInvalidId()
         {
             return -1;
         }

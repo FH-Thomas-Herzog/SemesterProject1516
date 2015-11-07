@@ -1,13 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using UFO.Server.Data.Api.Db;
-using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Server.Data.MySql.Db
 {
+    /// <summary>
+    /// MySql implementation for the IQuery interface
+    /// </summary>
     public class MySqlQueryCreator : IQueryCreator
     {
         private const string SELECT_ID_BY_ID_TEMPLATE = @"SELECT {1} FROM {0} WHERE {1} = ?id";

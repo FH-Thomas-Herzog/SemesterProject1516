@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace UFO.Server.Data.Api.Exception
+﻿namespace UFO.Server.Data.Api.Exception
 {
 
     /// <summary>
-    /// Own exception for indicating that an entity hasn't been found.
+    /// Own exception for indicating an persistence related exception
     /// </summary>
     public class PersistenceException : System.Exception
     {

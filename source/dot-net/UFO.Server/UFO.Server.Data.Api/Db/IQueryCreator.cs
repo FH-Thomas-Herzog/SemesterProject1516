@@ -10,7 +10,7 @@ namespace UFO.Server.Data.Api.Db
         /// </summary>
         /// <typeparam name="I">the type of the entity id</typeparam>
         /// <typeparam name="E">the type of the entity</typeparam>
-        /// <returns></returns>
+        /// <returns>the created query</returns>
         string CreateFullSelectQuery<I, E>() where E : class, IEntity<I>;
 
         /// <summary>
@@ -18,7 +18,7 @@ namespace UFO.Server.Data.Api.Db
         /// </summary>
         /// <typeparam name="I">the type of the entity id</typeparam>
         /// <typeparam name="E">the type of the entity</typeparam>
-        /// <returns></returns>
+        /// <returns>the created query</returns>
         string CreateIdSelectQuery<I, E>() where E : class, IEntity<I>;
 
         /// <summary>
@@ -28,7 +28,7 @@ namespace UFO.Server.Data.Api.Db
         /// <typeparam name="E">the type of the entity</typeparam>
         /// <param name="entity"the entity instance></param>
         /// <param name="propertyToValueMap">the map of properties inluded in the insert statement</param>
-        /// <returns></returns>
+        /// <returns>the created query</returns>
         string CreatePersistQuery<I, E>(E entity, IDictionary<string, object> propertyToValueMap) where E : class, IEntity<I>;
 
         /// <summary>
@@ -38,7 +38,7 @@ namespace UFO.Server.Data.Api.Db
         /// <typeparam name="E">the type of the entity</typeparam>
         /// <param name="entity"the entity instance></param>
         /// <param name="propertyToValueMap">the map of properties inluded in the insert statement</param>
-        /// <returns></returns>
+        /// <returns>the created query</returns>
         string CreateUpdateQuery<I, E>(E entity, IDictionary<string, object> propertyToValueMap) where E : class, IEntity<I>;
 
         /// <summary>
@@ -46,7 +46,7 @@ namespace UFO.Server.Data.Api.Db
         /// </summary>
         /// <typeparam name="I">the type of the entity id</typeparam>
         /// <typeparam name="E">the type of the entity</typeparam>
-        /// <returns></returns>
+        /// <returns>the created query</returns>
         string CreateDeleteQuery<I, E>() where E : class, IEntity<I>;
     }
 }

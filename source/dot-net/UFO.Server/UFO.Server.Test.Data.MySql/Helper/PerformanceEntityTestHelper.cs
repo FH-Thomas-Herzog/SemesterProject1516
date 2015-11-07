@@ -1,12 +1,8 @@
-﻿using System;
-using UFO.Server.Data.Api.Dao;
-using UFO.Server.Data.Api.Entity;
-using UFO.Server.Data.MySql.Dao;
-using UFO.Server.Test.Data.MySql.Dao;
+﻿using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Server.Test.Data.MySql.Helper
 {
-    public class PerformanceEntityTestHelper : BaseEntityTestHelper<long?, Performance>
+    public class PerformanceEntityTestHelper : BaseMySqlEntityHelper<long?, Performance>
     {
         private UserEntityTestHelper userHelper = new UserEntityTestHelper();
         public ArtistEntityTestHelper artistHelper = new ArtistEntityTestHelper();
@@ -54,7 +50,7 @@ namespace UFO.Server.Test.Data.MySql.Helper
             return performance;
         }
 
-        public override long? getInvalidId()
+        public override long? CreateInvalidId()
         {
             return -1;
         }

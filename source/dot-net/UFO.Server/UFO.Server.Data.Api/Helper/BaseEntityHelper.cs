@@ -1,35 +1,40 @@
-﻿using MySql.Data.MySqlClient;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UFO.Server.Data.Api.Attribute;
+using System.Data.Common;
+using UFO.Server.Data.Api;
 using UFO.Server.Data.Api.Db;
 using UFO.Server.Data.Api.Entity;
-using UFO.Server.Data.MySql.Db;
 
 namespace UFO.Server.Test.Data.MySql.Dao
 {
-    public abstract class BaseEntityTestHelper<I, E> : IEntityTestHelper<I, E> where E : class, IEntity<I>
+    public abstract class BaseEntityHelper<I, E, C, B, T, P, D, Q> : IEntityHelper<I, E> where E : class, IEntity<I>
+                                                                                         where B : DbConnection
+                                                                                         where T : DbCommand
+                                                                                         where P : DbParameter
+                                                                                         where C : BaseDbCommandBuilder<B, T, P, D>
+                                                                                         where Q : class, IQueryCreator
     {
-        protected IQueryCreator queryCreator = new MySqlQueryCreator();
-        protected readonly EntityMetamodel<I, E> metadata = EntityMetamodelFactory.GetInstance().GetMetaModel<I, E>();
-        protected readonly MySqlDbCommandBuilder builder = new MySqlDbCommandBuilder();
 
-        public BaseEntityTestHelper()
+        protected Q queryCreator;
+        protected readonly EntityMetamodel<I, E> metadata = EntityMetamodelFactory.GetInstance().GetMetaModel<I, E>();
+        protected readonly C builder;
+
+        public BaseEntityHelper()
         {
-            builder.WithConnection((MySqlConnection)DbConnectionFactory.CreateAndOpenConnection())
-               .WithTypeResolver(new MySqlDbTypeResolver());
+            queryCreator = Activator.CreateInstance(typeof(Q)) as Q;
+            builder = PrepareCommandBuilder();
         }
 
-        ~BaseEntityTestHelper()
+        ~BaseEntityHelper()
         {
             builder.ClearWithConnection();
         }
 
+        public abstract C PrepareCommandBuilder();
+
         public abstract void Init();
+
         public IList<E> CreateValidEntities(int count)
         {
             IList<E> entities = new List<E>();
@@ -44,7 +49,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
         public abstract E CreateInvalidEntity();
         public abstract E CreateValidEntity(bool setId = false, int idx = 0);
 
-        public abstract I getInvalidId();
+        public abstract I CreateInvalidId();
         public abstract E UpdateEntity(E entity);
 
         public E LoadById(I id)
@@ -75,21 +80,15 @@ namespace UFO.Server.Test.Data.MySql.Dao
                 builder.SetParameter(entry.Key, entry.Value);
             }
 
-            using (MySqlCommand command = builder.Build())
+            I id = (I)builder.ExecuteScalar();
+            if (id == null)
             {
-                bool ok = (command.ExecuteNonQuery() == 1);
-                if (!ok)
-                {
-                    throw new Exception("Command could not be executed");
-                }
-                if (metadata.GetPkType().Equals(PkType.AUTO))
-                {
-                    entity.Id = (I)(object)command.LastInsertedId;
-                }
+                throw new Exception("Command could not be executed");
             }
+            entity.Id = id;
             builder.Clear();
 
-            return (entity.Id != null) ? LoadById(entity.Id) : null;
+            return LoadById(entity.Id);
         }
     }
 }

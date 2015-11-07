@@ -3,7 +3,7 @@
 namespace UFO.Server.Data.Api.Db
 {
     /// <summary>
-    /// The interface which defines an db type resolver.
+    /// The interface which defines a db type resolver.
     /// </summary>
     /// <typeparam name="T"></typeparam>
     public interface IDbTypeResolver<T>

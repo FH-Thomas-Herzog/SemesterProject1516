@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UFO.Server.Data.Api.Attribute;
-
-namespace UFO.Server.Data.Api.Entity
+﻿namespace UFO.Server.Data.Api.Entity
 {
     /// <summary>
     /// This is the base class for all used entities.

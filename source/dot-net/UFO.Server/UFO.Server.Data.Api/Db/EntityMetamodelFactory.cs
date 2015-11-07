@@ -33,7 +33,6 @@ namespace UFO.Server.Data.Api.Db
             return EntityMetamodelFactory.instance;
         }
 
-
         /// <summary>
         /// Gets the meta model which gets created for the given generic arguments.
         /// </summary>

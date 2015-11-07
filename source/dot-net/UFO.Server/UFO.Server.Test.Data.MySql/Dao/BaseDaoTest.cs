@@ -1,6 +1,7 @@
 ﻿using NUnit.Framework;
 using System;
 using System.Collections.Generic;
+using UFO.Server.Data.Api;
 using UFO.Server.Data.Api.Dao;
 using UFO.Server.Data.Api.Entity;
 using UFO.Server.Data.Api.Exception;
@@ -24,12 +25,15 @@ namespace UFO.Server.Test.Data.MySql.Dao
     [TestFixture(typeof(long?), typeof(Venue), typeof(VenueDao), typeof(VenueEntityTestHelper))]
     [TestFixture(typeof(long?), typeof(Performance), typeof(PerformanceDao), typeof(PerformanceEntityTestHelper))]
     [CreateDatabase]
-    public class BaseDaoTest<I, E, D, C> where E : class, IEntity<I> where D : class, IDao<I, E> where C : class, IEntityTestHelper<I, E>
+    public class BaseDaoTest<I, E, D, C> where E : class, IEntity<I>
+                                         where D : class, IDao<I, E>
+                                         where C : class, IEntityHelper<I, E>
     {
+
         // Here we depend on naming convention of factory method names
         // because here we get the dao from the factory via reflections
         protected readonly D dao = typeof(DaoFactory).GetMethod("Create" + typeof(D).Name).Invoke(null, null) as D;
-        protected readonly IEntityTestHelper<I, E> entityHelper = Activator.CreateInstance(typeof(C)) as C;
+        protected readonly IEntityHelper<I, E> entityHelper = Activator.CreateInstance(typeof(C)) as C;
 
         [SetUp]
         public void Init()
@@ -61,7 +65,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
         public void ById_IdNotFound()
         {
             // -- Given --
-            I id = entityHelper.getInvalidId();
+            I id = entityHelper.CreateInvalidId();
 
             // -- When --
             dao.ById(id);
@@ -101,7 +105,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
         public void Find_InvalidId()
         {
             // -- Given --
-            I id = entityHelper.getInvalidId();
+            I id = entityHelper.CreateInvalidId();
 
             // -- When --
             Assert.IsNull(dao.Find(id));
@@ -142,7 +146,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
         {
             // -- Given --
             E entity = entityHelper.CreateValidEntity();
-            entity.Id = entityHelper.getInvalidId();
+            entity.Id = entityHelper.CreateInvalidId();
 
             // -- When --
             dao.Update(entity);
@@ -250,7 +254,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
         public void Delete_InvalidId()
         {
             // -- Given --
-            I id = entityHelper.getInvalidId();
+            I id = entityHelper.CreateInvalidId();
 
             // -- When --
             dao.Delete(id);
@@ -291,7 +295,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
         public void EntityExists_InvalidId()
         {
             // -- Given --
-            I id = entityHelper.getInvalidId();
+            I id = entityHelper.CreateInvalidId();
 
             // -- When --
             bool result = dao.EntityExists(id);

@@ -15,8 +15,8 @@ namespace UFO.Server.Test.Data.MySql.Action
                 AllowMultiple = true)]
     public class CleanupDatabase : Attribute, ITestAction
     {
-        public ActionTargets Targets { get { return ActionTargets.Default; } }
 
+        public ActionTargets Targets { get { return ActionTargets.Default; } }
 
         public void AfterTest(TestDetails testDetails)
         {
@@ -26,18 +26,22 @@ namespace UFO.Server.Test.Data.MySql.Action
 
         public void BeforeTest(TestDetails testDetails)
         {
-            Console.Out.WriteLine("Cleanup database for tests");
-            //ExecuteScript("deleteDatabase");
         }
 
         private void ExecuteScript(string fileName)
         {
             MySqlConnection connection = (MySqlConnection)DbConnectionFactory.CreateAndOpenConnection();
-            string fullPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\Resources\" + fileName + ".sql";
-            MySqlScript script = new MySqlScript(connection, File.ReadAllText(fullPath));
-            script.Delimiter = ";";
-            script.Execute();
-            connection.Close();
+            try
+            {
+                string fullPath = Path.GetDirectoryName(System.Reflection.Assembly.GetExecutingAssembly().Location) + @"\Resources\" + fileName + ".sql";
+                MySqlScript script = new MySqlScript(connection, File.ReadAllText(fullPath));
+                script.Delimiter = ";";
+                script.Execute();
+            }
+            finally
+            {
+                DbConnectionFactory.CloseDisposeConnection(connection);
+            }
         }
     }
 }

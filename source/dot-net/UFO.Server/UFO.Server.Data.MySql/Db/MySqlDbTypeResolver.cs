@@ -2,13 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UFO.Server.Data.Api.Db;
 
 namespace UFO.Server.Data.MySql.Db
 {
+    /// <summary>
+    /// MySql specifc implementation for the IDbTypeResolver
+    /// </summary>
     public class MySqlDbTypeResolver : IDbTypeResolver<MySqlDbType>
     {
         public static readonly Dictionary<Type, MySqlDbType> TYPE_MAP = new Dictionary<Type, MySqlDbType>{

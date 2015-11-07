@@ -1,9 +1,8 @@
 ﻿using UFO.Server.Data.Api.Entity;
-using UFO.Server.Test.Data.MySql.Dao;
 
 namespace UFO.Server.Test.Data.MySql.Helper
 {
-    public class UserEntityTestHelper : BaseEntityTestHelper<long?, User>
+    public class UserEntityTestHelper : BaseMySqlEntityHelper<long?, User>
     {
         public override void Init()
         {
@@ -36,7 +35,7 @@ namespace UFO.Server.Test.Data.MySql.Helper
             return user;
         }
 
-        public override long? getInvalidId()
+        public override long? CreateInvalidId()
         {
             return -1;
         }
