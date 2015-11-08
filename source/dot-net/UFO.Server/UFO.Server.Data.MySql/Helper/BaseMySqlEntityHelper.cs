@@ -1,8 +1,8 @@
 ﻿using MySql.Data.MySqlClient;
 using UFO.Server.Data.Api.Db;
 using UFO.Server.Data.Api.Entity;
+using UFO.Server.Data.Api.Helper;
 using UFO.Server.Data.MySql.Db;
-using UFO.Server.Test.Data.MySql.Dao;
 
 namespace UFO.Server.Data.MySql.Helper
 {

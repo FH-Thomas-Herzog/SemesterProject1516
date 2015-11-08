@@ -8,7 +8,7 @@ using UFO.Server.Data.Api.Db;
 using UFO.Server.Data.Api.Entity;
 using UFO.Server.Data.Api.Exception;
 
-namespace FO.Server.Data.MySql.Api
+namespace UFO.Server.Data.Api
 {
 
     /// <summary>
@@ -46,7 +46,7 @@ namespace FO.Server.Data.MySql.Api
                 metamodel = EntityMetamodelFactory.GetInstance().GetMetaModel<I, E>();
                 this.commandBuilder = prepareCommandBuilder();
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 throw new PersistenceException("Could not construct '" + this.GetType().Name + "'", e);
             }
@@ -180,13 +180,13 @@ namespace FO.Server.Data.MySql.Api
 
                     if (id == null)
                     {
-                        throw new Exception("Command.ExecuteScalar did not return the last insert id which it should");
+                        throw new System.Exception("Command.ExecuteScalar did not return the last insert id which it should");
                     }
                 }
 
                 entity.Id = id;
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 throw new PersistenceException(this.GetType().Name + "#Persist(entity) failed", e);
             }

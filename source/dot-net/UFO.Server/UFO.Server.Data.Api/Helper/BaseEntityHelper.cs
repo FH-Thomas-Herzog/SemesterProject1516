@@ -2,11 +2,10 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Common;
-using UFO.Server.Data.Api;
 using UFO.Server.Data.Api.Db;
 using UFO.Server.Data.Api.Entity;
 
-namespace UFO.Server.Test.Data.MySql.Dao
+namespace UFO.Server.Data.Api.Helper
 {
     public abstract class BaseEntityHelper<I, E, C, B, T, P, D, Q> : IEntityHelper<I, E> where E : class, IEntity<I>
                                                                                          where B : DbConnection
@@ -83,7 +82,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
             I id = (I)builder.ExecuteScalar();
             if (id == null)
             {
-                throw new Exception("Command could not be executed");
+                throw new System.Exception("Command could not be executed");
             }
             entity.Id = id;
             builder.Clear();
