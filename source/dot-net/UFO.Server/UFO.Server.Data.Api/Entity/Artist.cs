@@ -1,4 +1,5 @@
-﻿using UFO.Server.Data.Api.Attribute;
+﻿using System;
+using UFO.Server.Data.Api.Attribute;
 
 namespace UFO.Server.Data.Api.Entity
 {
@@ -27,6 +28,15 @@ namespace UFO.Server.Data.Api.Entity
 
         [Column(Name = "artist_category_id")]
         public long? ArtistCategoryId { get; set; }
+
+        [Column(Name = "deleted_flag")]
+        public bool Deleted { get; set; }
+
+        [Column(Name = "image")]
+        public byte[] ImageData { get; set; }
+
+        [Column(Name = "image_file_type")]
+        public string ImageFileType { get; set; }
 
         [ManyToOne(FkProperty = "ArtCategoryId")]
         public ArtistCategory ArtistCategory { get; set; }

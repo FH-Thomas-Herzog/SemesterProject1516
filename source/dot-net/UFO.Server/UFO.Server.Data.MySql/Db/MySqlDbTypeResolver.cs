@@ -27,6 +27,11 @@ namespace UFO.Server.Data.MySql.Db
         {
             Debug.Assert(type != null, "Cannot resolve MySqlDbType for given null type");
 
+            // Special handling for byte[]
+            if(typeof(byte[]).Equals(type)) {
+                return MySqlDbType.LongBlob;
+            }
+
             if (!TYPE_MAP.ContainsKey(type))
             {
                 throw new ArgumentException("Type '" + type.Name + "' has no mapping to a MySqlDbType");

@@ -95,6 +95,7 @@ namespace UFO.Server.Data.Api.Dao
         {
             try
             {
+                
                 string databaseClassName = assemblyName + ".Dao." + name;
                 Type dbClass = assembly.GetType(databaseClassName);
 

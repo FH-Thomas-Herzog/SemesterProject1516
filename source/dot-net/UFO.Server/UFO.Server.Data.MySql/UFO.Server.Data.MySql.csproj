@@ -51,6 +51,13 @@
     <Compile Include="Db\MySqlDbCommandBuilder.cs" />
     <Compile Include="Db\MySqlDbTypeResolver.cs" />
     <Compile Include="Db\MySqlQueryCreator.cs" />
+    <Compile Include="Helper\ArtistCategoryEntityTestHelper.cs" />
+    <Compile Include="Helper\ArtistEntityTestHelper.cs" />
+    <Compile Include="Helper\ArtistGroupEntityTestHelper.cs" />
+    <Compile Include="Helper\BaseMySqlEntityHelper.cs" />
+    <Compile Include="Helper\PerformanceEntityTestHelper.cs" />
+    <Compile Include="Helper\UserEntityTestHelper.cs" />
+    <Compile Include="Helper\VenueEntityTestHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

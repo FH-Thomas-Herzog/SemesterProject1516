@@ -1,6 +1,6 @@
 ﻿using UFO.Server.Data.Api.Entity;
 
-namespace UFO.Server.Test.Data.MySql.Helper
+namespace UFO.Server.Data.MySql.Helper
 {
     public class ArtistCategoryEntityTestHelper : BaseMySqlEntityHelper<long?, ArtistCategory>
     {

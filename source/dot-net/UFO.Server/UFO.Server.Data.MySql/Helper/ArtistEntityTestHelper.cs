@@ -1,6 +1,8 @@
-﻿using UFO.Server.Data.Api.Entity;
+﻿using System;
+using System.Globalization;
+using UFO.Server.Data.Api.Entity;
 
-namespace UFO.Server.Test.Data.MySql.Helper
+namespace UFO.Server.Data.MySql.Helper
 {
     public class ArtistEntityTestHelper : BaseMySqlEntityHelper<long?, Artist>
     {
@@ -43,6 +45,8 @@ namespace UFO.Server.Test.Data.MySql.Helper
             artist.Email = "master_" + idx + "@masterhood.at";
             artist.Firstname = "Thomas_" + idx + "";
             artist.Lastname = "Herzog_" + idx + "";
+            artist.ImageData = System.Text.Encoding.UTF8.GetBytes("Hello this should be an image bust is not for now");
+            artist.ImageFileType = ".txt";
             artist.CreationUserId = artistGroup.CreationUserId;
             artist.ModificationUserId = artistGroup.ModificationUserId;
             artist.CreationUser = userHelper.LoadById(artistGroup.CreationUserId);

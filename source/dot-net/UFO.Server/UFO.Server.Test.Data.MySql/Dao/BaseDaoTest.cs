@@ -6,8 +6,8 @@ using UFO.Server.Data.Api.Dao;
 using UFO.Server.Data.Api.Entity;
 using UFO.Server.Data.Api.Exception;
 using UFO.Server.Data.MySql.Dao;
+using UFO.Server.Data.MySql.Helper;
 using UFO.Server.Test.Data.MySql.Action;
-using UFO.Server.Test.Data.MySql.Helper;
 
 namespace UFO.Server.Test.Data.MySql.Dao
 {
