@@ -26,9 +26,14 @@ SET @artistId = LAST_INSERT_ID();
 INSERT INTO ufo.user(firstname, lastname, username, email, creation_user_id, modification_user_id) 
 VALUES ('${artist.firstName}', '${artist.lastName}', '${artist.email}', '${artist.email}', @userId, @userId);
 -- venues for artists
-	<#list venues as venue>${artist.addVenue(venue)}
+	<#list venues as venue>
 INSERT INTO ufo.venue(name, description, street, zip, city, country_code, gps_coordinate, creation_user_id, modification_user_id, artist_id) 
 VALUES ('${venue.name}', '${venue.name}', '${venue.street}', '${venue.zip}', '${venue.city}', '${venue.countryCode}', '${venue.gps}', @userId, @userId, @artistId);
+SET @venueId = LAST_INSERT_ID();
+		<#list 1..performanceCount as i>
+INSERT INTO ufo.performance(start_date, end_date, creation_user_id, modification_user_id, artist_id, venue_id) 
+VALUES ('${performance.startDate}', '${performance.startDate}', @userId, @userId, @artistId, @venueId);
+		</#list>
 	</#list>
 </#list>
 

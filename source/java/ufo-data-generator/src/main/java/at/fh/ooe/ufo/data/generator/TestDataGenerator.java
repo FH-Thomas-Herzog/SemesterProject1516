@@ -6,7 +6,11 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.net.URL;
+import java.net.URLDecoder;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,6 +34,32 @@ public class TestDataGenerator {
 	private static final String FTL_TEMPLATE = "test-data-template.ftl";
 
 	private static final String SEPARATOR = ";";
+
+	public static class Performance {
+
+		private Calendar startCal = Calendar.getInstance();
+		private final Random random = new Random();
+
+		public Performance() {
+			super();
+		}
+
+		public String getStartDate() {
+			startCal = Calendar.getInstance();
+			startCal.add(Calendar.DAY_OF_YEAR, random.nextInt(365) + 1);
+			return format(startCal);
+		}
+
+		public String getEndDate() {
+			final Calendar cal = (Calendar) startCal.clone();
+			cal.add(Calendar.HOUR_OF_DAY, random.nextInt(5) + 1);
+			return format(cal);
+		}
+
+		public String format(Calendar cal) {
+			return new SimpleDateFormat("yyyy-mm-dd hh:MM:s.SSS").format(cal.getTime());
+		}
+	}
 
 	public static class Venue {
 		private final String name;
@@ -164,12 +194,14 @@ public class TestDataGenerator {
 		final Map<String, Object> parameters = new HashMap<>();
 		parameters.put("maxArtistCategories", categories.size());
 		parameters.put("maxArtistGroups", artistGroups.size());
+		parameters.put("performanceCount", 10);
 		parameters.put("categories", categories);
 		parameters.put("countries", countries);
 		parameters.put("artistCategories", artistCategroies);
 		parameters.put("artistGroups", artistGroups);
 		parameters.put("artists", artists);
 		parameters.put("venues", venues);
+		parameters.put("performance", new Performance());
 
 		URL fileUrl = TestDataGenerator.class.getClassLoader().getResource(ROOT_FTL_TEMPLATE);
 		Objects.requireNonNull(fileUrl, "File could not be found");
@@ -256,7 +288,8 @@ public class TestDataGenerator {
 		Objects.requireNonNull(fileUrl, "File could not be found");
 
 		final List<String[]> items = new LinkedList<>();
-		try (final BufferedReader br = new BufferedReader(new FileReader(new File(fileUrl.getPath())))) {
+		try (final BufferedReader br = new BufferedReader(
+				new FileReader(new File(URLDecoder.decode(fileUrl.getFile(), "UTF-8"))))) {
 			String line = null;
 			while ((line = br.readLine()) != null) {
 				if (!line.startsWith("--")) {
