@@ -44,6 +44,7 @@ namespace UFO.Server.Data.MySql.Helper
             venue.GpsCoordinate = "12341324:1324123";
             venue.Street = "venueStreet";
             venue.Zip = "venueZip";
+            venue.City = "CITY";
             venue.ArtistId = artist.Id;
             venue.Artist = artist;
 

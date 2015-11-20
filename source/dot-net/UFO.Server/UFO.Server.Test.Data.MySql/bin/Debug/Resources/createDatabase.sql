@@ -176,6 +176,7 @@ CREATE TABLE IF NOT EXISTS `UFO`.`VENUE` (
   `description` VARCHAR(255) NULL,
   `street` VARCHAR(100) NOT NULL,
   `zip` VARCHAR(100) NOT NULL,
+  `city` VARCHAR(100) NOT NULL,
   `country_code` VARCHAR(10) NOT NULL,
   `gps_coordinate` VARCHAR(255) NULL,
   `creation_user_id` INT NOT NULL,

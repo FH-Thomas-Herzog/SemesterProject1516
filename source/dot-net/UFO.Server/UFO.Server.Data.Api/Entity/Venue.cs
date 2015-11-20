@@ -22,6 +22,9 @@ namespace UFO.Server.Data.Api.Entity
         [Column(Name = "zip")]
         public string Zip { get; set; }
 
+        [Column(Name = "city")]
+        public string City { get; set; }
+
         [Column(Name = "country_code")]
         public string CountryCode { get; set; }
 
