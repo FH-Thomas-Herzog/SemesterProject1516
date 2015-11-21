@@ -17,23 +17,24 @@ VALUES ('${entry.key}', '${entry.value}', @userId, @userId);
 </#list>
 SET @artistCategoryOffset = LAST_INSERT_ID();
 
+-- create venues
+<#list venues as venue>
+INSERT INTO ufo.venue(name, description, street, zip, city, country_code, gps_coordinate, creation_user_id, modification_user_id) 
+VALUES ('${venue.name}', '${venue.name}', '${venue.street}', '${venue.zip}', '${venue.city}', '${venue.countryCode}', '${venue.gps}', @userId, @userId);
+</#list>
+SET @venueOffset = LAST_INSERT_ID();
+
 -- create artists (freemarker used model holds set category/group id value)
 <#list artists as artist>
-INSERT INTO ufo.artist (firstname, lastname, email, country_code, image, image_file_type, artist_category_id, artist_group_id, creation_user_id, modification_user_id) 
-VALUES ('${artist.firstName}', '${artist.lastName}', '${artist.email}', '${artist.countryCode}', ${artist.image!artist.nullString}, ${artist.imageFileType!artist.nullString}, (@artistCategoryOffset - ${artist.getArtistCategoryId(maxArtistCategories)}), (@artistGroupOffset - ${artist.getArtistGroupId(maxArtistGroups)}), @userId, @userId);
+INSERT INTO ufo.artist (firstname, lastname, email, country_code, image, image_file_type, url, artist_category_id, artist_group_id, creation_user_id, modification_user_id) 
+VALUES ('${artist.firstName}', '${artist.lastName}', '${artist.email}', '${artist.countryCode}', ${artist.image}, ${artist.imageFileType}, ${artist.url}, (@artistCategoryOffset - ${artist.getArtistCategoryId(artistCategoryCount)}), (@artistGroupOffset - ${artist.getArtistGroupId(artistGroupCount)}), @userId, @userId);
 SET @artistId = LAST_INSERT_ID();
 -- user for artist
 INSERT INTO ufo.user(firstname, lastname, username, email, creation_user_id, modification_user_id) 
 VALUES ('${artist.firstName}', '${artist.lastName}', '${artist.email}', '${artist.email}', @userId, @userId);
 -- venues for artists
-	<#list venues as venue>
-INSERT INTO ufo.venue(name, description, street, zip, city, country_code, gps_coordinate, creation_user_id, modification_user_id, artist_id) 
-VALUES ('${venue.name}', '${venue.name}', '${venue.street}', '${venue.zip}', '${venue.city}', '${venue.countryCode}', '${venue.gps}', @userId, @userId, @artistId);
-SET @venueId = LAST_INSERT_ID();
-		<#list 1..performanceCount as i>
+	<#list 1..performanceCount as i>
 INSERT INTO ufo.performance(start_date, end_date, creation_user_id, modification_user_id, artist_id, venue_id) 
-VALUES ('${performance.startDate}', '${performance.startDate}', @userId, @userId, @artistId, @venueId);
-		</#list>
+VALUES ('${performance.startDate}', '${performance.endDate}', @userId, @userId, @artistId, (@venueOffset - ${performance.getVenueId(venuesCount)}));
 	</#list>
 </#list>
-

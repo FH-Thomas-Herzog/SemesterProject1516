@@ -1,15 +1,19 @@
 package at.fh.ooe.ufo.data.generator;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.AbstractMap.SimpleEntry;
+import java.util.Base64;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -33,6 +37,9 @@ public class TestDataGenerator {
 
 	private static final String FTL_TEMPLATE = "test-data-template.ftl";
 
+	private static final String IMAGE_TYPE = "jpg";
+	private static final String IMAGE_FILE = "add-user-icon." + IMAGE_TYPE;
+
 	private static final String SEPARATOR = ";";
 
 	public static class Performance {
@@ -46,18 +53,22 @@ public class TestDataGenerator {
 
 		public String getStartDate() {
 			startCal = Calendar.getInstance();
-			startCal.add(Calendar.DAY_OF_YEAR, random.nextInt(365) + 1);
+			startCal.add(Calendar.DAY_OF_YEAR, random.nextInt(50) + 1);
 			return format(startCal);
 		}
 
 		public String getEndDate() {
 			final Calendar cal = (Calendar) startCal.clone();
-			cal.add(Calendar.HOUR_OF_DAY, random.nextInt(5) + 1);
+			cal.add(Calendar.HOUR, random.nextInt(5) + 1);
 			return format(cal);
 		}
 
 		public String format(Calendar cal) {
-			return new SimpleDateFormat("yyyy-mm-dd hh:MM:s.SSS").format(cal.getTime());
+			return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(cal.getTime());
+		}
+
+		public int getVenueId(int max) {
+			return (int) (random.nextInt(5) % max);
 		}
 	}
 
@@ -109,8 +120,9 @@ public class TestDataGenerator {
 		private final String lastName;
 		private final String email;
 		private final String countryCode;
-		private final byte[] image;
-		private final String imageFileType;
+		private final String image = DEFAULT_IMAGE;
+		private final String imageFileType = IMAGE_TYPE;
+		private final String url;
 		private int artistCategoryId;
 		private int artistGroupId;
 
@@ -118,12 +130,31 @@ public class TestDataGenerator {
 
 		private final Random random = new Random();
 
-		public Artist(String name, String email, String countryCode, byte[] image, String imageFileType) {
+		private static final String DEFAULT_IMAGE;
+		private static final String DEFAULT_URL = "<rootServer>/UFO/Common/defaultLink.xhtml";
+
+		static {
+			final URL url = getResourceURL(ROOT_LOCATION + IMAGE_FILE);
+			final File file = new File(URLDecoder.decode(url.getPath()));
+			try (final BufferedInputStream bis = new BufferedInputStream(new FileInputStream(file))) {
+				try (final ByteArrayOutputStream bos = new ByteArrayOutputStream(1014)) {
+					byte[] data = new byte[1024];
+					int length = 0;
+					while ((length = bis.read(data)) != -1) {
+						bos.write(data, 0, length);
+					}
+					DEFAULT_IMAGE = Base64.getEncoder().encodeToString(bos.toByteArray());
+				}
+			} catch (Exception e) {
+				throw new IllegalStateException(e);
+			}
+		}
+
+		public Artist(String name, String email, String countryCode) {
 			super();
 			this.email = email;
 			this.countryCode = countryCode;
-			this.image = image;
-			this.imageFileType = imageFileType;
+			this.url = DEFAULT_URL;
 			String[] splitName = name.split(" ");
 			if (splitName.length == 2) {
 				firstName = splitName[0];
@@ -167,19 +198,19 @@ public class TestDataGenerator {
 		}
 
 		public String getImage() {
-			return (image == null) ? null : ("'X" + image.toString() + "'");
+			return (image != null) ? ("'" + image + "'") : getNullString();
 		}
 
 		public String getImageFileType() {
-			return imageFileType;
+			return (imageFileType != null) ? ("'" + imageFileType + "'") : getNullString();
+		}
+
+		public String getUrl() {
+			return (url != null) ? ("'" + url + "'") : getNullString();
 		}
 
 		public String getNullString() {
 			return "NULL";
-		}
-
-		public void addVenue(Venue venue) {
-			venues.add(venue);
 		}
 	}
 
@@ -192,8 +223,9 @@ public class TestDataGenerator {
 		final List<Venue> venues = loadVEnueData();
 
 		final Map<String, Object> parameters = new HashMap<>();
-		parameters.put("maxArtistCategories", categories.size());
-		parameters.put("maxArtistGroups", artistGroups.size());
+		parameters.put("artistCategoryCount", categories.size());
+		parameters.put("artistGroupCount", artistGroups.size());
+		parameters.put("venuesCount", venues.size());
 		parameters.put("performanceCount", 10);
 		parameters.put("categories", categories);
 		parameters.put("countries", countries);
@@ -202,9 +234,6 @@ public class TestDataGenerator {
 		parameters.put("artists", artists);
 		parameters.put("venues", venues);
 		parameters.put("performance", new Performance());
-
-		URL fileUrl = TestDataGenerator.class.getClassLoader().getResource(ROOT_FTL_TEMPLATE);
-		Objects.requireNonNull(fileUrl, "File could not be found");
 
 		final Configuration config = new Configuration();
 		config.setClassLoaderForTemplateLoading(TestDataGenerator.class.getClassLoader(), "");
@@ -246,7 +275,7 @@ public class TestDataGenerator {
 		final List<Artist> entries = new LinkedList<>();
 
 		for (String[] string : data) {
-			entries.add(new Artist(string[0], string[1], string[2], null, null));
+			entries.add(new Artist(string[0], string[1], string[2]));
 		}
 
 		return entries;
@@ -284,7 +313,7 @@ public class TestDataGenerator {
 
 	private static List<String[]> readData(final String fileName) {
 		System.out.println("Loading '" + fileName + "'");
-		URL fileUrl = TestDataGenerator.class.getClassLoader().getResource(fileName);
+		URL fileUrl = getResourceURL(fileName);
 		Objects.requireNonNull(fileUrl, "File could not be found");
 
 		final List<String[]> items = new LinkedList<>();
@@ -301,5 +330,11 @@ public class TestDataGenerator {
 		}
 
 		return items;
+	}
+
+	private static URL getResourceURL(final String resourceName) {
+		final URL url = TestDataGenerator.class.getClassLoader().getResource(resourceName);
+		Objects.requireNonNull(url, "Resource not found. resource: " + resourceName);
+		return url;
 	}
 }
