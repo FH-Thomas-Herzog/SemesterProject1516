@@ -33,7 +33,7 @@ namespace UFO.Server.Data.Api.Entity
         public bool Deleted { get; set; }
 
         [Column(Name = "image")]
-        public byte[] ImageData { get; set; }
+        public string ImageData { get; set; }
 
         [Column(Name = "image_file_type")]
         public string ImageFileType { get; set; }

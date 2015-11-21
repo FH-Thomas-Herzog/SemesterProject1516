@@ -5,17 +5,16 @@ namespace UFO.Server.Data.MySql.Helper
     public class VenueEntityTestHelper : BaseMySqlEntityHelper<long?, Venue>
     {
         private UserEntityTestHelper userHelper = new UserEntityTestHelper();
-        private ArtistEntityTestHelper artistHelper = new ArtistEntityTestHelper();
 
+        private User user;
         private int count = 0;
-        private Artist artist;
 
         public override void Init()
         {
             count++;
-            artistHelper.Init();
+            userHelper.Init();
 
-            artist = artistHelper.Persist(artistHelper.CreateValidEntity());
+            user = userHelper.Persist(userHelper.CreateValidEntity());
         }
 
         public override Venue CreateInvalidEntity()
@@ -35,18 +34,16 @@ namespace UFO.Server.Data.MySql.Helper
                 venue.Id = 1;
             }
             venue.CountryCode = "de_DE";
-            venue.CreationUserId = artist.CreationUserId;
-            venue.ModificationUserId = artist.ModificationUserId;
-            venue.CreationUser = userHelper.LoadById(artist.CreationUserId);
-            venue.ModificationUser = userHelper.LoadById(artist.ModificationUserId);
+            venue.CreationUserId = user.Id;
+            venue.ModificationUserId = user.Id;
+            venue.CreationUser = user;
+            venue.ModificationUser = user;
             venue.Name = "VenueName";
             venue.Description = "VenueDescription";
             venue.GpsCoordinate = "12341324:1324123";
             venue.Street = "venueStreet";
             venue.Zip = "venueZip";
             venue.City = "CITY";
-            venue.ArtistId = artist.Id;
-            venue.Artist = artist;
 
             return venue;
         }

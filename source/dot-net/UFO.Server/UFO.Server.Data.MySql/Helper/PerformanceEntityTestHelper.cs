@@ -9,15 +9,17 @@ namespace UFO.Server.Data.MySql.Helper
         private VenueEntityTestHelper venueHelper = new VenueEntityTestHelper();
 
         private int count = 0;
-        private User user;
+        private Artist artist;
         private Venue venue;
 
         public override void Init()
         {
             count++;
             venueHelper.Init();
+            artistHelper.Init();
 
             this.venue = venueHelper.Persist(venueHelper.CreateValidEntity());
+            this.artist = artistHelper.Persist(artistHelper.CreateValidEntity());
         }
 
         public override Performance CreateInvalidEntity()
@@ -42,8 +44,8 @@ namespace UFO.Server.Data.MySql.Helper
             performance.ModificationUser = userHelper.LoadById(venue.ModificationUserId);
             performance.StartDate = new System.DateTime();
             performance.EndDate = new System.DateTime();
-            performance.ArtistId = venue.ArtistId;
-            performance.Artist = artistHelper.LoadById(venue.ArtistId);
+            performance.ArtistId = artist.Id;
+            performance.Artist = artist;
             performance.VenueId = venue.Id;
             performance.Venue = venue;
 

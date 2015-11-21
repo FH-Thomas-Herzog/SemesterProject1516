@@ -127,7 +127,7 @@ CREATE TABLE IF NOT EXISTS `UFO`.`ARTIST` (
   `lastname` VARCHAR(100) NOT NULL,
   `email` VARCHAR(100) NOT NULL,
   `country_code` VARCHAR(10) NOT NULL,
-  `image` BLOB(10240) NULL,
+  `image` VARCHAR(10240) NULL,
   `image_file_type` VARCHAR(10) NULL,
   `creation_user_id` INT NOT NULL,
   `modification_user_id` INT NOT NULL,
@@ -135,6 +135,7 @@ CREATE TABLE IF NOT EXISTS `UFO`.`ARTIST` (
   `artist_group_id` INT NOT NULL,
   `deleted_flag` TINYINT(1) NOT NULL DEFAULT 0,
   `version` INT NOT NULL DEFAULT 1,
+  `url` VARCHAR(500) NULL,
   PRIMARY KEY (`id`),
   INDEX `IDX_FK_ARTIST_ART_CATEGORY_ID` (`artist_category_id` ASC),
   INDEX `IDX_FK_ARTIST_ARTIST_CATEGORY_ID` (`artist_group_id` ASC),
@@ -181,12 +182,10 @@ CREATE TABLE IF NOT EXISTS `UFO`.`VENUE` (
   `gps_coordinate` VARCHAR(255) NULL,
   `creation_user_id` INT NOT NULL,
   `modification_user_id` INT NOT NULL,
-  `artist_id` INT NOT NULL,
   `version` INT NOT NULL DEFAULT 1,
   PRIMARY KEY (`id`),
   INDEX `IDX_FK_VENUE_CREATION_USER_ID` (`creation_user_id` ASC),
   INDEX `IDX_FK_VENUE_MODIFICATION_USER_ID` (`modification_user_id` ASC),
-  INDEX `IDX_FK_VENUE_ARTIST_ID` (`artist_id` ASC),
   CONSTRAINT `FK_VENUE_CREATION_USER_ID`
     FOREIGN KEY (`creation_user_id`)
     REFERENCES `UFO`.`USER` (`id`)
@@ -195,11 +194,6 @@ CREATE TABLE IF NOT EXISTS `UFO`.`VENUE` (
   CONSTRAINT `FK_VENUE_MODIFICATION_USER_ID`
     FOREIGN KEY (`modification_user_id`)
     REFERENCES `UFO`.`USER` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `FK_VENUE_ARTIST_ID`
-    FOREIGN KEY (`artist_id`)
-    REFERENCES `UFO`.`ARTIST` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB

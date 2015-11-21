@@ -45,7 +45,7 @@ namespace UFO.Server.Data.MySql.Helper
             artist.Email = "master_" + idx + "@masterhood.at";
             artist.Firstname = "Thomas_" + idx + "";
             artist.Lastname = "Herzog_" + idx + "";
-            artist.ImageData = System.Text.Encoding.UTF8.GetBytes("Hello this should be an image bust is not for now");
+            artist.ImageData = "I should be base 64";
             artist.ImageFileType = ".txt";
             artist.CreationUserId = artistGroup.CreationUserId;
             artist.ModificationUserId = artistGroup.ModificationUserId;

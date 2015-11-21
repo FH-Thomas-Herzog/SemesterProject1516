@@ -30,11 +30,5 @@ namespace UFO.Server.Data.Api.Entity
 
         [Column(Name = "gps_coordinate")]
         public string GpsCoordinate { get; set; }
-
-        [Column(Name = "artist_id")]
-        public long? ArtistId { get; set; }
-
-        [ManyToOne(FkProperty = "ArtistId")]
-        public Artist Artist { get; set; }
     }
 }
