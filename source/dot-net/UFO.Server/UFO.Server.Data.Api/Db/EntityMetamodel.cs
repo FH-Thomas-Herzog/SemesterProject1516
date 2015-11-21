@@ -19,6 +19,7 @@ namespace UFO.Server.Data.Api.Db
         private Type entityType;
         private Attribute.Entity entityAttribute;
         private Attribute.Id pkIdAttribute;
+        private Attribute.Column VersionCol;
         private IDictionary<string, string> propertyToColumnMap = new Dictionary<string, string>();
         private IDictionary<string, string> columnToPropertyMap = new Dictionary<string, string>();
         private IDictionary<string, Attribute.Column> idColumns = new Dictionary<string, Attribute.Column>();
@@ -187,6 +188,36 @@ namespace UFO.Server.Data.Api.Db
         }
 
         /// <summary>
+        /// Answers the question if this entity is an versioned one.
+        /// </summary>
+        /// <returns>true if this entity is versioned, false otherwise</returns>
+        public bool IsVersionedEntity()
+        {
+            return this.VersionCol != null;
+        }
+
+        /// <summary>
+        /// Gets the version column name
+        /// </summary>
+        /// <returns>the version column name, throws ArgumentException otherwise</returns>
+        public string getVersionColumnName()
+        {
+            if (this.VersionCol != null)
+            {
+                return VersionCol.Name;
+            }
+            throw new ArgumentException("This entity does not define a version column");
+        }
+        /// <summary>
+        /// Gets the version property
+        /// </summary>
+        /// <returns>the version property, throws ArgumentException otherwise</returns>
+        public string getVersionProperty()
+        {
+            return ColumnToProperty(getVersionColumnName());
+        }
+
+        /// <summary>
         /// Initializes this instance by extracting all needed information of the given entity type.
         /// </summary>
         private void Init()
@@ -224,6 +255,14 @@ namespace UFO.Server.Data.Api.Db
                     }
                     idColumns[property.Name] = col;
                     pkIdAttribute = idCol;
+                    if (col.Version)
+                    {
+                        if (VersionCol != null)
+                        {
+                            throw new ArgumentException("Multiple entity column propery with version=true found. first: " + ColumnToProperty(VersionCol.Name) + ", second: " + ColumnToProperty(col.Name));
+                        }
+                        this.VersionCol = col;
+                    }
                 }
                 else if (manyToOneAttributes.Count == 1)
                 {

@@ -13,20 +13,33 @@ namespace UFO.Server.Test.Data.MySql.Action
                 AllowMultiple = true)]
     public class CreateDatabase : Attribute, ITestAction
     {
+        private readonly string DROP_SCRIPT = "dropDatabase";
+        private readonly string CREATE_SCRIPT = "createDatabase";
 
         public ActionTargets Targets { get { return ActionTargets.Default; } }
 
         public void AfterTest(TestDetails testDetails)
         {
-            Console.Out.WriteLine("'Dropping database after tests");
-            ExecuteScript("dropDatabase");
+            Console.Out.WriteLine("CreateDatabase#AfterTest(): '" + testDetails.FullName + "'");
+            Console.Out.WriteLine("------------------------------------------------------------------------------");
+            ExecuteScript(DROP_SCRIPT);
         }
 
         public void BeforeTest(TestDetails testDetails)
         {
-            Console.Out.WriteLine("Creating database for tests");
-            ExecuteScript("createDatabase");
-        }
+            Console.Out.WriteLine("------------------------------------------------------------------------------");
+            Console.Out.WriteLine("CreateDatabase#BeforeTest(): '" + testDetails.FullName + "'");
+            try
+            {
+                ExecuteScript(DROP_SCRIPT);
+            }
+            catch (System.Exception e)
+            {
+                // No problem, just means databse does not exist
+                Console.Out.WriteLine("CreateDatabase#BeforeTest(): No database existsto be dropped");
+            }
+            ExecuteScript(CREATE_SCRIPT);
+          }
 
         /// <summary>
         /// Executes against the test database.

@@ -23,7 +23,7 @@ namespace UFO.Server.Data.Api.Entity
         [Column(Name = "modification_user_id")]
         public I ModificationUserId { get; set; }
 
-        [Column(Name = "version", ReadOnly = true)]
+        [Column(Name = "version", ReadOnly = true, Version = true)]
         public long? Version { get; set; }
 
         [ManyToOne(FkProperty = "CreationUserId")]

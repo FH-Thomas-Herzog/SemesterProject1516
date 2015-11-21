@@ -32,18 +32,24 @@ namespace UFO.Server.Test.Data.MySql.Dao
 
         // Here we depend on naming convention of factory method names
         // because here we get the dao from the factory via reflections
-        protected readonly D dao = typeof(DaoFactory).GetMethod("Create" + typeof(D).Name).Invoke(null, null) as D;
-        protected readonly IEntityHelper<I, E> entityHelper = Activator.CreateInstance(typeof(C)) as C;
+        protected D dao;
+        protected IEntityHelper<I, E> entityHelper;
 
         [SetUp]
         public void Init()
         {
+            dao = typeof(DaoFactory).GetMethod("Create" + typeof(D).Name).Invoke(null, null) as D;
+            entityHelper = Activator.CreateInstance(typeof(C)) as C;
             entityHelper.Init();
+            Console.WriteLine("setup called");
         }
 
         [TearDown]
         public void Dispose()
         {
+            Console.WriteLine("tear down called");
+            dao?.Dispose();
+            entityHelper?.Dispose();
         }
 
         #region ById

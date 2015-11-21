@@ -1,7 +1,0 @@
-C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO.Server\UFO.Server.Data.Util\bin\Debug\UFO.Server.Data.Util.dll
-C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO.Server\UFO.Server.Data.Util\bin\Debug\UFO.Server.Data.Util.pdb
-C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO.Server\UFO.Server.Data.Util\bin\Debug\UFO.Server.Data.Api.dll
-C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO.Server\UFO.Server.Data.Util\bin\Debug\UFO.Server.Data.Api.pdb
-C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO.Server\UFO.Server.Data.Util\obj\Debug\UFO.Server.Data.Util.csprojResolveAssemblyReference.cache
-C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO.Server\UFO.Server.Data.Util\obj\Debug\UFO.Server.Data.Util.dll
-C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO.Server\UFO.Server.Data.Util\obj\Debug\UFO.Server.Data.Util.pdb

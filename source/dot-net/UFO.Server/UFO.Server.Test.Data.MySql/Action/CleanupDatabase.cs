@@ -15,17 +15,21 @@ namespace UFO.Server.Test.Data.MySql.Action
                 AllowMultiple = true)]
     public class CleanupDatabase : Attribute, ITestAction
     {
+        private readonly string DELETE_SCRIPT = "deleteDatabase";
 
         public ActionTargets Targets { get { return ActionTargets.Default; } }
 
         public void AfterTest(TestDetails testDetails)
         {
-            Console.Out.WriteLine("'Cleanup database after tests");
-            ExecuteScript("deleteDatabase");
+            Console.Out.WriteLine("CleanupDatabase#AfterTest(): '" + testDetails.Method.Name + "'");
+            ExecuteScript(DELETE_SCRIPT);
         }
 
         public void BeforeTest(TestDetails testDetails)
         {
+            Console.Out.WriteLine("CleanupDatabase#BeforeTest(): '" + testDetails.Method.Name + "'");
+            // We cannot clear database before because tests setUp method has already been called
+            // which could already have interacted with the db.
         }
 
         private void ExecuteScript(string fileName)

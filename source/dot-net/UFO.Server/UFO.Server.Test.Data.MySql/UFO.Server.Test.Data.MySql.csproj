@@ -67,17 +67,9 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Resources\createDatabase.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\dropDatabase.sql" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\deleteDatabase.sql">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <Content Include="Resources\createDatabase.sql" />
+    <Content Include="Resources\deleteDatabase.sql" />
+    <Content Include="Resources\dropDatabase.sql" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

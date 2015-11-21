@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Server.Data.Api
@@ -8,7 +9,7 @@ namespace UFO.Server.Data.Api
     /// </summary>
     /// <typeparam name="I">the type of the entity id</typeparam>
     /// <typeparam name="E">the type of the entity</typeparam>
-    public interface IEntityHelper<I, E> where E : class, IEntity<I>
+    public interface IEntityHelper<I, E> : IDisposable where E : class, IEntity<I>
     {
 
         /// <summary>

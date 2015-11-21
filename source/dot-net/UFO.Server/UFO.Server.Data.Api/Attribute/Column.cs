@@ -18,5 +18,10 @@ namespace UFO.Server.Data.Api.Attribute
         /// True if the column is just read only.
         /// </summary>
         public bool ReadOnly;
+
+        /// <summary>
+        /// True if this column is the version marker
+        /// </summary>
+        public bool Version = false;
     }
 }

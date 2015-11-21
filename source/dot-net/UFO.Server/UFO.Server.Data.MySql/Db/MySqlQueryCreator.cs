@@ -11,6 +11,7 @@ namespace UFO.Server.Data.MySql.Db
     public class MySqlQueryCreator : IQueryCreator
     {
         private const string SELECT_ID_BY_ID_TEMPLATE = @"SELECT {1} FROM {0} WHERE {1} = ?id";
+        private const string SELECT_ID_BY_ID_VERSIONED_TEMPLATE = SELECT_BY_ID_TEMPLATE + @" AND {2} = ?version ";
         private const string SELECT_BY_ID_TEMPLATE = @"SELECT * FROM {0} WHERE {1} = ?id";
         private const string DELETE_BY_ID_TEMPLATE = @"DELETE FROM {0} WHERE {1} = ?id";
         private const string INSERT_TEMPLATE = @"INSERT INTO {0} ({1}) VALUES({2}); SELECT CAST(LAST_INSERT_ID() AS SIGNED INTEGER);";
@@ -24,6 +25,11 @@ namespace UFO.Server.Data.MySql.Db
         }
 
         string IQueryCreator.CreateIdSelectQuery<I, E>()
+        {
+            EntityMetamodel<I, E> metamodel = EntityMetamodelFactory.GetInstance().GetMetaModel<I, E>();
+            return string.Format(SELECT_BY_ID_TEMPLATE, metamodel.GetFullyQualifiedPhysicalTableName(), metamodel.GetIdColumnName());
+        }
+        string IQueryCreator.CreateIdVersionedSelectQuery<I, E>()
         {
             EntityMetamodel<I, E> metamodel = EntityMetamodelFactory.GetInstance().GetMetaModel<I, E>();
             return string.Format(SELECT_BY_ID_TEMPLATE, metamodel.GetFullyQualifiedPhysicalTableName(), metamodel.GetIdColumnName());

@@ -22,6 +22,14 @@ namespace UFO.Server.Data.Api.Db
         string CreateIdSelectQuery<I, E>() where E : class, IEntity<I>;
 
         /// <summary>
+        /// eates a id versioned select query for the given type
+        /// </summary>
+        /// <typeparam name="I">the type fo the entity id</typeparam>
+        /// <typeparam name="E">the type of the entity</typeparam>
+        /// <returns>the created query</returns>
+        string CreateIdVersionedSelectQuery<I, E>() where E : class, IEntity<I>;
+
+        /// <summary>
         /// Creates an persist query for the given entity type
         /// </summary>
         /// <typeparam name="I">the type of the entity id</typeparam>

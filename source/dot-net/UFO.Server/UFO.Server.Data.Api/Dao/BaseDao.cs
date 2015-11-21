@@ -52,18 +52,6 @@ namespace UFO.Server.Data.Api
             }
         }
 
-
-        /// <summary>
-        /// Destructs this isntance and clears the backed command builder with its hold connection
-        /// </summary>
-        ~BaseDao()
-        {
-            if (commandBuilder != null)
-            {
-                commandBuilder.ClearWithConnection();
-            }
-        }
-
         /// <summary>
         /// Prepares the command builcer for this dao.
         /// Inherit type needs to set connection on builder.
@@ -164,7 +152,7 @@ namespace UFO.Server.Data.Api
                         throw new ArgumentException("Unknown pk type detected '" + metamodel.GetPkType() + "'");
                 }
 
-                IDictionary<string, object> propertyToValueMap = EntityBuilder.ToPropertyValueMap<I, E>(entity, true);
+                IDictionary<string, object> propertyToValueMap = EntityBuilder.CreateFromEntity<I, E>(entity, true);
                 commandBuilder.Clear()
                               .WithQuery(queryCreator.CreatePersistQuery<I, E>(entity, propertyToValueMap));
 
@@ -214,7 +202,7 @@ namespace UFO.Server.Data.Api
                     throw new PersistenceException("Entity with id: '" + entity.Id.ToString() + "' not found");
                 }
 
-                IDictionary<string, object> propertyToValueMap = EntityBuilder.ToPropertyValueMap<I, E>(entity, true);
+                IDictionary<string, object> propertyToValueMap = EntityBuilder.CreateFromEntity<I, E>(entity, true);
                 commandBuilder.WithQuery(queryCreator.CreateUpdateQuery<I, E>(entity, propertyToValueMap))
                               .SetParameter("?id", entity.Id);
                 foreach (var entry in propertyToValueMap)
@@ -253,6 +241,11 @@ namespace UFO.Server.Data.Api
             }
 
             return exists;
+        }
+
+        public void Dispose()
+        {
+            commandBuilder?.ClearWithConnection();
         }
     }
 }

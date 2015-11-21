@@ -57,7 +57,7 @@ namespace UFO.Server.Data.Api.Db
         /// <param name="entity">the entity to extract properties from</param>
         /// <param name="includeNull">true if null values shall be included. default = true</param>
         /// <returns>the dictonary which maps the property name to the set value</returns>
-        public static IDictionary<string, object> ToPropertyValueMap<I, E>(E entity, bool includeNull = true) where E : class, IEntity<I>
+        public static IDictionary<string, object> CreateFromEntity<I, E>(E entity, bool includeNull = true) where E : class, IEntity<I>
         {
             Debug.Assert(entity != null, "Cannot read values from null entity");
 
@@ -65,7 +65,8 @@ namespace UFO.Server.Data.Api.Db
             IDictionary<string, object> propertyValueMap = new Dictionary<string, object>();
             foreach (var property in metamodel.GetPropertyNames())
             {
-                if (!metamodel.IsPropertyReadOnly(property))
+                if ((!metamodel.IsPropertyReadOnly(property)) &&
+                    ((!metamodel.IsVersionedEntity()) || (!metamodel.getVersionProperty().Equals(property))))
                 {
                     object value = metamodel.GetEntityType().GetProperty(property).GetValue(entity);
 

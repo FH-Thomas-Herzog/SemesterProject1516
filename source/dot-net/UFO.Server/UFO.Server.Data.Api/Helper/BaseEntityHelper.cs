@@ -25,11 +25,6 @@ namespace UFO.Server.Data.Api.Helper
             builder = PrepareCommandBuilder();
         }
 
-        ~BaseEntityHelper()
-        {
-            builder.ClearWithConnection();
-        }
-
         public abstract C PrepareCommandBuilder();
 
         public abstract void Init();
@@ -71,7 +66,7 @@ namespace UFO.Server.Data.Api.Helper
 
         public E Persist(E entity)
         {
-            IDictionary<string, object> propertyToValueMap = EntityBuilder.ToPropertyValueMap<I, E>(entity, true);
+            IDictionary<string, object> propertyToValueMap = EntityBuilder.CreateFromEntity<I, E>(entity, true);
             builder.WithQuery(queryCreator.CreatePersistQuery<I, E>(entity, propertyToValueMap));
 
             foreach (var entry in propertyToValueMap)
@@ -88,6 +83,11 @@ namespace UFO.Server.Data.Api.Helper
             builder.Clear();
 
             return LoadById(entity.Id);
+        }
+
+        public void Dispose()
+        {
+            builder?.ClearWithConnection();
         }
     }
 }

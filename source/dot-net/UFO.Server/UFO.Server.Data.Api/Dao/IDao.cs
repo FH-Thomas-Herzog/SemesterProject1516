@@ -1,4 +1,5 @@
-﻿using UFO.Server.Data.Api.Entity;
+﻿using System;
+using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Server.Data.Api.Dao
 {
@@ -9,7 +10,7 @@ namespace UFO.Server.Data.Api.Dao
     /// </summary>
     /// <typeparam name="I">The type of the backed entity id</typeparam>
     /// <typeparam name="E">The type of the backed entity</typeparam>
-    public interface IDao<I, E> where E : IEntity<I>
+    public interface IDao<I, E> : IDisposable where E : IEntity<I>
     {
 
         /// <summary>
