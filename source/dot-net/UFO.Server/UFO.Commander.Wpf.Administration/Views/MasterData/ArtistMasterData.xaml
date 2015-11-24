@@ -1,0 +1,65 @@
+﻿<UserControl x:Class="UFO.Commander.Wpf.Administration.Views.MasterData.ArtistMasterData"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UFO.Commander.Wpf.Administration.Views.MasterData"
+             mc:Ignorable="d" 
+             d:DesignHeight="300" d:DesignWidth="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="4*"/>
+            <ColumnDefinition Width="2*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Firstname row-->
+        <TextBlock Name="firstNameLabel"
+                   Grid.Column="0"
+                   Grid.Row="0"
+                   Text="FirstName"/>
+        <TextBox Name="firstName" 
+                 Grid.Row="0" 
+                 Grid.Column="1"
+                 VerticalAlignment="Center" 
+                 Text="Thomas"/>
+
+        <!-- Lastname row-->
+        <TextBlock Name="lastnameLabel"
+                   Grid.Column="0"
+                   Grid.Row="1"
+                   Text="LastName"/>
+        <TextBox Name="lastName" 
+                 Grid.Row="1" 
+                 Grid.Column="1"
+                 VerticalAlignment="Center" 
+                 Text="Herzog"/>
+
+        <!-- ArtistGroup row-->
+        <TextBlock Name="artistGroupLabel"
+                   Grid.Column="0"
+                   Grid.Row="2"
+                   Text="ArtistGroup"/>
+        <ComboBox Name="artistGroupSelection"
+                  Grid.Row="2"
+                  Grid.Column="1" />
+
+        <!-- ArtistCategory row-->
+        <TextBlock Name="artistCategoryLabel"
+                   Grid.Column="0"
+                   Grid.Row="3"
+                   Text="ArtistCategory"/>
+        <ComboBox Name="artistCategorySelection"
+                  Grid.Row="3"
+                  Grid.Column="1"/>
+    </Grid>
+</UserControl>

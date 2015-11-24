@@ -6,7 +6,7 @@ namespace UFO.Server.Data.Api.Entity
     /// Marks an class as an versioned entity.
     /// </summary>
     /// <typeparam name="T">The type of the entity id</typeparam>
-    public interface IVersionedEntity<T, I> : IEntity<T>
+    public interface IVersionedEntity<I, T> : IEntity<I>
     {
         /// <summary>
         /// The date when this entity was created.
@@ -16,7 +16,7 @@ namespace UFO.Server.Data.Api.Entity
         /// <summary>
         /// The user who created this entity.
         /// </summary>
-        I CreationUserId { get; set; }
+        T CreationUserId { get; set; }
 
         /// <summary>
         /// The date when this entity was modified.
@@ -26,7 +26,7 @@ namespace UFO.Server.Data.Api.Entity
         /// <summary>
         /// The user who modified this entity last.
         /// </summary>
-        I ModificationUserId { get; set; }
+        T ModificationUserId { get; set; }
 
         /// <summary>
         /// The version of this entity.

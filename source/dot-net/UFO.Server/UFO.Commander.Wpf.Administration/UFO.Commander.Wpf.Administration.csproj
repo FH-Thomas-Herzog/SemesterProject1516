@@ -56,6 +56,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Model\ArtistModel.cs" />
+    <Compile Include="Model\BaseEntityPropertyChangeModel.cs" />
+    <Compile Include="Model\BasePropertyChangeModel.cs" />
+    <Compile Include="Model\BaseVersionedEntityPropertyChangeModel.cs" />
+    <Compile Include="Model\SimpleObjectComboboxMoel.cs" />
+    <Compile Include="Model\SimpleEntityComboxModel.cs" />
+    <Compile Include="Views\MasterData\ArtistMasterData.xaml.cs">
+      <DependentUpon>ArtistMasterData.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -68,6 +77,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\MasterData\ArtistMasterData.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -99,9 +112,7 @@
   <ItemGroup>
     <Folder Include="Converter\" />
     <Folder Include="Messages\" />
-    <Folder Include="Model\" />
     <Folder Include="Validator\" />
-    <Folder Include="Views\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UFO.Commander.Service.Api\UFO.Commander.Service.Api.csproj">
