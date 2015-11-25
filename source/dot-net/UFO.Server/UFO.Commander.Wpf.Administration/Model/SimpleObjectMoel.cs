@@ -7,13 +7,13 @@ using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Commander.Wpf.Administration.Model
 {
-    public class SimpleObjectComboboxModel<E> where E : class
+    public class SimpleObjectModel<E> 
     {
         public E Data { get; set; }
 
         public string Label { get; set; }
 
-        public SimpleObjectComboboxModel(E data = null, string label = "")
+        public SimpleObjectModel(E data = default(E), string label = "")
         {
             this.Data = data;
             this.Label = label;

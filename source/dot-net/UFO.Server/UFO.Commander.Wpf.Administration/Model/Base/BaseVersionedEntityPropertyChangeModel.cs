@@ -6,18 +6,22 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using UFO.Server.Data.Api.Entity;
 
-namespace UFO.Commander.Wpf.Administration.Model
+namespace UFO.Commander.Wpf.Administration.Model.Base
 {
     public abstract class BaseVersionedEntityPropertyChangeModel<I, E> : BasePropertyChangeModel where E : BaseVersionedEntity<long?, User, I>
 
     {
+        private E entity = null;
+
         protected BaseVersionedEntityPropertyChangeModel(E entity)
         {
             if (entity == null)
             {
                 throw new ArgumentException(string.Format("Model class: '{0}' needs an entity instance set", this.GetType().Name));
             }
+            this.entity = entity;
         }
+
         public I Id
         {
             get
@@ -30,7 +34,7 @@ namespace UFO.Commander.Wpf.Administration.Model
         {
             get
             {
-                return this.Entity;
+                return this.entity;
             }
         }
 

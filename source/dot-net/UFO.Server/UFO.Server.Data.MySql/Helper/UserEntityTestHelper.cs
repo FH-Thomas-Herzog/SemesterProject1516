@@ -31,6 +31,7 @@ namespace UFO.Server.Data.MySql.Helper
             user.Email = "cchet_" + idx + "@masterhood.at";
             user.CreationUserId = null;
             user.ModificationUserId = null;
+            user.Type = User.UserType.ADMINISTRATOR;
 
             return user;
         }

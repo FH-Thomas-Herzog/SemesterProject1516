@@ -36,10 +36,20 @@ namespace UFO.Server.Data.Api.Db
                 {
                     var propertyType = metamodel.GetEntityType().GetProperty(property).PropertyType;
                     object converted = null;
-                    if ((!reader.IsDBNull(i)) && (Nullable.GetUnderlyingType(propertyType) != null))
+                    Type underlyingType;
+                    // If not null and a nullable type
+                    if ((!reader.IsDBNull(i)) && ((underlyingType = Nullable.GetUnderlyingType(propertyType)) != null))
                     {
-                        converted = System.Convert.ChangeType(reader.GetValue(i), Nullable.GetUnderlyingType(propertyType));
+                        if (underlyingType.IsEnum)
+                        {
+                            converted = Enum.ToObject(underlyingType, reader.GetValue(i));
+                        }
+                        else
+                        {
+                            converted = System.Convert.ChangeType(reader.GetValue(i), underlyingType);
+                        }
                     }
+                    // not null and no nullable type (reference or value type)
                     else if (!reader.IsDBNull(i))
                     {
                         converted = reader.GetValue(i);

@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using UFO.Server.Data.Api.Db;
+using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Server.Data.MySql.Db
 {
@@ -20,7 +21,8 @@ namespace UFO.Server.Data.MySql.Db
             {typeof(float), MySqlDbType.Float},
             {typeof(bool), MySqlDbType.Int16},
             {typeof(DateTime), MySqlDbType.DateTime},
-            {typeof(DateTime?), MySqlDbType.DateTime}
+            {typeof(DateTime?), MySqlDbType.DateTime},
+            {typeof(Enum), MySqlDbType.Int16}
         };
 
         public MySqlDbType resolve(Type type)
@@ -28,8 +30,13 @@ namespace UFO.Server.Data.MySql.Db
             Debug.Assert(type != null, "Cannot resolve MySqlDbType for given null type");
 
             // Special handling for byte[]
-            if(typeof(byte[]).Equals(type)) {
+            if (typeof(byte[]).Equals(type))
+            {
                 return MySqlDbType.LongBlob;
+            }
+            else if (type.IsEnum)
+            {
+                return TYPE_MAP[typeof(Enum)];
             }
 
             if (!TYPE_MAP.ContainsKey(type))

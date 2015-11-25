@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UFO.Commander.Service.Impl"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UFO.Commander.Wpf.Administration", "UFO.Commander.Wpf.Administration\UFO.Commander.Wpf.Administration.csproj", "{E3FCE6BE-6A08-46C5-B6E2-D7CB28B9DAC2}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UFO.Commander.Test.Wpf.Administration", "UFO.Commander.Test.Wpf.Administration\UFO.Commander.Test.Wpf.Administration.csproj", "{061A22A9-79F1-4EC2-BDC7-684D27AFB387}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{E3FCE6BE-6A08-46C5-B6E2-D7CB28B9DAC2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E3FCE6BE-6A08-46C5-B6E2-D7CB28B9DAC2}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E3FCE6BE-6A08-46C5-B6E2-D7CB28B9DAC2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{061A22A9-79F1-4EC2-BDC7-684D27AFB387}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{061A22A9-79F1-4EC2-BDC7-684D27AFB387}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{061A22A9-79F1-4EC2-BDC7-684D27AFB387}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{061A22A9-79F1-4EC2-BDC7-684D27AFB387}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

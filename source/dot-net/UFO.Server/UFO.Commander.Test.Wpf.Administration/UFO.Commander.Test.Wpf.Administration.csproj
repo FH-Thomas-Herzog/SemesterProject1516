@@ -4,15 +4,17 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{A573B60A-EEEF-444C-A2E6-FBE5A3BB9A8E}</ProjectGuid>
-    <OutputType>Library</OutputType>
+    <ProjectGuid>{061A22A9-79F1-4EC2-BDC7-684D27AFB387}</ProjectGuid>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>UFO.Server.Data.Api</RootNamespace>
-    <AssemblyName>UFO.Server.Data.Api</AssemblyName>
+    <RootNamespace>UFO.Commander.Test.Wpf.Administration</RootNamespace>
+    <AssemblyName>UFO.Commander.Test.Wpf.Administration</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -22,6 +24,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -31,60 +34,31 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
-    <Reference Include="System.configuration" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
-    <Reference Include="Microsoft.CSharp">
-      <Private>True</Private>
-    </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Attribute\ManyToOne.cs" />
-    <Compile Include="Attribute\Id.cs" />
-    <Compile Include="Attribute\Column.cs" />
-    <Compile Include="Attribute\Entity.cs" />
-    <Compile Include="Dao\BaseDao.cs" />
-    <Compile Include="Dao\DaoFactory.cs" />
-    <Compile Include="Dao\IPerformanceDao.cs" />
-    <Compile Include="Dao\IVenueDao.cs" />
-    <Compile Include="Dao\IArtistCategoryDao.cs" />
-    <Compile Include="Dao\IArtistGroupDao.cs" />
-    <Compile Include="Dao\IDao.cs" />
-    <Compile Include="Dao\IArtistDao.cs" />
-    <Compile Include="Dao\IUserDao.cs" />
-    <Compile Include="Db\BaseDbCommandBuilder.cs" />
-    <Compile Include="Db\EntityMetamodel.cs" />
-    <Compile Include="Db\EntityBuilder.cs" />
-    <Compile Include="Db\DbConnectionFactory.cs" />
-    <Compile Include="Db\EntityMetamodelFactory.cs" />
-    <Compile Include="Db\IDbTypeResolver.cs" />
-    <Compile Include="Db\IQueryCreator.cs" />
-    <Compile Include="Entity\Venue.cs" />
-    <Compile Include="Entity\ArtistGroup.cs" />
-    <Compile Include="Entity\Artist.cs" />
-    <Compile Include="Entity\Performance.cs" />
-    <Compile Include="Entity\ArtistCategory.cs" />
-    <Compile Include="Entity\BaseEntity.cs" />
-    <Compile Include="Entity\BaseVersionedEntity.cs" />
-    <Compile Include="Entity\IEntity.cs" />
-    <Compile Include="Entity\IVersionedEntity.cs" />
-    <Compile Include="Entity\User.cs" />
-    <Compile Include="Exception\PersistenceException.cs" />
-    <Compile Include="Helper\BaseEntityHelper.cs" />
-    <Compile Include="Helper\IEntityHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Program.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\UFO.Common.Util\UFO.Common.Util.csproj">
-      <Project>{28d506c4-7522-4df6-8955-6fed83f848a8}</Project>
-      <Name>UFO.Common.Util</Name>
+    <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UFO.Commander.Wpf.Administration\UFO.Commander.Wpf.Administration.csproj">
+      <Project>{e3fce6be-6a08-46c5-b6e2-d7cb28b9dac2}</Project>
+      <Name>UFO.Commander.Wpf.Administration</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\UFO.Server.Data.Api\UFO.Server.Data.Api.csproj">
+      <Project>{a573b60a-eeef-444c-a2e6-fbe5a3bb9a8e}</Project>
+      <Name>UFO.Server.Data.Api</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

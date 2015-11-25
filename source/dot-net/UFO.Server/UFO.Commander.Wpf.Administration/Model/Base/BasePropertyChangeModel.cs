@@ -6,7 +6,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace UFO.Commander.Wpf.Administration.Model
+namespace UFO.Commander.Wpf.Administration.Model.Base
 {
     public abstract class BasePropertyChangeModel
     {

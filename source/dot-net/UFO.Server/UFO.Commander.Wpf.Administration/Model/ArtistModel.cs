@@ -1,87 +1,47 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using UFO.Commander.Wpf.Administration.Model.Base;
 using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Commander.Wpf.Administration.Model
 {
     public class ArtistModel : BaseVersionedEntityPropertyChangeModel<long?, Artist>
     {
-        protected ArtistModel(Artist entity) : base(entity)
+        public ArtistModel(Artist entity) : base(entity)
         {
         }
 
         public string Firstname
         {
-            get
-            {
-                return Entity.Firstname;
-            }
-            set
-            {
-                Entity.Firstname = value;
-            }
+            get { return Entity.Firstname; }
+            set { Entity.Firstname = value; }
         }
 
         public string Lastname
         {
-            get
-            {
-                return Entity.Lastname;
-            }
-            set
-            {
-                Entity.Lastname = value;
-            }
+            get { return Entity.Lastname; }
+            set { Entity.Lastname = value; }
         }
         public string Email
         {
-            get
-            {
-                return Entity.Email;
-            }
-            set
-            {
-                Entity.Email = value;
-            }
+            get { return Entity.Email; }
+            set { Entity.Email = value; }
         }
 
-        public SimpleObjectComboboxModel<string> Country
+        public SimpleObjectModel<string> Country
         {
-            get
-            {
-                return new SimpleObjectComboboxModel<string>(Entity.CountryCode, Entity.CountryCode);
-            }
-            set
-            {
-                Entity.CountryCode = value?.Data;
-            }
+            get { return new SimpleObjectModel<string>(Entity.CountryCode, Entity.CountryCode); }
+            set { Entity.CountryCode = value?.Data; }
         }
 
-        public SimpleEntityComboxModel<long?, ArtistGroup> ArtistGroup
+        public SimpleObjectModel<ArtistGroup> ArtistGroup
         {
-            get
-            {
-                return new SimpleEntityComboxModel<long?, ArtistGroup>(Entity.ArtistGroup, Entity.Lastname);
-            }
-            set
-            {
-                Entity.ArtistGroup = value?.Entity;
-            }
+            get { return (Entity.ArtistGroup != null) ? new SimpleObjectModel<ArtistGroup>(Entity.ArtistGroup, Entity?.ArtistGroup?.Name) : null; }
+            set { Entity.ArtistGroup = value?.Data; }
         }
 
-        public SimpleEntityComboxModel<long?, ArtistCategory> ArtistCategory
+        public SimpleObjectModel<ArtistCategory> ArtistCategory
         {
-            get
-            {
-                return new SimpleEntityComboxModel<long?, ArtistCategory>(Entity.ArtistCategory, Entity.Lastname);
-            }
-            set
-            {
-                Entity.ArtistCategory = value?.Entity;
-            }
+            get { return (Entity.ArtistCategory != null) ? new SimpleObjectModel<ArtistCategory>(Entity.ArtistCategory, Entity?.ArtistCategory?.Name) : null; }
+            set { Entity.ArtistCategory = value?.Data; }
         }
     }
 }
