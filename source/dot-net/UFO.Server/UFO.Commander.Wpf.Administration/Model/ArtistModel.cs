@@ -3,7 +3,7 @@ using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Commander.Wpf.Administration.Model
 {
-    public class ArtistModel : BaseVersionedEntityPropertyChangeModel<long?, Artist>
+    public class ArtistModel : BaseVersionedEntityViewModel<long?, Artist>
     {
         public ArtistModel(Artist entity) : base(entity)
         {

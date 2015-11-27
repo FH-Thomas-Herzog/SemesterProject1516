@@ -8,12 +8,12 @@ using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Commander.Wpf.Administration.Model.Base
 {
-    public abstract class BaseVersionedEntityPropertyChangeModel<I, E> : BasePropertyChangeModel where E : BaseVersionedEntity<long?, User, I>
+    public abstract class BaseVersionedEntityViewModel<I, E> : BasePropertyChangeModel where E : BaseVersionedEntity<long?, User, I>
 
     {
         private E entity = null;
 
-        protected BaseVersionedEntityPropertyChangeModel(E entity)
+        protected BaseVersionedEntityViewModel(E entity)
         {
             if (entity == null)
             {

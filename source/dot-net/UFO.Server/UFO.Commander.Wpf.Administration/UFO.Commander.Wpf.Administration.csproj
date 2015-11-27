@@ -36,6 +36,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
@@ -61,7 +62,7 @@
     <Compile Include="Model\ArtistModel.cs" />
     <Compile Include="Model\Base\BaseEntityPropertyChangeModel.cs" />
     <Compile Include="Model\Base\BasePropertyChangeModel.cs" />
-    <Compile Include="Model\Base\BaseVersionedEntityPropertyChangeModel.cs" />
+    <Compile Include="Model\Base\BaseVersionedEntityViewModel.cs" />
     <Compile Include="Model\SimpleObjectMoel.cs" />
     <Compile Include="Model\UserModel.cs" />
     <Compile Include="Views\MasterData\ArtistMasterData.xaml.cs">
@@ -99,7 +100,7 @@
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
-      <Generator>ResXFileCodeGenerator</Generator>
+      <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="Properties\Settings.settings">
