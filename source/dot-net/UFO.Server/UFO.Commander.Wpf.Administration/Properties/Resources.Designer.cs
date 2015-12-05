@@ -88,6 +88,15 @@ namespace UFO.Commander.Wpf.Administration.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Administration.
+        /// </summary>
+        public static string Administration {
+            get {
+                return ResourceManager.GetString("Administration", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Administrator.
         /// </summary>
         public static string Administrator {
@@ -304,6 +313,15 @@ namespace UFO.Commander.Wpf.Administration.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Dateiauswahl öffnen.
+        /// </summary>
+        public static string OpenFileBrowser {
+            get {
+                return ResourceManager.GetString("OpenFileBrowser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Aufführung.
         /// </summary>
         public static string Performance {
@@ -396,9 +414,9 @@ namespace UFO.Commander.Wpf.Administration.Properties {
         /// <summary>
         ///   Looks up a localized string similar to Spielstätten.
         /// </summary>
-        public static string VenuesPl {
+        public static string VenuePl {
             get {
-                return ResourceManager.GetString("VenuesPl", resourceCulture);
+                return ResourceManager.GetString("VenuePl", resourceCulture);
             }
         }
         

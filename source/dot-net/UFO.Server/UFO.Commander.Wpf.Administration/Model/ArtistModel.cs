@@ -26,22 +26,22 @@ namespace UFO.Commander.Wpf.Administration.Model
             set { Entity.Email = value; }
         }
 
-        public SimpleObjectModel<string> Country
+        //public SimpleObjectModel<string> Country
+        //{
+        //    get { return new SimpleObjectModel<string>(Entity.CountryCode, Entity.CountryCode); }
+        //    set { Entity.CountryCode = value?.Data; }
+        //}
+
+        public ArtistGroup ArtistGroup
         {
-            get { return new SimpleObjectModel<string>(Entity.CountryCode, Entity.CountryCode); }
-            set { Entity.CountryCode = value?.Data; }
+            get { return Entity.ArtistGroup; }
+            set { Entity.ArtistGroup = value; }
         }
 
-        public SimpleObjectModel<ArtistGroup> ArtistGroup
+        public ArtistCategory ArtistCategory
         {
-            get { return (Entity.ArtistGroup != null) ? new SimpleObjectModel<ArtistGroup>(Entity.ArtistGroup, Entity?.ArtistGroup?.Name) : null; }
-            set { Entity.ArtistGroup = value?.Data; }
-        }
-
-        public SimpleObjectModel<ArtistCategory> ArtistCategory
-        {
-            get { return (Entity.ArtistCategory != null) ? new SimpleObjectModel<ArtistCategory>(Entity.ArtistCategory, Entity?.ArtistCategory?.Name) : null; }
-            set { Entity.ArtistCategory = value?.Data; }
+            get { return Entity.ArtistCategory; }
+            set { Entity.ArtistCategory = value; }
         }
     }
 }

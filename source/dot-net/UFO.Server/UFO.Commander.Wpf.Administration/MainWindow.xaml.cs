@@ -24,5 +24,10 @@ namespace UFO.Commander.Wpf.Administration
         {
             InitializeComponent();
         }
+
+        private void ArtistMasterData_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

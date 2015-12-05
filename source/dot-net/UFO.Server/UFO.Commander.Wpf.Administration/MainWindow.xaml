@@ -4,9 +4,50 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:UFO.Commander.Wpf.Administration"
+        xmlns:p="clr-namespace:UFO.Commander.Wpf.Administration.Properties"
+        xmlns:master="clr-namespace:UFO.Commander.Wpf.Administration.Views.MasterData"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="{x:Static p:Resources.Administration}" 
+        Height="350" 
+        Width="525">
     <Grid>
-        
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="3*"/>
+        </Grid.ColumnDefinitions>
+
+        <ListBox Name="Selection"
+                 Grid.Column="0" 
+                 ItemsSource="{Binding SelectionItems}" 
+                 SelectedItem="{Binding SelectedItem}" 
+                 HorizontalAlignment="Center" 
+                 VerticalAlignment="Top"
+                 Margin="10">
+        </ListBox>
+
+        <TabControl Name="TabGroup"
+                    Grid.Column="1"
+                    AllowDrop="False"
+                    Margin="10">
+            <TabItem Name="UserTab"
+                     TabIndex="0"
+                     Header="{x:Static p:Resources.UserPl}">
+                
+            </TabItem>
+
+            <TabItem Name="ArtistTab"
+                     TabIndex="0"
+                     Header="{x:Static p:Resources.ArtistPl}">
+                <master:ArtistMasterData Margin="10"/>
+            </TabItem>
+            
+            <TabItem Name="VenueTab"
+                     TabIndex="0"
+                     Header="{x:Static p:Resources.VenuePl}"></TabItem>
+
+            <TabItem Name="PerformanceTab"
+                     TabIndex="0"
+                     Header="{x:Static p:Resources.PerformancePl}"></TabItem>
+        </TabControl>
     </Grid>
 </Window>

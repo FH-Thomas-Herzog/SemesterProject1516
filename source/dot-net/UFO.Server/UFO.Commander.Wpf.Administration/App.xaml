@@ -2,8 +2,11 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:UFO.Commander.Wpf.Administration"
+             xmlns:converters="clr-namespace:UFO.Commander.Wpf.Administration.Converter"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <converters:UserTypeToSimpleObjectModelConverter x:Key="userTypeSOMConverter"/>
+        <converters:ArtistCategoryToSimpleObjectModelConverter x:Key="artistCategorySOMConverter"/>
+        <converters:ArtistGroupToSimpleObjectModelConverter x:Key="artistGroupSOMConverter"/>
     </Application.Resources>
 </Application>

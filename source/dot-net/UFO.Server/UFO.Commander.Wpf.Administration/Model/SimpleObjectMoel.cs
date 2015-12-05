@@ -7,13 +7,13 @@ using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Commander.Wpf.Administration.Model
 {
-    public class SimpleObjectModel<E> 
+    public class SimpleObjectModel
     {
-        public E Data { get; set; }
+        public object Data { get; set; }
 
         public string Label { get; set; }
 
-        public SimpleObjectModel(E data = default(E), string label = "")
+        public SimpleObjectModel(object data = null, string label = "")
         {
             this.Data = data;
             this.Label = label;

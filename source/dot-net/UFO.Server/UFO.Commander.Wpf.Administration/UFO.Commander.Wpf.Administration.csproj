@@ -57,9 +57,14 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converter\UserTypeToSimpleObjectModelConverter.cs" />
+    <Compile Include="Converter\ArtistCategoryToSimpleObjectModelConverter.cs" />
+    <Compile Include="Converter\ArtistGroupToSimpleObjectModelConverter.cs" />
+    <Compile Include="Converter\Base\BaseValueToSimpleObjectModelConverter.cs" />
     <Compile Include="Model\ArtistGroupModel.cs" />
     <Compile Include="Model\ArtistCategoryModel.cs" />
     <Compile Include="Model\ArtistModel.cs" />
+    <Compile Include="Model\ArtistSelectionModel.cs" />
     <Compile Include="Model\Base\BaseEntityPropertyChangeModel.cs" />
     <Compile Include="Model\Base\BasePropertyChangeModel.cs" />
     <Compile Include="Model\Base\BaseVersionedEntityViewModel.cs" />
@@ -113,7 +118,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Converter\" />
     <Folder Include="Messages\" />
     <Folder Include="Validator\" />
   </ItemGroup>

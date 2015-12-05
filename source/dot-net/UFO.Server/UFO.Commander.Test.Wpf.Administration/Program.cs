@@ -32,15 +32,15 @@ namespace UFO.Commander.Test.Wpf.Administration
             ArtistModel model = new ArtistModel(artist);
             Console.WriteLine("Firstname: " + model.Firstname);
             Console.WriteLine("Lastname: " + model.Lastname);
-            Console.WriteLine("ArtistGroup: " + model.ArtistGroup.Label);
-            Console.WriteLine("ArtistCategory: " + model.ArtistCategory.Label);
+            Console.WriteLine("ArtistGroup: " + model.ArtistGroup.Name);
+            Console.WriteLine("ArtistCategory: " + model.ArtistCategory.Name);
 
             model.Firstname = "New Fristname";
             model.Lastname = "New Lastname";
             category.Name = "New Category name";
             group.Name = "New Group name";
-            model.ArtistCategory = new SimpleObjectModel<ArtistCategory>(category);
-            model.ArtistGroup = new SimpleObjectModel<ArtistGroup>(group);
+            model.ArtistCategory = category;
+            model.ArtistGroup = group;
 
             Console.WriteLine("Firstname: " + model.Entity.Firstname);
             Console.WriteLine("Lastname: " + model.Entity.Lastname);

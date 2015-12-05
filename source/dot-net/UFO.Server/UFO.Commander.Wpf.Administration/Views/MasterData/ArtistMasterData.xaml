@@ -4,8 +4,10 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:UFO.Commander.Wpf.Administration.Views.MasterData"
+             xmlns:p="clr-namespace:UFO.Commander.Wpf.Administration.Properties"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" 
+             d:DesignWidth="350">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -19,47 +21,82 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2*"/>
             <ColumnDefinition Width="4*"/>
-            <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
 
         <!-- Firstname row-->
-        <TextBlock Name="firstNameLabel"
+        <TextBlock Name="FirstNameLabel"
                    Grid.Column="0"
                    Grid.Row="0"
-                   Text="FirstName"/>
-        <TextBox Name="firstName" 
+                   Margin="5"
+                   Text="{x:Static p:Resources.Firstname}"/>
+        <TextBox Name="FirstName" 
                  Grid.Row="0" 
                  Grid.Column="1"
+                 Margin="5"
                  VerticalAlignment="Center" 
                  Text="Thomas"/>
 
         <!-- Lastname row-->
-        <TextBlock Name="lastnameLabel"
-                   Grid.Column="0"
+        <TextBlock Name="LastnameLabel"
                    Grid.Row="1"
-                   Text="LastName"/>
-        <TextBox Name="lastName" 
+                   Grid.Column="0"
+                   Margin="5"
+                   Text="{x:Static p:Resources.Lastname}"/>
+        <TextBox Name="LastName" 
                  Grid.Row="1" 
                  Grid.Column="1"
+                 Margin="5"
                  VerticalAlignment="Center" 
                  Text="Herzog"/>
 
         <!-- ArtistGroup row-->
-        <TextBlock Name="artistGroupLabel"
-                   Grid.Column="0"
+        <TextBlock Name="ArtistGroupLabel"
                    Grid.Row="2"
-                   Text="ArtistGroup"/>
-        <ComboBox Name="artistGroupSelection"
+                   Grid.Column="0"
+                   Margin="5"
+                   Text="{x:Static p:Resources.ArtistGruop}"/>
+        <ComboBox Name="ArtistGroupSelection"
                   Grid.Row="2"
-                  Grid.Column="1" />
+                  Grid.Column="1"
+                  Margin="5" />
 
         <!-- ArtistCategory row-->
-        <TextBlock Name="artistCategoryLabel"
-                   Grid.Column="0"
+        <TextBlock Name="ArtistCategoryLabel"
                    Grid.Row="3"
-                   Text="ArtistCategory"/>
-        <ComboBox Name="artistCategorySelection"
+                   Grid.Column="0"
+                   Margin="5"
+                   Text="{x:Static p:Resources.ArtistCategory}"/>
+        <ComboBox Name="ArtistCategorySelection"
                   Grid.Row="3"
-                  Grid.Column="1"/>
+                  Grid.Column="1"
+                  Margin="5"/>
+
+        <!-- Image row-->
+        <TextBlock Name="ArtistImageLabel"
+                   Grid.Row="4"
+                   Grid.Column="0"
+                   Margin="5"
+                   Text="{x:Static p:Resources.Image}"/>
+        <Button Name="ArtistImageButton"
+                   Grid.Row="4"
+                   Grid.Column="1"
+                   Margin="5"
+                   MaxWidth="300"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Content="{x:Static p:Resources.OpenFileBrowser}"/>
+        
+        <!-- Web Address row-->
+        <TextBlock Name="ArtistWebAddressLabel"
+                   Grid.Row="5"
+                   Grid.Column="0"
+                   Margin="5"
+                   Text="{x:Static p:Resources.Url}"/>
+        <TextBox Name="ArtistWebAddress" 
+                 Grid.Row="5" 
+                 Grid.Column="1"
+                 Margin="5"
+                 VerticalAlignment="Center" 
+                 Text="Herzog"/>
     </Grid>
 </UserControl>

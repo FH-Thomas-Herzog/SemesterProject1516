@@ -213,7 +213,7 @@
   <data name="Venue" xml:space="preserve">
     <value>Spielstätte</value>
   </data>
-  <data name="VenuesPl" xml:space="preserve">
+  <data name="VenuePl" xml:space="preserve">
     <value>Spielstätten</value>
   </data>
   <data name="Zip" xml:space="preserve">
@@ -233,5 +233,11 @@
   </data>
   <data name="ExternalUser" xml:space="preserve">
     <value>Externer Benutzer</value>
+  </data>
+  <data name="Administration" xml:space="preserve">
+    <value>Administration</value>
+  </data>
+  <data name="OpenFileBrowser" xml:space="preserve">
+    <value>Dateiauswahl öffnen</value>
   </data>
 </root>
