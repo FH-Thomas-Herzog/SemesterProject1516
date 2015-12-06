@@ -9,45 +9,55 @@
         mc:Ignorable="d"
         Title="{x:Static p:Resources.Administration}" 
         Height="350" 
-        Width="525">
-    <Grid>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*"/>
-            <ColumnDefinition Width="3*"/>
-        </Grid.ColumnDefinitions>
+        Width="525"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
 
-        <ListBox Name="Selection"
+    <StackPanel>
+        <Grid Visibility="{Binding IsLogged, Converter={StaticResource BooleanVisibilityConverter}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+
+            <ListBox Name="Selection"
                  Grid.Column="0" 
-                 ItemsSource="{Binding SelectionItems}" 
-                 SelectedItem="{Binding SelectedItem}" 
                  HorizontalAlignment="Center" 
                  VerticalAlignment="Top"
                  Margin="10">
-        </ListBox>
 
-        <TabControl Name="TabGroup"
+            </ListBox>
+
+            <TabControl Name="TabGroup"
                     Grid.Column="1"
                     AllowDrop="False"
-                    Margin="10">
-            <TabItem Name="UserTab"
+                    Margin="10"
+                    SelectionChanged="OnTabChange">
+
+                <TabItem Name="UserTab"
                      TabIndex="0"
                      Header="{x:Static p:Resources.UserPl}">
-                
-            </TabItem>
 
-            <TabItem Name="ArtistTab"
-                     TabIndex="0"
+                </TabItem>
+
+                <TabItem Name="ArtistTab"
+                     TabIndex="1"
                      Header="{x:Static p:Resources.ArtistPl}">
-                <master:ArtistMasterData Margin="10"/>
-            </TabItem>
-            
-            <TabItem Name="VenueTab"
-                     TabIndex="0"
+                    <master:ArtistMasterData Margin="10"/>
+                </TabItem>
+
+                <TabItem Name="VenueTab"
+                     TabIndex="2"
                      Header="{x:Static p:Resources.VenuePl}"></TabItem>
 
-            <TabItem Name="PerformanceTab"
-                     TabIndex="0"
+                <TabItem Name="PerformanceTab"
+                     TabIndex="3"
                      Header="{x:Static p:Resources.PerformancePl}"></TabItem>
-        </TabControl>
-    </Grid>
+            </TabControl>
+        </Grid>
+
+        <TextBox Text="Please Login" 
+                 Visibility="{Binding IsLogged.Invert, Converter={StaticResource BooleanVisibilityConverter}}"
+                 HorizontalAlignment="Center"
+                 VerticalAlignment="Center"/>
+    </StackPanel>
 </Window>

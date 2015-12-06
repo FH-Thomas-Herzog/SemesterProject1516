@@ -240,4 +240,19 @@
   <data name="OpenFileBrowser" xml:space="preserve">
     <value>Dateiauswahl öffnen</value>
   </data>
+  <data name="ActionLogin" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="EnterPasswordHere" xml:space="preserve">
+    <value>Tragen Sie hier Ihren Password ein</value>
+  </data>
+  <data name="EnterUserNameHere" xml:space="preserve">
+    <value>Tragen Sie hier Ihren Benutzernamen ein</value>
+  </data>
+  <data name="Login" xml:space="preserve">
+    <value>Login</value>
+  </data>
+  <data name="Password" xml:space="preserve">
+    <value>Passwort</value>
+  </data>
 </root>

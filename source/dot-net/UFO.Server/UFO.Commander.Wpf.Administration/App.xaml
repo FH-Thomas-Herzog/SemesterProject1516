@@ -3,10 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:UFO.Commander.Wpf.Administration"
              xmlns:converters="clr-namespace:UFO.Commander.Wpf.Administration.Converter"
-             StartupUri="MainWindow.xaml">
+             StartupUri="MainWindow.xaml"
+             Startup="Application_Startup">
     <Application.Resources>
-        <converters:UserTypeToSimpleObjectModelConverter x:Key="userTypeSOMConverter"/>
-        <converters:ArtistCategoryToSimpleObjectModelConverter x:Key="artistCategorySOMConverter"/>
-        <converters:ArtistGroupToSimpleObjectModelConverter x:Key="artistGroupSOMConverter"/>
+        <!-- Application wide converters -->
+        <converters:CountryCodeToSimpleObjectModelConverter x:Key="UserTypeSOMConverter"/>
+        <converters:ArtistCategoryToSimpleObjectModelConverter x:Key="ArtistCategorySOMConverter"/>
+        <converters:ArtistGroupToSimpleObjectModelConverter x:Key="ArtistGroupSOMConverter"/>
+        <converters:Base64ToImageConverter x:Key="Base64ImageConverter"/>
+        <converters:CountryCodeToSimpleObjectModelConverter x:Key="CountryCodeSOMConverter"/>
+        <converters:BooleanToVisibilityConverter x:Key="BooleanVisibilityConverter"/>
     </Application.Resources>
 </Application>

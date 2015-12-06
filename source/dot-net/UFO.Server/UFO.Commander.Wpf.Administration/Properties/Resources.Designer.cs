@@ -79,6 +79,15 @@ namespace UFO.Commander.Wpf.Administration.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Login.
+        /// </summary>
+        public static string ActionLogin {
+            get {
+                return ResourceManager.GetString("ActionLogin", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Speichern.
         /// </summary>
         public static string ActionSave {
@@ -223,6 +232,24 @@ namespace UFO.Commander.Wpf.Administration.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Tragen Sie hier Ihren Password ein.
+        /// </summary>
+        public static string EnterPasswordHere {
+            get {
+                return ResourceManager.GetString("EnterPasswordHere", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Tragen Sie hier Ihren Benutzernamen ein.
+        /// </summary>
+        public static string EnterUserNameHere {
+            get {
+                return ResourceManager.GetString("EnterUserNameHere", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Die eingegebene E-Mail Adresse ist ungültig..
         /// </summary>
         public static string ErrorInvalidEmail {
@@ -295,6 +322,15 @@ namespace UFO.Commander.Wpf.Administration.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Login.
+        /// </summary>
+        public static string Login {
+            get {
+                return ResourceManager.GetString("Login", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Modifzierungsdatum.
         /// </summary>
         public static string ModificationDate {
@@ -318,6 +354,15 @@ namespace UFO.Commander.Wpf.Administration.Properties {
         public static string OpenFileBrowser {
             get {
                 return ResourceManager.GetString("OpenFileBrowser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Passwort.
+        /// </summary>
+        public static string Password {
+            get {
+                return ResourceManager.GetString("Password", resourceCulture);
             }
         }
         
