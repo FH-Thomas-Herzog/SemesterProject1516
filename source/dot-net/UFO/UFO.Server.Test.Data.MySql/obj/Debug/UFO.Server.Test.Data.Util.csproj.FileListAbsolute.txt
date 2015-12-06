@@ -1,0 +1,10 @@
+C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO.Server\UFO.Server.Test.Data.Util\bin\Debug\UFO.Server.Test.Data.Util.dll
+C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO.Server\UFO.Server.Test.Data.Util\bin\Debug\UFO.Server.Test.Data.Util.pdb
+C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO.Server\UFO.Server.Test.Data.Util\bin\Debug\UFO.Server.Data.Util.dll
+C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO.Server\UFO.Server.Test.Data.Util\bin\Debug\UFO.Server.Data.Util.pdb
+C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO.Server\UFO.Server.Test.Data.Util\obj\Debug\UFO.Server.Test.Data.Util.csprojResolveAssemblyReference.cache
+C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO.Server\UFO.Server.Test.Data.Util\obj\Debug\UFO.Server.Test.Data.Util.dll
+C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO.Server\UFO.Server.Test.Data.Util\obj\Debug\UFO.Server.Test.Data.Util.pdb
+C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO.Server\UFO.Server.Test.Data.Util\bin\Debug\nunit.framework.dll
+C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO.Server\UFO.Server.Test.Data.Util\bin\Debug\nunit.mocks.dll
+C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO.Server\UFO.Server.Test.Data.Util\bin\Debug\nunit.framework.xml

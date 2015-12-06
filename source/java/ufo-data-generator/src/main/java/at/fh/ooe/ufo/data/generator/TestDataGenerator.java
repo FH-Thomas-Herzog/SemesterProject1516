@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.nio.charset.Charset;
+import java.security.SecureRandom;
 import java.text.SimpleDateFormat;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.Base64;
@@ -22,6 +23,8 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Random;
+
+import org.mindrot.jbcrypt.BCrypt;
 
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -41,6 +44,10 @@ public class TestDataGenerator {
 	private static final String IMAGE_FILE = "add-user-icon." + IMAGE_TYPE;
 
 	private static final String SEPARATOR = ";";
+	private static final String DEFAULT_PASSWORD = "123";
+	private static final SecureRandom SECURE_RANDOM = new SecureRandom();
+	private static final String PASSWORD_ENCRYPTED = BCrypt.hashpw(DEFAULT_PASSWORD,
+			BCrypt.gensalt(10, SECURE_RANDOM));
 
 	public static class Performance {
 
@@ -209,6 +216,10 @@ public class TestDataGenerator {
 			return (url != null) ? ("'" + url + "'") : getNullString();
 		}
 
+		public String getPassword() {
+			return PASSWORD_ENCRYPTED;
+		}
+
 		public String getNullString() {
 			return "NULL";
 		}
@@ -234,6 +245,7 @@ public class TestDataGenerator {
 		parameters.put("artists", artists);
 		parameters.put("venues", venues);
 		parameters.put("performance", new Performance());
+		parameters.put("adminPassword", PASSWORD_ENCRYPTED);
 
 		final Configuration config = new Configuration();
 		config.setClassLoaderForTemplateLoading(TestDataGenerator.class.getClassLoader(), "");
@@ -241,7 +253,7 @@ public class TestDataGenerator {
 		final Template template = config.getTemplate(ROOT_FTL_TEMPLATE + FTL_TEMPLATE);
 		template.setAutoFlush(true);
 
-		try (final BufferedWriter br = new BufferedWriter(new FileWriter(new File("C:/test.sql")))) {
+		try (final BufferedWriter br = new BufferedWriter(new FileWriter(new File("D:/ufo-test-data.sql")))) {
 			template.process(parameters, br);
 		} catch (Exception e) {
 			e.printStackTrace();

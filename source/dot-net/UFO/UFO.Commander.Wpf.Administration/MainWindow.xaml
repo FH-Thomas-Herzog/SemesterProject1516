@@ -1,0 +1,64 @@
+﻿<Window x:Class="UFO.Commander.Wpf.Administration.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:UFO.Commander.Wpf.Administration"
+        xmlns:p="clr-namespace:UFO.Commander.Wpf.Administration.Properties"
+        xmlns:master="clr-namespace:UFO.Commander.Wpf.Administration.Views.MasterData"
+        xmlns:security="clr-namespace:UFO.Commander.Wpf.Administration.Views.Security"
+        mc:Ignorable="d"
+        Title="{x:Static p:Resources.Administration}" 
+        Height="350" 
+        Width="525"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
+    <StackPanel>
+        <Grid Visibility="{Binding Application.UserContext.IsLogged, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="3*"/>
+            </Grid.ColumnDefinitions>
+
+            <ListBox Name="Selection"
+                 Grid.Column="0" 
+                 HorizontalAlignment="Center" 
+                 VerticalAlignment="Top"
+                 Margin="10">
+
+            </ListBox>
+
+            <TabControl Name="TabGroup"
+                    Grid.Column="1"
+                    AllowDrop="False"
+                    Margin="10"
+                    SelectionChanged="OnTabChange">
+
+                <TabItem Name="UserTab"
+                     TabIndex="0"
+                     Header="{x:Static p:Resources.UserPl}">
+
+                </TabItem>
+
+                <TabItem Name="ArtistTab"
+                     TabIndex="1"
+                     Header="{x:Static p:Resources.ArtistPl}">
+                    <master:ArtistMasterData Margin="10"/>
+                </TabItem>
+
+                <TabItem Name="VenueTab"
+                     TabIndex="2"
+                     Header="{x:Static p:Resources.VenuePl}"></TabItem>
+
+                <TabItem Name="PerformanceTab"
+                     TabIndex="3"
+                     Header="{x:Static p:Resources.PerformancePl}"></TabItem>
+            </TabControl>
+        </Grid>
+
+        <security:LoginControl x:Name="LoginView"
+                               Visibility="{Binding Application.UserContext.IsNotLogged, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+    </StackPanel>
+</Window>

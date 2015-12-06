@@ -1,6 +1,6 @@
 -- create admin user
-INSERT INTO ufo.user(firstname, lastname, username, email) 
-VALUES ('Thomas', 'Herzog', 'het', 'herzog.thoams81@gmail.com');
+INSERT INTO ufo.user(firstname, lastname, username, password, email, user_type) 
+VALUES ('Thomas', 'Herzog', 'superuser', '${adminPassword}', 'herzog.thoams81@gmail.com', 0);
 SET @userId = LAST_INSERT_ID();
 
 -- create artist groups
@@ -30,8 +30,8 @@ INSERT INTO ufo.artist (firstname, lastname, email, country_code, image, image_f
 VALUES ('${artist.firstName}', '${artist.lastName}', '${artist.email}', '${artist.countryCode}', ${artist.image}, ${artist.imageFileType}, ${artist.url}, (@artistCategoryOffset - ${artist.getArtistCategoryId(artistCategoryCount)}), (@artistGroupOffset - ${artist.getArtistGroupId(artistGroupCount)}), @userId, @userId);
 SET @artistId = LAST_INSERT_ID();
 -- user for artist
-INSERT INTO ufo.user(firstname, lastname, username, email, creation_user_id, modification_user_id) 
-VALUES ('${artist.firstName}', '${artist.lastName}', '${artist.email}', '${artist.email}', @userId, @userId);
+INSERT INTO ufo.user(firstname, lastname, username, password, email, creation_user_id, modification_user_id, user_type) 
+VALUES ('${artist.firstName}', '${artist.lastName}', '${artist.email}', '${artist.password}','${artist.email}', @userId, @userId, 1);
 -- venues for artists
 	<#list 1..performanceCount as i>
 INSERT INTO ufo.performance(start_date, end_date, creation_user_id, modification_user_id, artist_id, venue_id) 
