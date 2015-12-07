@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace UFO.Commander.Service.Api.Base
 {
-    public interface BaseService : IDisposable
+    public interface IService : IDisposable
     {
     }
 }

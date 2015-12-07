@@ -54,10 +54,10 @@ namespace UFO.Commander.Wpf.Administration.Views.Security
             switch (control.Visibility)
             {
                 case Visibility.Visible:
-                    securityService = ServiceFactory.getInstance().getSecurityService();
+                    securityService = ServiceFactory.CreateSecurityService();
                     break;
                 case Visibility.Hidden:
-                    ServiceFactory.getInstance().DisposeService(securityService);
+                    ServiceFactory.DisposeService(securityService);
                     break;
                 default: break;
             }

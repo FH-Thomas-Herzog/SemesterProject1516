@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using UFO.Commander.Wpf.Administration.Model;
 using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Commander.Wpf.Administration
@@ -21,10 +22,9 @@ namespace UFO.Commander.Wpf.Administration
     /// </summary>
     public partial class MainWindow : Window
     {
-        public int SelectedTabIdx { get; set; }
-        // TODO: Hold reference to currently selected tab backed handler
+        public TabHandlerModel TabHandler { get; set; }
 
-        public App Application { get { return System.Windows.Application.Current as App;  } }
+        public App Application { get { return System.Windows.Application.Current as App; } }
 
 
         public MainWindow()
@@ -32,9 +32,10 @@ namespace UFO.Commander.Wpf.Administration
             InitializeComponent();
         }
 
-        private void ArtistMasterData_Loaded(object sender, RoutedEventArgs e)
+        public override void BeginInit()
         {
-
+            base.BeginInit();
+            TabHandler = new TabHandlerModel();
         }
 
         /// <summary>
@@ -48,26 +49,8 @@ namespace UFO.Commander.Wpf.Administration
             TabControl tabControl = sender as TabControl;
 
             TabItem tab = tabControl.SelectedItem as TabItem;
-
-            if (tab != null)
-            {
-                if (tab.Equals(UserTab))
-                {
-
-                }
-                else if (tab.Equals(ArtistTab))
-                {
-
-                }
-                else if (tab.Equals(VenueTab))
-                {
-
-                }
-                else if (tab.Equals(PerformanceTab))
-                {
-
-                }
-            }
+            tab.InvalidateVisual();
+            TabHandler.SelectedIndex = tab.TabIndex;
         }
     }
 }

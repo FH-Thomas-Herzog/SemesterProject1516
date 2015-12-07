@@ -1,24 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data.Common;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Data.Common;
 using UFO.Commander.Service.Api;
 using UFO.Server.Data.Api.Dao;
-using UFO.Server.Data.Api.Db;
 using UFO.Server.Data.Api.Entity;
-using BCrypt.Net;
+using UFO.Commander.Service.Impl.Base;
 
 namespace UFO.Commander.Service.Impl
 {
-    public class SecurityService : ISecurityService
+    public class SecurityService : BaseService, ISecurityService
     {
+        private IUserDao userDao;
+
+        public SecurityService(DbConnection connection = null) : base(connection)
+        {
+            userDao = DaoFactory.CreateUserDao(Connection);
+        }
+
         public User Login(string username, string password)
         {
             if ((username != null) && (password != null))
             {
-                User user = DaoFactory.CreateUserDao().GetAdminUserForUsername(username);
+                User user = userDao.GetAdminUserForUsername(username);
                 if ((user != null) && (BCrypt.Net.BCrypt.Verify(password, user.Password)))
                 {
                     return user;
@@ -27,10 +28,10 @@ namespace UFO.Commander.Service.Impl
             return null;
         }
 
-        public void Dispose()
+        public override void Dispose()
         {
-            // Release DAOs here 
+            base.Dispose();
+            DaoFactory.DisposeDao(userDao);
         }
-
     }
 }

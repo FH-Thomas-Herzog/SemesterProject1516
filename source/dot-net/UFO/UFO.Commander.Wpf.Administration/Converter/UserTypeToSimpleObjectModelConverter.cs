@@ -19,10 +19,10 @@ namespace UFO.Commander.Wpf.Administration.Converter
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             object converted = base.Convert(value, targetType, parameter, culture);
-            return converted ?? new SimpleObjectModel(value, UserTypeToString((User.UserType)value));
+            return converted ?? new SimpleObjectModel(value, UserTypeToSimpleObjectModelConverter.UserTypeToString((User.UserType)value));
         }
 
-        private string UserTypeToString(User.UserType? type)
+        public static string UserTypeToString(User.UserType? type)
         {
             if (type != null)
             {

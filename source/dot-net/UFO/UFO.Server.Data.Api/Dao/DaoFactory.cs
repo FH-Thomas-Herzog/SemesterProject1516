@@ -2,6 +2,7 @@
 using System.Configuration;
 using System.Data.Common;
 using System.Reflection;
+using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Server.Data.Api.Dao
 {
@@ -30,6 +31,7 @@ namespace UFO.Server.Data.Api.Dao
             assembly = Assembly.Load(assemblyName);
         }
 
+        private DaoFactory() { }
 
         /// <summary>
         /// Creates the artist category DAO.
@@ -110,6 +112,11 @@ namespace UFO.Server.Data.Api.Dao
             {
                 throw new InvalidOperationException($"Dao with name '{name}' could not be instantiated", e);
             }
+        }
+
+        public static void DisposeDao<I, E>(IDao<I, E> dao) where E : IEntity<I>
+        {
+            dao?.Dispose();
         }
     }
 }

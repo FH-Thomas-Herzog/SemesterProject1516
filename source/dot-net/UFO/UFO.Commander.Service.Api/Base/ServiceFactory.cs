@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Data.Common;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -10,8 +11,6 @@ namespace UFO.Commander.Service.Api.Base
 {
     public class ServiceFactory
     {
-        private static ServiceFactory Factory { get; set; }
-
         private static string assemblyName;
         private static Assembly assembly;
 
@@ -30,32 +29,23 @@ namespace UFO.Commander.Service.Api.Base
             }
         }
 
-        private ServiceFactory()
-        {
+        private ServiceFactory() { }
 
+        public static ISecurityService CreateSecurityService(DbConnection connection = null)
+        {
+            return CreateService("SecurityService", connection) as ISecurityService;
         }
 
-        public static ServiceFactory getInstance()
+        public static IUserService CreateUserService(DbConnection connection = null)
         {
-            if (Factory == null)
-            {
-                Factory = new ServiceFactory();
-            }
-
-            return Factory;
+            return CreateService("UserService", connection) as IUserService;
         }
-
-        public ISecurityService getSecurityService()
-        {
-            return CreateService("SecurityService") as ISecurityService;
-        }
-
-        public void DisposeService<S>(S service) where S : BaseService
+        public static void DisposeService(IService service)
         {
             service?.Dispose();
         }
 
-        private static object CreateService(string name)
+        private static object CreateService(string name, DbConnection connection = null)
         {
             if (assembly != null)
             {
@@ -63,8 +53,9 @@ namespace UFO.Commander.Service.Api.Base
                 {
                     string serviceClassName = $"{assemblyName}.{name}";
                     Type serviceClass = assembly.GetType(serviceClassName);
+                    object[] arguments = new object[1] { connection };
 
-                    return Activator.CreateInstance(serviceClass);
+                    return Activator.CreateInstance(serviceClass, arguments);
                 }
                 catch (System.Exception e)
                 {

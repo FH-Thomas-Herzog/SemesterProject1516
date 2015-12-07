@@ -35,9 +35,9 @@
                     SelectionChanged="OnTabChange">
 
                 <TabItem Name="UserTab"
-                     TabIndex="0"
+                     TabIndex="0" 
                      Header="{x:Static p:Resources.UserPl}">
-
+                    <master:UserMasterData Margin="10" />
                 </TabItem>
 
                 <TabItem Name="ArtistTab"

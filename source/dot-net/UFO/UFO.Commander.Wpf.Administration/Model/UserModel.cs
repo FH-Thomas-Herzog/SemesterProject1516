@@ -11,7 +11,11 @@ namespace UFO.Commander.Wpf.Administration.Model
     {
         public UserModel(User user) : base(user)
         {
-            // TODO: Add initialization for user entity here
+            // TODO: Add initialization for new user entity here
+            if (user.Id == null)
+            {
+                user.Type = User.UserType.ARTIST;
+            }
         }
 
         [Required(ErrorMessageResourceName = "ErrorRequired",
@@ -23,7 +27,7 @@ namespace UFO.Commander.Wpf.Administration.Model
         public string Firstname
         {
             get { return Entity.FirstName; }
-            set { Entity.FirstName = value; }
+            set { Entity.FirstName = value; FirePropertyChangedEvent(); }
         }
 
         [Required(ErrorMessageResourceName = "ErrorRequired",
@@ -35,7 +39,7 @@ namespace UFO.Commander.Wpf.Administration.Model
         public string Lastname
         {
             get { return Entity.LastName; }
-            set { Entity.LastName = value; }
+            set { Entity.LastName = value; FirePropertyChangedEvent(); }
         }
 
         [Required(ErrorMessageResourceName = "ErrorRequired",
@@ -48,7 +52,7 @@ namespace UFO.Commander.Wpf.Administration.Model
         public string Username
         {
             get { return Entity.Username; }
-            set { Entity.Username = value; }
+            set { Entity.Username = value; FirePropertyChangedEvent(); }
         }
 
         [Required(ErrorMessageResourceName = "ErrorRequired",
@@ -62,7 +66,7 @@ namespace UFO.Commander.Wpf.Administration.Model
         public string Email
         {
             get { return Entity.Email; }
-            set { Entity.Email = value; }
+            set { Entity.Email = value; FirePropertyChangedEvent(); }
         }
 
         [Required(ErrorMessageResourceName = "ErrorRequired",
@@ -77,7 +81,7 @@ namespace UFO.Commander.Wpf.Administration.Model
         public string EmailRepeation
         {
             get { return EmailRepeation; }
-            set { EmailRepeation = value; }
+            set { EmailRepeation = value; FirePropertyChangedEvent(); }
         }
 
         [Required(ErrorMessageResourceName = "ErrorRequired",
@@ -85,7 +89,7 @@ namespace UFO.Commander.Wpf.Administration.Model
         public User.UserType? UserType
         {
             get { return Entity.Type; }
-            set { Entity.Type = value; }
+            set { Entity.Type = value; FirePropertyChangedEvent(); }
         }
     }
 }

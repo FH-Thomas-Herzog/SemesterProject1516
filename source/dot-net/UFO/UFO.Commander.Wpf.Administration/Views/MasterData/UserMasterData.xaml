@@ -1,0 +1,92 @@
+﻿<UserControl x:Class="UFO.Commander.Wpf.Administration.Views.MasterData.UserMasterData"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UFO.Commander.Wpf.Administration.Views.MasterData"
+             xmlns:p="clr-namespace:UFO.Commander.Wpf.Administration.Properties"
+             mc:Ignorable="d" 
+             Width="300"
+             IsVisibleChanged="OnVisibilityChanged"
+             DataContext="{Binding RelativeSource={RelativeSource Self}}">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Firstname row-->
+        <TextBlock Name="FirstNameLabel"
+                   Grid.Column="0"
+                   Grid.Row="0"
+                   Margin="5"
+                   Text="{x:Static p:Resources.Firstname}"/>
+        <TextBox Name="FirstName" 
+                 Grid.Row="0" 
+                 Grid.Column="1"
+                 Margin="5"
+                 VerticalAlignment="Center" 
+                 Text="{Binding UserModel.Firstname, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, ValidatesOnNotifyDataErrors=True, Mode=TwoWay}"/>
+
+        <!-- Lastname row-->
+        <TextBlock Name="LastnameLabel"
+                   Grid.Row="1"
+                   Grid.Column="0"
+                   Margin="5"
+                   Text="{x:Static p:Resources.Lastname}"/>
+        <TextBox Name="LastName" 
+                 Grid.Row="1" 
+                 Grid.Column="1"
+                 Margin="5"
+                 VerticalAlignment="Center" 
+                 Text="{Binding UserModel.Lastname, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, Mode=TwoWay}"/>
+
+        <!-- Username row-->
+        <TextBlock Name="UsernameLabel"
+                   Grid.Row="2"
+                   Grid.Column="0"
+                   Margin="5"
+                   Text="{x:Static p:Resources.Username}"/>
+        <TextBox Name="Username" 
+                 Grid.Row="2" 
+                 Grid.Column="1"
+                 Margin="5"
+                 VerticalAlignment="Center" 
+                 Text="{Binding UserModel.Username, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, Mode=TwoWay}"/>
+
+        <!-- Password row-->
+        <TextBlock Name="PasswordLabel"
+                   Grid.Row="3"
+                   Grid.Column="0"
+                   Margin="5"
+                   Text="{x:Static p:Resources.Password}"/>
+        <PasswordBox Name="Password"
+                     Grid.Row="3"
+                     Grid.Column="1" 
+                     Margin="5"
+                     VerticalAlignment="Center" 
+                     MaxLength="100"/>
+
+        <!-- UserType row-->
+        <TextBlock Name="UsertypeSelectionLabel"
+                   Grid.Row="5"
+                   Grid.Column="0"
+                   Margin="5"
+                   Text="{x:Static p:Resources.UserType}"/>
+        <ComboBox Name="UsertypeSelection"
+                  Grid.Row="5"
+                  Grid.Column="1"
+                  Margin="5"
+                  ItemsSource="{Binding UserTypes}"
+                  DisplayMemberPath="Label"
+                  SelectedItem="{Binding UserModel.UserType, Converter={StaticResource UserTypeSOMConverter}, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, Mode=TwoWay}"/>
+    </Grid>
+</UserControl>
