@@ -6,9 +6,7 @@
              xmlns:local="clr-namespace:UFO.Commander.Wpf.Administration.Views.MasterData"
              xmlns:p="clr-namespace:UFO.Commander.Wpf.Administration.Properties"
              mc:Ignorable="d" 
-             Width="300"
-             IsVisibleChanged="OnVisibilityChanged"
-             DataContext="{Binding RelativeSource={RelativeSource Self}}">
+             Width="300">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -33,8 +31,8 @@
                  Grid.Row="0" 
                  Grid.Column="1"
                  Margin="5"
-                 VerticalAlignment="Center" 
-                 Text="{Binding UserModel.Firstname, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, ValidatesOnNotifyDataErrors=True, Mode=TwoWay}"/>
+                 VerticalAlignment="Center"
+                 Text="{Binding ViewModel.Firstname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"/>
 
         <!-- Lastname row-->
         <TextBlock Name="LastnameLabel"
@@ -47,7 +45,7 @@
                  Grid.Column="1"
                  Margin="5"
                  VerticalAlignment="Center" 
-                 Text="{Binding UserModel.Lastname, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, Mode=TwoWay}"/>
+                 Text="{Binding ViewModel.Lastname, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, NotifyOnValidationError=True}"/>
 
         <!-- Username row-->
         <TextBlock Name="UsernameLabel"
@@ -60,7 +58,7 @@
                  Grid.Column="1"
                  Margin="5"
                  VerticalAlignment="Center" 
-                 Text="{Binding UserModel.Username, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, Mode=TwoWay}"/>
+                 Text="{Binding ViewModel.Username, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, NotifyOnValidationError=True}"/>
 
         <!-- Password row-->
         <TextBlock Name="PasswordLabel"
@@ -87,6 +85,6 @@
                   Margin="5"
                   ItemsSource="{Binding UserTypes}"
                   DisplayMemberPath="Label"
-                  SelectedItem="{Binding UserModel.UserType, Converter={StaticResource UserTypeSOMConverter}, UpdateSourceTrigger=PropertyChanged, NotifyOnValidationError=True, Mode=TwoWay}"/>
+                  SelectedItem="{Binding ViewModel.UserType, Converter={StaticResource UserTypeSOMConverter}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, NotifyOnValidationError=True}"/>
     </Grid>
 </UserControl>

@@ -229,7 +229,7 @@
     <value>Administrator</value>
   </data>
   <data name="ErrorInvalidStringLength" xml:space="preserve">
-    <value>'{0}' muss mindestens {1} und maximal {2} Zeichen beinhalten</value>
+    <value>'{0}' muss mindestens {2} und maximal {1} Zeichen beinhalten</value>
   </data>
   <data name="ExternalUser" xml:space="preserve">
     <value>Externer Benutzer</value>

@@ -20,6 +20,7 @@ namespace UFO.Commander.Wpf.Administration.Converter
             {
                 throw new ArgumentException("Expected type must not be null");
             }
+            ValueType = expectedType;
         }
 
         public virtual object Convert(object value, Type targetType, object parameter, CultureInfo culture)

@@ -28,7 +28,7 @@ namespace UFO.Commander.Wpf.Administration.Model
         public User LoggedUser
         {
             get { return user; }
-            set { if ((this.user = value) != null) { IsLogged = true; } }
+            set { if ((this.user = value) != null) { FirePropertyChangedEvent(); IsLogged = true;} }
         }
 
         /// <summary>

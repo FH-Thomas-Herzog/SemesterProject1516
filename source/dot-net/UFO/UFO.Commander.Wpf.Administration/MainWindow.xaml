@@ -7,58 +7,58 @@
         xmlns:p="clr-namespace:UFO.Commander.Wpf.Administration.Properties"
         xmlns:master="clr-namespace:UFO.Commander.Wpf.Administration.Views.MasterData"
         xmlns:security="clr-namespace:UFO.Commander.Wpf.Administration.Views.Security"
+        xmlns:tabModel="clr-namespace:UFO.Commander.Wpf.Administration.Model.Tab"
         mc:Ignorable="d"
         Title="{x:Static p:Resources.Administration}" 
         Height="350" 
         Width="525"
-        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+        DataContext="{Binding RelativeSource={RelativeSource Self}}"
+        x:Name="Main">
 
     <StackPanel>
-        <Grid Visibility="{Binding Application.UserContext.IsLogged, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+        <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*"/>
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
 
             <ListBox Name="Selection"
-                 Grid.Column="0" 
-                 HorizontalAlignment="Center" 
-                 VerticalAlignment="Top"
-                 Margin="10">
+                     Visibility="{Binding Application.UserContext.IsLogged, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                     Grid.Column="0" 
+                     HorizontalAlignment="Center" 
+                     VerticalAlignment="Top"
+                     Margin="10">
 
             </ListBox>
 
+            <security:LoginControl x:Name="LoginView"
+                                   Grid.Row="0"
+                                   Grid.Column="1"
+                                   Visibility="{Binding Application.UserContext.IsNotLogged, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center"/>
+
             <TabControl Name="TabGroup"
-                    Grid.Column="1"
-                    AllowDrop="False"
-                    Margin="10"
-                    SelectionChanged="OnTabChange">
-
-                <TabItem Name="UserTab"
-                     TabIndex="0" 
-                     Header="{x:Static p:Resources.UserPl}">
-                    <master:UserMasterData Margin="10" />
-                </TabItem>
-
-                <TabItem Name="ArtistTab"
-                     TabIndex="1"
-                     Header="{x:Static p:Resources.ArtistPl}">
-                    <master:ArtistMasterData Margin="10"/>
-                </TabItem>
-
-                <TabItem Name="VenueTab"
-                     TabIndex="2"
-                     Header="{x:Static p:Resources.VenuePl}"></TabItem>
-
-                <TabItem Name="PerformanceTab"
-                     TabIndex="3"
-                     Header="{x:Static p:Resources.PerformancePl}"></TabItem>
+                        Visibility="{Binding ElementName=Main, Path=UserContext.IsLogged, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                        DataContext="{Binding ElementName=Main, Path=MasterDataTabControler}"
+                        Grid.Row="0"
+                        Grid.Column="1"
+                        AllowDrop="False"
+                        Margin="10"
+                        ItemsSource="{Binding TabModels, UpdateSourceTrigger=PropertyChanged}"
+                        SelectedItem="{Binding SelectedTabModel, UpdateSourceTrigger=PropertyChanged}"
+                        SelectionChanged="OnTabChange">
+                <TabControl.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Header}" />
+                    </DataTemplate>
+                </TabControl.ItemTemplate>
+                <TabControl.Resources>
+                    <DataTemplate DataType="{x:Type tabModel:UserTab}">
+                        <master:UserMasterData/>
+                    </DataTemplate>
+                </TabControl.Resources>
             </TabControl>
         </Grid>
-
-        <security:LoginControl x:Name="LoginView"
-                               Visibility="{Binding Application.UserContext.IsNotLogged, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                               HorizontalAlignment="Center"
-                               VerticalAlignment="Center"/>
     </StackPanel>
 </Window>

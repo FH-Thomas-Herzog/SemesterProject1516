@@ -21,7 +21,7 @@ namespace UFO.Commander.Wpf.Administration
         public UserContextModel UserContext { get { return App.userContext; } }
         public IList<string> Countries { get; set; }
 
-        private void Application_Startup(object sender, StartupEventArgs e)
+        private void OnApplicationStart(object sender, StartupEventArgs e)
         {
             LoadCountries();
         }

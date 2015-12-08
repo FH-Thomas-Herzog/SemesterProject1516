@@ -259,7 +259,7 @@ namespace UFO.Commander.Wpf.Administration.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to &apos;{0}&apos; muss mindestens {1} und maximal {2} Zeichen beinhalten.
+        ///   Looks up a localized string similar to &apos;{0}&apos; muss mindestens {2} und maximal {1} Zeichen beinhalten.
         /// </summary>
         public static string ErrorInvalidStringLength {
             get {

@@ -26,7 +26,7 @@ namespace UFO.Commander.Wpf.Administration.Model
 
         public override bool Equals(object obj)
         {
-            return (Data != null) ? Data.Equals(obj) : base.Equals(obj);
+            return (Data != null) ? Data.Equals((obj as SimpleObjectModel)?.Data) : base.Equals(obj);
         }
     }
 }

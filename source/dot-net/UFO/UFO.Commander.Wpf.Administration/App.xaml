@@ -4,14 +4,25 @@
              xmlns:local="clr-namespace:UFO.Commander.Wpf.Administration"
              xmlns:converters="clr-namespace:UFO.Commander.Wpf.Administration.Converter"
              StartupUri="MainWindow.xaml"
-             Startup="Application_Startup">
+             Startup="OnApplicationStart">
     <Application.Resources>
         <!-- Application wide converters -->
-        <converters:CountryCodeToSimpleObjectModelConverter x:Key="UserTypeSOMConverter"/>
+        <converters:UserTypeToSimpleObjectModelConverter x:Key="UserTypeSOMConverter"/>
         <converters:ArtistCategoryToSimpleObjectModelConverter x:Key="ArtistCategorySOMConverter"/>
         <converters:ArtistGroupToSimpleObjectModelConverter x:Key="ArtistGroupSOMConverter"/>
         <converters:Base64ToImageConverter x:Key="Base64ImageConverter"/>
         <converters:CountryCodeToSimpleObjectModelConverter x:Key="CountryCodeSOMConverter"/>
         <converters:BooleanToVisibilityConverter x:Key="BooleanVisibilityConverter"/>
+        
+        <!-- Error Styles-->
+        <Style TargetType="TextBox">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip"
+                        Value="{Binding RelativeSource={x:Static RelativeSource.Self}, 
+                        Path=(Validation.Errors)[0].ErrorContent}"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
     </Application.Resources>
 </Application>

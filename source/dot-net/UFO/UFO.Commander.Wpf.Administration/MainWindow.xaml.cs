@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -13,6 +14,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using UFO.Commander.Wpf.Administration.Model;
+using UFO.Commander.Wpf.Administration.Model.Base;
+using UFO.Commander.Wpf.Administration.Model.Tab;
 using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Commander.Wpf.Administration
@@ -22,35 +25,26 @@ namespace UFO.Commander.Wpf.Administration
     /// </summary>
     public partial class MainWindow : Window
     {
-        public TabHandlerModel TabHandler { get; set; }
-
-        public App Application { get { return System.Windows.Application.Current as App; } }
-
+        public UserContextModel UserContext { get { return (System.Windows.Application.Current as App).UserContext; } }
+        public MasterDataTabControler MasterDataTabControler { get; private set; }
+        public ObservableCollection<SimpleObjectModel> SelectListItems { get; set; }
 
         public MainWindow()
         {
+            MasterDataTabControler = new MasterDataTabControler();
+            MasterDataTabControler.Init();
+            SelectListItems = new ObservableCollection<SimpleObjectModel>();
             InitializeComponent();
         }
 
-        public override void BeginInit()
+        public void InitMainWindow()
         {
-            base.BeginInit();
-            TabHandler = new TabHandlerModel();
+            MasterDataTabControler.setDefaultState();
         }
 
-        /// <summary>
-        /// Called when [tab change]. 
-        /// Prepares the backing tab handler and clears the former used handler and itsloaded data.
-        /// </summary>
-        /// <param name="sender">The sender which represents the selected tab</param>
-        /// <param name="e">The <see cref="SelectionChangedEventArgs"/> instance containing the event data.</param>
         private void OnTabChange(object sender, SelectionChangedEventArgs e)
         {
-            TabControl tabControl = sender as TabControl;
 
-            TabItem tab = tabControl.SelectedItem as TabItem;
-            tab.InvalidateVisual();
-            TabHandler.SelectedIndex = tab.TabIndex;
         }
     }
 }

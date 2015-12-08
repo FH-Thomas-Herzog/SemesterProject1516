@@ -9,21 +9,21 @@ namespace UFO.Commander.Wpf.Administration.Model
 {
     public class UserModel : BaseVersionedEntityViewModel<long?, User>
     {
-        public UserModel(User user) : base(user)
+        public UserModel(User user = null) : base(user)
         {
             // TODO: Add initialization for new user entity here
-            if (user.Id == null)
+            if (Entity == null)
             {
-                user.Type = User.UserType.ARTIST;
+                Entity = new User();
             }
         }
 
         [Required(ErrorMessageResourceName = "ErrorRequired",
-                  ErrorMessageResourceType = typeof(ResourceManager))]
+                  ErrorMessageResourceType = typeof(Resources))]
         [StringLength(100,
                       MinimumLength = 1,
                       ErrorMessageResourceName = "ErrorInvalidStringLength",
-                      ErrorMessageResourceType = typeof(ResourceManager))]
+                      ErrorMessageResourceType = typeof(Resources))]
         public string Firstname
         {
             get { return Entity.FirstName; }
@@ -31,11 +31,11 @@ namespace UFO.Commander.Wpf.Administration.Model
         }
 
         [Required(ErrorMessageResourceName = "ErrorRequired",
-                  ErrorMessageResourceType = typeof(ResourceManager))]
+                  ErrorMessageResourceType = typeof(Resources))]
         [StringLength(100,
                       MinimumLength = 1,
                       ErrorMessageResourceName = "ErrorInvalidStringLength",
-                      ErrorMessageResourceType = typeof(ResourceManager))]
+                      ErrorMessageResourceType = typeof(Resources))]
         public string Lastname
         {
             get { return Entity.LastName; }
@@ -43,11 +43,11 @@ namespace UFO.Commander.Wpf.Administration.Model
         }
 
         [Required(ErrorMessageResourceName = "ErrorRequired",
-                  ErrorMessageResourceType = typeof(ResourceManager))]
+                  ErrorMessageResourceType = typeof(Resources))]
         [StringLength(100,
                       MinimumLength = 1,
                       ErrorMessageResourceName = "ErrorInvalidStringLength",
-                      ErrorMessageResourceType = typeof(ResourceManager))]
+                      ErrorMessageResourceType = typeof(Resources))]
         // TODO: Add custom validator for checking against database
         public string Username
         {
@@ -56,13 +56,13 @@ namespace UFO.Commander.Wpf.Administration.Model
         }
 
         [Required(ErrorMessageResourceName = "ErrorRequired",
-                  ErrorMessageResourceType = typeof(ResourceManager))]
+                  ErrorMessageResourceType = typeof(Resources))]
         [StringLength(100,
                       MinimumLength = 1,
                       ErrorMessageResourceName = "ErrorInvalidStringLength",
-                      ErrorMessageResourceType = typeof(ResourceManager))]
+                      ErrorMessageResourceType = typeof(Resources))]
         [EmailAddress(ErrorMessageResourceName = "ErrorInvalidEmail",
-                      ErrorMessageResourceType = typeof(ResourceManager))]
+                      ErrorMessageResourceType = typeof(Resources))]
         public string Email
         {
             get { return Entity.Email; }
@@ -70,13 +70,13 @@ namespace UFO.Commander.Wpf.Administration.Model
         }
 
         [Required(ErrorMessageResourceName = "ErrorRequired",
-              ErrorMessageResourceType = typeof(ResourceManager))]
+              ErrorMessageResourceType = typeof(Resources))]
         [StringLength(100,
                   MinimumLength = 1,
                   ErrorMessageResourceName = "ErrorInvalidStringLength",
-                  ErrorMessageResourceType = typeof(ResourceManager))]
+                  ErrorMessageResourceType = typeof(Resources))]
         [EmailAddress(ErrorMessageResourceName = "ErrorInvalidEmail",
-                  ErrorMessageResourceType = typeof(ResourceManager))]
+                  ErrorMessageResourceType = typeof(Resources))]
         [Compare("Email")]
         public string EmailRepeation
         {
@@ -85,7 +85,7 @@ namespace UFO.Commander.Wpf.Administration.Model
         }
 
         [Required(ErrorMessageResourceName = "ErrorRequired",
-                  ErrorMessageResourceType = typeof(ResourceManager))]
+                  ErrorMessageResourceType = typeof(Resources))]
         public User.UserType? UserType
         {
             get { return Entity.Type; }

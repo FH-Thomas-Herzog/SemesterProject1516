@@ -70,9 +70,14 @@
     <Compile Include="Model\ArtistSelectionModel.cs" />
     <Compile Include="Model\Base\BaseEntityPropertyChangeModel.cs" />
     <Compile Include="Model\Base\BasePropertyChangeModel.cs" />
+    <Compile Include="Model\Base\BaseTabModel.cs" />
     <Compile Include="Model\Base\BaseVersionedEntityViewModel.cs" />
+    <Compile Include="Model\Base\ITabModel.cs" />
+    <Compile Include="Model\Base\BaseValidationViewModel.cs" />
     <Compile Include="Model\SimpleObjectMoel.cs" />
     <Compile Include="Model\TabHandlerModel.cs" />
+    <Compile Include="Model\Tab\MasterDataTabControler.cs" />
+    <Compile Include="Model\Tab\UserTab.cs" />
     <Compile Include="Model\UserContextModel.cs" />
     <Compile Include="Model\UserModel.cs" />
     <Compile Include="Views\MasterData\UserMasterData.xaml.cs">
@@ -137,7 +142,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Messages\" />
+    <Folder Include="Converter\Messages\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UFO.Commander.Service.Api\UFO.Commander.Service.Api.csproj">

@@ -35,7 +35,7 @@ namespace UFO.Commander.Wpf.Administration.Views.Security
 
         private void OnLoginButtonClick(object sender, RoutedEventArgs e)
         {
-            var window = Window.GetWindow(this);
+            MainWindow window = Window.GetWindow(this) as MainWindow;
             var user = securityService.Login(Username.Text, Password.Password);
             if (user == null)
             {
@@ -44,6 +44,7 @@ namespace UFO.Commander.Wpf.Administration.Views.Security
             else
             {
                 Application.UserContext.LoggedUser = user;
+                window.InitMainWindow();
             }
         }
 

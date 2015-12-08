@@ -14,7 +14,7 @@ namespace UFO.Commander.Wpf.Administration.Converter
 {
     public class UserTypeToSimpleObjectModelConverter : BaseValueToSimpleObjectModelConverter
     {
-        public UserTypeToSimpleObjectModelConverter() : base(typeof(User.UserType?)) { }
+        public UserTypeToSimpleObjectModelConverter() : base(typeof(User.UserType)) { }
 
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
