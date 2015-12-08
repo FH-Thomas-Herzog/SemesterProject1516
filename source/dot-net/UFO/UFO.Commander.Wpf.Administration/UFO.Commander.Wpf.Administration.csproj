@@ -138,7 +138,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Messages\" />
-    <Folder Include="Views\Validator\" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UFO.Commander.Service.Api\UFO.Commander.Service.Api.csproj">
