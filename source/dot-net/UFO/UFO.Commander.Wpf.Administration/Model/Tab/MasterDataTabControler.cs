@@ -11,8 +11,10 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
 {
     public class MasterDataTabControler : BasePropertyChangeModel
     {
-        private ITabModel selectedTabModel;
+        private int _SelectedTabIdx = -1;
+        private ITabModel _SelectedTabModel;
         private ObservableCollection<ITabModel> tabModels;
+        public UserContextModel UserContext { get { return (System.Windows.Application.Current as App).UserContext; } }
         public ObservableCollection<ITabModel> TabModels
         {
             get { return this.tabModels; }
@@ -21,28 +23,41 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
                 this.tabModels = value;
             }
         }
-        public ITabModel SelectedTabModel
+        public int SelectedTabIdx
         {
-            get { return this.selectedTabModel; }
+            get { return this._SelectedTabIdx; }
             set
             {
-                this.selectedTabModel = value; this.selectedTabModel.Init(null); FirePropertyChangedEvent();
+                _SelectedTabIdx = value;
+                FirePropertyChangedEvent();
             }
         }
-
+        public ITabModel PreviousSelectedTab { get; set; }
+        public ITabModel SelectedTabModel
+        {
+            get { return _SelectedTabModel; }
+            set
+            {
+                _SelectedTabModel = value;
+                FirePropertyChangedEvent();
+            }
+        }
+        public ITabModel PreviousSelectedTabModel { get; set; }
         public void Init()
         {
-            var userTab = new UserTab();
-            userTab.Init(new UserModel());
+            var userTab = new ArtistTab();
 
             ObservableCollection<ITabModel> tabs = new ObservableCollection<ITabModel>();
             tabs.Add(userTab);
+
             TabModels = tabs;
         }
 
-        public void setDefaultState()
+        public void SetDefaultState()
         {
-            TabModels.ElementAt(0).ViewModel = new UserModel((System.Windows.Application.Current as App).UserContext.LoggedUser);
+            SelectedTabIdx = 0;
+            SelectedTabModel = TabModels.ElementAt(SelectedTabIdx);
+            SelectedTabModel.InitTab();
         }
     }
 }

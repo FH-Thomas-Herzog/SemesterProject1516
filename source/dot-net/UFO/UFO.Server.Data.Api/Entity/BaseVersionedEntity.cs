@@ -9,7 +9,7 @@ namespace UFO.Server.Data.Api.Entity
     /// <typeparam name="T">The type of the entity id</typeparam>
     /// <typeparam name="O">The type of the owner which is normaly a user</typeparam>
     /// <typeparam name="I">The type of the owner id</typeparam>
-    public abstract class BaseVersionedEntity<T, O, I> : BaseEntity<I>, IVersionedEntity<I, T> where O : class, IEntity<T>
+    public abstract class BaseVersionedEntity<T, O, I> : BaseEntity<I>, IModifyableEntity<I, T> where O : class, IEntity<T>
     {
         [Column(Name = "creation_date", ReadOnly = true)]
         public DateTime CreationDate { get; set; }

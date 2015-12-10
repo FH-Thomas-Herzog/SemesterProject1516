@@ -37,14 +37,19 @@ namespace UFO.Commander.Wpf.Administration
             InitializeComponent();
         }
 
-        public void InitMainWindow()
+        private void OnTabChange(object sender, RoutedEventArgs e)
         {
-            MasterDataTabControler.setDefaultState();
+            if ((UserContext.IsLogged) && (!(sender as TabControl).SelectedItem.Equals(MasterDataTabControler.SelectedTabModel)))
+            {
+                MasterDataTabControler.PreviousSelectedTabModel?.CleanupTab();
+                MasterDataTabControler.SelectedTabModel.InitTab();
+                e.Handled = true;
+            }
         }
 
-        private void OnTabChange(object sender, SelectionChangedEventArgs e)
+        public void InitMainWindow()
         {
-
+            MasterDataTabControler.SetDefaultState();
         }
     }
 }

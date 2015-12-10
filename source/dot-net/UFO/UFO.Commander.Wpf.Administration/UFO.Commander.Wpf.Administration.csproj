@@ -72,17 +72,15 @@
     <Compile Include="Model\Base\BasePropertyChangeModel.cs" />
     <Compile Include="Model\Base\BaseTabModel.cs" />
     <Compile Include="Model\Base\BaseVersionedEntityViewModel.cs" />
-    <Compile Include="Model\Base\ITabModel.cs" />
+    <Compile Include="Model\Base\ITabedViewModel.cs" />
     <Compile Include="Model\Base\BaseValidationViewModel.cs" />
-    <Compile Include="Model\SimpleObjectMoel.cs" />
+    <Compile Include="Model\Base\ITabModel.cs" />
+    <Compile Include="Model\Base\RelayCommand.cs" />
+    <Compile Include="SimpleObjectMoel.cs" />
     <Compile Include="Model\TabHandlerModel.cs" />
     <Compile Include="Model\Tab\MasterDataTabControler.cs" />
-    <Compile Include="Model\Tab\UserTab.cs" />
+    <Compile Include="Model\Tab\ArtistTab.cs" />
     <Compile Include="Model\UserContextModel.cs" />
-    <Compile Include="Model\UserModel.cs" />
-    <Compile Include="Views\MasterData\UserMasterData.xaml.cs">
-      <DependentUpon>UserMasterData.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Views\Security\LoginControl.xaml.cs">
       <DependentUpon>LoginControl.xaml</DependentUpon>
     </Compile>
@@ -101,10 +99,6 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\MasterData\UserMasterData.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Views\Security\LoginControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

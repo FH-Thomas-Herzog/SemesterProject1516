@@ -19,28 +19,11 @@ namespace UFO.Commander.Wpf.Administration
         // There can only be one user context at the time per application
         private static UserContextModel userContext = new UserContextModel();
         public UserContextModel UserContext { get { return App.userContext; } }
-        public IList<string> Countries { get; set; }
 
         private void OnApplicationStart(object sender, StartupEventArgs e)
         {
-            LoadCountries();
         }
 
-        /// <summary>
-        /// Loads the countries.
-        /// </summary>
-        private void LoadCountries()
-        {
-            IList<string> countries = new List<string>();
-
-            foreach (CultureInfo cul in CultureInfo.GetCultures(CultureTypes.SpecificCultures))
-            {
-                RegionInfo country = new RegionInfo(new CultureInfo(cul.Name, false).LCID);
-                countries.Add(country.DisplayName.ToString());
-            }
-
-            countries.OrderBy(name => name).Distinct();
-        }
     }
 
 

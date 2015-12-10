@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace UFO.Commander.Wpf.Administration.Model.Base
 {
-    public interface ITabModel
+    public interface ITabedViewModel<M> : ITabModel where M :BasePropertyChangeModel
     {
-        string Header { get; set; }
-        void InitTab();
-        void CleanupTab();
+        M ViewModel { get; set; }
+        void Init(M model);
     }
 }

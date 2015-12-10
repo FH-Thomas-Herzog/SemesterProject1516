@@ -16,6 +16,40 @@ namespace UFO.Commander.Wpf.Administration.Model.Base
     {
         private readonly Dictionary<string, Func<BaseValidationViewModel, object>> propertyGetters;
         private readonly Dictionary<string, ValidationAttribute[]> validators;
+        private readonly IDictionary<string, bool> validPropertiesMap;
+
+        private bool _IsViewModelValid = false;
+
+        public BaseValidationViewModel()
+        {
+            validators = this.GetType()
+                .GetProperties()
+                .Where(p => this.GetValidations(p).Length != 0)
+                .ToDictionary(p => p.Name, p => this.GetValidations(p));
+
+            propertyGetters = this.GetType()
+                .GetProperties()
+                .Where(p => this.GetValidations(p).Length != 0)
+                .ToDictionary(p => p.Name, p => this.GetValueGetter(p));
+
+            validPropertiesMap = GetType()
+                .GetProperties()
+                .Where(p => this.GetValidations(p).Length != 0)
+                .ToDictionary(p => p.Name, p => false);
+        }
+
+        public bool IsViewModelValid
+        {
+            get
+            {
+                return _IsViewModelValid;
+            }
+            set
+            {
+                _IsViewModelValid = value;
+                FirePropertyChangedEvent();
+            }
+        }
 
         /// <summary>
         /// Gets the error message for the property with the given name.
@@ -32,6 +66,8 @@ namespace UFO.Commander.Wpf.Administration.Model.Base
                         .Where(v => !v.IsValid(propertyValue))
                         .Select(v => v.FormatErrorMessage(v.ErrorMessageResourceName)).ToArray();
 
+                    validPropertiesMap[propertyName] = errorMessages.Count() == 0;
+                    IsAllValid();
                     return string.Join(Environment.NewLine, errorMessages);
                 }
 
@@ -55,46 +91,6 @@ namespace UFO.Commander.Wpf.Administration.Model.Base
             }
         }
 
-        /// <summary>
-        /// Gets the number of properties which have a validation attribute and are currently valid
-        /// </summary>
-        public int ValidPropertiesCount
-        {
-            get
-            {
-                var query = from validator in this.validators
-                            where validator.Value.All(attribute => attribute.IsValid(this.propertyGetters[validator.Key](this)))
-                            select validator;
-
-                var count = query.Count() - this.validationExceptionCount;
-                return count;
-            }
-        }
-
-        /// <summary>
-        /// Gets the number of properties which have a validation attribute
-        /// </summary>
-        public int TotalPropertiesWithValidationCount
-        {
-            get
-            {
-                return this.validators.Count();
-            }
-        }
-
-        public BaseValidationViewModel()
-        {
-            this.validators = this.GetType()
-                .GetProperties()
-                .Where(p => this.GetValidations(p).Length != 0)
-                .ToDictionary(p => p.Name, p => this.GetValidations(p));
-
-            this.propertyGetters = this.GetType()
-                .GetProperties()
-                .Where(p => this.GetValidations(p).Length != 0)
-                .ToDictionary(p => p.Name, p => this.GetValueGetter(p));
-        }
-
         private ValidationAttribute[] GetValidations(PropertyInfo property)
         {
             return (ValidationAttribute[])property.GetCustomAttributes(typeof(ValidationAttribute), true);
@@ -105,12 +101,30 @@ namespace UFO.Commander.Wpf.Administration.Model.Base
             return new Func<BaseValidationViewModel, object>(viewmodel => property.GetValue(viewmodel, null));
         }
 
-        private int validationExceptionCount;
-
-        public void ValidationExceptionsChanged(int count)
+        protected void ValidateAll()
         {
-            this.validationExceptionCount = count;
-            this.FirePropertyChangedEvent();
+            foreach (var entry in propertyGetters)
+            {
+                object value = entry.Value(this);
+                validPropertiesMap[entry.Key] = ((from validator in this.validators
+                                                  where validator.Value.All(attribute => !attribute.IsValid(value))
+                                                  select validator).Count() == 0);
+            }
+            IsAllValid();
+        }
+
+        private void IsAllValid()
+        {
+            bool result = true;
+            foreach (var entry in validPropertiesMap)
+            {
+                if (!entry.Value)
+                {
+                    result = false;
+                    break;
+                }
+            }
+            IsViewModelValid = result;
         }
     }
 }

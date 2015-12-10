@@ -34,5 +34,10 @@ namespace UFO.Commander.Wpf.Administration.Views.MasterData
         {
 
         }
+
+        private void ArtistImageButton_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

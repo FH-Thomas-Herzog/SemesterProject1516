@@ -55,7 +55,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
 
         #region ById
         // -- Then --
-        [Test(Description = "dao#ById(null)"), ExpectedException(typeof(PersistenceException))]
+        [Test(Description = "dao#ById(null)"), ExpectedException(typeof(EntityNotFoundException))]
         [CleanupDatabase]
         public void ById_NullId()
         {
@@ -67,7 +67,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
         }
 
         // -- Then --
-        [Test(Description = "dao#ById(invalid)"), ExpectedException(typeof(PersistenceException))]
+        [Test(Description = "dao#ById(invalid)"), ExpectedException(typeof(EntityNotFoundException))]
         [CleanupDatabase]
         public void ById_IdNotFound()
         {
@@ -135,7 +135,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
 
         #region Update
         // -- Then --
-        [Test(Description = "dao#Update(null)"), ExpectedException(typeof(PersistenceException))]
+        [Test(Description = "dao#Update(null)"), ExpectedException(typeof(ArgumentException))]
         [CleanupDatabase]
         public void Update_NullEntity()
         {
@@ -147,7 +147,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
         }
 
         // -- Then --
-        [Test(Description = "dao#Update(invalidId)"), ExpectedException(typeof(PersistenceException))]
+        [Test(Description = "dao#Update(invalidId)"), ExpectedException(typeof(EntityNotFoundException))]
         [CleanupDatabase]
         public void Update_NotFound()
         {
@@ -157,6 +157,20 @@ namespace UFO.Server.Test.Data.MySql.Dao
 
             // -- When --
             dao.Update(entity);
+        }
+        // -- Then --
+        [Test(Description = "dao#Update(valid)")]
+        [CleanupDatabase]
+        public void Update_InvalidVersion()
+        {
+            // -- Given --
+            E entity = entityHelper.Persist(entityHelper.CreateValidEntity());
+            
+            // -- When --
+            E loaded = dao.Update(entity);
+
+            // -- Then --
+            Assert.AreEqual(entity, loaded);
         }
 
         // -- Then --
@@ -178,7 +192,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
 
         #region Persist
         // -- Then --
-        [Test(Description = "dao#Persist(null)"), ExpectedException(typeof(PersistenceException))]
+        [Test(Description = "dao#Persist(null)"), ExpectedException(typeof(ArgumentException))]
         [CleanupDatabase]
         public void Persist_NullEntity()
         {
@@ -190,7 +204,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
         }
 
         // -- Then --
-        [Test(Description = "dao#Persist(entity.id != null)"), ExpectedException(typeof(PersistenceException))]
+        [Test(Description = "dao#Persist(entity.id != null)"), ExpectedException(typeof(ArgumentException))]
         [CleanupDatabase]
         public void Persist_EntityIdInvalid()
         {
@@ -244,9 +258,9 @@ namespace UFO.Server.Test.Data.MySql.Dao
 
         #region Delete
         // -- Then --
-        [Test(Description = "dao#Delete(null)"), ExpectedException(typeof(PersistenceException))]
+        [Test(Description = "dao#Delete(null)"), ExpectedException(typeof(EntityNotFoundException))]
         [CleanupDatabase]
-        public void Delete_NullEntity()
+        public void Delete_NullId()
         {
             // -- Given --
             I id = default(I);
@@ -256,7 +270,7 @@ namespace UFO.Server.Test.Data.MySql.Dao
         }
 
         // -- Then --
-        [Test(Description = "dao#Delete(invalid)"), ExpectedException(typeof(PersistenceException))]
+        [Test(Description = "dao#Delete(invalid)"), ExpectedException(typeof(EntityNotFoundException))]
         [CleanupDatabase]
         public void Delete_InvalidId()
         {

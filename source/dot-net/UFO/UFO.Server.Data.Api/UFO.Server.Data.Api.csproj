@@ -63,6 +63,7 @@
     <Compile Include="Db\EntityMetamodelFactory.cs" />
     <Compile Include="Db\IDbTypeResolver.cs" />
     <Compile Include="Db\IQueryCreator.cs" />
+    <Compile Include="Entity\IVersionedEntity.cs" />
     <Compile Include="Entity\Venue.cs" />
     <Compile Include="Entity\ArtistGroup.cs" />
     <Compile Include="Entity\Artist.cs" />
@@ -71,8 +72,10 @@
     <Compile Include="Entity\BaseEntity.cs" />
     <Compile Include="Entity\BaseVersionedEntity.cs" />
     <Compile Include="Entity\IEntity.cs" />
-    <Compile Include="Entity\IVersionedEntity.cs" />
+    <Compile Include="Entity\IModifyableEntity.cs" />
     <Compile Include="Entity\User.cs" />
+    <Compile Include="Exception\ConcurrentUpdateException.cs" />
+    <Compile Include="Exception\EntityNotFoundException.cs" />
     <Compile Include="Exception\PersistenceException.cs" />
     <Compile Include="Helper\BaseEntityHelper.cs" />
     <Compile Include="Helper\IEntityHelper.cs" />

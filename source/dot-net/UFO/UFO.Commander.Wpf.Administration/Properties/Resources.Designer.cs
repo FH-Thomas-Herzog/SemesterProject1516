@@ -88,6 +88,15 @@ namespace UFO.Commander.Wpf.Administration.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Neu.
+        /// </summary>
+        public static string ActionNew {
+            get {
+                return ResourceManager.GetString("ActionNew", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Speichern.
         /// </summary>
         public static string ActionSave {
@@ -399,6 +408,15 @@ namespace UFO.Commander.Wpf.Administration.Properties {
         public static string PerformancePl {
             get {
                 return ResourceManager.GetString("PerformancePl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bitte wählen.
+        /// </summary>
+        public static string PleaseChoose {
+            get {
+                return ResourceManager.GetString("PleaseChoose", resourceCulture);
             }
         }
         

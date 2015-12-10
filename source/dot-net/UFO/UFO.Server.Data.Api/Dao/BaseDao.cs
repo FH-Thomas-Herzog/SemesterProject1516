@@ -90,7 +90,7 @@ namespace UFO.Server.Data.Api
 
             if (entity == null)
             {
-                throw new PersistenceException("Entity '" + metamodel.GetEntityType().Name + "' with id: '" + ((id != null) ? id.ToString() : "null") + "' not found");
+                throw new EntityNotFoundException("Entity '" + metamodel.GetEntityType().Name + "' with id: '" + ((id != null) ? id.ToString() : "null") + "' not found");
             }
 
             return entity;
@@ -98,13 +98,13 @@ namespace UFO.Server.Data.Api
         public bool Delete(I id)
         {
             bool result = false;
+            if (!EntityExists(id))
+            {
+                throw new EntityNotFoundException("Entity with id: '" + id.ToString() + "' not found");
+            }
+
             try
             {
-                if (!EntityExists(id))
-                {
-                    throw new PersistenceException("Entity with id: '" + id.ToString() + "' not found");
-                }
-
                 result = (commandBuilder.Clear()
                                   .WithQuery(queryCreator.CreateDeleteQuery<I, E>())
                                   .SetParameter("?id", id)
@@ -112,7 +112,7 @@ namespace UFO.Server.Data.Api
             }
             catch (System.Exception e)
             {
-                throw new PersistenceException("Could not delete entity", e);
+                throw new PersistenceException("Could not construct '" + this.GetType().Name + "'", e);
             }
             finally
             {
@@ -125,33 +125,33 @@ namespace UFO.Server.Data.Api
         public E Persist(E entity)
         {
 
+            if (entity == null)
+            {
+                throw new ArgumentException("Entity must not be null");
+            }
+
+            I id = entity.Id;
+
+            switch (metamodel.GetPkType())
+            {
+                case UFO.Server.Data.Api.Attribute.PkType.MANUAL:
+                    if (id == null)
+                    {
+                        throw new ArgumentException("PkType is AUTO but entity does not proivde an id value");
+                    }
+                    break;
+                case UFO.Server.Data.Api.Attribute.PkType.AUTO:
+                    if (id != null)
+                    {
+                        throw new ArgumentException("Entity id is provided automatically and therefore must not be provided");
+                    }
+                    break;
+                default:
+                    throw new ArgumentException("Unknown pk type detected '" + metamodel.GetPkType() + "'");
+            }
+
             try
             {
-                if (entity == null)
-                {
-                    new ArgumentException("Entity must not be null");
-                }
-
-                I id = entity.Id;
-
-                switch (metamodel.GetPkType())
-                {
-                    case UFO.Server.Data.Api.Attribute.PkType.MANUAL:
-                        if (id == null)
-                        {
-                            throw new ArgumentException("PkType is AUTO but entity does not proivde an id value");
-                        }
-                        break;
-                    case UFO.Server.Data.Api.Attribute.PkType.AUTO:
-                        if (id != null)
-                        {
-                            throw new ArgumentException("Entity id is provided automatically and therefore must not be provided");
-                        }
-                        break;
-                    default:
-                        throw new ArgumentException("Unknown pk type detected '" + metamodel.GetPkType() + "'");
-                }
-
                 IDictionary<string, object> propertyToValueMap = EntityBuilder.CreateFromEntity<I, E>(entity, true);
                 commandBuilder.Clear()
                               .WithQuery(queryCreator.CreatePersistQuery<I, E>(entity, propertyToValueMap));
@@ -176,7 +176,7 @@ namespace UFO.Server.Data.Api
             }
             catch (System.Exception e)
             {
-                throw new PersistenceException(this.GetType().Name + "#Persist(entity) failed", e);
+                throw new PersistenceException("Persist failed", e);
             }
             finally
             {
@@ -190,18 +190,23 @@ namespace UFO.Server.Data.Api
         public E Update(E entity)
         {
             E result = null;
+            if ((entity == null) || (entity.Id == null))
+            {
+                throw new ArgumentException("Cannot update null entity or entity with null id");
+            }
+
+            E entityDB = Find(entity.Id);
+            if (entityDB == null)
+            {
+                throw new EntityNotFoundException("Entity with id: '" + entity.Id.ToString() + "' not found");
+            }
+            if ((entityDB is IVersionedEntity) && (!(entityDB as IVersionedEntity).Version.Equals((entity as IVersionedEntity).Version)))
+            {
+                throw new ConcurrentUpdateException("Entity Version is different from daabase state");
+            }
+
             try
             {
-                if ((entity == null) || (entity.Id == null))
-                {
-                    throw new ArgumentException("Cannot update null entity or entity with null id");
-                }
-
-                if (!EntityExists(entity.Id))
-                {
-                    throw new PersistenceException("Entity with id: '" + entity.Id.ToString() + "' not found");
-                }
-
                 IDictionary<string, object> propertyToValueMap = EntityBuilder.CreateFromEntity<I, E>(entity, true);
                 commandBuilder.WithQuery(queryCreator.CreateUpdateQuery<I, E>(entity, propertyToValueMap))
                               .SetParameter("?id", entity.Id);
@@ -216,7 +221,7 @@ namespace UFO.Server.Data.Api
             }
             catch (System.Exception e)
             {
-                throw new PersistenceException("Could not update entity", e);
+                throw new PersistenceException("Persist failed", e);
             }
             finally
             {

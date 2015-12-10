@@ -38,6 +38,9 @@ namespace UFO.Server.Data.Api.Entity
         [Column(Name = "image_file_type")]
         public string ImageFileType { get; set; }
 
+        [Column(Name = "url")]
+        public string Url { get; set; }
+
         [ManyToOne(FkProperty = "ArtCategoryId")]
         public ArtistCategory ArtistCategory { get; set; }
 

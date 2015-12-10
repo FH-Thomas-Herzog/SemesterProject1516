@@ -39,14 +39,14 @@
                                    VerticalAlignment="Center"/>
 
             <TabControl Name="TabGroup"
-                        Visibility="{Binding ElementName=Main, Path=UserContext.IsLogged, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
+                        Visibility="{Binding UserContext.IsLogged, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                         DataContext="{Binding ElementName=Main, Path=MasterDataTabControler}"
                         Grid.Row="0"
                         Grid.Column="1"
                         AllowDrop="False"
                         Margin="10"
                         ItemsSource="{Binding TabModels, UpdateSourceTrigger=PropertyChanged}"
-                        SelectedItem="{Binding SelectedTabModel, UpdateSourceTrigger=PropertyChanged}"
+                        SelectedIndex="{Binding SelectedTabIdx, UpdateSourceTrigger=PropertyChanged}"
                         SelectionChanged="OnTabChange">
                 <TabControl.ItemTemplate>
                     <DataTemplate>
@@ -54,8 +54,8 @@
                     </DataTemplate>
                 </TabControl.ItemTemplate>
                 <TabControl.Resources>
-                    <DataTemplate DataType="{x:Type tabModel:UserTab}">
-                        <master:UserMasterData/>
+                    <DataTemplate DataType="{x:Type tabModel:ArtistTab}">
+                        <master:ArtistMasterData/>
                     </DataTemplate>
                 </TabControl.Resources>
             </TabControl>

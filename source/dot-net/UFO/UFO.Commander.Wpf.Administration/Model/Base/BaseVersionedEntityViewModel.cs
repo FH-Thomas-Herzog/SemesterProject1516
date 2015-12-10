@@ -11,11 +11,28 @@ namespace UFO.Commander.Wpf.Administration.Model.Base
     public abstract class BaseVersionedEntityViewModel<I, E> : BaseValidationViewModel where E : BaseVersionedEntity<long?, User, I>
 
     {
-        private E entity = null;
+        private E _Entity = null;
+        private bool _IsDeletable = false;
 
-        protected BaseVersionedEntityViewModel(E entity)
+        protected BaseVersionedEntityViewModel(E entity) : base()
         {
-            this.entity = entity;
+            if(entity == null)
+            {
+                throw new ArgumentException("BaseVersionedEntityViewModel is not allowed to set null entity");
+            }
+            this._Entity = entity;
+            _IsDeletable = ((_Entity != null) && (_Entity.Id != null));
+            ValidateAll();
+        }
+
+        public bool IsDeletable
+        {
+            get { return _IsDeletable; }
+            set
+            {
+                _IsDeletable = value;
+                FirePropertyChangedEvent();
+            }
         }
 
         public I Id
@@ -25,8 +42,13 @@ namespace UFO.Commander.Wpf.Administration.Model.Base
 
         public E Entity
         {
-            get { return this.entity; }
-            set { this.entity = value; FirePropertyChangedEvent(); }
+            get { return this._Entity; }
+            set
+            {
+                this._Entity = value;
+                FirePropertyChangedEvent();
+                ValidateAll();
+            }
         }
 
         public DateTime? CreationDate

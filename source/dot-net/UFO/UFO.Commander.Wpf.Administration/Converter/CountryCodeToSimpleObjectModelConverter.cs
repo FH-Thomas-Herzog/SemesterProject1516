@@ -19,7 +19,7 @@ namespace UFO.Commander.Wpf.Administration.Converter
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
             object converted = base.Convert(value, targetType, parameter, culture);
-            return converted ?? new SimpleObjectModel(value, new RegionInfo((string)value).DisplayName);
+            return converted ?? new SimpleObjectModel(value, new RegionInfo((value as string).ToUpper()).DisplayName);
         }
     }
 }

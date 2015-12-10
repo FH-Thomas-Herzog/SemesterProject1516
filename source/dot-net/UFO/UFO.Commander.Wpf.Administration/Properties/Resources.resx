@@ -261,4 +261,10 @@
   <data name="ErrorMessage" xml:space="preserve">
     <value>Fehlermeldung</value>
   </data>
+  <data name="ActionNew" xml:space="preserve">
+    <value>Neu</value>
+  </data>
+  <data name="PleaseChoose" xml:space="preserve">
+    <value>Bitte wählen</value>
+  </data>
 </root>

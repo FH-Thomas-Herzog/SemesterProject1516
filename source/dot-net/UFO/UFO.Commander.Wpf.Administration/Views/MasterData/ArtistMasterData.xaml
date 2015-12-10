@@ -16,6 +16,9 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
@@ -34,7 +37,7 @@
                  Grid.Column="1"
                  Margin="5"
                  VerticalAlignment="Center" 
-                 Text="Thomas"/>
+                 Text="{Binding ViewModel.Firstname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"/>
 
         <!-- Lastname row-->
         <TextBlock Name="LastnameLabel"
@@ -46,57 +49,125 @@
                  Grid.Row="1" 
                  Grid.Column="1"
                  Margin="5"
+                 VerticalAlignment="Center"
+                 Text="{Binding ViewModel.Lastname, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"/>
+
+        <!-- Email row-->
+        <TextBlock Name="EmailLabel"
+                   Grid.Row="2"
+                   Grid.Column="0"
+                   Margin="5"
+                   Text="{x:Static p:Resources.Email}"/>
+        <TextBox Name="Email" 
+                 Grid.Row="2" 
+                 Grid.Column="1"
+                 Margin="5"
                  VerticalAlignment="Center" 
-                 Text="Herzog"/>
+                 Text="{Binding ViewModel.Email, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"/>
 
         <!-- ArtistGroup row-->
         <TextBlock Name="ArtistGroupLabel"
-                   Grid.Row="2"
+                   Grid.Row="3"
                    Grid.Column="0"
                    Margin="5"
                    Text="{x:Static p:Resources.ArtistGruop}"/>
         <ComboBox Name="ArtistGroupSelection"
-                  Grid.Row="2"
+                  Grid.Row="3"
                   Grid.Column="1"
-                  Margin="5" />
+                  Margin="5" 
+                  DisplayMemberPath="Label"
+                  ItemsSource="{Binding ArtistGroups}"
+                  SelectedItem="{Binding ViewModel.ArtistGroup, Converter={StaticResource ArtistGroupSOMConverter}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"/>
 
         <!-- ArtistCategory row-->
         <TextBlock Name="ArtistCategoryLabel"
-                   Grid.Row="3"
+                   Grid.Row="4"
                    Grid.Column="0"
                    Margin="5"
                    Text="{x:Static p:Resources.ArtistCategory}"/>
         <ComboBox Name="ArtistCategorySelection"
-                  Grid.Row="3"
+                  Grid.Row="4"
                   Grid.Column="1"
-                  Margin="5"/>
+                  Margin="5"
+                  DisplayMemberPath="Label"
+                  ItemsSource="{Binding ArtistCategories}"
+                  SelectedItem="{Binding ViewModel.ArtistCategory, Converter={StaticResource ArtistCategorySOMConverter}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"/>
+
+        <!-- Country row-->
+        <TextBlock Name="CountryLabel"
+                   Grid.Row="5"
+                   Grid.Column="0"
+                   Margin="5"
+                   Text="{x:Static p:Resources.Country}"/>
+        <ComboBox Name="CountrySelection"
+                  Grid.Row="5"
+                  Grid.Column="1"
+                  Margin="5" 
+                  DisplayMemberPath="Label"
+                  ItemsSource="{Binding Countries}"
+                  SelectedItem="{Binding ViewModel.Country, Converter={StaticResource CountryCodeSOMConverter}, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"/>
 
         <!-- Image row-->
         <TextBlock Name="ArtistImageLabel"
-                   Grid.Row="4"
+                   Grid.Row="6"
                    Grid.Column="0"
                    Margin="5"
                    Text="{x:Static p:Resources.Image}"/>
         <Button Name="ArtistImageButton"
-                   Grid.Row="4"
+                   Grid.Row="6"
                    Grid.Column="1"
                    Margin="5"
                    MaxWidth="300"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
-                   Content="{x:Static p:Resources.OpenFileBrowser}"/>
-        
+                   Content="{x:Static p:Resources.OpenFileBrowser}"
+                   Click="ArtistImageButton_Click"/>
+
         <!-- Web Address row-->
-        <TextBlock Name="ArtistWebAddressLabel"
-                   Grid.Row="5"
+        <TextBlock Name="UrlLabel"
+                   Grid.Row="7"
                    Grid.Column="0"
                    Margin="5"
                    Text="{x:Static p:Resources.Url}"/>
-        <TextBox Name="ArtistWebAddress" 
-                 Grid.Row="5" 
+        <TextBox Name="Url" 
+                 Grid.Row="7" 
                  Grid.Column="1"
                  Margin="5"
                  VerticalAlignment="Center" 
-                 Text="Herzog"/>
+                 Text="{Binding ViewModel.Url}"/>
+
+        <Grid Name="ActionGroup"
+                    Grid.Row="8"
+                    Grid.Column="1">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Name="NewAction"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Content="{x:Static p:Resources.ActionNew}"
+                    Margin="10"
+                    Command="{Binding NewCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Name="SaveAction"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Content="{x:Static p:Resources.ActionSave}"
+                    Margin="10"
+                    Command="{Binding SaveCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Name="DeleteAction"
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    Content="{x:Static p:Resources.ActionDelete}"
+                    Margin="10"
+                    Command="{Binding DeleteCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+        </Grid>
     </Grid>
 </UserControl>
