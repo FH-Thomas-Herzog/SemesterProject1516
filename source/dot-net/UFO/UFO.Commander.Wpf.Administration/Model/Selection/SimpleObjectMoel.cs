@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using UFO.Server.Data.Api.Entity;
 
-namespace UFO.Commander.Wpf.Administration.Model
+namespace UFO.Commander.Wpf.Administration.Model.Selection
 {
     public class SimpleObjectModel
     {

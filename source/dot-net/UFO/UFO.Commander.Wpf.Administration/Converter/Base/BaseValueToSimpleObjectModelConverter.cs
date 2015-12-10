@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using UFO.Commander.Wpf.Administration.Model;
+using UFO.Commander.Wpf.Administration.Model.Selection;
 using UFO.Commander.Wpf.Administration.Properties;
 
 namespace UFO.Commander.Wpf.Administration.Converter
@@ -28,7 +29,7 @@ namespace UFO.Commander.Wpf.Administration.Converter
         {
             if(value == null)
             {
-                return new SimpleObjectModel(null, Resources.PleaseChoose);
+                return null;
             }
             CheckForValidType(value.GetType());
             return null;

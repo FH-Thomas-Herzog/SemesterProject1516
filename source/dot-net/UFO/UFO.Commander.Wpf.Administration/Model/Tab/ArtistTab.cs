@@ -10,6 +10,7 @@ using UFO.Commander.Service.Api;
 using UFO.Commander.Service.Api.Base;
 using UFO.Commander.Wpf.Administration.Converter;
 using UFO.Commander.Wpf.Administration.Model.Base;
+using UFO.Commander.Wpf.Administration.Model.Selection;
 using UFO.Commander.Wpf.Administration.Properties;
 using UFO.Server.Data.Api.Dao;
 using UFO.Server.Data.Api.Entity;
@@ -18,6 +19,8 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
 {
     public class ArtistTab : BaseTabModel<ArtistModel, ArtistSelectionModel>
     {
+        public ArtistTab() : base() { }
+
         #region DAO, Services
         private IArtistDao artistDao;
         private IArtistGroupDao artistGroupDao;
@@ -118,19 +121,33 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
 
         public override void Init(ArtistModel model = null)
         {
-            ViewModel = model ?? new ArtistModel(new Artist());
-            if (ViewModel.Id == null)
+            model = model ?? new ArtistModel(new Artist());
+            ArtistSelectionModel selected;
+            if (model.Id == null)
             {
+                selected = null;
                 if (ArtistGroups.Count() > 0)
                 {
-                    ViewModel.ArtistGroup = (ArtistGroup)ArtistGroups.ElementAt(0).Data;
+                    model.Entity.ArtistGroup = (ArtistGroup)ArtistGroups.ElementAt(0).Data;
                 }
                 if (_ArtistCategories.Count() > 0)
                 {
-                    ViewModel.ArtistCategory = (ArtistCategory)ArtistCategories.ElementAt(0).Data;
+                    model.Entity.ArtistCategory = (ArtistCategory)ArtistCategories.ElementAt(0).Data;
                 }
-                ViewModel.Country = new RegionInfo(new CultureInfo(CultureInfo.CurrentCulture.Name, false).LCID).TwoLetterISORegionName;
+                model.Entity.CountryCode = new RegionInfo(new CultureInfo(CultureInfo.CurrentCulture.Name, false).LCID).TwoLetterISORegionName;
+                model.Entity.ModificationUserId = UserContext.LoggedUser.Id;
             }
+            else
+            {
+                selected = new ArtistSelectionModel(model.Entity);
+                model.Entity.CreationUser = UserContext.LoggedUser;
+                model.Entity.ArtistGroup = artistGroupDao.Find(model.Entity.ArtistGroupId);
+                model.Entity.ArtistCategory = artistCategoryDao.Find(model.Entity.ArtistCategoryId);
+            }
+
+            // After preparation fire the PropertyChanged event
+            ViewModel = model;
+            SelectedSelectionModel = selected;
         }
 
         public override void CleanupTab()
@@ -144,6 +161,18 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             DaoFactory.DisposeDao(artistGroupDao);
             ServiceFactory.DisposeService(artistService);
         }
+
+        public override void SelectionChanged()
+        {
+            if (SelectedSelectionModel != null)
+            {
+                Artist artist = artistDao.ById((SelectedSelectionModel.Data as Artist).Id);
+                Init(new ArtistModel(artist));
+            }
+            else {
+                Init();
+            }
+        }
         #endregion
 
         #region Helper
@@ -156,7 +185,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
 
         private void LoadArtists(Artist artist = null)
         {
-            SelectionModels = new ObservableCollection<ArtistSelectionModel>();
+            SelectionModels.Clear();
             IList<Artist> result = artistDao.GetAll();
             foreach (var item in result)
             {

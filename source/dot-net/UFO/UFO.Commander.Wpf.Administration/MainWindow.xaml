@@ -8,27 +8,60 @@
         xmlns:master="clr-namespace:UFO.Commander.Wpf.Administration.Views.MasterData"
         xmlns:security="clr-namespace:UFO.Commander.Wpf.Administration.Views.Security"
         xmlns:tabModel="clr-namespace:UFO.Commander.Wpf.Administration.Model.Tab"
+        xmlns:selectionModel="clr-namespace:UFO.Commander.Wpf.Administration.Model.Selection"
         mc:Ignorable="d"
         Title="{x:Static p:Resources.Administration}" 
-        Height="350" 
-        Width="525"
+        Height="400" 
+        Width="1024"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         x:Name="Main">
 
     <StackPanel>
         <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="350"/>
+            </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="2*"/>
                 <ColumnDefinition Width="3*"/>
             </Grid.ColumnDefinitions>
 
             <ListBox Name="Selection"
                      Visibility="{Binding Application.UserContext.IsLogged, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                      Grid.Column="0" 
-                     HorizontalAlignment="Center" 
-                     VerticalAlignment="Top"
-                     Margin="10">
-
+                     Margin="10"
+                     HorizontalAlignment="Stretch"
+                     VerticalAlignment="Stretch"
+                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                     ScrollViewer.VerticalScrollBarVisibility="Visible"
+                     ItemsSource="{Binding MasterDataTabControler.SelectedTabModel.SelectionModels, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                     SelectedItem="{Binding MasterDataTabControler.SelectedTabModel.SelectedSelectionModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                     SelectionChanged="OnSelectionChanged">
+                <ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type selectionModel:ArtistSelectionModel}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="1*"/>
+                                <ColumnDefinition Width="2*"/>
+                            </Grid.ColumnDefinitions>
+                            <Image Source="{Binding Image, Converter={StaticResource Base64ImageConverter}}"
+                                   Grid.Row="0"
+                                   Grid.Column="0"
+                                   Height="40"
+                                   Width="40" 
+                                   RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                   Stretch="Fill"
+                                   Margin="5"/>
+                            <TextBlock Text="{Binding Label}"
+                                     Grid.Row="1"
+                                     Grid.Column="1"
+                                     Margin="5"/>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
             </ListBox>
 
             <security:LoginControl x:Name="LoginView"

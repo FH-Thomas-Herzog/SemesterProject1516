@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using UFO.Commander.Wpf.Administration.Model;
+using UFO.Commander.Wpf.Administration.Model.Selection;
 using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Commander.Wpf.Administration.Converter
@@ -16,8 +17,8 @@ namespace UFO.Commander.Wpf.Administration.Converter
 
         public override object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            object converted = base.Convert(value, targetType, parameter, culture);
-            return converted ?? new SimpleObjectModel(value, ((ArtistCategory)value)?.Name);
+            base.Convert(value, targetType, parameter, culture);
+            return value == null ? null : new SimpleObjectModel(value, ((ArtistCategory)value)?.Name);
         }
     }
 }

@@ -11,5 +11,6 @@ namespace UFO.Commander.Wpf.Administration.Model.Base
         string Header { get; set; }
         void InitTab();
         void CleanupTab();
+        void SelectionChanged();
     }
 }

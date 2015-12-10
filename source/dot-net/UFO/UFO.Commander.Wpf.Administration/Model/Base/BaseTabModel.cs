@@ -4,6 +4,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using UFO.Commander.Wpf.Administration.Model.Selection;
 
 namespace UFO.Commander.Wpf.Administration.Model.Base
 {
@@ -13,7 +14,11 @@ namespace UFO.Commander.Wpf.Administration.Model.Base
         protected string _Header;
         protected M _ViewModel;
         protected S _SelectedSelectionModel;
-        protected ObservableCollection<S> _SelectionModels;
+
+        public BaseTabModel() : base()
+        {
+            SelectionModels = new ObservableCollection<S>();
+        }
 
         public string Header
         {
@@ -46,17 +51,13 @@ namespace UFO.Commander.Wpf.Administration.Model.Base
         }
         public ObservableCollection<S> SelectionModels
         {
-            get { return _SelectionModels; }
-            set
-            {
-                _SelectionModels = value;
-                FirePropertyChangedEvent();
-            }
+            get; private set;
         }
 
         public abstract void InitTab();
         public abstract void Init(M model);
         public abstract void CleanupTab();
+        public abstract void SelectionChanged();
 
     }
 }

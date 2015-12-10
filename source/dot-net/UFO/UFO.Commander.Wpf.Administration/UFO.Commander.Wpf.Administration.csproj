@@ -67,7 +67,7 @@
     <Compile Include="Model\ArtistGroupModel.cs" />
     <Compile Include="Model\ArtistCategoryModel.cs" />
     <Compile Include="Model\ArtistModel.cs" />
-    <Compile Include="Model\ArtistSelectionModel.cs" />
+    <Compile Include="Model\Selection\ArtistSelectionModel.cs" />
     <Compile Include="Model\Base\BaseEntityPropertyChangeModel.cs" />
     <Compile Include="Model\Base\BasePropertyChangeModel.cs" />
     <Compile Include="Model\Base\BaseTabModel.cs" />
@@ -76,7 +76,7 @@
     <Compile Include="Model\Base\BaseValidationViewModel.cs" />
     <Compile Include="Model\Base\ITabModel.cs" />
     <Compile Include="Model\Base\RelayCommand.cs" />
-    <Compile Include="SimpleObjectMoel.cs" />
+    <Compile Include="Model\Selection\SimpleObjectMoel.cs" />
     <Compile Include="Model\TabHandlerModel.cs" />
     <Compile Include="Model\Tab\MasterDataTabControler.cs" />
     <Compile Include="Model\Tab\ArtistTab.cs" />

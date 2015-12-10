@@ -68,6 +68,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Base
 
                     validPropertiesMap[propertyName] = errorMessages.Count() == 0;
                     IsAllValid();
+
                     return string.Join(Environment.NewLine, errorMessages);
                 }
 
@@ -99,18 +100,6 @@ namespace UFO.Commander.Wpf.Administration.Model.Base
         private Func<BaseValidationViewModel, object> GetValueGetter(PropertyInfo property)
         {
             return new Func<BaseValidationViewModel, object>(viewmodel => property.GetValue(viewmodel, null));
-        }
-
-        protected void ValidateAll()
-        {
-            foreach (var entry in propertyGetters)
-            {
-                object value = entry.Value(this);
-                validPropertiesMap[entry.Key] = ((from validator in this.validators
-                                                  where validator.Value.All(attribute => !attribute.IsValid(value))
-                                                  select validator).Count() == 0);
-            }
-            IsAllValid();
         }
 
         private void IsAllValid()

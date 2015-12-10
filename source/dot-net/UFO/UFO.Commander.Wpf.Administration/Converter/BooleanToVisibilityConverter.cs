@@ -13,7 +13,7 @@ namespace UFO.Commander.Wpf.Administration.Converter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            return ((bool)value) ? Visibility.Visible : Visibility.Hidden;
+            return ((value == null) || ((bool)value)) ? Visibility.Visible : Visibility.Hidden;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

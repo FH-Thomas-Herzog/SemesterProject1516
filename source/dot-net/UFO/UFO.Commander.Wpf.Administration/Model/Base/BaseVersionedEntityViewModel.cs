@@ -22,7 +22,6 @@ namespace UFO.Commander.Wpf.Administration.Model.Base
             }
             this._Entity = entity;
             _IsDeletable = ((_Entity != null) && (_Entity.Id != null));
-            ValidateAll();
         }
 
         public bool IsDeletable
@@ -47,7 +46,6 @@ namespace UFO.Commander.Wpf.Administration.Model.Base
             {
                 this._Entity = value;
                 FirePropertyChangedEvent();
-                ValidateAll();
             }
         }
 

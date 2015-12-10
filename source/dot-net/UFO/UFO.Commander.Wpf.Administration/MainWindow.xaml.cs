@@ -15,6 +15,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using UFO.Commander.Wpf.Administration.Model;
 using UFO.Commander.Wpf.Administration.Model.Base;
+using UFO.Commander.Wpf.Administration.Model.Selection;
 using UFO.Commander.Wpf.Administration.Model.Tab;
 using UFO.Server.Data.Api.Entity;
 
@@ -27,14 +28,17 @@ namespace UFO.Commander.Wpf.Administration
     {
         public UserContextModel UserContext { get { return (System.Windows.Application.Current as App).UserContext; } }
         public MasterDataTabControler MasterDataTabControler { get; private set; }
-        public ObservableCollection<SimpleObjectModel> SelectListItems { get; set; }
 
         public MainWindow()
         {
             MasterDataTabControler = new MasterDataTabControler();
             MasterDataTabControler.Init();
-            SelectListItems = new ObservableCollection<SimpleObjectModel>();
             InitializeComponent();
+        }
+
+        public void InitMainWindow()
+        {
+            MasterDataTabControler.SetDefaultState();
         }
 
         private void OnTabChange(object sender, RoutedEventArgs e)
@@ -47,9 +51,9 @@ namespace UFO.Commander.Wpf.Administration
             }
         }
 
-        public void InitMainWindow()
+        private void OnSelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            MasterDataTabControler.SetDefaultState();
+            MasterDataTabControler.SelectedTabModel.SelectionChanged();
         }
     }
 }

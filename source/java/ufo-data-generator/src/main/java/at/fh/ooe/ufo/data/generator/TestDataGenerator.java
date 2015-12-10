@@ -41,7 +41,7 @@ public class TestDataGenerator {
 	private static final String FTL_TEMPLATE = "test-data-template.ftl";
 
 	private static final String IMAGE_TYPE = "jpg";
-	private static final String IMAGE_FILE = "add-user-icon." + IMAGE_TYPE;
+	private static final String IMAGE_FILE = "add-user-icon_small." + IMAGE_TYPE;
 
 	private static final String SEPARATOR = ";";
 	private static final String DEFAULT_PASSWORD = "123";
@@ -253,7 +253,7 @@ public class TestDataGenerator {
 		final Template template = config.getTemplate(ROOT_FTL_TEMPLATE + FTL_TEMPLATE);
 		template.setAutoFlush(true);
 
-		try (final BufferedWriter br = new BufferedWriter(new FileWriter(new File("D:/ufo-test-data.sql")))) {
+		try (final BufferedWriter br = new BufferedWriter(new FileWriter(new File("C:/ufo-test-data.sql")))) {
 			template.process(parameters, br);
 		} catch (Exception e) {
 			e.printStackTrace();
