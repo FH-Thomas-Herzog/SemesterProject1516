@@ -41,7 +41,7 @@ public class TestDataGenerator {
 	private static final String FTL_TEMPLATE = "test-data-template.ftl";
 
 	private static final String IMAGE_TYPE = "jpg";
-	private static final String IMAGE_FILE = "add-user-icon_small." + IMAGE_TYPE;
+	private static final String IMAGE_FILE = "add-user-icon." + IMAGE_TYPE;
 
 	private static final String SEPARATOR = ";";
 	private static final String DEFAULT_PASSWORD = "123";
@@ -53,6 +53,7 @@ public class TestDataGenerator {
 
 		private Calendar startCal = Calendar.getInstance();
 		private final Random random = new Random();
+		boolean toogle = Boolean.FALSE;
 
 		public Performance() {
 			super();
@@ -60,7 +61,9 @@ public class TestDataGenerator {
 
 		public String getStartDate() {
 			startCal = Calendar.getInstance();
-			startCal.add(Calendar.DAY_OF_YEAR, random.nextInt(50) + 1);
+			int rand = random.nextInt(50) + 1;
+			startCal.add(Calendar.DAY_OF_YEAR, toogle ? (rand * -1) : rand);
+			toogle = !toogle;
 			return format(startCal);
 		}
 
