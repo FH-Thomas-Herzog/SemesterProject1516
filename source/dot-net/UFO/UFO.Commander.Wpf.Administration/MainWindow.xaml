@@ -16,8 +16,14 @@
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         x:Name="Main">
 
-    <StackPanel>
-        <Grid>
+    <StackPanel Orientation="Vertical">
+        <security:LoginControl x:Name="LoginView"
+                               DataContext="{Binding ElementName=Main, Path=UserContext}"
+                               Visibility="{Binding IsNotLogged, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+
+        <Grid Visibility="{Binding UserContext.IsLogged, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="350"/>
             </Grid.RowDefinitions>
@@ -27,7 +33,6 @@
             </Grid.ColumnDefinitions>
 
             <ListBox Name="Selection"
-                     Visibility="{Binding Application.UserContext.IsLogged, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                      Grid.Column="0" 
                      Margin="10"
                      HorizontalAlignment="Stretch"
@@ -64,22 +69,14 @@
                 </ListBox.ItemTemplate>
             </ListBox>
 
-            <security:LoginControl x:Name="LoginView"
-                                   Grid.Row="0"
-                                   Grid.Column="1"
-                                   Visibility="{Binding Application.UserContext.IsNotLogged, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
-                                   HorizontalAlignment="Center"
-                                   VerticalAlignment="Center"/>
-
             <TabControl Name="TabGroup"
-                        Visibility="{Binding UserContext.IsLogged, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" 
                         DataContext="{Binding ElementName=Main, Path=MasterDataTabControler}"
                         Grid.Row="0"
                         Grid.Column="1"
                         AllowDrop="False"
                         Margin="10"
                         ItemsSource="{Binding TabModels, UpdateSourceTrigger=PropertyChanged}"
-                        SelectedIndex="{Binding SelectedTabIdx, UpdateSourceTrigger=PropertyChanged}"
+                        SelectedItem="{Binding SelectedTab, UpdateSourceTrigger=PropertyChanged}"
                         SelectionChanged="OnTabChange">
                 <TabControl.ItemTemplate>
                     <DataTemplate>

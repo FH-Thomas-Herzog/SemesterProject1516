@@ -121,8 +121,8 @@
                    MaxWidth="300"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Center"
-                   Content="{x:Static p:Resources.OpenFileBrowser}"
-                   Click="ArtistImageButton_Click"/>
+                   Content="{Binding ImageButtonText, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                   Click="OnImageButtonClick"/>
 
         <!-- Web Address row-->
         <TextBlock Name="UrlLabel"

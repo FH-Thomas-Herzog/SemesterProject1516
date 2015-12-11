@@ -68,6 +68,7 @@ namespace UFO.Commander.Wpf.Administration.Model
             get { return Entity.Url; }
             set { Entity.Url = value; FirePropertyChangedEvent(); }
         }
+        public string ImageFileType { get { return Entity.ImageFileType; } set { Entity.ImageFileType = value; } }
 
         [Required(ErrorMessageResourceName = "ErrorRequired",
                   ErrorMessageResourceType = typeof(Resources))]

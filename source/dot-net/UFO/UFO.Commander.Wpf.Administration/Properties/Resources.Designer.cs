@@ -97,6 +97,15 @@ namespace UFO.Commander.Wpf.Administration.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Bild  entfernen.
+        /// </summary>
+        public static string ActionRemoveImage {
+            get {
+                return ResourceManager.GetString("ActionRemoveImage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Speichern.
         /// </summary>
         public static string ActionSave {
@@ -291,6 +300,15 @@ namespace UFO.Commander.Wpf.Administration.Properties {
         public static string ErrorEntityUpdatedByAnotherUser {
             get {
                 return ResourceManager.GetString("ErrorEntityUpdatedByAnotherUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Bild zu groß. (max. {0} bytes).
+        /// </summary>
+        public static string ErrorImageToLarge {
+            get {
+                return ResourceManager.GetString("ErrorImageToLarge", resourceCulture);
             }
         }
         

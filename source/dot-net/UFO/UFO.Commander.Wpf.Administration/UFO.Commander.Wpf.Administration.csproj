@@ -61,7 +61,7 @@
     <Compile Include="Converter\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converter\CountryCodeToSimpleObjectModelConverter.cs" />
     <Compile Include="Converter\UserTypeToSimpleObjectModelConverter.cs" />
-    <Compile Include="Converter\ArtistCategoryToSimpleObjectModelConverter.cs" />
+    <Compile Include="Model\Tab\ArtistCategoryToSimpleObjectModelConverter.cs" />
     <Compile Include="Converter\ArtistGroupToSimpleObjectModelConverter.cs" />
     <Compile Include="Converter\Base\BaseValueToSimpleObjectModelConverter.cs" />
     <Compile Include="Exception\ViewException.cs" />

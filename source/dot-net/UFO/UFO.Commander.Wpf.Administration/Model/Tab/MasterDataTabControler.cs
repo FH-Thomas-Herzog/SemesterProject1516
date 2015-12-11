@@ -55,9 +55,10 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
 
         public void SetDefaultState()
         {
-            SelectedTabIdx = 0;
-            SelectedTabModel = TabModels.ElementAt(SelectedTabIdx);
-            SelectedTabModel.InitTab();
+            int idx = 0;
+            ITabModel model = TabModels.ElementAt(idx);
+            model.InitTab();
+            SelectedTabModel = model;
         }
     }
 }

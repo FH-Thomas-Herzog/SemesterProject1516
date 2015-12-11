@@ -46,6 +46,7 @@ namespace UFO.Commander.Service.Impl
             catch (Exception e)
             {
                 RollbackTx();
+                throw e;
             }
         }
 
@@ -72,6 +73,7 @@ namespace UFO.Commander.Service.Impl
             catch (Exception e)
             {
                 RollbackTx();
+                throw e;
             }
 
             return artistDB;

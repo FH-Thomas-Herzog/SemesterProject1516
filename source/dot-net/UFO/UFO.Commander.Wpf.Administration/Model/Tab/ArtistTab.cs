@@ -34,6 +34,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
         private IList<SimpleObjectModel> _ArtistGroups;
         private IList<SimpleObjectModel> _ArtistCategories;
         private IList<SimpleObjectModel> _Countries;
+        private string _ImageButtonText;
         public IList<SimpleObjectModel> ArtistGroups
         {
             get { return _ArtistGroups; }
@@ -64,6 +65,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
         }
 
         public UserContextModel UserContext { get { return (System.Windows.Application.Current as App).UserContext; } }
+        public string ImageButtonText { get { return _ImageButtonText; } set { _ImageButtonText = value; FirePropertyChangedEvent(); } }
         #endregion
 
         #region Commands
@@ -206,6 +208,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             // After preparation fire the PropertyChanged event
             ViewModel = model;
             SelectedSelectionModel = selected;
+            ImageButtonText = (!string.IsNullOrWhiteSpace(ViewModel.Image)) ? Resources.ActionRemoveImage : Resources.OpenFileBrowser;
         }
 
         public override void CleanupTab()

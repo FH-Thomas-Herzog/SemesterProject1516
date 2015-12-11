@@ -62,14 +62,21 @@ namespace UFO.Commander.Wpf.Administration.Model.Base
                 if (this.propertyGetters.ContainsKey(propertyName))
                 {
                     var propertyValue = this.propertyGetters[propertyName](this);
-                    var errorMessages = this.validators[propertyName]
-                        .Where(v => !v.IsValid(propertyValue))
-                        .Select(v => v.FormatErrorMessage(v.ErrorMessageResourceName)).ToArray();
+                    string message = null;
+                    foreach (var item in validators[propertyName])
+                    {
+                        bool result = item.IsValid(propertyValue);
+                        validPropertiesMap[propertyName] = result;
+                        if (!result)
+                        {
+                            message = item.FormatErrorMessage(item.ErrorMessageResourceName);
+                            break;
+                        }
+                    }
 
-                    validPropertiesMap[propertyName] = errorMessages.Count() == 0;
                     IsAllValid();
 
-                    return string.Join(Environment.NewLine, errorMessages);
+                    return message ?? string.Empty;
                 }
 
                 return string.Empty;

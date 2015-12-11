@@ -282,4 +282,10 @@
   <data name="ErrorUnknwon" xml:space="preserve">
     <value>Unbekannter Fehler</value>
   </data>
+  <data name="ActionRemoveImage" xml:space="preserve">
+    <value>Bild  entfernen</value>
+  </data>
+  <data name="ErrorImageToLarge" xml:space="preserve">
+    <value>Bild zu groß. (max. {0} bytes)</value>
+  </data>
 </root>

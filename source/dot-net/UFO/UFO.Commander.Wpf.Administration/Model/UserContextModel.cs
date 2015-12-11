@@ -16,8 +16,9 @@ namespace UFO.Commander.Wpf.Administration.Model
     /// <seealso cref="UFO.Commander.Wpf.Administration.Model.Base.BasePropertyChangeModel" />
     public class UserContextModel : BasePropertyChangeModel
     {
-        private User user;
-        private bool isLogged = false;
+        private User _LoggedUser = null;
+        private bool _IsLogged = false;
+        private bool _IsNotLogged = true;
 
         /// <summary>
         /// Gets or sets the logged user.
@@ -27,8 +28,8 @@ namespace UFO.Commander.Wpf.Administration.Model
         /// </value>
         public User LoggedUser
         {
-            get { return user; }
-            set { if ((this.user = value) != null) { FirePropertyChangedEvent(); IsLogged = true;} }
+            get { return _LoggedUser; }
+            set { _LoggedUser = value; FirePropertyChangedEvent(); IsLogged = value != null; }
         }
 
         /// <summary>
@@ -39,8 +40,8 @@ namespace UFO.Commander.Wpf.Administration.Model
         /// </value>
         public bool IsLogged
         {
-            get { return isLogged; }
-            private set { if ((isLogged = value)) { FirePropertyChangedEvent(); IsNotLogged = !value; } }
+            get { return _IsLogged; }
+            private set { _IsLogged = value; FirePropertyChangedEvent(); IsNotLogged = !value; }
         }
 
         /// <summary>
@@ -51,8 +52,8 @@ namespace UFO.Commander.Wpf.Administration.Model
         /// </value>
         public bool IsNotLogged
         {
-            get { return !isLogged; }
-            private set { if (!(value)) { FirePropertyChangedEvent(); } }
+            get { return _IsNotLogged; }
+            private set { _IsNotLogged = value; FirePropertyChangedEvent(); }
         }
     }
 }
