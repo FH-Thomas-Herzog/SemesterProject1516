@@ -16,7 +16,7 @@ namespace UFO.Server.Data.MySql.Dao
         public IList<Artist> GetAll()
         {
             IList<Artist> result = new List<Artist>();
-            using (IDataReader reader = commandBuilder.WithQuery("SELECT * from ufo.artist ORDER by CONCAT(artist.lastname, CONCAT(', ', artist.firstname))")
+            using (IDataReader reader = commandBuilder.WithQuery("SELECT * from ufo.artist WHERE deleted_flag = 0 ORDER by CONCAT(artist.lastname, CONCAT(', ', artist.firstname))")
                                                      .ExecuteReader())
             {
                 while (reader.Read())

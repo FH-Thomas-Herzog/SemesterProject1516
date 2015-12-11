@@ -15,6 +15,7 @@ namespace UFO.Commander.Service.Impl.Base
     {
         protected DbConnection Connection { get; set; }
         protected DbTransaction Transaction { get; set; }
+        protected bool disposed = false;
 
         public BaseService(DbConnection connection = null)
         {
@@ -44,10 +45,17 @@ namespace UFO.Commander.Service.Impl.Base
             Transaction.Rollback();
         }
 
-        public virtual void Dispose()
+        public void Dispose()
         {
             Transaction?.Dispose();
             DbConnectionFactory.CloseDisposeConnection(Connection);
+            Dispose(true);
+            disposed = true;
+        }
+
+        protected virtual void Dispose(bool dispose)
+        {
+
         }
     }
 }

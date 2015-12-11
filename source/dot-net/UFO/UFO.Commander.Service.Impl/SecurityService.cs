@@ -28,9 +28,8 @@ namespace UFO.Commander.Service.Impl
             return null;
         }
 
-        public override void Dispose()
+        protected override void Dispose(bool dispose)
         {
-            base.Dispose();
             DaoFactory.DisposeDao(userDao);
         }
     }

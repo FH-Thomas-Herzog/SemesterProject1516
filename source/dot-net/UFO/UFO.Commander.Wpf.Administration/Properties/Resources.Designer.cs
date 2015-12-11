@@ -205,6 +205,15 @@ namespace UFO.Commander.Wpf.Administration.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Ländercodes.
+        /// </summary>
+        public static string CountryPl {
+            get {
+                return ResourceManager.GetString("CountryPl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Erstellungsdatum.
         /// </summary>
         public static string CreationDate {
@@ -259,6 +268,33 @@ namespace UFO.Commander.Wpf.Administration.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Laden der Daten fehlgeschlagen.
+        /// </summary>
+        public static string ErrorDataLoadFailed {
+            get {
+                return ResourceManager.GetString("ErrorDataLoadFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Datensatz existiert nicht mehr.
+        /// </summary>
+        public static string ErrorEntityDoesNotExists {
+            get {
+                return ResourceManager.GetString("ErrorEntityDoesNotExists", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Datensatz wurde von einem anderen Benutzer geändert.
+        /// </summary>
+        public static string ErrorEntityUpdatedByAnotherUser {
+            get {
+                return ResourceManager.GetString("ErrorEntityUpdatedByAnotherUser", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Die eingegebene E-Mail Adresse ist ungültig..
         /// </summary>
         public static string ErrorInvalidEmail {
@@ -300,6 +336,15 @@ namespace UFO.Commander.Wpf.Administration.Properties {
         public static string ErrorRequired {
             get {
                 return ResourceManager.GetString("ErrorRequired", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Unbekannter Fehler.
+        /// </summary>
+        public static string ErrorUnknwon {
+            get {
+                return ResourceManager.GetString("ErrorUnknwon", resourceCulture);
             }
         }
         

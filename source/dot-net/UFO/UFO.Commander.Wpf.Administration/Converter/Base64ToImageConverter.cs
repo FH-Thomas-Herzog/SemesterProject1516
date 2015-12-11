@@ -34,11 +34,13 @@ namespace UFO.Commander.Wpf.Administration.Converter
                 BitmapImage image = new BitmapImage();
                 image.BeginInit();
                 image.StreamSource = stream;
+                image.DecodePixelHeight = 30;
+                image.DecodePixelWidth = 30;
                 image.EndInit();
 
                 return image;
             }
-            catch (Exception e)
+            catch (System.Exception e)
             {
                 // If image is invalid we do not want an error which breaks UI
                 return null;

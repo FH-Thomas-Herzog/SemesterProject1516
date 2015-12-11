@@ -4,7 +4,8 @@
              xmlns:local="clr-namespace:UFO.Commander.Wpf.Administration"
              xmlns:converters="clr-namespace:UFO.Commander.Wpf.Administration.Converter"
              StartupUri="MainWindow.xaml"
-             Startup="OnApplicationStart">
+             Startup="OnApplicationStart"
+             DispatcherUnhandledException="OnUnhandledException">
     <Application.Resources>
         <!-- Application wide converters -->
         <converters:UserTypeToSimpleObjectModelConverter x:Key="UserTypeSOMConverter"/>

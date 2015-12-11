@@ -64,6 +64,7 @@
     <Compile Include="Converter\ArtistCategoryToSimpleObjectModelConverter.cs" />
     <Compile Include="Converter\ArtistGroupToSimpleObjectModelConverter.cs" />
     <Compile Include="Converter\Base\BaseValueToSimpleObjectModelConverter.cs" />
+    <Compile Include="Exception\ViewException.cs" />
     <Compile Include="Model\ArtistGroupModel.cs" />
     <Compile Include="Model\ArtistCategoryModel.cs" />
     <Compile Include="Model\ArtistModel.cs" />

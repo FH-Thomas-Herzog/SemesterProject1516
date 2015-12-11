@@ -43,11 +43,16 @@ namespace UFO.Commander.Service.Impl
                 StartTx();
                 userDao.Delete(id);
                 CommitTx();
-            }catch(Exception e)
+            }
+            catch (Exception e)
             {
                 RollbackTx();
                 throw e;
             }
+        }
+        protected override void Dispose(bool dispose)
+        {
+            DaoFactory.DisposeDao(userDao);
         }
     }
 }

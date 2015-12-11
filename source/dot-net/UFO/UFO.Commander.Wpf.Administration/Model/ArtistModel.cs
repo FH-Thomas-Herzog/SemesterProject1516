@@ -36,6 +36,7 @@ namespace UFO.Commander.Wpf.Administration.Model
             get { return Entity.Lastname; }
             set { Entity.Lastname = value; FirePropertyChangedEvent(); }
         }
+
         [Required(ErrorMessageResourceName = "ErrorRequired",
                   ErrorMessageResourceType = typeof(Resources))]
         [StringLength(100,
@@ -73,7 +74,7 @@ namespace UFO.Commander.Wpf.Administration.Model
         public ArtistGroup ArtistGroup
         {
             get { return Entity.ArtistGroup; }
-            set { Entity.ArtistGroup = value; FirePropertyChangedEvent(); }
+            set { Entity.ArtistGroup = value; Entity.ArtistGroupId = value?.Id; FirePropertyChangedEvent(); }
         }
 
         [Required(ErrorMessageResourceName = "ErrorRequired",
@@ -81,7 +82,7 @@ namespace UFO.Commander.Wpf.Administration.Model
         public ArtistCategory ArtistCategory
         {
             get { return Entity.ArtistCategory; }
-            set { Entity.ArtistCategory = value; FirePropertyChangedEvent(); }
+            set { Entity.ArtistCategory = value; Entity.ArtistCategoryId = value?.Id; FirePropertyChangedEvent(); }
         }
 
         public string Image

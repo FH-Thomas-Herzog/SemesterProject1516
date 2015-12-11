@@ -51,8 +51,8 @@
                                    Grid.Row="0"
                                    Grid.Column="0"
                                    Height="40"
-                                   Width="40" 
-                                   RenderOptions.BitmapScalingMode="NearestNeighbor"
+                                   Width="40"
+                                   RenderOptions.BitmapScalingMode="HighQuality"
                                    Stretch="Fill"
                                    Margin="5"/>
                             <TextBlock Text="{Binding Label}"
