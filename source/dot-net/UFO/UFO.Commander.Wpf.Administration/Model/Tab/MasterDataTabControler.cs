@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UFO.Commander.Wpf.Administration.Model.Base;
+using UFO.Commander.Wpf.Administration.Views.Util;
 using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Commander.Wpf.Administration.Model.Tab
@@ -13,7 +14,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
     {
         private int _SelectedTabIdx = -1;
         private ITabModel _SelectedTabModel;
-        private ObservableCollection<ITabModel> tabModels;
+        private ObservableCollection<ITabModel> tabModels = new ObservableCollection<ITabModel>();
         public UserContextModel UserContext { get { return (System.Windows.Application.Current as App).UserContext; } }
         public ObservableCollection<ITabModel> TabModels
         {
@@ -45,19 +46,20 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
         public ITabModel PreviousSelectedTabModel { get; set; }
         public void Init()
         {
-            var userTab = new ArtistTab();
+            TabModels.Clear();
 
-            ObservableCollection<ITabModel> tabs = new ObservableCollection<ITabModel>();
-            tabs.Add(userTab);
+            var artistTab = new ArtistTab();
+            var venueTab = new VenueTab();
 
-            TabModels = tabs;
+            TabModels.Add(artistTab);
+            TabModels.Add(venueTab);
         }
 
-        public void SetDefaultState()
+        public void SetDefaultState(IMessageHandler messageHandler)
         {
             int idx = 0;
             ITabModel model = TabModels.ElementAt(idx);
-            model.InitTab();
+            model.InitTab(messageHandler);
             SelectedTabModel = model;
         }
     }

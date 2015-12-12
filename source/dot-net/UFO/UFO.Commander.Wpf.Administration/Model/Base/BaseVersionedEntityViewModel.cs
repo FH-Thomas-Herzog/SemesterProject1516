@@ -76,7 +76,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Base
             get { return BuildUserString(Entity.ModificationUser); }
         }
 
-        #region Private Helper
+        #region Private/Protected Helper
         private string BuildUserString(User user)
         {
             if (Entity?.ModificationUser?.Id != null)
@@ -85,6 +85,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Base
             }
             return null;
         }
+        public abstract E GetUpdatedEntity();
         #endregion
     }
 }

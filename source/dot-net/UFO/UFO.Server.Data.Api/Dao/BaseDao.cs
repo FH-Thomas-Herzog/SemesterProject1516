@@ -95,6 +95,21 @@ namespace UFO.Server.Data.Api
 
             return entity;
         }
+
+        public IList<E> FindAll()
+        {
+            IList<E> result = new List<E>();
+            using (IDataReader reader = commandBuilder.WithQuery(queryCreator.CreateGetAllQuery<I, E>())
+                                        .ExecuteReader())
+            {
+                while (reader.Read())
+                {
+                    result.Add(EntityBuilder.CreateFromReader<I, E>(reader));
+                }
+            }
+            return result;
+        }
+
         public bool Delete(I id)
         {
             bool result = false;

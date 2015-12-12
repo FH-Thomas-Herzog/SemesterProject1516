@@ -42,7 +42,7 @@
                      ItemsSource="{Binding MasterDataTabControler.SelectedTabModel.SelectionModels, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                      SelectedItem="{Binding MasterDataTabControler.SelectedTabModel.SelectedSelectionModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      SelectionChanged="OnSelectionChanged">
-                <ListBox.ItemTemplate>
+                <ListBox.Resources>
                     <DataTemplate DataType="{x:Type selectionModel:ArtistSelectionModel}">
                         <Grid>
                             <Grid.RowDefinitions>
@@ -66,7 +66,11 @@
                                      Margin="5"/>
                         </Grid>
                     </DataTemplate>
-                </ListBox.ItemTemplate>
+                    <DataTemplate DataType="{x:Type selectionModel:SimpleObjectModel}">
+                        <TextBlock Text="{Binding Label}"
+                                   Margin="5"/>
+                    </DataTemplate>
+                </ListBox.Resources>
             </ListBox>
 
             <TabControl Name="TabGroup"
@@ -86,6 +90,9 @@
                 <TabControl.Resources>
                     <DataTemplate DataType="{x:Type tabModel:ArtistTab}">
                         <master:ArtistMasterData/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type tabModel:VenueTab}">
+                        <master:VenueMasterData/>
                     </DataTemplate>
                 </TabControl.Resources>
             </TabControl>

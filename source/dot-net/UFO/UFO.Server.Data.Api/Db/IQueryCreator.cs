@@ -56,5 +56,13 @@ namespace UFO.Server.Data.Api.Db
         /// <typeparam name="E">the type of the entity</typeparam>
         /// <returns>the created query</returns>
         string CreateDeleteQuery<I, E>() where E : class, IEntity<I>;
+
+        /// <summary>
+        /// Creates the get all query.
+        /// </summary>
+        /// <typeparam name="I">the type of the entity id</typeparam>
+        /// <typeparam name="E">the type of the entity</typeparam>
+        /// <returns></returns>
+        string CreateGetAllQuery<I, E>() where E : class, IEntity<I>;
     }
 }

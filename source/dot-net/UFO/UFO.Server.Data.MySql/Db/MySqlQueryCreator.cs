@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using UFO.Server.Data.Api.Db;
@@ -17,6 +18,7 @@ namespace UFO.Server.Data.MySql.Db
         private const string INSERT_TEMPLATE = @"INSERT INTO {0} ({1}) VALUES({2}); SELECT CAST(LAST_INSERT_ID() AS SIGNED INTEGER);";
         private const string UPDATE_TEMPLATE = @"UPDATE {0} SET {1} WHERE {2} = ?id";
         private const string NEXT_VAL_TEMPLATE = @"SELECT NEXT VALUE for {0}";
+        private const string GET_ALL_TEMPLATE = @"SELECT * FROM {0}";
 
         string IQueryCreator.CreateFullSelectQuery<I, E>()
         {
@@ -40,7 +42,7 @@ namespace UFO.Server.Data.MySql.Db
             EntityMetamodel<I, E> metamodel = EntityMetamodelFactory.GetInstance().GetMetaModel<I, E>();
             StringBuilder parameters = new StringBuilder();
             StringBuilder values = new StringBuilder();
-             for (int i = 0; i < propertyToValueMap.Count; i++)
+            for (int i = 0; i < propertyToValueMap.Count; i++)
             {
                 KeyValuePair<string, object> pair = propertyToValueMap.ElementAt(i);
                 parameters.Append(metamodel.PropertyToColumn(pair.Key))
@@ -58,7 +60,7 @@ namespace UFO.Server.Data.MySql.Db
         {
             EntityMetamodel<I, E> metamodel = EntityMetamodelFactory.GetInstance().GetMetaModel<I, E>();
             StringBuilder sb = new StringBuilder();
-             for (int i = 0; i < propertyToValueMap.Count; i++)
+            for (int i = 0; i < propertyToValueMap.Count; i++)
             {
                 KeyValuePair<string, object> pair = propertyToValueMap.ElementAt(i);
                 sb.Append(metamodel.PropertyToColumn(pair.Key))
@@ -75,5 +77,11 @@ namespace UFO.Server.Data.MySql.Db
             EntityMetamodel<I, E> metamodel = EntityMetamodelFactory.GetInstance().GetMetaModel<I, E>();
             return string.Format(DELETE_BY_ID_TEMPLATE, metamodel.GetFullyQualifiedPhysicalTableName(), metamodel.GetIdColumnName());
         }
-}
+
+        string IQueryCreator.CreateGetAllQuery<I, E>()
+        {
+            EntityMetamodel<I, E> metamodel = EntityMetamodelFactory.GetInstance().GetMetaModel<I, E>();
+            return string.Format(GET_ALL_TEMPLATE, metamodel.GetFullyQualifiedPhysicalTableName());
+        }
+    }
 }

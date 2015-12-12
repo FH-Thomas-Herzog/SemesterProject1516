@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Server.Data.Api.Dao
@@ -53,6 +54,11 @@ namespace UFO.Server.Data.Api.Dao
         /// <returns>the found entity or null if the entity does not exist</returns>
         E Find(I id);
 
+        /// <summary>
+        /// Finds all entities.
+        /// </summary>
+        /// <returns>the list of found entities</returns>
+        IList<E> FindAll();
 
         /// <summary>
         /// Answers the question if the entity with the given id exists on the database.

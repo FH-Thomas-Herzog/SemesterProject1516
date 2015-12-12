@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System;
+using System.ComponentModel.DataAnnotations;
 using System.Globalization;
 using System.Resources;
 using UFO.Commander.Wpf.Administration.Model.Base;
@@ -90,6 +91,11 @@ namespace UFO.Commander.Wpf.Administration.Model
         {
             get { return Entity.ImageData; }
             set { Entity.ImageData = value; FirePropertyChangedEvent(); }
+        }
+
+        public override Artist GetUpdatedEntity()
+        {
+            return Entity;
         }
     }
 }

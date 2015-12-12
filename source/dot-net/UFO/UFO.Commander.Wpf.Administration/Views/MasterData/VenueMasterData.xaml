@@ -1,0 +1,125 @@
+﻿<UserControl x:Class="UFO.Commander.Wpf.Administration.Views.MasterData.VenueMasterData"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UFO.Commander.Wpf.Administration.Views.MasterData"
+             mc:Ignorable="d" 
+             xmlns:p="clr-namespace:UFO.Commander.Wpf.Administration.Properties"
+             d:DesignHeight="300" 
+             d:DesignWidth="350">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="2*"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Name row -->
+        <TextBlock Name="NameLabel"
+                   Grid.Row="0"
+                   Grid.Column="0"
+                   Margin="5"
+                   Text="{x:Static p:Resources.Name}"/>
+        <TextBox Name="NameMember" 
+                 Grid.Row="0" 
+                 Grid.Column="1"
+                 Margin="5"
+                 VerticalAlignment="Center" 
+                 Text="{Binding ViewModel.Name, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"/>
+
+        <!-- Street row -->
+        <TextBlock Name="StreetLabel"
+                   Grid.Row="1"
+                   Grid.Column="0"
+                   Margin="5"
+                   Text="{x:Static p:Resources.Street}"/>
+        <TextBox Name="Street" 
+                 Grid.Row="1" 
+                 Grid.Column="1"
+                 Margin="5"
+                 VerticalAlignment="Center" 
+                 Text="{Binding ViewModel.Street, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"/>
+
+        <!-- Zip row -->
+        <TextBlock Name="ZipLabel"
+                   Grid.Row="2"
+                   Grid.Column="0"
+                   Margin="5"
+                   Text="{x:Static p:Resources.Zip}"/>
+        <TextBox Name="Zip" 
+                 Grid.Row="2" 
+                 Grid.Column="1"
+                 Margin="5"
+                 VerticalAlignment="Center" 
+                 Text="{Binding ViewModel.Zip, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"/>
+
+        <!-- City row -->
+        <TextBlock Name="CityLabel"
+                   Grid.Row="3"
+                   Grid.Column="0"
+                   Margin="5"
+                   Text="{x:Static p:Resources.City}"/>
+        <TextBox Name="City" 
+                 Grid.Row="3" 
+                 Grid.Column="1"
+                 Margin="5"
+                 VerticalAlignment="Center" 
+                 Text="{Binding ViewModel.City, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"/>
+
+        <!-- Latitude row -->
+        <TextBlock Name="GpsCoordinateLabel"
+                   Grid.Row="4"
+                   Grid.Column="0"
+                   Margin="5"
+                   Text="{x:Static p:Resources.GpsCoordinate}"/>
+        <TextBox Name="Latitude" 
+                 Grid.Row="4" 
+                 Grid.Column="1"
+                 Margin="5"
+                 VerticalAlignment="Center" 
+                 Text="{Binding ViewModel.GpsCoordinate, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"/>
+
+        <Grid Name="ActionGroup"
+                    Grid.Row="5"
+                    Grid.Column="1">
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+
+            <Button Name="NewAction"
+                    Grid.Row="0"
+                    Grid.Column="0"
+                    Content="{x:Static p:Resources.ActionNew}"
+                    Margin="10"
+                    Command="{Binding NewCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Name="SaveAction"
+                    Grid.Row="0"
+                    Grid.Column="1"
+                    Content="{x:Static p:Resources.ActionSave}"
+                    Margin="10"
+                    Command="{Binding SaveCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Name="DeleteAction"
+                    Grid.Row="0"
+                    Grid.Column="2"
+                    Content="{x:Static p:Resources.ActionDelete}"
+                    Margin="10"
+                    Command="{Binding DeleteCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+        </Grid>
+    </Grid>
+</UserControl>

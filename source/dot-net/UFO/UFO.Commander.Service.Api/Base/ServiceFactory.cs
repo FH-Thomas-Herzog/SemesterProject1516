@@ -44,6 +44,10 @@ namespace UFO.Commander.Service.Api.Base
         {
             return CreateService("ArtistService", connection) as IArtistService;
         }
+        public static IVenueService CreateVenueService(DbConnection connection = null)
+        {
+            return CreateService("VenueService", connection) as IVenueService;
+        }
         public static void DisposeService(IService service)
         {
             service?.Dispose();

@@ -5,13 +5,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UFO.Commander.Wpf.Administration.Model.Selection;
+using UFO.Commander.Wpf.Administration.Views.Util;
 
 namespace UFO.Commander.Wpf.Administration.Model.Base
 {
     public abstract class BaseTabModel<M, S> : BasePropertyChangeModel, ITabedViewModel<M> where M : BasePropertyChangeModel
                                                                                      where S : SimpleObjectModel
     {
-        protected string _Header;
         protected M _ViewModel;
         protected S _SelectedSelectionModel;
 
@@ -20,15 +20,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Base
             SelectionModels = new ObservableCollection<S>();
         }
 
-        public string Header
-        {
-            get { return _Header; }
-            set
-            {
-                _Header = value;
-                FirePropertyChangedEvent();
-            }
-        }
+        public abstract string Header { get; }
         public M ViewModel
         {
             get { return _ViewModel; }
@@ -53,8 +45,9 @@ namespace UFO.Commander.Wpf.Administration.Model.Base
         {
             get; private set;
         }
+        public IMessageHandler MessageHandler { get; set; }
 
-        public abstract void InitTab();
+        public abstract void InitTab(IMessageHandler messageHandler);
         public abstract void Init(M model);
         public abstract void CleanupTab();
         public abstract void SelectionChanged();

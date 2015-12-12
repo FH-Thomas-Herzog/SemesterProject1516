@@ -50,6 +50,7 @@
     <Compile Include="IArtistService.cs" />
     <Compile Include="ISecurityService.cs" />
     <Compile Include="IUserService.cs" />
+    <Compile Include="IVenueService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

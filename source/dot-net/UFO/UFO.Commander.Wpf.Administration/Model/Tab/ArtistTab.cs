@@ -1,18 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using UFO.Commander.Service.Api;
 using UFO.Commander.Service.Api.Base;
-using UFO.Commander.Wpf.Administration.Converter;
-using UFO.Commander.Wpf.Administration.Exception;
 using UFO.Commander.Wpf.Administration.Model.Base;
 using UFO.Commander.Wpf.Administration.Model.Selection;
 using UFO.Commander.Wpf.Administration.Properties;
+using UFO.Commander.Wpf.Administration.Views.Util;
 using UFO.Server.Data.Api.Dao;
 using UFO.Server.Data.Api.Entity;
 using UFO.Server.Data.Api.Exception;
@@ -90,67 +85,56 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
 
         private void Save(object data)
         {
-            ViewException ex = null;
-            Artist artist = ViewModel.Entity;
+            Artist artist = ViewModel.GetUpdatedEntity();
             try
             {
                 artist = artistService.Save(artist);
             }
             catch (ConcurrentUpdateException e)
             {
-                artist = artistDao.Find(artist.Id);
-                ex = new ViewException(Resources.ErrorEntityUpdatedByAnotherUser, true, e);
+                artist = new Artist();
+                MessageHandler.ShowErrorMessage(Resources.ErrorEntityUpdatedByAnotherUser);
             }
             catch (EntityNotFoundException e)
             {
                 artist = new Artist();
-                ex = new ViewException(Resources.ErrorEntityDoesNotExists, true, e);
+                MessageHandler.ShowErrorMessage(Resources.ErrorEntityDoesNotExists);
             }
             catch (System.Exception e)
             {
                 artist = new Artist();
-                ex = new ViewException(Resources.ErrorUnknwon, true, e);
+                MessageHandler.ShowErrorMessage(Resources.ErrorUnknwon);
             }
 
             LoadArtists(artist);
             Init(new ArtistModel(artist));
-
-            if (ex != null)
-            {
-                throw ex;
-            }
         }
 
         private void Delete(object data)
         {
-            ViewException ex = null;
             try
             {
                 artistService.Delete(ViewModel.Id);
             }
             catch (EntityNotFoundException e)
             {
-                ex = new ViewException(Resources.ErrorEntityDoesNotExists, true, e);
+                MessageHandler.ShowErrorMessage(Resources.ErrorEntityDoesNotExists);
             }
             catch (System.Exception e)
             {
-                ex = new ViewException(Resources.ErrorUnknwon, true, e);
+                MessageHandler.ShowErrorMessage(Resources.ErrorUnknwon);
             }
 
             LoadArtists();
             Init();
-
-            if (ex != null)
-            {
-                throw ex;
-            }
         }
         #endregion
 
         #region ITabModel
-        public override void InitTab()
+        public override string Header { get { return Resources.ArtistPl; } }
+        public override void InitTab(IMessageHandler messageHandler)
         {
-            Header = Resources.ArtistPl;
+            MessageHandler = messageHandler;
             artistDao = DaoFactory.CreateArtistDao();
             artistCategoryDao = DaoFactory.CreateArtistCategoryDao();
             artistGroupDao = DaoFactory.CreateArtistGroupDao();
@@ -161,7 +145,6 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
 
             Init();
 
-            // TODO: Need to handle selection on save and delete properly. Maybe external method called
             SaveCommand = new RelayCommand(o => Save(o), o => ViewModel.IsViewModelValid);
             DeleteCommand = new RelayCommand(o => Delete(o), o => ViewModel.IsDeletable);
             NewCommand = new RelayCommand(o => Init(new ArtistModel(new Artist())));
@@ -197,9 +180,9 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
                 }
                 catch (System.Exception e)
                 {
-                    ViewModel = new ArtistModel(new Artist()); ;
-                    SelectedSelectionModel = null;
-                    throw new ViewException(Resources.ErrorDataLoadFailed, true, e);
+                    ViewModel = new ArtistModel(new Artist());
+                    selected = null;
+                    MessageHandler.ShowErrorMessage(Resources.ErrorDataLoadFailed);
                 }
             }
 
@@ -213,10 +196,11 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
 
         public override void CleanupTab()
         {
-            _Header = null;
             _ArtistCategories = null;
             _ArtistGroups = null;
             _ViewModel = null;
+            SelectionModels.Clear();
+
             DaoFactory.DisposeDao(artistDao);
             DaoFactory.DisposeDao(artistCategoryDao);
             DaoFactory.DisposeDao(artistGroupDao);
@@ -229,13 +213,18 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             {
                 try
                 {
-                    Artist artist = artistDao.Find((SelectedSelectionModel.Data as Artist).Id);
+                    Artist artist = artistDao.ById((SelectedSelectionModel.Data as Artist).Id);
                     Init(new ArtistModel(artist));
+                }
+                catch (EntityNotFoundException e)
+                {
+                    MessageHandler.ShowErrorMessage(Resources.ErrorEntityDoesNotExists);
+                    Init();
                 }
                 catch (System.Exception e)
                 {
+                    MessageHandler.ShowErrorMessage(Resources.ErrorDataLoadFailed);
                     Init();
-                    throw new ViewException(Resources.ErrorDataLoadFailed, true, e);
                 }
             }
             else {
@@ -255,7 +244,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             }
             catch (System.Exception e)
             {
-                throw new ViewException(Resources.ErrorDataLoadFailed, true, e);
+                MessageHandler.ShowErrorMessage(Resources.ErrorDataLoadFailed);
             }
         }
 
@@ -277,7 +266,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             }
             catch (System.Exception e)
             {
-                throw new ViewException(Resources.ErrorDataLoadFailed, true, e);
+                MessageHandler.ShowErrorMessage(Resources.ErrorDataLoadFailed);
             }
         }
         #endregion

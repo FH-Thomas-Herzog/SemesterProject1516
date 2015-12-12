@@ -49,6 +49,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SecurityService.cs" />
     <Compile Include="UserService.cs" />
+    <Compile Include="VenueService.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\UFO.Commander.Service.Api\UFO.Commander.Service.Api.csproj">

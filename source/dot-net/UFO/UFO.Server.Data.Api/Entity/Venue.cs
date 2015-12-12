@@ -25,9 +25,6 @@ namespace UFO.Server.Data.Api.Entity
         [Column(Name = "city")]
         public string City { get; set; }
 
-        [Column(Name = "country_code")]
-        public string CountryCode { get; set; }
-
         [Column(Name = "gps_coordinate")]
         public string GpsCoordinate { get; set; }
     }

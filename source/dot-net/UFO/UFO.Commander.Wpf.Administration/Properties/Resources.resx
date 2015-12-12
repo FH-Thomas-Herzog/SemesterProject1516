@@ -288,4 +288,10 @@
   <data name="ErrorImageToLarge" xml:space="preserve">
     <value>Bild zu groß. (max. {0} bytes)</value>
   </data>
+  <data name="Latitude" xml:space="preserve">
+    <value>Latitude</value>
+  </data>
+  <data name="Longitude" xml:space="preserve">
+    <value>Longitude</value>
+  </data>
 </root>

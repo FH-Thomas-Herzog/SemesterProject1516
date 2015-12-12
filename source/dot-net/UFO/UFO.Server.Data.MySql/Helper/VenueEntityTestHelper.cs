@@ -33,7 +33,6 @@ namespace UFO.Server.Data.MySql.Helper
             {
                 venue.Id = 1;
             }
-            venue.CountryCode = "de_DE";
             venue.CreationUserId = user.Id;
             venue.ModificationUserId = user.Id;
             venue.CreationUser = user;

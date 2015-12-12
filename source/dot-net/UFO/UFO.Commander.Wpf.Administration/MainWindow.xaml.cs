@@ -17,6 +17,7 @@ using UFO.Commander.Wpf.Administration.Model;
 using UFO.Commander.Wpf.Administration.Model.Base;
 using UFO.Commander.Wpf.Administration.Model.Selection;
 using UFO.Commander.Wpf.Administration.Model.Tab;
+using UFO.Commander.Wpf.Administration.Views.Util;
 using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Commander.Wpf.Administration
@@ -38,15 +39,17 @@ namespace UFO.Commander.Wpf.Administration
 
         public void InitMainWindow()
         {
-            MasterDataTabControler.SetDefaultState();
+            MasterDataTabControler.SetDefaultState(new MessageHandler());
         }
 
         private void OnTabChange(object sender, RoutedEventArgs e)
         {
             if ((UserContext.IsLogged) && (!(sender as TabControl).SelectedItem.Equals(MasterDataTabControler.SelectedTabModel)))
             {
+                ITabModel tab = ((sender as TabControl).SelectedItem as ITabModel);
+                tab.InitTab(new MessageHandler());
+                MasterDataTabControler.SelectedTabModel = tab;
                 MasterDataTabControler.PreviousSelectedTabModel?.CleanupTab();
-                MasterDataTabControler.SelectedTabModel.InitTab();
                 e.Handled = true;
             }
         }
