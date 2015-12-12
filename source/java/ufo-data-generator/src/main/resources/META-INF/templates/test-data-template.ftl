@@ -19,8 +19,8 @@ SET @artistCategoryOffset = LAST_INSERT_ID();
 
 -- create venues
 <#list venues as venue>
-INSERT INTO ufo.venue(name, description, street, zip, city, country_code, gps_coordinate, creation_user_id, modification_user_id) 
-VALUES ('${venue.name}', '${venue.name}', '${venue.street}', '${venue.zip}', '${venue.city}', '${venue.countryCode}', '${venue.gps}', @userId, @userId);
+INSERT INTO ufo.venue(name, description, street, zip, city, gps_coordinate, deleted_flag, creation_user_id, modification_user_id) 
+VALUES ('${venue.name}', '${venue.name}', '${venue.street}', '${venue.zip}', '${venue.city}', '${venue.gps}', 0, @userId, @userId);
 </#list>
 SET @venueOffset = LAST_INSERT_ID();
 

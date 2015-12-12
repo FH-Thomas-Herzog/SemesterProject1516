@@ -27,5 +27,8 @@ namespace UFO.Server.Data.Api.Entity
 
         [Column(Name = "gps_coordinate")]
         public string GpsCoordinate { get; set; }
+
+        [Column(Name = "deleted_flag")]
+        public bool Deleted{ get; set; }
     }
 }

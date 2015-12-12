@@ -13,7 +13,7 @@ namespace UFO.Server.Data.MySql.Dao
     {
         public ArtistDao(MySqlConnection connection = null) : base(connection) { }
 
-        public IList<Artist> GetAll()
+        public IList<Artist> FindAllActive()
         {
             IList<Artist> result = new List<Artist>();
             using (IDataReader reader = commandBuilder.WithQuery("SELECT * from ufo.artist WHERE deleted_flag = 0 ORDER by CONCAT(artist.lastname, CONCAT(', ', artist.firstname))")

@@ -13,10 +13,11 @@ namespace UFO.Commander.Wpf.Administration.Model.Base
     {
         private E _Entity = null;
         private bool _IsDeletable = false;
+        private bool _IsUpdateable = true;
 
         protected BaseVersionedEntityViewModel(E entity) : base()
         {
-            if(entity == null)
+            if (entity == null)
             {
                 throw new ArgumentException("BaseVersionedEntityViewModel is not allowed to set null entity");
             }
@@ -32,6 +33,12 @@ namespace UFO.Commander.Wpf.Administration.Model.Base
                 _IsDeletable = value;
                 FirePropertyChangedEvent();
             }
+        }
+
+        public bool IsUpdateable
+        {
+            get { return _IsUpdateable; }
+            set { _IsUpdateable = value; FirePropertyChangedEvent(); }
         }
 
         public I Id

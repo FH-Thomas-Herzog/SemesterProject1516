@@ -81,7 +81,6 @@ namespace UFO.Commander.Service.Impl
 
         protected override void Dispose(bool dispose)
         {
-            base.Dispose();
             DaoFactory.DisposeDao(artistDao);
         }
     }

@@ -253,7 +253,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             SelectionModels.Clear();
             try
             {
-                IList<Artist> result = artistDao.GetAll();
+                IList<Artist> result = artistDao.FindAllActive();
                 foreach (var item in result)
                 {
                     ArtistSelectionModel model = new ArtistSelectionModel(item);

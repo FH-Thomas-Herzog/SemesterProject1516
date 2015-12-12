@@ -87,16 +87,14 @@ public class TestDataGenerator {
 		private final String street;
 		private final String zip;
 		private final String city;
-		private final String countryCode;
 		private final String gps;
 
-		public Venue(String name, String street, String zip, String city, String countryCode, String gps) {
+		public Venue(String name, String street, String zip, String city, String gps) {
 			super();
 			this.name = name;
 			this.street = street;
 			this.zip = zip;
 			this.city = city;
-			this.countryCode = countryCode;
 			this.gps = gps;
 		}
 
@@ -114,10 +112,6 @@ public class TestDataGenerator {
 
 		public String getCity() {
 			return city;
-		}
-
-		public String getCountryCode() {
-			return countryCode;
 		}
 
 		public String getGps() {
@@ -320,7 +314,7 @@ public class TestDataGenerator {
 		final List<Venue> entries = new LinkedList<>();
 
 		for (String[] string : data) {
-			entries.add(new Venue(string[0], string[1], string[2], string[3], string[4], string[5]));
+			entries.add(new Venue(string[0], string[1], string[2], string[3], string[5]));
 		}
 
 		return entries;

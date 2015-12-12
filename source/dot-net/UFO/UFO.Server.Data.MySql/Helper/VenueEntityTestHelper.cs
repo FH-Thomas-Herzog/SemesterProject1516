@@ -43,6 +43,7 @@ namespace UFO.Server.Data.MySql.Helper
             venue.Street = "venueStreet";
             venue.Zip = "venueZip";
             venue.City = "CITY";
+            venue.Deleted = false;
 
             return venue;
         }

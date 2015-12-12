@@ -6,6 +6,6 @@ namespace UFO.Server.Data.Api.Dao
 {
     public interface IArtistDao : IDao<long?, Artist>
     {
-        IList<Artist> GetAll();
+        IList<Artist> FindAllActive();
     }
 }

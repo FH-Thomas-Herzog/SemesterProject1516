@@ -50,7 +50,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             Venue venue = ViewModel.GetUpdatedEntity();
             try
             {
-                //venue = venueService.Save(venue);
+                venue = venueService.Save(venue);
             }
             catch (ConcurrentUpdateException e)
             {
@@ -76,7 +76,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
         {
             try
             {
-                //venueService.Delete(ViewModel.Id);
+                venueService.Delete(ViewModel.Id);
             }
             catch (EntityNotFoundException e)
             {
@@ -109,7 +109,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             Init();
 
             SaveCommand = new RelayCommand(o => Save(o), o => ViewModel.IsViewModelValid);
-            DeleteCommand = new RelayCommand(o => Delete(o), o => ViewModel.IsDeletable);
+            DeleteCommand = new RelayCommand(o => Delete(o));
             NewCommand = new RelayCommand(o => Init(new VenueModel(new Venue())));
         }
 
@@ -121,8 +121,16 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             if (model.Id != null)
             {
                 selected = new SimpleObjectModel(model.Entity, model.Name);
+                model.IsUpdateable = !venueDao.IsVenueUsed(model.Id);
+            }
+            else
+            {
+                model.IsUpdateable = true;
+                model.Entity.CreationUser = UserContext.LoggedUser;
+                model.Entity.CreationUserId = UserContext.LoggedUser.Id;
             }
 
+            model.IsDeletable = true;
             model.Entity.ModificationUser = UserContext.LoggedUser;
             model.Entity.ModificationUserId = UserContext.LoggedUser.Id;
             // After preparation fire the PropertyChanged event
@@ -173,7 +181,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             try
             {
                 SelectionModels.Clear();
-                IList<Venue> items = venueDao.FindAll();
+                IList<Venue> items = venueDao.FindAllActive();
                 foreach (var item in items)
                 {
                     SimpleObjectModel model = new SimpleObjectModel(item, item.Name);
@@ -183,7 +191,6 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
                     }
                     SelectionModels.Add(model);
                 }
-                SelectionModels.OrderBy(i => i.Label);
             }
             catch (System.Exception e)
             {
