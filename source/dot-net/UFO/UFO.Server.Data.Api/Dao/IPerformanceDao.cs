@@ -13,5 +13,7 @@ namespace UFO.Server.Data.Api.Dao
         bool ArtistHasPerformances(long? id);
 
         IList<PerformanceSummaryView> GetAllPerformanceSummaryViews();
+
+        IList<Performance> GetAllPerformancesFullForDay(DateTime date);
     }
 }

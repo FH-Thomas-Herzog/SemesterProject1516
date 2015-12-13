@@ -19,6 +19,7 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
@@ -46,35 +47,43 @@ public class TestDataGenerator {
 	private static final String SEPARATOR = ";";
 	private static final String DEFAULT_PASSWORD = "123";
 	private static final SecureRandom SECURE_RANDOM = new SecureRandom();
-	private static final String PASSWORD_ENCRYPTED = BCrypt.hashpw(DEFAULT_PASSWORD,
-			BCrypt.gensalt(10, SECURE_RANDOM));
+	private static final String PASSWORD_ENCRYPTED = BCrypt.hashpw(DEFAULT_PASSWORD, BCrypt.gensalt(10, SECURE_RANDOM));
 
 	public static class Performance {
 
 		private Calendar startCal = Calendar.getInstance();
 		private final Random random = new Random();
 		boolean toogle = Boolean.FALSE;
+		private int hourOffset = 0;
 
 		public Performance() {
 			super();
 		}
 
-		public String getStartDate() {
-			startCal = Calendar.getInstance();
-			int rand = random.nextInt(50) + 1;
-			startCal.add(Calendar.DAY_OF_YEAR, toogle ? (rand * -1) : rand);
-			toogle = !toogle;
+		public void reset() {
+			hourOffset = 0;
+		}
+
+		public String getStartDate(int d) {
+			startCal = Calendar.getInstance(Locale.GERMAN);
+			startCal.add(Calendar.DAY_OF_YEAR, d);
+			startCal.set(Calendar.HOUR_OF_DAY, 8);
+			startCal.set(Calendar.MILLISECOND, 0);
+			startCal.set(Calendar.SECOND, 0);
+			startCal.set(Calendar.MINUTE, 0);
+			startCal.add(Calendar.HOUR_OF_DAY, hourOffset);
+			hourOffset += 2;
 			return format(startCal);
 		}
 
 		public String getEndDate() {
 			final Calendar cal = (Calendar) startCal.clone();
-			cal.add(Calendar.HOUR, random.nextInt(5) + 1);
+			cal.add(Calendar.HOUR, 1);
 			return format(cal);
 		}
 
 		public String format(Calendar cal) {
-			return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss").format(cal.getTime());
+			return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", new Locale("de", "DE")).format(cal.getTime());
 		}
 
 		public int getVenueId(int max) {
@@ -234,7 +243,8 @@ public class TestDataGenerator {
 		parameters.put("artistCategoryCount", categories.size());
 		parameters.put("artistGroupCount", artistGroups.size());
 		parameters.put("venuesCount", venues.size());
-		parameters.put("performanceCount", 10);
+		parameters.put("performanceCount", 5);
+		parameters.put("daysCount", 5);
 		parameters.put("categories", categories);
 		parameters.put("countries", countries);
 		parameters.put("artistCategories", artistCategroies);

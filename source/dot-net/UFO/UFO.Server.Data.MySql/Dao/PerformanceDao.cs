@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data;
 using UFO.Server.Data.Api.Dao;
+using UFO.Server.Data.Api.Db;
 using UFO.Server.Data.Api.Entity;
 using UFO.Server.Data.Api.Entity.View;
 
@@ -71,6 +72,45 @@ namespace UFO.Server.Data.MySql.Dao
                 }
 
                 return views;
+            }
+            finally
+            {
+                commandBuilder.Clear();
+            }
+        }
+
+        public IList<Performance> GetAllPerformancesFullForDay(DateTime date)
+        {
+            if (date == null)
+            {
+                throw new ArgumentException("Date must not be null");
+            }
+            try
+            {
+                IList<Performance> performances = new List<Performance>();
+                using (IDataReader reader = commandBuilder.WithQuery(" SELECT performance.*, artist.*, artistGroup.*, artistCategory.*, venue.* "
+                                                                   + " FROM ufo.performance performance "
+                                                                   + " INNER JOIN ufo.artist as artist on performance.artist_id = artist.id "
+                                                                   + " INNER JOIN ufo.artist_category as artistCategory on artist.artist_category_id = artistCategory.id "
+                                                                   + " INNER JOIN ufo.artist_group as artistGroup on artist.artist_group_id = artistGroup.id "
+                                                                   + " INNER JOIN ufo.venue as venue on performance.venue_id = venue.id "
+                                                                   + " WHERE DATE(performance.start_date) = DATE(?date) "
+                                                                   + " ORDER BY DATE(performance.start_date), TIME(performance.start_date)")
+                                                          .SetParameter("?date", date) 
+                                                          .ExecuteReader())
+                {
+                    while(reader.Read())
+                    {
+                        Performance performance = EntityBuilder.CreateFromReader<long?, Performance>(reader, "performance");
+                        performance.Artist = EntityBuilder.CreateFromReader<long?, Artist>(reader, "artist");
+                        performance.Artist.ArtistGroup = EntityBuilder.CreateFromReader<long?, ArtistGroup>(reader, "artistGroup");
+                        performance.Artist.ArtistCategory = EntityBuilder.CreateFromReader<long?, ArtistCategory>(reader, "artistCategory");
+                        performance.Venue = EntityBuilder.CreateFromReader<long?, Venue>(reader, "venue");
+                        performances.Add(performance);
+                    }
+
+                    return performances;
+                }
             }
             finally
             {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,11 +11,12 @@ using UFO.Commander.Wpf.Administration.Model.Selection;
 using UFO.Commander.Wpf.Administration.Properties;
 using UFO.Commander.Wpf.Administration.Views.Util;
 using UFO.Server.Data.Api.Dao;
+using UFO.Server.Data.Api.Entity;
 using UFO.Server.Data.Api.Entity.View;
 
 namespace UFO.Commander.Wpf.Administration.Model.Tab
 {
-    public class PerformanceTab : BaseTabModel<PerfromanceModel, SimpleObjectModel>
+    public class PerformanceTab : BaseTabModel<DayPerformanceModel, SimpleObjectModel>
     {
         #region TabResources
         private IPerformanceDao performanceDao;
@@ -42,12 +44,12 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             LoadPerformanceDays();
 
             Init();
-
-
         }
-        public override void Init(PerfromanceModel model = null)
+
+        public override void Init(DayPerformanceModel model = null)
         {
-            model = model ?? new PerfromanceModel();
+            model = model ?? new DayPerformanceModel();
+            ViewModel = model;
         }
 
         public override void CleanupTab()
@@ -60,6 +62,14 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
 
         public override void SelectionChanged()
         {
+            if (SelectedSelectionModel != null)
+            {
+                LoadPerformances((SelectedSelectionModel.Data as PerformanceSummaryView).Date);
+            }
+            else
+            {
+                LoadPerformances();
+            }
         }
         #endregion
 
@@ -78,6 +88,26 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             catch (System.Exception e)
             {
                 MessageHandler.ShowErrorMessage(Resources.ErrorDataLoadFailed);
+            }
+        }
+
+        private void LoadPerformances(DateTime? day = null)
+        {
+            ViewModel.Performances.Clear();
+            if (day != null)
+            {
+                try
+                {
+                    IList<Performance> items = performanceDao.GetAllPerformancesFullForDay(day.Value);
+                    foreach (var item in items)
+                    {
+                        ViewModel.Performances.Add(new PerformanceModel(item));
+                    }
+                }
+                catch (System.Exception)
+                {
+                    MessageHandler.ShowErrorMessage(Resources.ErrorDataLoadFailed);
+                }
             }
         }
         #endregion
