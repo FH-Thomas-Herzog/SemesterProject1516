@@ -16,16 +16,18 @@
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         x:Name="Main">
 
-    <StackPanel Orientation="Vertical">
+    <StackPanel Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10">
         <security:LoginControl x:Name="LoginView"
                                DataContext="{Binding ElementName=Main, Path=UserContext}"
                                Visibility="{Binding IsNotLogged, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"/>
 
-        <Grid Visibility="{Binding UserContext.IsLogged, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+        <Grid Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=ActualWidth, UpdateSourceTrigger=PropertyChanged}"
+              Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=ActualHeight, UpdateSourceTrigger=PropertyChanged}" 
+              Visibility="{Binding UserContext.IsLogged, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <Grid.RowDefinitions>
-                <RowDefinition Height="350"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
@@ -37,8 +39,8 @@
                      Margin="10"
                      HorizontalAlignment="Stretch"
                      VerticalAlignment="Stretch"
+                     ScrollViewer.VerticalScrollBarVisibility="Auto" 
                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                     ScrollViewer.VerticalScrollBarVisibility="Visible"
                      ItemsSource="{Binding MasterDataTabControler.SelectedTabModel.SelectionModels, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                      SelectedItem="{Binding MasterDataTabControler.SelectedTabModel.SelectedSelectionModel, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      SelectionChanged="OnSelectionChanged">
@@ -93,6 +95,9 @@
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type tabModel:VenueTab}">
                         <master:VenueMasterData/>
+                    </DataTemplate>
+                    <DataTemplate DataType="{x:Type tabModel:PerformanceTab}">
+                        <master:PerformaceMasterData/>
                     </DataTemplate>
                 </TabControl.Resources>
             </TabControl>

@@ -74,6 +74,7 @@
     <Compile Include="Entity\IEntity.cs" />
     <Compile Include="Entity\IModifyableEntity.cs" />
     <Compile Include="Entity\User.cs" />
+    <Compile Include="Entity\View\PerformanceSummaryView.cs" />
     <Compile Include="Exception\ConcurrentUpdateException.cs" />
     <Compile Include="Exception\EntityNotFoundException.cs" />
     <Compile Include="Exception\PersistenceException.cs" />

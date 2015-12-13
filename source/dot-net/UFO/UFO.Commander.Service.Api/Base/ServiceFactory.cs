@@ -48,6 +48,10 @@ namespace UFO.Commander.Service.Api.Base
         {
             return CreateService("VenueService", connection) as IVenueService;
         }
+        public static IPerformanceService CreatePerformanceService(DbConnection connection = null)
+        {
+            return CreateService("PerformanceService", connection) as IPerformanceService;
+        }
         public static void DisposeService(IService service)
         {
             service?.Dispose();

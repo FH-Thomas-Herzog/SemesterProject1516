@@ -1,8 +1,11 @@
 ﻿using FO.Server.Data.MySql.Dao;
 using MySql.Data.MySqlClient;
 using System;
+using System.Collections.Generic;
+using System.Data;
 using UFO.Server.Data.Api.Dao;
 using UFO.Server.Data.Api.Entity;
+using UFO.Server.Data.Api.Entity.View;
 
 namespace UFO.Server.Data.MySql.Dao
 {
@@ -47,5 +50,32 @@ namespace UFO.Server.Data.MySql.Dao
             }
         }
 
+        public IList<PerformanceSummaryView> GetAllPerformanceSummaryViews()
+        {
+            IList<PerformanceSummaryView> views = new List<PerformanceSummaryView>();
+            try
+            {
+                using (IDataReader reader = commandBuilder.WithQuery("SELECT DATE(start_date), COUNT(DISTINCT artist_id), COUNT(DISTINCT venue_id),COUNT(DATE(start_date)) FROM ufo.performance GROUP BY DATE(start_date)")
+                                                          .ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        views.Add(new PerformanceSummaryView
+                        {
+                            Date = reader.GetDateTime(0),
+                            ArtistCount = reader.GetInt32(1),
+                            VenueCount = reader.GetInt32(2),
+                            PerformanceCount = reader.GetInt32(3)
+                        });
+                    }
+                }
+
+                return views;
+            }
+            finally
+            {
+                commandBuilder.Clear();
+            }
+        }
     }
 }

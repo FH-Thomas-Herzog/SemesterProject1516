@@ -61,6 +61,7 @@
     <Compile Include="Converter\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converter\CountryCodeToSimpleObjectModelConverter.cs" />
     <Compile Include="Converter\UserTypeToSimpleObjectModelConverter.cs" />
+    <Compile Include="Model\PerfromanceModel.cs" />
     <Compile Include="Model\Tab\ArtistCategoryToSimpleObjectModelConverter.cs" />
     <Compile Include="Converter\ArtistGroupToSimpleObjectModelConverter.cs" />
     <Compile Include="Converter\Base\BaseValueToSimpleObjectModelConverter.cs" />
@@ -79,9 +80,13 @@
     <Compile Include="Model\TabHandlerModel.cs" />
     <Compile Include="Model\Tab\MasterDataTabControler.cs" />
     <Compile Include="Model\Tab\ArtistTab.cs" />
+    <Compile Include="Model\Tab\PerformanceTab.cs" />
     <Compile Include="Model\Tab\VenueTab.cs" />
     <Compile Include="Model\UserContextModel.cs" />
     <Compile Include="Model\VenueModel.cs" />
+    <Compile Include="Views\MasterData\PerformaceMasterData.xaml.cs">
+      <DependentUpon>PerformaceMasterData.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MasterData\VenueMasterData.xaml.cs">
       <DependentUpon>VenueMasterData.xaml</DependentUpon>
     </Compile>
@@ -105,6 +110,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="Views\MasterData\PerformaceMasterData.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MasterData\VenueMasterData.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

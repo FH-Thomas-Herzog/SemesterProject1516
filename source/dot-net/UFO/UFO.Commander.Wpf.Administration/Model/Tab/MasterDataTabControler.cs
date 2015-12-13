@@ -50,9 +50,11 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
 
             var artistTab = new ArtistTab();
             var venueTab = new VenueTab();
+            var performanceTab = new PerformanceTab();
 
             TabModels.Add(artistTab);
             TabModels.Add(venueTab);
+            TabModels.Add(performanceTab);
         }
 
         public void SetDefaultState(IMessageHandler messageHandler)
