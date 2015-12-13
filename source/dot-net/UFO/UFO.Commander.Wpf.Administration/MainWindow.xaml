@@ -16,22 +16,20 @@
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
         x:Name="Main">
 
-    <StackPanel Orientation="Vertical" VerticalAlignment="Stretch" HorizontalAlignment="Stretch" Margin="10">
+    <Grid Margin="10">
         <security:LoginControl x:Name="LoginView"
                                DataContext="{Binding ElementName=Main, Path=UserContext}"
                                Visibility="{Binding IsNotLogged, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                HorizontalAlignment="Center"
                                VerticalAlignment="Center"/>
 
-        <Grid Width="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=ActualWidth, UpdateSourceTrigger=PropertyChanged}"
-              Height="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}, Path=ActualHeight, UpdateSourceTrigger=PropertyChanged}" 
-              Visibility="{Binding UserContext.IsLogged, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
+        <Grid Visibility="{Binding UserContext.IsLogged, Converter={StaticResource BooleanVisibilityConverter}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="2*"/>
-                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="6*"/>
             </Grid.ColumnDefinitions>
 
             <ListBox Name="Selection"
@@ -72,6 +70,20 @@
                         <TextBlock Text="{Binding Label}"
                                    Margin="5"/>
                     </DataTemplate>
+                    <DataTemplate DataType="{x:Type selectionModel:PerformanceSelectionModel}">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+                            <TextBlock Text="{Binding Label}"
+                                     Grid.Row="0"
+                                     Margin="5,5,5,2"/>
+                            <TextBlock Text="{Binding Info}"
+                                     Grid.Row="1"
+                                     Margin="2,5,5,5"/>
+                        </Grid>
+                    </DataTemplate>
                 </ListBox.Resources>
             </ListBox>
 
@@ -102,5 +114,5 @@
                 </TabControl.Resources>
             </TabControl>
         </Grid>
-    </StackPanel>
+    </Grid>
 </Window>

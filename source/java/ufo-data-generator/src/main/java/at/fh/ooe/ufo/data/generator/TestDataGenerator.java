@@ -48,6 +48,7 @@ public class TestDataGenerator {
 	private static final String DEFAULT_PASSWORD = "123";
 	private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 	private static final String PASSWORD_ENCRYPTED = BCrypt.hashpw(DEFAULT_PASSWORD, BCrypt.gensalt(10, SECURE_RANDOM));
+	private static final int DAYS_COUNT = 5;
 
 	public static class Performance {
 
@@ -66,7 +67,7 @@ public class TestDataGenerator {
 
 		public String getStartDate(int d) {
 			startCal = Calendar.getInstance(Locale.GERMAN);
-			startCal.add(Calendar.DAY_OF_YEAR, d);
+			startCal.add(Calendar.DAY_OF_YEAR, (d < ((int) (DAYS_COUNT / 2))) ? (d * -1) : d);
 			startCal.set(Calendar.HOUR_OF_DAY, 8);
 			startCal.set(Calendar.MILLISECOND, 0);
 			startCal.set(Calendar.SECOND, 0);
@@ -244,7 +245,7 @@ public class TestDataGenerator {
 		parameters.put("artistGroupCount", artistGroups.size());
 		parameters.put("venuesCount", venues.size());
 		parameters.put("performanceCount", 5);
-		parameters.put("daysCount", 5);
+		parameters.put("daysCount", DAYS_COUNT);
 		parameters.put("categories", categories);
 		parameters.put("countries", countries);
 		parameters.put("artistCategories", artistCategroies);

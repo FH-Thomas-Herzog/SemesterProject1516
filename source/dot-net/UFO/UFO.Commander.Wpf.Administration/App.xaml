@@ -14,7 +14,9 @@
         <converters:Base64ToImageConverter x:Key="Base64ImageConverter"/>
         <converters:CountryCodeToSimpleObjectModelConverter x:Key="CountryCodeSOMConverter"/>
         <converters:BooleanToVisibilityConverter x:Key="BooleanVisibilityConverter"/>
-        
+        <converters:ArtistToSimpleObjectConverter x:Key="ArtistSOMConverter"/>
+        <converters:VenueToSimpleObjectConverter x:Key="VenueSOMConverter" />
+
         <!-- Error Styles-->
         <Style TargetType="TextBox">
             <Style.Triggers>

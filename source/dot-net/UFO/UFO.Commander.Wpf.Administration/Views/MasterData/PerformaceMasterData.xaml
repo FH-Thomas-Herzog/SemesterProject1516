@@ -6,8 +6,110 @@
              xmlns:local="clr-namespace:UFO.Commander.Wpf.Administration.Views.MasterData"
              xmlns:p="clr-namespace:UFO.Commander.Wpf.Administration.Properties"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
+             d:DesignHeight="300" d:DesignWidth="300"
+             Name="PerformanceMasterData">
+    <UserControl.Resources>
+        <CollectionViewSource x:Key="performances" Source="{Binding ViewModel.Performances}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Time"/>
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
+        <DataTemplate x:Key="groupTemplate">
+            <TextBlock Text="{Binding Path=Name}" FontWeight="Bold" Margin="0,20,0,10"/>
+        </DataTemplate>
+        <DataTemplate x:Key="itemTemplate">
+            <Grid HorizontalAlignment="Stretch">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="1*"/>
+                </Grid.ColumnDefinitions>
+                <ComboBox Name="VenueSelection"
+                          Grid.Column="0"
+                          Margin="5" 
+                          DisplayMemberPath="Label"
+                          ItemsSource="{Binding Venues}"
+                          SelectedItem="{Binding Venue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource VenueSOMConverter}}"/>
+                <ComboBox Name="ArtistSelection"
+                          Grid.Column="1"
+                          Margin="5" 
+                          DisplayMemberPath="Label"
+                          ItemsSource="{Binding Artists}"
+                          SelectedItem="{Binding Artist, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ArtistSOMConverter}}"/>
+                <Grid Name="ActionGrid"
+                      Grid.Column="2"
+                      Margin="5"
+                      HorizontalAlignment="Stretch">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="1*"/>
+                    </Grid.ColumnDefinitions>
+                    <Button Name="ActionSave"
+                            Grid.Column="0"
+                            Margin="5"
+                            Visibility="{Binding IsUpdateable, Mode=OneWay, Converter={StaticResource BooleanVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
+                            Content="{x:Static p:Resources.ActionSave}"
+                            Command="{Binding ElementName=PerformanceMasterData, Path=SaveCommand}"
+                            CommandParameter="{Binding }"/>
+                    <Button Name="ActionDelete"
+                            Grid.Column="1"
+                            Margin="5"
+                            Visibility="{Binding IsDeletable, Mode=OneWay, Converter={StaticResource BooleanVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
+                            Content="{x:Static p:Resources.ActionDelete}"
+                            Command="{Binding ElementName=PerformanceMasterData, Path=DeleteCommand}"
+                            CommandParameter="{Binding }"/>
+                    <Button Name="ActionMove"
+                            Grid.Column="2"
+                            Margin="5"
+                            Visibility="{Binding IsUpdateable, Mode=OneWay, Converter={StaticResource BooleanVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
+                            Content="{x:Static p:Resources.ActionMove}"/>
+                </Grid>
+            </Grid>
+        </DataTemplate>
+    </UserControl.Resources>
     <Grid>
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        <ScrollViewer VerticalScrollBarVisibility="Auto"
+                      Grid.Row="1"
+                      Grid.Column="0">
+            <ItemsControl Name="Performances"
+                      ItemsSource="{Binding Source={StaticResource performances}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
+                      Margin="10"
+                      VerticalAlignment="Stretch"
+                      AllowDrop="False"
+                      ItemTemplate="{StaticResource itemTemplate}">
+                <ItemsControl.GroupStyle>
+                    <GroupStyle>
+                        <GroupStyle.ContainerStyle>
+                            <Style TargetType="{x:Type GroupItem}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <Expander IsExpanded="{Binding Mode=TwoWay, Path=IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem, Mode=FindAncestor}}">
+                                                <Expander.Header>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="Gray" FontSize="22" VerticalAlignment="Bottom" />
+                                                        <TextBlock Text="{Binding ItemCount}" FontSize="22" Foreground="Green" FontWeight="Bold" FontStyle="Italic" Margin="10,0,0,0" VerticalAlignment="Bottom" />
+                                                        <TextBlock Text="{x:Static p:Resources.xItems}" FontSize="22" Foreground="Silver" FontStyle="Italic" VerticalAlignment="Bottom" />
+                                                    </StackPanel>
+                                                </Expander.Header>
+                                                <ItemsPresenter />
+                                            </Expander>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </GroupStyle.ContainerStyle>
+                    </GroupStyle>
+                </ItemsControl.GroupStyle>
+            </ItemsControl>
+        </ScrollViewer>
     </Grid>
 </UserControl>

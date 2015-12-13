@@ -88,6 +88,15 @@ namespace UFO.Commander.Wpf.Administration.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Verschieben.
+        /// </summary>
+        public static string ActionMove {
+            get {
+                return ResourceManager.GetString("ActionMove", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Neu.
         /// </summary>
         public static string ActionNew {
@@ -579,6 +588,15 @@ namespace UFO.Commander.Wpf.Administration.Properties {
         public static string VenuePl {
             get {
                 return ResourceManager.GetString("VenuePl", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to x Elemente.
+        /// </summary>
+        public static string xItems {
+            get {
+                return ResourceManager.GetString("xItems", resourceCulture);
             }
         }
         

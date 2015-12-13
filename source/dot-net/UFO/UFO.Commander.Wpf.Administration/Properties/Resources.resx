@@ -294,4 +294,10 @@
   <data name="Longitude" xml:space="preserve">
     <value>Longitude</value>
   </data>
+  <data name="ActionMove" xml:space="preserve">
+    <value>Verschieben</value>
+  </data>
+  <data name="xItems" xml:space="preserve">
+    <value>x Elemente</value>
+  </data>
 </root>

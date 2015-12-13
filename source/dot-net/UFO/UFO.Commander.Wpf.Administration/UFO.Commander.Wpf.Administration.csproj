@@ -57,12 +57,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Converter\VenueToSimpleObjectConverter.cs" />
+    <Compile Include="Converter\ArtistToSimpleObjectConverter.cs" />
     <Compile Include="Converter\Base64ToImageConverter.cs" />
     <Compile Include="Converter\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converter\CountryCodeToSimpleObjectModelConverter.cs" />
     <Compile Include="Converter\UserTypeToSimpleObjectModelConverter.cs" />
     <Compile Include="Model\DayPerformanceModel.cs" />
     <Compile Include="Model\PerformanceModel.cs" />
+    <Compile Include="Model\Selection\PerformanceSelectionModel.cs" />
     <Compile Include="Model\Tab\ArtistCategoryToSimpleObjectModelConverter.cs" />
     <Compile Include="Converter\ArtistGroupToSimpleObjectModelConverter.cs" />
     <Compile Include="Converter\Base\BaseValueToSimpleObjectModelConverter.cs" />
