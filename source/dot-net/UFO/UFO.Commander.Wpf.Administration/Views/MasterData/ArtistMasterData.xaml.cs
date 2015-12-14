@@ -24,7 +24,7 @@ namespace UFO.Commander.Wpf.Administration.Views.MasterData
     /// </summary>
     public partial class ArtistMasterData : UserControl
     {
-        private static readonly long MAX_FILE_SIZE = (long)((10240) - (10240 / 3) + (10240 * 0.1));
+        private static readonly long MAX_BASE_64_STRING_LENGTH = 10240;
         private ArtistTab Tab { get { return DataContext as ArtistTab; } }
 
         public ArtistMasterData()
@@ -47,11 +47,12 @@ namespace UFO.Commander.Wpf.Administration.Views.MasterData
                 openFileDialog.ShowDialog();
                 if (!string.IsNullOrWhiteSpace(openFileDialog.FileName))
                 {
-                    if ((new FileInfo(openFileDialog.FileName)).Length >= MAX_FILE_SIZE)
+                    string base64 = Convert.ToBase64String(File.ReadAllBytes(openFileDialog.FileName));
+                    if (base64.Length > MAX_BASE_64_STRING_LENGTH)
                     {
-                        throw new ViewException(string.Format(Properties.Resources.ErrorImageToLarge, MAX_FILE_SIZE.ToString()), true, null);
+                        throw new ViewException(string.Format(Properties.Resources.ErrorImageToLarge), true, null);
                     }
-                    Tab.ViewModel.Image = Convert.ToBase64String(File.ReadAllBytes(openFileDialog.FileName));
+                    Tab.ViewModel.Image = base64;
                     Tab.ViewModel.ImageFileType = System.IO.Path.GetExtension(openFileDialog.FileName);
                     Tab.ImageButtonText = Properties.Resources.ActionRemoveImage;
                 }

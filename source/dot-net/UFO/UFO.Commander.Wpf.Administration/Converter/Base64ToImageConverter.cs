@@ -34,8 +34,6 @@ namespace UFO.Commander.Wpf.Administration.Converter
                 BitmapImage image = new BitmapImage();
                 image.BeginInit();
                 image.StreamSource = stream;
-                image.DecodePixelHeight = 30;
-                image.DecodePixelWidth = 30;
                 image.EndInit();
 
                 return image;

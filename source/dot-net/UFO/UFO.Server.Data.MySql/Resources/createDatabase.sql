@@ -129,7 +129,7 @@ CREATE TABLE IF NOT EXISTS `UFO`.`ARTIST` (
   `lastname` VARCHAR(100) NOT NULL,
   `email` VARCHAR(100) NOT NULL,
   `country_code` VARCHAR(10) NOT NULL,
-  `image` VARCHAR(10240) NULL,
+  `image` TEXT(1048576) NULL,
   `image_file_type` VARCHAR(10) NULL,
   `url` VARCHAR(500) NULL,
   `creation_user_id` INT NOT NULL,
