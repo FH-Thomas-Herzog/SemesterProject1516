@@ -50,14 +50,14 @@
                             Margin="5"
                             Visibility="{Binding IsUpdateable, Mode=OneWay, Converter={StaticResource BooleanVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
                             Content="{x:Static p:Resources.ActionSave}"
-                            Command="{Binding ElementName=PerformanceMasterData, Path=SaveCommand}"
+                            Command="{Binding ElementName=PerformanceMasterData, Path=DataContext.SaveCommand}"
                             CommandParameter="{Binding }"/>
                     <Button Name="ActionDelete"
                             Grid.Column="1"
                             Margin="5"
                             Visibility="{Binding IsDeletable, Mode=OneWay, Converter={StaticResource BooleanVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
                             Content="{x:Static p:Resources.ActionDelete}"
-                            Command="{Binding ElementName=PerformanceMasterData, Path=DeleteCommand}"
+                            Command="{Binding ElementName=PerformanceMasterData, Path=DataContext.DeleteCommand}"
                             CommandParameter="{Binding }"/>
                     <Button Name="ActionMove"
                             Grid.Column="2"

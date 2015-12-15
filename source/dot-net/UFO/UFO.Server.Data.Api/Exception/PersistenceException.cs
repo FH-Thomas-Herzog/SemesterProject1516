@@ -6,6 +6,10 @@
     /// </summary>
     public class PersistenceException : System.Exception
     {
+        public int ErrorCode { get; private set; }
+        public PersistenceException(int errorCode) {
+            ErrorCode = errorCode;
+        }
         public PersistenceException() { }
         public PersistenceException(string message) : base(message) { }
         public PersistenceException(string message, System.Exception inner) : base(message, inner) { }

@@ -51,6 +51,28 @@ namespace UFO.Server.Data.MySql.Dao
             }
         }
 
+        public bool ArtistHasPerformanceOnDate(long? artistId, DateTime startDate, DateTime endDate, long? performanceId)
+        {
+            try
+            {
+                return (commandBuilder.WithQuery(" SELECT DISTINCT(id) FROM ufo.performance "
+                                               + " WHERE artist_id = ?artistId "
+                                               + " AND id != ?performanceId "
+                                               + " AND DATE(?startDate) = DATE(start_date) "
+                                               + " AND TIME(end_date) > TIME(?startDate) "
+                                               + " AND TIME(start_date) < TIME(?endDate) ")
+                                      .SetParameter("?artistId", artistId)
+                                      .SetParameter("?performanceId", performanceId)
+                                      .SetParameter("?startDate", startDate)
+                                      .SetParameter("?endDate", endDate)
+                                      .ExecuteScalar() != null);
+            }
+            finally
+            {
+                commandBuilder.Clear();
+            }
+        }
+
         public IList<PerformanceSummaryView> GetAllPerformanceSummaryViews()
         {
             IList<PerformanceSummaryView> views = new List<PerformanceSummaryView>();
@@ -88,7 +110,7 @@ namespace UFO.Server.Data.MySql.Dao
             try
             {
                 IList<Performance> performances = new List<Performance>();
-                using (IDataReader reader = commandBuilder.WithQuery(" SELECT performance.*, artist.*, artistGroup.*, artistCategory.*, venue.* "
+                using (IDataReader reader = commandBuilder.WithQuery(" SELECT performance.*, artist.id as artist__id, artist.firstname as artist__firstname, artist.lastname as artist__lastname, artistGroup.id artistGroup__id, artistGroup.name artistGroup__name, artistCategory.id as artistCategory__id, artistCategory.name as artistCategory__name, venue.id as venue__id, venue.name as venue__name "
                                                                    + " FROM ufo.performance performance "
                                                                    + " INNER JOIN ufo.artist as artist on performance.artist_id = artist.id "
                                                                    + " INNER JOIN ufo.artist_category as artistCategory on artist.artist_category_id = artistCategory.id "
@@ -96,16 +118,16 @@ namespace UFO.Server.Data.MySql.Dao
                                                                    + " INNER JOIN ufo.venue as venue on performance.venue_id = venue.id "
                                                                    + " WHERE DATE(performance.start_date) = DATE(?date) "
                                                                    + " ORDER BY DATE(performance.start_date), TIME(performance.start_date)")
-                                                          .SetParameter("?date", date) 
+                                                          .SetParameter("?date", date)
                                                           .ExecuteReader())
                 {
-                    while(reader.Read())
+                    while (reader.Read())
                     {
-                        Performance performance = EntityBuilder.CreateFromReader<long?, Performance>(reader, "performance");
-                        performance.Artist = EntityBuilder.CreateFromReader<long?, Artist>(reader, "artist");
-                        performance.Artist.ArtistGroup = EntityBuilder.CreateFromReader<long?, ArtistGroup>(reader, "artistGroup");
-                        performance.Artist.ArtistCategory = EntityBuilder.CreateFromReader<long?, ArtistCategory>(reader, "artistCategory");
-                        performance.Venue = EntityBuilder.CreateFromReader<long?, Venue>(reader, "venue");
+                        Performance performance = EntityBuilder.CreateFromReader<long?, Performance>(reader);
+                        performance.Artist = EntityBuilder.CreateFromReader<long?, Artist>(reader, "artist__");
+                        performance.Artist.ArtistGroup = EntityBuilder.CreateFromReader<long?, ArtistGroup>(reader, "artistGroup__");
+                        performance.Artist.ArtistCategory = EntityBuilder.CreateFromReader<long?, ArtistCategory>(reader, "artistCategory__");
+                        performance.Venue = EntityBuilder.CreateFromReader<long?, Venue>(reader, "venue__");
                         performances.Add(performance);
                     }
 

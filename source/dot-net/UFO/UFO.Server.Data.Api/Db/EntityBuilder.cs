@@ -22,7 +22,7 @@ namespace UFO.Server.Data.Api.Db
         /// <param name="reader">the reader to get property values from</param>
         /// <param name="alias">the alias used for the selected property</param>
         /// <returns>the created and filled entity</returns>
-        public static E CreateFromReader<I, E>(IDataReader reader, string alias = " ") where E : class, IEntity<I>
+        public static E CreateFromReader<I, E>(IDataReader reader, string alias = null) where E : class, IEntity<I>
         {
             Debug.Assert(reader != null, "Cannot create entity from null reader");
 
@@ -30,31 +30,34 @@ namespace UFO.Server.Data.Api.Db
             E entity = (E)Activator.CreateInstance(metamodel.GetEntityType());
             for (int i = 0; i < reader.FieldCount; i++)
             {
-                string name = (alias.Count() > 0) ? reader.GetName(i).Replace(alias, "") : reader.GetName(i);
-                string property = metamodel.ColumnToProperty(name);
-                if (property != null)
+                if ((alias == null) || (reader.GetName(i).StartsWith(alias)))
                 {
-                    var propertyType = metamodel.GetEntityType().GetProperty(property).PropertyType;
-                    object converted = null;
-                    Type underlyingType;
-                    // If not null and a nullable type
-                    if ((!reader.IsDBNull(i)) && ((underlyingType = Nullable.GetUnderlyingType(propertyType)) != null))
+                    string name = (alias != null) ? reader.GetName(i).Replace(alias, "") : reader.GetName(i);
+                    string property = metamodel.ColumnToProperty(name);
+                    if (property != null)
                     {
-                        if (underlyingType.IsEnum)
+                        var propertyType = metamodel.GetEntityType().GetProperty(property).PropertyType;
+                        object converted = null;
+                        Type underlyingType;
+                        // If not null and a nullable type
+                        if ((!reader.IsDBNull(i)) && ((underlyingType = Nullable.GetUnderlyingType(propertyType)) != null))
                         {
-                            converted = Enum.ToObject(underlyingType, reader.GetValue(i));
+                            if (underlyingType.IsEnum)
+                            {
+                                converted = Enum.ToObject(underlyingType, reader.GetValue(i));
+                            }
+                            else
+                            {
+                                converted = System.Convert.ChangeType(reader.GetValue(i), underlyingType);
+                            }
                         }
-                        else
+                        // not null and no nullable type (reference or value type)
+                        else if (!reader.IsDBNull(i))
                         {
-                            converted = System.Convert.ChangeType(reader.GetValue(i), underlyingType);
+                            converted = reader.GetValue(i);
                         }
+                        metamodel.GetEntityType().GetProperty(property).SetValue(entity, converted, null);
                     }
-                    // not null and no nullable type (reference or value type)
-                    else if (!reader.IsDBNull(i))
-                    {
-                        converted = reader.GetValue(i);
-                    }
-                    metamodel.GetEntityType().GetProperty(property).SetValue(entity, converted, null);
                 }
             }
             return entity;

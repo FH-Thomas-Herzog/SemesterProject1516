@@ -47,7 +47,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             Performance performance = (data as PerformanceModel)?.GetUpdatedEntity();
             try
             {
-                performance = performanceService.Save(performance);
+                performance = performanceService.Save(performance, 1);
                 LoadPerformanceDays();
                 LoadPerformances(ViewModel?.Date);
             }
@@ -180,8 +180,8 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
                         model.Venues = venues;
                         ViewModel.Performances.Add(model);
                     }
-                }
-                catch (System.Exception)
+                } 
+                catch (System.Exception e)
                 {
                     MessageHandler.ShowErrorMessage(Resources.ErrorDataLoadFailed);
                 }

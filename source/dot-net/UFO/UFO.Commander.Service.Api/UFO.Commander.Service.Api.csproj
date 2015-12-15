@@ -47,6 +47,7 @@
   <ItemGroup>
     <Compile Include="Base\IService.cs" />
     <Compile Include="Base\ServiceFactory.cs" />
+    <Compile Include="Exception\ServiceException.cs" />
     <Compile Include="IArtistService.cs" />
     <Compile Include="IPerformanceService.cs" />
     <Compile Include="ISecurityService.cs" />
