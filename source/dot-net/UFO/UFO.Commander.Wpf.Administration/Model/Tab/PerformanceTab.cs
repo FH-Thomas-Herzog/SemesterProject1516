@@ -19,22 +19,59 @@ using UFO.Server.Data.Api.Exception;
 
 namespace UFO.Commander.Wpf.Administration.Model.Tab
 {
-    public class PerformanceTab : BaseTabModel<DayPerformanceModel, SimpleObjectModel>
+    public class PerformanceTab : BaseTabModel<PerformanceModel, SimpleObjectModel>
     {
         #region TabResources
         private IPerformanceDao performanceDao;
         private IArtistDao artistDao;
         private IVenueDao venueDao;
         private IPerformanceService performanceService;
+
+        private PerformanceModel _EditViewModel;
+        private IList<SimpleObjectModel> _Artists;
+        private IList<SimpleObjectModel> _Venues;
+        private ObservableCollection<PerformanceModel> _Performances;
+        public PerformanceModel EditViewModel
+        {
+            get { return _EditViewModel; }
+            set { _EditViewModel = value; FirePropertyChangedEvent(); }
+        }
+        public IList<SimpleObjectModel> Artists
+        {
+            get { return _Artists; }
+            set { _Artists = value; FirePropertyChangedEvent(); }
+        }
+        public IList<SimpleObjectModel> Venues
+        {
+            get { return _Venues; }
+            set { _Venues = value; FirePropertyChangedEvent(); }
+        }
+        public ObservableCollection<PerformanceModel> Performances
+        {
+            get { return _Performances; }
+            private set { _Performances = value; FirePropertyChangedEvent(); }
+        }
         #endregion
 
         #region Commands
+        private ICommand _NewCommand;
         private ICommand _SaveCommand;
+        private ICommand _EditCommand;
         private ICommand _DeleteCommand;
+        public ICommand NewCommand
+        {
+            get { return _NewCommand; }
+            private set { _NewCommand = value; FirePropertyChangedEvent(); }
+        }
         public ICommand SaveCommand
         {
             get { return _SaveCommand; }
             private set { _SaveCommand = value; FirePropertyChangedEvent(); }
+        }
+        public ICommand EditCommand
+        {
+            get { return _EditCommand; }
+            private set { _EditCommand = value; FirePropertyChangedEvent(); }
         }
         public ICommand DeleteCommand
         {
@@ -49,7 +86,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             {
                 performance = performanceService.Save(performance, 1);
                 LoadPerformanceDays();
-                LoadPerformances(ViewModel?.Date);
+                LoadPerformances();
             }
             catch (ConcurrentUpdateException e)
             {
@@ -64,14 +101,39 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
                 MessageHandler.ShowErrorMessage(Resources.ErrorUnknwon);
             }
         }
+        private void Edit(object data)
+        {
+            try
+            {
+                Performance performance = performanceDao.ById((long?)data);
+                performance.Artist = artistDao.ById(performance.ArtistId);
+                performance.Venue = venueDao.ById(performance.VenueId);
+
+                Init(new PerformanceModel(performance));
+                return;
+            }
+            catch (ConcurrentUpdateException e)
+            {
+                MessageHandler.ShowErrorMessage(Resources.ErrorEntityUpdatedByAnotherUser);
+            }
+            catch (EntityNotFoundException e)
+            {
+                MessageHandler.ShowErrorMessage(Resources.ErrorEntityDoesNotExists);
+            }
+            catch (System.Exception e)
+            {
+                MessageHandler.ShowErrorMessage(Resources.ErrorUnknwon);
+            }
+            LoadPerformances();
+            Init();
+        }
 
         private void Delete(object data)
         {
             try
             {
                 performanceService.Delete((data as PerformanceModel)?.Id);
-                LoadPerformanceDays();
-                LoadPerformances();
+                Performances.Remove(data as PerformanceModel);
             }
             catch (EntityNotFoundException e)
             {
@@ -108,21 +170,37 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
 
             Init();
 
+            NewCommand = new RelayCommand(p => Init());
             SaveCommand = new RelayCommand(p => Save(p));
             DeleteCommand = new RelayCommand(p => Delete(p));
+            EditCommand = new RelayCommand(p => Edit(p));
         }
 
-        public override void Init(DayPerformanceModel model = null)
+        public override void Init(PerformanceModel model = null)
         {
-            model = model ?? new DayPerformanceModel();
+            model = model ?? new PerformanceModel(new Performance());
+
+            Artists = artistDao.FindAllActive().Select(p => new SimpleObjectModel(p, ArtistToSimpleObjectConverter.GetArtistName(p))).OrderBy(p => p.Label).ToList();
+            Venues = venueDao.FindAllActive().Select(p => new SimpleObjectModel(p, p.Name)).OrderBy(p => p.Label).ToList();
+
+            if (model.Id == null)
+            {
+                model.Artist = Artists.Count() > 0 ? (Artists.ElementAt(0).Data as Artist) : null;
+                model.Venue = Venues.Count() > 0 ? (Venues.ElementAt(0).Data as Venue) : null;
+            }
+
             ViewModel = model;
         }
 
         public override void CleanupTab()
         {
-            SaveCommand = null;
-            DeleteCommand = null;
-            SelectedSelectionModel = null;
+            _SaveCommand = null;
+            _EditCommand = null;
+            _DeleteCommand = null;
+            _SelectedSelectionModel = null;
+            _Artists = null;
+            _Venues = null;
+            _Performances = null;
             SelectionModels.Clear();
 
             DaoFactory.DisposeDao(performanceDao);
@@ -136,7 +214,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
         {
             if (SelectedSelectionModel != null)
             {
-                LoadPerformances((SelectedSelectionModel.Data as PerformanceSummaryView).Date);
+                LoadPerformances();
             }
             else
             {
@@ -163,29 +241,26 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             }
         }
 
-        private void LoadPerformances(DateTime? day = null)
+        private void LoadPerformances()
         {
-            ViewModel.Performances.Clear();
-            if (day != null)
+            ObservableCollection<PerformanceModel> performances = new ObservableCollection<PerformanceModel>();
+            if (SelectedSelectionModel != null)
             {
                 try
                 {
-                    IList<SimpleObjectModel> artists = artistDao.FindAllActive().Select(p => new SimpleObjectModel(p, ArtistToSimpleObjectConverter.GetArtistName(p))).OrderBy(p => p.Label).ToList();
-                    IList<SimpleObjectModel> venues = venueDao.FindAllActive().Select(p => new SimpleObjectModel(p, p.Name)).OrderBy(p => p.Label).ToList();
-                    IList<Performance> items = performanceDao.GetAllPerformancesFullForDay(day.Value);
+                    IList<Performance> items = performanceDao.GetAllPerformancesFullForDay((SelectedSelectionModel.Data as PerformanceSummaryView).Date);
                     foreach (var item in items)
                     {
                         PerformanceModel model = new PerformanceModel(item);
-                        model.Artists = artists;
-                        model.Venues = venues;
-                        ViewModel.Performances.Add(model);
+                        performances.Add(model);
                     }
-                } 
+                }
                 catch (System.Exception e)
                 {
                     MessageHandler.ShowErrorMessage(Resources.ErrorDataLoadFailed);
                 }
             }
+            Performances = performances;
         }
         #endregion
     }

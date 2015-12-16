@@ -300,4 +300,7 @@
   <data name="xItems" xml:space="preserve">
     <value>x Elemente</value>
   </data>
+  <data name="ActionEdit" xml:space="preserve">
+    <value>Editieren</value>
+  </data>
 </root>

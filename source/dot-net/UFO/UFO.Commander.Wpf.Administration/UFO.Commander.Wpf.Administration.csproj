@@ -63,7 +63,6 @@
     <Compile Include="Converter\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converter\CountryCodeToSimpleObjectModelConverter.cs" />
     <Compile Include="Converter\UserTypeToSimpleObjectModelConverter.cs" />
-    <Compile Include="Model\DayPerformanceModel.cs" />
     <Compile Include="Model\PerformanceModel.cs" />
     <Compile Include="Model\Selection\PerformanceSelectionModel.cs" />
     <Compile Include="Model\Tab\ArtistCategoryToSimpleObjectModelConverter.cs" />

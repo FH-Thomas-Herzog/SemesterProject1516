@@ -9,7 +9,7 @@
              d:DesignHeight="300" d:DesignWidth="300"
              Name="PerformanceMasterData">
     <UserControl.Resources>
-        <CollectionViewSource x:Key="performances" Source="{Binding ViewModel.Performances}">
+        <CollectionViewSource x:Key="performances" Source="{Binding Performances, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}">
             <CollectionViewSource.GroupDescriptions>
                 <PropertyGroupDescription PropertyName="Time"/>
             </CollectionViewSource.GroupDescriptions>
@@ -20,38 +20,36 @@
         <DataTemplate x:Key="itemTemplate">
             <Grid HorizontalAlignment="Stretch">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
-                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <ComboBox Name="VenueSelection"
-                          Grid.Column="0"
-                          Margin="5" 
-                          DisplayMemberPath="Label"
-                          ItemsSource="{Binding Venues}"
-                          SelectedItem="{Binding Venue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource VenueSOMConverter}}"/>
-                <ComboBox Name="ArtistSelection"
-                          Grid.Column="1"
-                          Margin="5" 
-                          DisplayMemberPath="Label"
-                          ItemsSource="{Binding Artists}"
-                          SelectedItem="{Binding Artist, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ArtistSOMConverter}}"/>
-                <Grid Name="ActionGrid"
-                      Grid.Column="2"
-                      Margin="5"
-                      HorizontalAlignment="Stretch">
+                <TextBlock Name="ArtistName"
+                   Grid.Row="0"
+                   Grid.Column="0"
+                   Margin="5"
+                   Text="{Binding ArtistLabel, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <TextBlock Name="VenueName"
+                   Grid.Row="0"
+                   Grid.Column="1"
+                   Margin="5"
+                   Text="{Binding VenueLabel, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Grid Name="ListViewActions"
+              Grid.Row="0"
+                  Grid.Column="2"
+              Margin="5"
+              HorizontalAlignment="Stretch">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
-                        <ColumnDefinition Width="1*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
                     </Grid.ColumnDefinitions>
-                    <Button Name="ActionSave"
+                    <Button Name="ActionEdit"
                             Grid.Column="0"
                             Margin="5"
                             Visibility="{Binding IsUpdateable, Mode=OneWay, Converter={StaticResource BooleanVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
-                            Content="{x:Static p:Resources.ActionSave}"
-                            Command="{Binding ElementName=PerformanceMasterData, Path=DataContext.SaveCommand}"
-                            CommandParameter="{Binding }"/>
+                            Content="{x:Static p:Resources.ActionEdit}"
+                            Command="{Binding ElementName=PerformanceMasterData, Path=DataContext.EditCommand}"
+                            CommandParameter="{Binding Id}"/>
                     <Button Name="ActionDelete"
                             Grid.Column="1"
                             Margin="5"
@@ -59,11 +57,7 @@
                             Content="{x:Static p:Resources.ActionDelete}"
                             Command="{Binding ElementName=PerformanceMasterData, Path=DataContext.DeleteCommand}"
                             CommandParameter="{Binding }"/>
-                    <Button Name="ActionMove"
-                            Grid.Column="2"
-                            Margin="5"
-                            Visibility="{Binding IsUpdateable, Mode=OneWay, Converter={StaticResource BooleanVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
-                            Content="{x:Static p:Resources.ActionMove}"/>
+
                 </Grid>
             </Grid>
         </DataTemplate>
@@ -71,13 +65,75 @@
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
+        <!-- Editor Grid -->
+        <Grid Name="PerformanceEditGrid" 
+              Grid.Row="0"
+              Margin="10">
+            <Grid.RowDefinitions>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <ComboBox Name="VenueSelection"
+                          Grid.Column="0"
+                          Margin="5" 
+                          DisplayMemberPath="Label"
+                          ItemsSource="{Binding Venues}"
+                          SelectedItem="{Binding ViewModel.Venue, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource VenueSOMConverter}}"/>
+            <ComboBox Name="ArtistSelection"
+                          Grid.Column="1"
+                          Margin="5" 
+                          DisplayMemberPath="Label"
+                          ItemsSource="{Binding Artists}"
+                          SelectedItem="{Binding ViewModel.Artist, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource ArtistSOMConverter}}"/>
+        </Grid>
+        <!-- Editor Actions-->
+        <Grid Name="EditActionGrid"
+              Grid.Row="1"
+              Margin="5"
+              HorizontalAlignment="Stretch">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Button Name="ActionNew"
+                            Grid.Column="0"
+                            Margin="5"
+                            Content="{x:Static p:Resources.ActionNew}"
+                            Command="{Binding ElementName=PerformanceMasterData, Path=DataContext.NewCommand}"/>
+            <Button Name="ActionSave"
+                            Grid.Column="1"
+                            Margin="5"
+                            Visibility="{Binding ViewModel.IsUpdateable, Mode=OneWay, Converter={StaticResource BooleanVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
+                            Content="{x:Static p:Resources.ActionSave}"
+                            Command="{Binding ElementName=PerformanceMasterData, Path=DataContext.SaveCommand}"
+                            CommandParameter="{Binding }"/>
+            <Button Name="ActionDelete"
+                            Grid.Column="2"
+                            Margin="5"
+                            Visibility="{Binding ViewModel.IsDeletable, Mode=OneWay, Converter={StaticResource BooleanVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
+                            Content="{x:Static p:Resources.ActionDelete}"
+                            Command="{Binding ElementName=PerformanceMasterData, Path=DataContext.DeleteCommand}"
+                            CommandParameter="{Binding }"/>
+            <Button Name="ActionMove"
+                            Grid.Column="3"
+                            Margin="5"
+                            Visibility="{Binding ViewModel.IsDeletable, Mode=OneWay, Converter={StaticResource BooleanVisibilityConverter}, UpdateSourceTrigger=PropertyChanged}"
+                            Content="{x:Static p:Resources.ActionMove}"/>
+
+        </Grid>
         <ScrollViewer VerticalScrollBarVisibility="Auto"
-                      Grid.Row="1"
+                      Grid.Row="2"
                       Grid.Column="0">
             <ItemsControl Name="Performances"
                       ItemsSource="{Binding Source={StaticResource performances}, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"

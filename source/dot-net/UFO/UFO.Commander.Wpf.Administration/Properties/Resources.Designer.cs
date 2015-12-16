@@ -79,6 +79,15 @@ namespace UFO.Commander.Wpf.Administration.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Editieren.
+        /// </summary>
+        public static string ActionEdit {
+            get {
+                return ResourceManager.GetString("ActionEdit", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Login.
         /// </summary>
         public static string ActionLogin {
