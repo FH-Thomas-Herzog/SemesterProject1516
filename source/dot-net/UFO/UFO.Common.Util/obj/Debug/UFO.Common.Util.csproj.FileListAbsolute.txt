@@ -10,3 +10,4 @@ C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\
 C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO\UFO.Common.Util\bin\Debug\UFO.Common.Util.pdb
 C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO\UFO.Common.Util\obj\Debug\UFO.Common.Util.dll
 C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO\UFO.Common.Util\obj\Debug\UFO.Common.Util.pdb
+C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO\UFO.Common.Util\obj\Debug\UFO.Common.Util.csprojResolveAssemblyReference.cache
