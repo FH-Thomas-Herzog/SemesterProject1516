@@ -6,7 +6,6 @@ using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
-using UFO.Commander.Wpf.Administration.Exception;
 using UFO.Commander.Wpf.Administration.Model;
 using UFO.Server.Data.Api.Entity;
 
@@ -37,15 +36,10 @@ namespace UFO.Commander.Wpf.Administration
         /// <param name="e">The <see cref="System.Windows.Threading.DispatcherUnhandledExceptionEventArgs" /> instance containing the event data.</param>
         private void OnUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
-            ViewException ex = e.Exception as ViewException;
+            Exception ex = e.Exception;
             if (ex != null)
             {
-                if (ex.openDialog)
-                {
-                    MessageBox.Show(MainWindow, ex.message, Administration.Properties.Resources.ErrorMessage, MessageBoxButton.OK);
-                }
-                Console.WriteLine(ex.message);
-                Console.WriteLine(ex.original?.Message);
+                MessageBox.Show(MainWindow, Administration.Properties.Resources.ErrorUnknwon + "( " + ex.Message + ")", Administration.Properties.Resources.ErrorMessage, MessageBoxButton.OK);
             }
             e.Handled = true;
         }

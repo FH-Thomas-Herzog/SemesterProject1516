@@ -89,13 +89,11 @@
     <Compile Include="Converter\UserTypeToSimpleObjectModelConverter.cs" />
     <Compile Include="Model\PerformanceModel.cs" />
     <Compile Include="Model\Selection\PerformanceSelectionModel.cs" />
-    <Compile Include="Model\Tab\ArtistCategoryToSimpleObjectModelConverter.cs" />
+    <Compile Include="Converter\ArtistCategoryToSimpleObjectModelConverter.cs" />
     <Compile Include="Converter\ArtistGroupToSimpleObjectModelConverter.cs" />
     <Compile Include="Converter\Base\BaseValueToSimpleObjectModelConverter.cs" />
-    <Compile Include="Exception\ViewException.cs" />
     <Compile Include="Model\ArtistModel.cs" />
     <Compile Include="Model\Selection\ArtistSelectionModel.cs" />
-    <Compile Include="Model\Base\BaseEntityPropertyChangeModel.cs" />
     <Compile Include="Model\Base\BasePropertyChangeModel.cs" />
     <Compile Include="Model\Base\BaseTabModel.cs" />
     <Compile Include="Model\Base\BaseVersionedEntityViewModel.cs" />
@@ -104,7 +102,7 @@
     <Compile Include="Model\Base\ITabModel.cs" />
     <Compile Include="Model\Base\RelayCommand.cs" />
     <Compile Include="Model\Selection\SimpleObjectMoel.cs" />
-    <Compile Include="Model\TabHandlerModel.cs" />
+    <Compile Include="obj\TabHandlerModel.cs" />
     <Compile Include="Model\Tab\MasterDataTabControler.cs" />
     <Compile Include="Model\Tab\ArtistTab.cs" />
     <Compile Include="Model\Tab\PerformanceTab.cs" />
@@ -182,9 +180,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Converter\Messages\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\UFO.Commander.Service.Api\UFO.Commander.Service.Api.csproj">
       <Project>{d61fd5db-d14e-401c-81e1-1a49afc8559b}</Project>

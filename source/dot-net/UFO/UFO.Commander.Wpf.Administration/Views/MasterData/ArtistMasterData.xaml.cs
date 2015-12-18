@@ -1,20 +1,8 @@
 ﻿using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
-using UFO.Commander.Wpf.Administration.Exception;
 using UFO.Commander.Wpf.Administration.Model.Tab;
 
 namespace UFO.Commander.Wpf.Administration.Views.MasterData
@@ -50,7 +38,7 @@ namespace UFO.Commander.Wpf.Administration.Views.MasterData
                     string base64 = Convert.ToBase64String(File.ReadAllBytes(openFileDialog.FileName));
                     if (base64.Length > MAX_BASE_64_STRING_LENGTH)
                     {
-                        throw new ViewException(string.Format(Properties.Resources.ErrorImageToLarge), true, null);
+                        MessageBox.Show(Properties.Resources.ErrorImageToLarge, Properties.Resources.ErrorMessage, MessageBoxButton.OK);
                     }
                     Tab.ViewModel.Image = base64;
                     Tab.ViewModel.ImageFileType = System.IO.Path.GetExtension(openFileDialog.FileName);
