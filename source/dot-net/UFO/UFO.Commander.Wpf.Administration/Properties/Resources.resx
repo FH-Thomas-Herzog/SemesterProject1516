@@ -303,4 +303,13 @@
   <data name="ActionEdit" xml:space="preserve">
     <value>Editieren</value>
   </data>
+  <data name="from" xml:space="preserve">
+    <value>von</value>
+  </data>
+  <data name="to" xml:space="preserve">
+    <value>bis</value>
+  </data>
+  <data name="StartEndDate" xml:space="preserve">
+    <value>Start-/Enddatum</value>
+  </data>
 </root>

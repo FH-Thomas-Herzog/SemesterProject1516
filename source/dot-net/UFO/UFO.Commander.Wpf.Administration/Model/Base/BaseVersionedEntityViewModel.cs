@@ -56,43 +56,30 @@ namespace UFO.Commander.Wpf.Administration.Model.Base
             }
         }
 
-        public DateTime? CreationDate
-        {
-            get { return this.Entity.CreationDate; }
-        }
-
-        public DateTime? ModificationDate
-        {
-            get { return this.Entity.ModificationDate; }
-        }
-
-        public long? Version
-        {
-            get { return this.Entity.Version; }
-        }
-
-
-        public string CreationUser
-        {
-            get { return BuildUserString(Entity.CreationUser); }
-
-        }
-
-        public string ModificationUser
-        {
-            get { return BuildUserString(Entity.ModificationUser); }
-        }
-
         #region Private/Protected Helper
-        private string BuildUserString(User user)
-        {
-            if (Entity?.ModificationUser?.Id != null)
-            {
-                return string.Format("{0}, {1}", Entity.ModificationUser.LastName, Entity.ModificationUser.FirstName);
-            }
-            return null;
-        }
         public abstract E GetUpdatedEntity();
         #endregion
+        public override bool Equals(object obj)
+        {
+            // Type check
+            if ((obj != null) && (obj.GetType() == this.GetType()))
+            {
+                BaseVersionedEntityViewModel<I, E> other = (BaseVersionedEntityViewModel<I, E>)obj;
+                if (Id == null)
+                {
+                    // Use object id if boths ids are null
+                    if (other.Id == null)
+                    {
+                        return base.Equals(other);
+                    }
+                }
+                else
+                {
+                    // Both hold the same Id 
+                    return Id.Equals(other.Id);
+                }
+            }
+            return false;
+        }
     }
 }

@@ -26,6 +26,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
         private IArtistDao artistDao;
         private IVenueDao venueDao;
         private IPerformanceService performanceService;
+        private DateTime _MinimumStartDate;
 
         private PerformanceModel _EditViewModel;
         private IList<SimpleObjectModel> _Artists;
@@ -51,6 +52,13 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             get { return _Performances; }
             private set { _Performances = value; FirePropertyChangedEvent(); }
         }
+        public DateTime MinimumStartDate
+        {
+            get { return _MinimumStartDate; }
+            set { _MinimumStartDate = value; FirePropertyChangedEvent(); }
+        }
+
+        public UserContextModel UserContext { get { return (System.Windows.Application.Current as App).UserContext; } }
         #endregion
 
         #region Commands
@@ -81,12 +89,17 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
 
         private void Save(object data)
         {
-            Performance performance = (data as PerformanceModel)?.GetUpdatedEntity();
+            Performance performance = ViewModel.GetUpdatedEntity();
             try
             {
                 performance = performanceService.Save(performance, 1);
-                LoadPerformanceDays();
+                performance.Artist = artistDao.ById(performance.ArtistId);
+                performance.Venue = venueDao.ById(performance.VenueId);
+                // Reload
+                LoadPerformanceDays(performance.StartDate.Value.Date);
                 LoadPerformances();
+                Init(new PerformanceModel(performance));
+                return;
             }
             catch (ConcurrentUpdateException e)
             {
@@ -100,7 +113,9 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             {
                 MessageHandler.ShowErrorMessage(Resources.ErrorUnknwon);
             }
+            Init();
         }
+
         private void Edit(object data)
         {
             try
@@ -132,8 +147,13 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
         {
             try
             {
-                performanceService.Delete((data as PerformanceModel)?.Id);
-                Performances.Remove(data as PerformanceModel);
+                PerformanceModel model = (data as PerformanceModel) ?? ViewModel;
+                performanceService.Delete(model.Id);
+                Performances.Remove(model);
+                if (Performances.Count() == 0)
+                {
+                    LoadPerformanceDays();
+                }
             }
             catch (EntityNotFoundException e)
             {
@@ -143,10 +163,8 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             {
                 MessageHandler.ShowErrorMessage(Resources.ErrorUnknwon);
             }
-        }
-        public void Move(PerformanceModel model)
-        {
 
+            Init();
         }
         #endregion
 
@@ -183,13 +201,24 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             Artists = artistDao.FindAllActive().Select(p => new SimpleObjectModel(p, ArtistToSimpleObjectConverter.GetArtistName(p))).OrderBy(p => p.Label).ToList();
             Venues = venueDao.FindAllActive().Select(p => new SimpleObjectModel(p, p.Name)).OrderBy(p => p.Label).ToList();
 
+            DateTime now = DateTime.Now;
+            DateTime minimumStartDate = new DateTime(now.Year, now.Month, now.Day, now.Hour, 0, 0);
+            minimumStartDate.AddHours(1);
+
             if (model.Id == null)
             {
                 model.Artist = Artists.Count() > 0 ? (Artists.ElementAt(0).Data as Artist) : null;
                 model.Venue = Venues.Count() > 0 ? (Venues.ElementAt(0).Data as Venue) : null;
+                minimumStartDate = new DateTime(now.Year, now.Month, now.Day, now.Hour, 0, 0);
+
+                model.StartDate = minimumStartDate;
+                model.EndDate = model.StartDate.AddHours(PerformanceModel.PERFORMANCE_DURATION_HOURS);
+                model.Entity.CreationUserId = UserContext.LoggedUser.Id;
             }
 
+            model.Entity.ModificationUserId = UserContext.LoggedUser.Id;
             ViewModel = model;
+            MinimumStartDate = minimumStartDate;
         }
 
         public override void CleanupTab()
@@ -224,7 +253,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
         #endregion
 
         #region Helper
-        private void LoadPerformanceDays()
+        private void LoadPerformanceDays(DateTime? dateTime = null)
         {
             SelectionModels.Clear();
             try
@@ -232,7 +261,13 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
                 IList<PerformanceSummaryView> views = performanceDao.GetAllPerformanceSummaryViews();
                 foreach (var item in views)
                 {
-                    SelectionModels.Add(new PerformanceSelectionModel(item));
+                    PerformanceSelectionModel model = new PerformanceSelectionModel(item);
+                    SelectionModels.Add(model);
+                    // Auto select proper model
+                    if ((dateTime != null) && (item.Date.Date.Equals(dateTime.Value.Date)))
+                    {
+                        SelectedSelectionModel = model;
+                    }
                 }
             }
             catch (System.Exception e)
@@ -261,6 +296,10 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
                 }
             }
             Performances = performances;
+            if (Performances.Count() == 0)
+            {
+                SelectedSelectionModel = null;
+            }
         }
         #endregion
     }

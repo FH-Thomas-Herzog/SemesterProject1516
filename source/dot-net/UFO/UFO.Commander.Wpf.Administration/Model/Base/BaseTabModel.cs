@@ -14,6 +14,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Base
     {
         protected M _ViewModel;
         protected S _SelectedSelectionModel;
+        private bool _IsSelectionModelSelected = false;
 
         public BaseTabModel() : base()
         {
@@ -39,11 +40,17 @@ namespace UFO.Commander.Wpf.Administration.Model.Base
             {
                 _SelectedSelectionModel = value;
                 FirePropertyChangedEvent();
+                IsSelectionModelSelected = (value != null);
             }
         }
         public ObservableCollection<S> SelectionModels
         {
             get; private set;
+        }
+        public bool IsSelectionModelSelected
+        {
+            get { return _IsSelectionModelSelected; }
+            private set { _IsSelectionModelSelected = value; FirePropertyChangedEvent(); }
         }
         public IMessageHandler MessageHandler { get; set; }
 

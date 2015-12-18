@@ -403,6 +403,15 @@ namespace UFO.Commander.Wpf.Administration.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to von.
+        /// </summary>
+        public static string from {
+            get {
+                return ResourceManager.GetString("from", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to GPS-Koordinaten.
         /// </summary>
         public static string GpsCoordinate {
@@ -529,11 +538,29 @@ namespace UFO.Commander.Wpf.Administration.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Start-/Enddatum.
+        /// </summary>
+        public static string StartEndDate {
+            get {
+                return ResourceManager.GetString("StartEndDate", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Straße.
         /// </summary>
         public static string Street {
             get {
                 return ResourceManager.GetString("Street", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to bis.
+        /// </summary>
+        public static string to {
+            get {
+                return ResourceManager.GetString("to", resourceCulture);
             }
         }
         
