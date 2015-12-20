@@ -6,6 +6,7 @@
         xmlns:local="clr-namespace:UFO.Commander.Wpf.Administration"
         xmlns:p="clr-namespace:UFO.Commander.Wpf.Administration.Properties"
         xmlns:master="clr-namespace:UFO.Commander.Wpf.Administration.Views.MasterData"
+        xmlns:performance="clr-namespace:UFO.Commander.Wpf.Administration.Views.Performance"
         xmlns:security="clr-namespace:UFO.Commander.Wpf.Administration.Views.Security"
         xmlns:tabModel="clr-namespace:UFO.Commander.Wpf.Administration.Model.Tab"
         xmlns:selectionModel="clr-namespace:UFO.Commander.Wpf.Administration.Model.Selection"
@@ -109,7 +110,7 @@
                         <master:VenueMasterData/>
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type tabModel:PerformanceTab}">
-                        <master:PerformaceMasterData/>
+                        <performance:PerformaceMasterData/>
                     </DataTemplate>
                 </TabControl.Resources>
             </TabControl>

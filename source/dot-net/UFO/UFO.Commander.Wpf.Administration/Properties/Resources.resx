@@ -312,4 +312,31 @@
   <data name="StartEndDate" xml:space="preserve">
     <value>Start-/Enddatum</value>
   </data>
+  <data name="ActionNotify" xml:space="preserve">
+    <value>Benachrichtigen</value>
+  </data>
+  <data name="ActionClose" xml:space="preserve">
+    <value>Schließen</value>
+  </data>
+  <data name="ActionSend" xml:space="preserve">
+    <value>Senden</value>
+  </data>
+  <data name="Content" xml:space="preserve">
+    <value>Inhalt</value>
+  </data>
+  <data name="Subject" xml:space="preserve">
+    <value>Betreff</value>
+  </data>
+  <data name="Type" xml:space="preserve">
+    <value>Typ</value>
+  </data>
+  <data name="EmailsSent" xml:space="preserve">
+    <value>Es wurden '{0}' E-Mails versendet</value>
+  </data>
+  <data name="String1" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SuccessMessage" xml:space="preserve">
+    <value>Erfolgsmeldung</value>
+  </data>
 </root>

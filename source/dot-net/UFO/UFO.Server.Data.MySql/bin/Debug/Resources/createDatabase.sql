@@ -213,6 +213,8 @@ CREATE TABLE IF NOT EXISTS `UFO`.`PERFORMANCE` (
   `modification_date` TIMESTAMP(6) NOT NULL DEFAULT CURRENT_TIMESTAMP(6),
   `start_date` DATETIME NOT NULL,
   `end_date` DATETIME NOT NULL,
+  `former_start_date` DATETIME NULL,
+  `former_end_date` DATETIME NULL,
   `creation_user_id` INT NOT NULL,
   `modification_user_id` INT NOT NULL,
   `artist_id` INT NOT NULL,

@@ -1,0 +1,72 @@
+﻿<UserControl x:Class="UFO.Commander.Wpf.Administration.Views.Performance.PerformanceNotification"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:UFO.Commander.Wpf.Administration.Views.Performance"
+             xmlns:p="clr-namespace:UFO.Commander.Wpf.Administration.Properties"
+             mc:Ignorable="d" 
+             Width="600"
+             Height="300">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+        <!-- Subject row -->
+        <TextBlock Name="SubjectLabel"
+                   Grid.Row="0"
+                   Grid.Column="0"
+                   Margin="5"
+                   Text="{x:Static p:Resources.Subject}"/>
+        <TextBox Name="Subject" 
+                 Grid.Row="0" 
+                 Grid.Column="1"
+                 Margin="5"
+                 VerticalAlignment="Center" 
+                 Text="{Binding Subject, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"/>
+
+        <!-- Content row -->
+        <TextBlock Name="ContentLabel"
+                   Grid.Row="1"
+                   Grid.Column="0"
+                   Margin="5"
+                   Text="{x:Static p:Resources.Content}"/>
+        <TextBox Name="Content" 
+                 Grid.Row="1" 
+                 Grid.Column="1"
+                 Margin="5"
+                 TextWrapping="Wrap"
+                 AcceptsReturn="True"
+                 AcceptsTab="True"
+                 HorizontalAlignment="Stretch"
+                 VerticalAlignment="Stretch"
+                 Text="{Binding Content, UpdateSourceTrigger=PropertyChanged, ValidatesOnDataErrors=True, ValidatesOnExceptions=True}"/>
+        
+        <!-- Actions row -->
+        <Grid Name="ActionsRow"
+              Grid.Row="2"
+              Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <Button Name="SendAction"
+                    Margin="5"
+                    Grid.Column="0"
+                    Content="{x:Static p:Resources.ActionSend}"
+                    Command="{Binding SendCommand, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+            <Button Name="CancelAction"
+                    Margin="5"
+                    Grid.Column="1"
+                    Content="{x:Static p:Resources.ActionClose}"
+                    Click="OnCloseButtonClick"/>
+        </Grid>
+    </Grid>
+</UserControl>

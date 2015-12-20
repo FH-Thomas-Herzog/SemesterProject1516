@@ -12,11 +12,13 @@ namespace UFO.Commander.Service.Api
     {
         PERFORMANCE_ALREADY_STARTED = 0,
         PERFORMANCE_DATE_INVALID = 1,
-        ARTIST_OVERBOOKED = 2
+        ARTIST_OVERBOOKED = 2,
+        NOTIFICATION_ERROR= 3
     };
     public interface IPerformanceService : IService
     {
         void Delete(long? id);
         Performance Save(Performance performance, int hourOffset);
+        int Notify(string subject, string content);
     }
 }

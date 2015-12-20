@@ -66,6 +66,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
         private ICommand _SaveCommand;
         private ICommand _EditCommand;
         private ICommand _DeleteCommand;
+        private ICommand _NotifyCommand;
         public ICommand NewCommand
         {
             get { return _NewCommand; }
@@ -86,32 +87,53 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             get { return _DeleteCommand; }
             private set { _DeleteCommand = value; FirePropertyChangedEvent(); }
         }
+        public ICommand NotifyCommand
+        {
+            get { return _NotifyCommand; }
+            private set { _NotifyCommand = value; FirePropertyChangedEvent(); }
+      }
 
         private void Save(object data)
         {
             Performance performance = ViewModel.GetUpdatedEntity();
+            bool isNew = performance.Id == null;
             try
             {
                 performance = performanceService.Save(performance, 1);
                 performance.Artist = artistDao.ById(performance.ArtistId);
                 performance.Venue = venueDao.ById(performance.VenueId);
-                // Reload
-                LoadPerformanceDays(performance.StartDate.Value.Date);
-                LoadPerformances();
-                Init(new PerformanceModel(performance));
+                PerformanceModel model = new PerformanceModel(performance);
+                if (!isNew)
+                {
+                    Performances[Performances.IndexOf(model)] = model;
+                }
+                else
+                {
+                    Performances.Add(model);
+                    Init(model);
+                }
+                PerformanceSummaryView view = (SelectedSelectionModel.Data as PerformanceSummaryView);
+                if (!view.Date.Date.Equals(performance.StartDate.Value.Date))
+                {
+                    LoadPerformanceDays(performance.StartDate.Value.Date);
+                    Init();
+                }
                 return;
             }
             catch (ConcurrentUpdateException e)
             {
                 MessageHandler.ShowErrorMessage(Resources.ErrorEntityUpdatedByAnotherUser);
+                LoadPerformances();
             }
             catch (EntityNotFoundException e)
             {
                 MessageHandler.ShowErrorMessage(Resources.ErrorEntityDoesNotExists);
+                LoadPerformances();
             }
             catch (System.Exception e)
             {
                 MessageHandler.ShowErrorMessage(Resources.ErrorUnknwon);
+                LoadPerformances();
             }
             Init();
         }
@@ -166,6 +188,10 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
 
             Init();
         }
+        private void Notify(object data)
+        {
+
+        }
         #endregion
 
         #region ITabModel
@@ -183,6 +209,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             artistDao = DaoFactory.CreateArtistDao();
             venueDao = DaoFactory.CreateVenueDao();
             performanceService = ServiceFactory.CreatePerformanceService();
+            Performances = new ObservableCollection<PerformanceModel>(); ;
 
             LoadPerformanceDays();
 
@@ -192,6 +219,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             SaveCommand = new RelayCommand(p => Save(p));
             DeleteCommand = new RelayCommand(p => Delete(p));
             EditCommand = new RelayCommand(p => Edit(p));
+            NotifyCommand = new RelayCommand(p => Notify(p));
         }
 
         public override void Init(PerformanceModel model = null)
@@ -278,7 +306,8 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
 
         private void LoadPerformances()
         {
-            ObservableCollection<PerformanceModel> performances = new ObservableCollection<PerformanceModel>();
+            Performances.Clear();
+            //ObservableCollection<PerformanceModel> performances = new ObservableCollection<PerformanceModel>();
             if (SelectedSelectionModel != null)
             {
                 try
@@ -287,7 +316,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
                     foreach (var item in items)
                     {
                         PerformanceModel model = new PerformanceModel(item);
-                        performances.Add(model);
+                        Performances.Add(model);
                     }
                 }
                 catch (System.Exception e)
@@ -295,7 +324,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
                     MessageHandler.ShowErrorMessage(Resources.ErrorDataLoadFailed);
                 }
             }
-            Performances = performances;
+            //Performances= performances;
             if (Performances.Count() == 0)
             {
                 SelectedSelectionModel = null;

@@ -17,6 +17,8 @@ namespace UFO.Server.Data.Api.Dao
         IList<PerformanceSummaryView> GetAllPerformanceSummaryViews();
 
         IList<Performance> GetAllPerformancesFullForDay(DateTime date);
-        
+
+        IDictionary<Artist, IList<Performance>> GetAllPerformancesForNotification();
+
     }
 }

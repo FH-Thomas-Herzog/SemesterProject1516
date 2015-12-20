@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Data.Common;
+using System.Globalization;
 using System.Linq;
+using System.Net.Mail;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using UFO.Commander.Service.Api;
 using UFO.Commander.Service.Api.Exception;
+using UFO.Commander.Service.Api.Properties;
 using UFO.Commander.Service.Impl.Base;
 using UFO.Server.Data.Api.Dao;
 using UFO.Server.Data.Api.Entity;
@@ -75,10 +79,20 @@ namespace UFO.Commander.Service.Impl
                 }
 
                 // Clear eventually added millis and seconds
-                performance.StartDate = performance.StartDate.Value.AddMilliseconds(-performance.StartDate.Value.Millisecond);
-                performance.StartDate = performance.StartDate.Value.AddSeconds(-performance.StartDate.Value.Second);
-                performance.EndDate = performance.EndDate.Value.AddMilliseconds(-performance.EndDate.Value.Millisecond);
-                performance.EndDate = performance.EndDate.Value.AddSeconds(-performance.EndDate.Value.Second);
+                performance.StartDate = new DateTime(
+                    performance.StartDate.Value.Year,
+                    performance.StartDate.Value.Month,
+                    performance.StartDate.Value.Day,
+                    performance.StartDate.Value.Hour,
+                    0,
+                    0);
+                performance.EndDate = new DateTime(
+                    performance.EndDate.Value.Year,
+                    performance.EndDate.Value.Month,
+                    performance.EndDate.Value.Day,
+                    performance.EndDate.Value.Hour,
+                    0,
+                    0);
 
                 // Validate if artist has already a performance with the defined date + offset
                 DateTime startDateWithOffset = performance.StartDate.Value;
@@ -98,6 +112,14 @@ namespace UFO.Commander.Service.Impl
                 // Update existing one
                 else
                 {
+                    // Check if performance is moved and save former dateTime values if it is so
+                    performanceDB = performanceDao.ById(performance.Id);
+                    if (performanceDB.StartDate.Value.CompareTo(performance.StartDate.Value) != 0)
+                    {
+                        performance.FormerStartDate = performanceDB.StartDate;
+                        performance.FormerEndDate = performanceDB.EndDate;
+                    }
+
                     performanceDB = performanceDao.Update(performance);
                 }
                 CommitTx();
@@ -107,6 +129,63 @@ namespace UFO.Commander.Service.Impl
             {
                 RollbackTx();
                 throw;
+            }
+        }
+
+        public int Notify(string subject, string content)
+        {
+            int count = 0;
+            IDictionary<Artist, IList<Performance>> map = performanceDao.GetAllPerformancesForNotification();
+            SmtpClient client;
+            try
+            {
+                client = new SmtpClient();
+            }
+            catch (Exception e)
+            {
+                throw new ServiceException((int)PerformanceErrorCode.NOTIFICATION_ERROR, "SMTP Client could not be created", e);
+            }
+            CultureInfo originalCulture = Thread.CurrentThread.CurrentCulture;
+
+            try
+            {
+                foreach (var artist in map)
+                {
+                    StringBuilder sb = new StringBuilder(content).Append(System.Environment.NewLine);
+                    DateTime? date = null;
+                    CultureInfo artistCulture = new CultureInfo(artist.Key.CountryCode);
+                    Thread.CurrentThread.CurrentCulture = artistCulture;
+                    foreach (var performance in artist.Value)
+                    {
+                        if ((date == null) || (date.Value.Date.CompareTo(performance.StartDate.Value.Date) != 0))
+                        {
+                            date = performance.StartDate.Value.Date;
+                            sb.Append(System.Environment.NewLine).Append(date.Value.ToShortDateString()).Append(":").Append(Environment.NewLine);
+                        }
+                        sb.Append(performance.Venue.Name).Append(", ")
+                          .Append(performance.StartDate.Value.ToShortTimeString()).Append(" - ").Append(performance.EndDate.Value.ToShortTimeString()).Append(Environment.NewLine);
+                    }
+                    try
+                    {
+                        MailMessage mail = new MailMessage
+                        {
+                            To = { new MailAddress(artist.Key.Email) },
+                            Subject = subject,
+                            Body = sb.ToString()
+                        };
+                        client.Send(mail);
+                        count++;
+                    }
+                    catch (Exception e)
+                    {
+                        // Do nothing if one mail fails
+                    }
+                }
+                return count;
+            }
+            finally
+            {
+                Thread.CurrentThread.CurrentCulture = originalCulture;
             }
         }
 

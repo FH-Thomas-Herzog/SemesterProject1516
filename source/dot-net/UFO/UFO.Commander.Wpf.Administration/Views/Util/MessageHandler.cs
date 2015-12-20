@@ -12,7 +12,7 @@ namespace UFO.Commander.Wpf.Administration.Views.Util
     {
         public void ShowMessage(string header, string message)
         {
-            ShowMessage(header, message, null, null);
+            MessageBoxResult result = MessageBox.Show(message, header ?? "", MessageBoxButton.OK);
         }
 
         public void ShowErrorMessage(string message)
@@ -26,20 +26,6 @@ namespace UFO.Commander.Wpf.Administration.Views.Util
             if (result.Equals(MessageBoxResult.OK))
             {
                 InvokeAction(okAction);
-            }
-        }
-
-        public void ShowMessage(string header, string message, Action yesAction, Action noAction)
-        {
-            MessageBoxResult result = MessageBox.Show(message, header ?? "", MessageBoxButton.YesNo);
-            switch (result)
-            {
-                case MessageBoxResult.Yes:
-                    InvokeAction(yesAction);
-                    break;
-                case MessageBoxResult.No:
-                    InvokeAction(noAction);
-                    break;
             }
         }
 

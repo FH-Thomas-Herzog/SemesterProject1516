@@ -139,5 +139,44 @@ namespace UFO.Server.Data.MySql.Dao
                 commandBuilder.Clear();
             }
         }
+
+
+        public IDictionary<Artist, IList<Performance>> GetAllPerformancesForNotification()
+        {
+            IDictionary<Artist, IList<Performance>> map = new Dictionary<Artist, IList<Performance>>();
+            try
+            {
+                IList<Performance> performances = new List<Performance>();
+                using (IDataReader reader = commandBuilder.WithQuery(" SELECT performance.*, artist.id as artist__id, artist.email as artist__email, artist.country_code as artist__country_code, venue.id as venue__id, venue.name as venue__name "
+                                                                   + " FROM ufo.performance performance "
+                                                                   + " INNER JOIN ufo.artist as artist on performance.artist_id = artist.id "
+                                                                   + " INNER JOIN ufo.venue as venue on performance.venue_id = venue.id "
+                                                                   + " WHERE performance.start_date > ?date "
+                                                                   + " ORDER BY artist.creation_date ASC, DATE(performance.start_date) ASC, TIME(performance.start_date) ASC")
+                                                          .SetParameter("?date", DateTime.Now)
+                                                          .ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        Performance performance = EntityBuilder.CreateFromReader<long?, Performance>(reader);
+                        performance.Artist = EntityBuilder.CreateFromReader<long?, Artist>(reader, "artist__");
+                        performance.Venue = EntityBuilder.CreateFromReader<long?, Venue>(reader, "venue__");
+                        if(!map.ContainsKey(performance.Artist))
+                        {
+                            map[performance.Artist] = new List<Performance>();
+                        }
+                        map[performance.Artist].Add(performance);
+                    }
+
+                    return map;
+                }
+            }
+            finally
+            {
+                commandBuilder.Clear();
+            }
+        }
+
+
     }
 }

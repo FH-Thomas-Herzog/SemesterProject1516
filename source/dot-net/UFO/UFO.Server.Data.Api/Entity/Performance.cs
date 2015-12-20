@@ -17,6 +17,12 @@ namespace UFO.Server.Data.Api.Entity
         [Column(Name = "end_date")]
         public DateTime? EndDate { get; set; }
 
+        [Column(Name = "former_start_date")]
+        public DateTime? FormerStartDate { get; set; }
+
+        [Column(Name = "former_end_date")]
+        public DateTime? FormerEndDate { get; set; }
+
         [Column(Name = "artist_id")]
         public long? ArtistId { get; set; }
 
