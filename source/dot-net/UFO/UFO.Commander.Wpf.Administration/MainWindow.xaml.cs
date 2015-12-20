@@ -58,5 +58,15 @@ namespace UFO.Commander.Wpf.Administration
         {
             MasterDataTabControler.SelectedTabModel.SelectionChanged();
         }
+
+        private void OnWindowClose(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            // Cleanup tabs before shutdown
+            foreach (var item in MasterDataTabControler.TabModels)
+            {
+                item.CleanupTab();
+            }
+            Application.Current.Shutdown();
+        }
     }
 }

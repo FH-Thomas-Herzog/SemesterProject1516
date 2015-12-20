@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using UFO.Server.Data.Api.Dao.Base;
 using UFO.Server.Data.Api.Entity;
 using UFO.Server.Data.Api.Entity.View;
 

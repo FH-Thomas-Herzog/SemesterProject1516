@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UFO.Server.Data.Api.Entity;
 
-namespace UFO.Server.Data.Api.Dao
+namespace UFO.Server.Data.Api.Dao.Base
 {
 
     /// <summary>

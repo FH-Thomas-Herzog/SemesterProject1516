@@ -87,7 +87,7 @@
     <Compile Include="Converter\BooleanToVisibilityConverter.cs" />
     <Compile Include="Converter\CountryCodeToSimpleObjectModelConverter.cs" />
     <Compile Include="Converter\UserTypeToSimpleObjectModelConverter.cs" />
-    <Compile Include="Model\Tab\PerformanceNotificationModel.cs" />
+    <Compile Include="Model\PerformanceNotificationModel.cs" />
     <Compile Include="Model\PerformanceModel.cs" />
     <Compile Include="Model\Selection\PerformanceSelectionModel.cs" />
     <Compile Include="Converter\ArtistCategoryToSimpleObjectModelConverter.cs" />
@@ -96,7 +96,7 @@
     <Compile Include="Model\ArtistModel.cs" />
     <Compile Include="Model\Selection\ArtistSelectionModel.cs" />
     <Compile Include="Model\Base\BasePropertyChangeModel.cs" />
-    <Compile Include="Model\BaseTabModel.cs" />
+    <Compile Include="Model\Base\BaseTabModel.cs" />
     <Compile Include="Model\Base\BaseEntityViewModel.cs" />
     <Compile Include="Model\Base\ITabedViewModel.cs" />
     <Compile Include="Model\Base\BaseValidationViewModel.cs" />
@@ -110,23 +110,23 @@
     <Compile Include="Model\Tab\VenueTab.cs" />
     <Compile Include="Model\UserContextModel.cs" />
     <Compile Include="Model\VenueModel.cs" />
-    <Compile Include="Views\Performance\PerformaceAdmin.xaml.cs">
+    <Compile Include="Model\Tab\Views\Performance\PerformaceAdmin.xaml.cs">
       <DependentUpon>PerformaceAdmin.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MasterData\VenueMasterData.xaml.cs">
+    <Compile Include="Model\Tab\Views\MasterData\VenueMasterData.xaml.cs">
       <DependentUpon>VenueMasterData.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Performance\PerformanceNotification.xaml.cs">
+    <Compile Include="Model\Tab\Views\Performance\PerformanceNotification.xaml.cs">
       <DependentUpon>PerformanceNotification.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Security\LoginControl.xaml.cs">
+    <Compile Include="Model\Tab\Views\Security\LoginControl.xaml.cs">
       <DependentUpon>LoginControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MasterData\ArtistMasterData.xaml.cs">
+    <Compile Include="Model\Tab\Views\ArtistMasterData.xaml.cs">
       <DependentUpon>ArtistMasterData.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\Util\IMessageHandler.cs" />
-    <Compile Include="Views\Util\MessageHandler.cs" />
+    <Compile Include="Model\Tab\Views\Util\IMessageHandler.cs" />
+    <Compile Include="Model\Tab\Views\Util\MessageHandler.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -139,23 +139,23 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="Views\Performance\PerformaceAdmin.xaml">
+    <Page Include="Model\Tab\Views\Performance\PerformaceAdmin.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MasterData\VenueMasterData.xaml">
+    <Page Include="Model\Tab\Views\MasterData\VenueMasterData.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Performance\PerformanceNotification.xaml">
+    <Page Include="Model\Tab\Views\Performance\PerformanceNotification.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\Security\LoginControl.xaml">
+    <Page Include="Model\Tab\Views\Security\LoginControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Views\MasterData\ArtistMasterData.xaml">
+    <Page Include="Model\Tab\Views\ArtistMasterData.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

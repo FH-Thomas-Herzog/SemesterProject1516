@@ -11,6 +11,7 @@ using UFO.Commander.Wpf.Administration.Model.Selection;
 using UFO.Commander.Wpf.Administration.Properties;
 using UFO.Commander.Wpf.Administration.Views.Util;
 using UFO.Server.Data.Api.Dao;
+using UFO.Server.Data.Api.Dao.Base;
 using UFO.Server.Data.Api.Entity;
 using UFO.Server.Data.Api.Exception;
 

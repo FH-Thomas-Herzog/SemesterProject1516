@@ -14,6 +14,7 @@ using UFO.Commander.Wpf.Administration.Model.Selection;
 using UFO.Commander.Wpf.Administration.Properties;
 using UFO.Commander.Wpf.Administration.Views.Util;
 using UFO.Server.Data.Api.Dao;
+using UFO.Server.Data.Api.Dao.Base;
 using UFO.Server.Data.Api.Entity;
 using UFO.Server.Data.Api.Entity.View;
 using UFO.Server.Data.Api.Exception;
@@ -286,7 +287,6 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             _Artists = null;
             _Venues = null;
             _Performances = null;
-            SelectionModels.Clear();
 
             DaoFactory.DisposeDao(performanceDao);
             DaoFactory.DisposeDao(artistDao);

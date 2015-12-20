@@ -160,7 +160,7 @@ namespace UFO.Commander.Wpf.Administration.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Administration.
+        ///   Looks up a localized string similar to UFO Administration.
         /// </summary>
         public static string Administration {
             get {
@@ -187,7 +187,7 @@ namespace UFO.Commander.Wpf.Administration.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Der Artist hat bereits eine Führung zu diesem Zeitpunkt.
+        ///   Looks up a localized string similar to Der Artist hat bereits eine Führung zu diesem Zeitpunkt oder die einzuhaltende Pause  zwischen den Aufführungen wurde unterschritten .
         /// </summary>
         public static string ARTIST_OVERBOOKED {
             get {

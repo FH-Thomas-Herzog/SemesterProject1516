@@ -38,7 +38,7 @@ namespace UFO.Commander.Wpf.Administration.Views.MasterData
                     string base64 = Convert.ToBase64String(File.ReadAllBytes(openFileDialog.FileName));
                     if (base64.Length > MAX_BASE_64_STRING_LENGTH)
                     {
-                        MessageBox.Show(Properties.Resources.ErrorImageToLarge, Properties.Resources.ErrorMessage, MessageBoxButton.OK);
+                        MessageBox.Show(string.Format(Properties.Resources.ErrorImageToLarge, "512"), Properties.Resources.ErrorMessage, MessageBoxButton.OK);
                     }
                     Tab.ViewModel.Image = base64;
                     Tab.ViewModel.ImageFileType = System.IO.Path.GetExtension(openFileDialog.FileName);

@@ -8,7 +8,7 @@ using UFO.Server.Data.Api.Db;
 using UFO.Server.Data.Api.Entity;
 using UFO.Server.Data.Api.Exception;
 
-namespace UFO.Server.Data.Api
+namespace UFO.Server.Data.Api.Dao.Base
 {
 
     /// <summary>

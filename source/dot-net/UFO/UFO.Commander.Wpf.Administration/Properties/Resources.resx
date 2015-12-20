@@ -235,7 +235,7 @@
     <value>Externer Benutzer</value>
   </data>
   <data name="Administration" xml:space="preserve">
-    <value>Administration</value>
+    <value>UFO Administration</value>
   </data>
   <data name="OpenFileBrowser" xml:space="preserve">
     <value>Dateiauswahl öffnen</value>
@@ -340,7 +340,7 @@
     <value>Erfolgsmeldung</value>
   </data>
   <data name="ARTIST_OVERBOOKED" xml:space="preserve">
-    <value>Der Artist hat bereits eine Führung zu diesem Zeitpunkt</value>
+    <value>Der Artist hat bereits eine Führung zu diesem Zeitpunkt oder die einzuhaltende Pause  zwischen den Aufführungen wurde unterschritten </value>
   </data>
   <data name="NOTIFICATION_ERROR" xml:space="preserve">
     <value>Das Versenden der E-Mails ist fehlgeschlagen</value>

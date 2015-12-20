@@ -4,7 +4,7 @@ using System.Data.Common;
 using System.Reflection;
 using UFO.Server.Data.Api.Entity;
 
-namespace UFO.Server.Data.Api.Dao
+namespace UFO.Server.Data.Api.Dao.Base
 {
 
     /// <summary>

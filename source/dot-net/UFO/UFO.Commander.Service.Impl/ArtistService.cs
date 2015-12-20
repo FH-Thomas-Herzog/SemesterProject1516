@@ -7,7 +7,9 @@ using System.Threading.Tasks;
 using UFO.Commander.Service.Api;
 using UFO.Commander.Service.Impl.Base;
 using UFO.Server.Data.Api.Dao;
+using UFO.Server.Data.Api.Dao.Base;
 using UFO.Server.Data.Api.Entity;
+using UFO.Server.Data.Api.Exception;
 
 namespace UFO.Commander.Service.Impl
 {
@@ -66,6 +68,11 @@ namespace UFO.Commander.Service.Impl
                 }
                 else
                 {
+                    artistDB = artistDao.ById(artist.Id);
+                    if (artistDB.Deleted)
+                    {
+                        throw new EntityNotFoundException();
+                    }
                     artistDB = artistDao.Update(artist);
                 }
                 CommitTx();

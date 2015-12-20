@@ -9,6 +9,7 @@ using UFO.Commander.Wpf.Administration.Model.Selection;
 using UFO.Commander.Wpf.Administration.Properties;
 using UFO.Commander.Wpf.Administration.Views.Util;
 using UFO.Server.Data.Api.Dao;
+using UFO.Server.Data.Api.Dao.Base;
 using UFO.Server.Data.Api.Entity;
 using UFO.Server.Data.Api.Exception;
 
@@ -199,7 +200,6 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             _ArtistCategories = null;
             _ArtistGroups = null;
             _ViewModel = null;
-            SelectionModels.Clear();
 
             DaoFactory.DisposeDao(artistDao);
             DaoFactory.DisposeDao(artistCategoryDao);

@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using UFO.Commander.Service.Api;
 using UFO.Commander.Service.Impl.Base;
 using UFO.Server.Data.Api.Dao;
+using UFO.Server.Data.Api.Dao.Base;
 using UFO.Server.Data.Api.Entity;
 using UFO.Server.Data.Api.Exception;
 
@@ -67,6 +68,10 @@ namespace UFO.Commander.Service.Impl
                     if (venueDao.IsVenueUsed(venue.Id))
                     {
                         venueDb = venueDao.ById(venue.Id);
+                        if (venueDb.Deleted)
+                        {
+                            throw new EntityNotFoundException();
+                        }
                         if (!venueDb.Version.Equals(venue.Version))
                         {
                             throw new ConcurrentUpdateException("Venue has been updated by another user");

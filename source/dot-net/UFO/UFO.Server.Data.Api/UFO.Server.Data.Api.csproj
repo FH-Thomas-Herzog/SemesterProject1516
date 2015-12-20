@@ -47,13 +47,13 @@
     <Compile Include="Attribute\Id.cs" />
     <Compile Include="Attribute\Column.cs" />
     <Compile Include="Attribute\Entity.cs" />
-    <Compile Include="Dao\BaseDao.cs" />
-    <Compile Include="Dao\DaoFactory.cs" />
+    <Compile Include="Dao\Base\BaseDao.cs" />
+    <Compile Include="Dao\Base\DaoFactory.cs" />
     <Compile Include="Dao\IPerformanceDao.cs" />
     <Compile Include="Dao\IVenueDao.cs" />
     <Compile Include="Dao\IArtistCategoryDao.cs" />
     <Compile Include="Dao\IArtistGroupDao.cs" />
-    <Compile Include="Dao\IDao.cs" />
+    <Compile Include="Dao\Base\IDao.cs" />
     <Compile Include="Dao\IArtistDao.cs" />
     <Compile Include="Dao\IUserDao.cs" />
     <Compile Include="Db\BaseDbCommandBuilder.cs" />
@@ -78,8 +78,8 @@
     <Compile Include="Exception\ConcurrentUpdateException.cs" />
     <Compile Include="Exception\EntityNotFoundException.cs" />
     <Compile Include="Exception\PersistenceException.cs" />
-    <Compile Include="Helper\BaseEntityHelper.cs" />
-    <Compile Include="Helper\IEntityHelper.cs" />
+    <Compile Include="Entity\Helper\BaseEntityHelper.cs" />
+    <Compile Include="Entity\Helper\IEntityHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

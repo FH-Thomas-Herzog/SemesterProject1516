@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UFO.Server.Data.Api;
 using UFO.Server.Data.Api.Dao;
+using UFO.Server.Data.Api.Dao.Base;
 using UFO.Server.Data.Api.Entity;
 using UFO.Server.Data.Api.Exception;
 using UFO.Server.Data.MySql.Dao;

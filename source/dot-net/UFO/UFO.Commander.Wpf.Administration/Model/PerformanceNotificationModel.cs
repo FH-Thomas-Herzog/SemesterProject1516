@@ -13,7 +13,7 @@ using UFO.Commander.Wpf.Administration.Model.Base;
 using UFO.Commander.Wpf.Administration.Properties;
 using UFO.Commander.Wpf.Administration.Views.Util;
 
-namespace UFO.Commander.Wpf.Administration.Model.Dialog
+namespace UFO.Commander.Wpf.Administration.Model
 {
     public class PerformanceNotificationModel : BaseValidationViewModel, IDisposable
     {
@@ -45,7 +45,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Dialog
 
         [Required(ErrorMessageResourceName = "ErrorRequired",
                   ErrorMessageResourceType = typeof(Resources))]
-        [StringLength(100,
+        [StringLength(255,
                       MinimumLength = 1,
                       ErrorMessageResourceName = "ErrorInvalidStringLength",
                       ErrorMessageResourceType = typeof(Resources))]
@@ -57,7 +57,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Dialog
 
         [Required(ErrorMessageResourceName = "ErrorRequired",
                   ErrorMessageResourceType = typeof(Resources))]
-        [StringLength(100,
+        [StringLength(1024,
                       MinimumLength = 1,
                       ErrorMessageResourceName = "ErrorInvalidStringLength",
                       ErrorMessageResourceType = typeof(Resources))]

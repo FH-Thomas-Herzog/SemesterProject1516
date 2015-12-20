@@ -37,7 +37,7 @@ namespace UFO.Commander.Wpf.Administration.Converter
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (!(value is SimpleObjectModel))
+            if ((value != null) && (!(value is SimpleObjectModel)))
             {
                 throw new ArgumentException("ConvertBack expects an instance of SimpleObjectModel");
             }

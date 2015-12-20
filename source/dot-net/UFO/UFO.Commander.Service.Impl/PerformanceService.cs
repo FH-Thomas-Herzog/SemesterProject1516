@@ -12,6 +12,7 @@ using UFO.Commander.Service.Api.Exception;
 using UFO.Commander.Service.Api.Properties;
 using UFO.Commander.Service.Impl.Base;
 using UFO.Server.Data.Api.Dao;
+using UFO.Server.Data.Api.Dao.Base;
 using UFO.Server.Data.Api.Entity;
 using UFO.Server.Data.Api.Exception;
 

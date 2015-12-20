@@ -22,7 +22,7 @@
                 <scm:SortDescription PropertyName="VenueLabel" Direction="Ascending"/>
             </CollectionViewSource.SortDescriptions>
         </CollectionViewSource>
-        <!-- ItemsControl GroupTemplate-->
+        <!-- ItemsControl GroupTemplate -->
         <DataTemplate x:Key="groupTemplate">
             <TextBlock Text="{Binding Path=Name}" FontWeight="Bold" Margin="0,20,0,10"/>
         </DataTemplate>
@@ -238,9 +238,12 @@
                                             <Expander IsExpanded="{Binding Mode=TwoWay, Path=IsSelected, RelativeSource={RelativeSource AncestorType=ListBoxItem, Mode=FindAncestor}}">
                                                 <Expander.Header>
                                                     <StackPanel Orientation="Horizontal">
-                                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" Foreground="Gray" FontSize="22" VerticalAlignment="Bottom" />
-                                                        <TextBlock Text="{Binding ItemCount}" FontSize="22" Foreground="Green" FontWeight="Bold" FontStyle="Italic" Margin="10,0,0,0" VerticalAlignment="Bottom" />
-                                                        <TextBlock Text="{x:Static p:Resources.xItems}" FontSize="22" Foreground="Silver" FontStyle="Italic" VerticalAlignment="Bottom" />
+                                                        <!-- Foreground="Gray" FontSize="22" -->
+                                                        <TextBlock Text="{Binding Name}" FontWeight="Bold"  VerticalAlignment="Bottom" />
+                                                        <!-- FontSize="22" Foreground="Green" FontStyle="Italic" -->
+                                                        <TextBlock Text="{Binding ItemCount}" FontWeight="Bold"  Margin="10,0,0,0" VerticalAlignment="Bottom" />
+                                                        <!-- FontSize="22" Foreground="Silver" FontStyle="Italic"  -->
+                                                        <TextBlock Text="{x:Static p:Resources.xItems}" FontWeight="Bold"  VerticalAlignment="Bottom" />
                                                     </StackPanel>
                                                 </Expander.Header>
                                                 <ItemsPresenter />

@@ -15,7 +15,8 @@
         Height="400" 
         Width="1024"
         DataContext="{Binding RelativeSource={RelativeSource Self}}"
-        x:Name="Main">
+        x:Name="Main"
+        Closing="OnWindowClose">
 
     <Grid Margin="10">
         <security:LoginControl x:Name="LoginView"
@@ -29,7 +30,7 @@
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="2*"/>
+                <ColumnDefinition Width="3*"/>
                 <ColumnDefinition Width="6*"/>
             </Grid.ColumnDefinitions>
 

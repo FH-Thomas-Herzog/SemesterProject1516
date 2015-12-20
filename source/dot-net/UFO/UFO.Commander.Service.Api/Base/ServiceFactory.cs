@@ -22,7 +22,7 @@ namespace UFO.Commander.Service.Api.Base
             if (assemblyName == null)
             {
                 // Breaks desinger !!!
-                //throw new InvalidOperationException($"Assembly must provide App.config with set {SERVICE_ASSEMBLY_PARAMETER} parameter");
+                throw new InvalidOperationException($"Assembly must provide App.config with set {SERVICE_ASSEMBLY_PARAMETER} parameter");
             }
             else {
                 assembly = Assembly.Load(assemblyName);
