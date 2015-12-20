@@ -289,11 +289,14 @@ Folgende Projekte wurden der Solution hinzugefügt.
 \end{enumerate}
 \ \\
 Des Weiteren wurde der Wurzelnamensraum auf \emph{UFO} beschränkt unter dem jetzt alle Projekte liegen.
-
-\newpage
+\subsubsection{Mögliche Probleme}
+Mir ist aufgefallen dass Code im statischen Kontext beim Visual Designer zu Problemen geführt hat, da dieser anscheinend evaluiert wird. Sollten Sie also auf Probleme stoßen so liegt es an folgender Klasse \emph{UFO.Commander.Service.Api.Base.ServiceFactory}.
+\newline\newline
+Des Weiteren viel mir auf das MySql anscheinend in meiner Version bei einem Prefix diesen nicht in das ResultSet übernimmt. Also eine Query folgendermaßen aussehen könnte.\newline
+\emph{SELECT artist.*, venue.* FROM ...} ein Result liefert wie \emph{id, name, id, name}. Sollten Sie eine neuere Version als \emph{5.6.20} könnte dies auf der Performance View Probleme verursachen, da ich davon ausgehe dass diese Verhalten auftritt. 
 \subsubsection{Klassenhierarchien}
-Folgender Teil der Dokumentation dokumentiert die definierten Klassenhierarchien der WPF Anwendung und des Service Layers.\\\\
-
+Folgender Teil der Dokumentation dokumentiert die definierten Klassenhierarchien der WPF Anwendung und des Service Layers.
+\newpage
 \emph{\textbf{IService}}\\
 Folgendes Klassendiagramm zeigt die Hierarchie des Interfaces \emph{IService}, welche die Wurzel aller Service Interfaces darstellt und \emph{IDisposable} erweitert. Somit ist jeder abgeleiteter Service dazu gezwungen die Methode \emph{Dispose} zu implementieren um dort seine gebundenen Ressourcen freizugeben. Des Weiteren wurde eine Basisklasse namens \emph{BaseService} eingeführt, welche die Datenbankverbindung und Transaktionsmethoden implementiert, sodass die abgeleitet Klassen diese Nutzen können.
 \begin{figure}[h]
@@ -319,19 +322,19 @@ Das Interface \emph{ITabedViewModel} definiert die Struktur der Implementierten 
 
 \newpage
 \textbf{\emph{BasePropertyChangeViewModel}}\\
-Folgendes Klassendiagramm zeigt die Hierarchien der Basisklasse \emph{BasePropertyChangeViewModel}, die die Wurzelklasse aller implementierten \emph{ViewModels} darstellt, da es immer mindesten einen Property gibt der diesen Event benötigt. Des Weiteren wurde die Klasse \emph{BaseValidationViewModel} eingeführt die die erste Ableitung von \emph{BasePropertyChangeViewModel} darstellt und die Logik für die Validierung über \emph{System.ComponentModel.DataAnnotations} realisiert. Von dieser Klasse erbt die Basisklasse \emph{BaseEntityViewModel}, die als Wrapper für ViewModels verwendet wird, die eine \emph{IEntity} Instanz für die View wrappen.
+Folgendes Klassendiagramm zeigt die Hierarchien der Basisklasse \emph{BasePropertyChangeViewModel}, die die Wurzelklasse aller implementierten \emph{View-Models} darstellt, da es immer mindesten einen Property gibt der diesen Event benötigt. Des Weiteren wurde die Klasse \emph{BaseValidationViewModel} eingeführt, die die erste Ableitung von \emph{BasePropertyChangeViewModel} darstellt und die Logik für die Validierung über \emph{System.ComponentModel.DataAnnotations} realisiert. Von dieser Klasse erbt die Basisklasse \emph{BaseEntityViewModel}, die als Wrapper für ViewModels verwendet wird, die eine \emph{IEntity} Instanz für die View wrappen.
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=0.8]{\imagesRoot/viewmodelinheritance_map.PNG}
 	\caption
-	{Basisklasse für ViewModels}
+	{Basisklasse für View-Models}
 \end{figure}
 \ \\
 Die Klasse \emph{UserContextModel} wurde eingeführt um einen eingeloggten Benutzer zu repräsentieren und wird als statischer Property der Klasse \emph{App} definiert, da es nur einen eingeloggten Benutzer pro gestarteter Anwendung geben kann. Alle Klassen, die auf den UserContext angewiesen sind müssen die Instanz der Klasse \emph{App} verwenden.
 
 \newpage
 \textbf{\emph{SimpleObjectModel}}\\
-Folgendes Klassendiagramm zeigt die Hierarchien der Klasse \emph{SimpleObjectModel}, die eingeführt wurde um in Listen, Comboboxen und dergleichen Entitäten für die Darstellung zu halten. Die Controls verwenden Konverter, in denen aus der String Repräsentation wieder in die Entität konvertiert wird. Diese Klasse hält hierbei eine object Instanz (z.B.: Artist) und den anzuzeigenden Label. In den Konvertern wird eine Instanz \emph{SimpleObjectModel} aus dem zu verwaltenden Objekt erzeugt und visa versa.
+Folgendes Klassendiagramm zeigt die Hierarchien der Klasse \emph{SimpleObjectModel}, die eingeführt wurde um in Listen, Comboboxen und dergleichen Entitäten für die Darstellung zu halten. Die Controls verwenden Konverter, in denen aus der String Repräsentation wieder in die Entität konvertiert wird. Diese Klasse hält hierbei eine Object Instanz (z.B.: Artist) und den anzuzeigenden Label. In den Konvertern wird eine Instanz \emph{SimpleObjectModel} aus dem zu verwaltenden Objekt erzeugt und visa versa.
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=0.8]{\imagesRoot/simpleobjectmodel_map.PNG}
@@ -339,7 +342,7 @@ Folgendes Klassendiagramm zeigt die Hierarchien der Klasse \emph{SimpleObjectMod
 	{Klasse für Controls mit Konverter}
 \end{figure}
 \ \\
-Die beiden abgeleitet Klassen erweitern hierbei die Klasse \emph{SimpleObjectModel} um spezifische Attribute, die in dern Controls verwendet werden.
+Die beiden abgeleitet Klassen erweitern hierbei die Klasse \emph{SimpleObjectModel} um spezifische Attribute, die in den Controls verwendet werden.
 
 \newpage
 \textbf{\emph{IConverter}}\\
@@ -353,8 +356,8 @@ Folgendes Klassendiagramm zeigt die Hierarchien der Klasse \emph{IConverter}.
 \ \\
 Die Klasse \emph{BaseValueToSimpleObjectConverter} stellt die Basisklasse aller Konverter dar, die Instanzen von \emph{SimpleObjectModel} konvertieren. In diese Klasse wurden alle gemeinsamen Funktionalitäten wie 
 \begin{enumerate}
-	\item\emph{Typprüfung}\\
-	ES wird geprüft ob der Typ des übergebenen Value dem erwarteten Typ entspricht
+	\item\emph{Typ-Prüfung}\\
+	Es wird geprüft ob der Typ des übergebenen Value dem erwarteten Typ entspricht
 	\item\emph{ConvertBack}\\
 	Da hier nur Instanzen von \emph{SimpleObjectModel} konvertiert werden kann diese Methoden in einer Basisklasse implementiert werden, da hier nur auf den Property \emph{Data} zugegriffen wird.
 \end{enumerate}
@@ -364,7 +367,6 @@ Es wurden auch Konverter für die Visibility (true=Visibility.VISIBILE, false=Vi
 \newpage
 \subsubsection{WPF Struktur}
 Folgende Abbildung zeigt wie die Views innerhalb des Projektes strukturiert wurden.
-\emph{IConverter}.
 \begin{figure}[h]
 	\centering
 	\includegraphics[scale=0.8]{\imagesRoot/viewfolderstructure.PNG}
@@ -381,11 +383,11 @@ Bis auf die \emph{App.xaml} und \emph{MainView.xaml} wurden alle Views innerhalb
 	\item\emph{Security}\\
 	Die Login-View
 	\item\emph{Util}\\
-	Utility Klassen um innerhalb von View-Models mit der View zu interagieren ohne Referenzen auf View Namespaces verwenden zu müssen.
+	Utility Klassen um innerhalb von View-Models mit der View zu interagieren ohne Referenzen auf WPF Namespaces verwenden zu müssen.
 \end{enumerate}
 \ \\
 Alle diese Views sind als UserControls implementiert worden und werden innerhalb von \emph{MainView.xaml} verwendet (außer PerformanceNotification.xaml), die diese UserControls in einem Tab-Control als DataTemplate für die verschiedene Typen der Tab-Models definiert.
-
+\newline
 \newpage
 Folgende Abbildung zeigt die eingeführte Verzeichnisstruktur um die WPF-Ressourcen innerhalb diese Projektes zu strukturieren.
 \begin{figure}[h]
@@ -399,6 +401,205 @@ Die jeweiligen Base-Verzeichisse beinhalten die eingeführten Basisklassen für 
 
 \newpage
 \subsubsection{Benutzerdokumentation}
-Folgenden ist die Benutzerdokumentation der WPF-Anwendung \emph{Commander} angeführt.
-
-\end{document}  
+Folgend ist die Benutzerdokumentation der WPF-Anwendung \emph{Commander} angeführt.
+\newline
+\newline
+\textbf{Login}\newline
+Die Administration benötigt einen Login bevor mit Ihr interagiert werden kann. Dazu müssen Sie als Benutzer angelegt worden sein.
+\newline
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{\imagesRoot/view_login.PNG}
+	\caption
+	{Login nach Start der Anwendung}
+\end{figure}
+\ \newline
+Es wurden keine Beschränkungen beim Login eingeführt, was bedeutet Ihr Zugang wird nach mehrmaligen Fehlversuchen gesperrt.
+\newline
+\newline
+\emph{Mögliche Fehler}
+\newline
+\newline
+Wenn Sie nachdem Start der Anwendung folgende Fehlermeldung erhalten, prüfen Sie bitte ob Sie auf die Datenbank zugreifen können.
+\begin{enumerate}
+	\item\emph{Fehlende Datenbankverbindung}
+	\newline
+	Sollten sie keine Datenbankverbindung habe so erhalten Sie folgende Fehlermeldung nach dem Sie die Anwendung gestartet haben. In diesem Fall können Sie sich nicht einloggen.
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{\imagesRoot/view_error_start_app.PNG}
+	\caption
+	{Fehlermeldung keine Datenbankverbindung}
+\end{figure}
+\item\emph{Login fehlgeschlagen}
+\newline
+Wenn Sie ein falsches Passwort eingeben erhalten Sie folgende Fehlermeldung
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{\imagesRoot/view_error_login_failed.PNG}
+	\caption
+	{Fehlermeldung Login fehlgeschlagen}
+\end{figure}
+\end{enumerate}
+\ \newpage
+\parindent0pt{\textbf{Artistenverwaltung}}
+\newline
+Nachdem Sie sich erfolgreich eingeloggt haben starten Sie mit der Ansicht der Artistenverwaltung, wo Sie die Stammdaten der Artisten verwalten können.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{\imagesRoot/view_artist.PNG}
+	\caption
+	{Stammdatenverwaltung der Artisten}
+\end{figure}
+\ \newline 
+Alle Ansichten sind nachdem selben Schema aufgebaut. Linker Hand sehen Sie die Auswahl der bereits existierenden Einträge - in diesem Fall die Artisten - die Sie auswählen und rechter Hand - innerhalb des Tabs - bearbeiten können. Die rot markierten Eingabefelder signalisieren, dass hier Validierungsfehler aufgetreten sind. Wenn Sie mit dem Cursor über ein rot markiertes Eingabefeld kommen wird Ihnen ein Tooltip angezeigt, der Ihnen mitteilt welcher Validierungsfehler aufgetreten ist.
+\newline
+\newline
+Sollten Sie einen Artisten löschen so werden alle in der Zukunft liegenden Aufführungen dieses Artisten ebenfalls gelöscht. Sollten alle Aufführungen gelöscht worden sein, so wird der Artist ebenfalls gelöscht, andererseits wird der Artist als gelöscht markiert. Auf jeden Fall ist der Artist nicht mehr für Sie verfügbar.
+\newline
+\newpage
+\emph{Mögliche Fehler}
+\begin{enumerate}
+	\item\emph{Bild zu groß}
+	\newline
+	Sollten Sie ein Bild auswählen, welches die maximal erlaubte Größe überschreitet, dann erhalten Sie folgende Fehlermeldung
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{\imagesRoot/view_error_image_too_large.PNG}
+	\caption
+	{Fehlermeldung Bild zu groß}
+\end{figure}
+\item\emph{Artist wurde geändert}
+\newline
+Sollten ein anderer Benutzer den Artisten geändert haben so erhalten Sie folgende Fehlermeldung
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{\imagesRoot/view_error_concurrent.PNG}
+	\caption
+	{Fehlermeldung Artist geändert}
+\end{figure}
+\item\emph{Artist nicht mehr vorhanden}
+\newline
+Sollten Sie versuchen einen Artisten zu speichern/löschen und der Artist wurde entweder als gelöscht markiert oder tatsächlich gelöscht, so erhalten Sie folgende Fehlermeldung
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{\imagesRoot/view_error_entity_not_existent.PNG}
+	\caption
+	{Fehlermeldung Artist nicht gefunden}
+\end{figure}	
+\end{enumerate}
+\newpage
+\textbf{Spielstätten}
+\newline
+Auf diesem Tab könne Sie die zur Verfügung stehenden Spielstätten administrieren.
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{\imagesRoot/view_venue.PNG}
+	\caption
+	{Stammdatenverwaltung der Spielstätten}
+\end{figure}
+\ \newline
+Bitte stellen Sie sicher das die eingegeben GPS-Koordinaten korrekt sind da hier keine Prüfung auf Korrektheit erfolgt. Sollten Sie GPS-Koordinaten angeben, so können diese in der  Web-Anwendung für Goolge-Maps verwendet werden. Sollten Sie nur die Adressdaten angeben so kann es passieren dass die Position auf Goggle-Maps nicht korrekt angezeigt wird, falls Google diese Adresse nicht kennt oder falsch zuordnet.
+\newline
+\newline
+Sollten bereits Aufführungen an dieser Spielstätte stattfinden, so haben Sie nur mehr die Möglichkeit den Name dieser Spielstätte zu ändern. Bei einem Löschen einer in Verwendung befindlichen Spielstätte wird diese lediglich als gelöscht markiert. In jedem Fall sind gelöschte Spielstätten für Sie nicht mehr verfügbar.
+\newline
+\newline
+\emph{Mögliche Fehler}
+\begin{enumerate}
+\item\emph{Spielstätte wurde geändert}
+\newline
+Sollte ein anderer Benutzer die Spielstätte geändert haben so erhalten Sie folgende Fehlermeldung
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{\imagesRoot/view_error_concurrent.PNG}
+	\caption
+	{Fehlermeldung Spielstätte geändert}
+\end{figure}
+\item\emph{Spielstätte nicht mehr vorhanden}
+\newline
+Sollten Sie versuchen eine Spielstätte zu speichern/löschen und die Spielstätte wurde entweder als gelöscht markiert oder tatsächlich gelöscht, so erhalten Sie folgende Fehlermeldung
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{\imagesRoot/view_error_entity_not_existent.PNG}
+	\caption
+	{Fehlermeldung Spielstätte nicht gefunden}
+\end{figure}	
+\end{enumerate}
+\ \newline
+\newpage
+\textbf{Aufführungen}
+Auf diesem Tab können Sie die Aufführungen verwalten. Diese werden auf die Aufführungstage aufgeteilt und sind in der Auswahl - linker Hand - verfügbar. Hier werden auch Informationen angezeigt wie viele Artisten an wie vielen Spielstätten Aufführungen haben.
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{\imagesRoot/view_performance.PNG}
+	\caption
+	{Festivalverwaltung}
+\end{figure}
+\ \newline
+Nach der Auswahl eines Aufführungstages werden unterhalb des Formulars die Aufführungen geordnet nach der Aufführungszeit, Artistenname und Spielstätte angezeigt. Die Buttons neben den Einträgen signalisieren das diese Einträge änderbar und löschbar sind. Sollten keine Buttons vorhanden sein, so wird diese Aufführung bereits in der Vergangenheit liegen und kann daher weder gelöscht noch geändert werden.
+\newline
+\newline
+Wenn sie auf Editieren klicken so wird das Formular mit den Aufführungsdaten gesetzt und der Button 'Löschen' wird sichtbar. Ansonsten sind die Formularfelder mit Standardwerten befüllt.
+\newline
+\newline
+Wenn Sie den Button 'Benachrichtigen' klicken öffnet sich ein Dialog über den Sie die E-Mail angeben können, die an alle Artisten versendet wird.
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{\imagesRoot/view_email_notification.PNG}
+	\caption
+	{Dialog für E-Mail Benachrichtigungen}
+\end{figure}
+\ \newline
+Diese E-Mail wird an alle Artisten verschickt wobei der E-Mail-Nachricht alle Aufführungen des jeweiligen Artisten angefügt werden.
+\newpage
+Wenn die E-Mail-Nachrichten versendet wurden erhalten Sie eine Meldung über die Anzahl der versendeten E-Mail-Nachrichten.
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{\imagesRoot/view_success_email_sent.PNG}
+	\caption
+	{Erfolgsmeldung für E-Mail-Versand}
+\end{figure}
+\ \newline
+Sehen Sie hier ein Beispiel für so eine E-Mail Nachricht.
+\newline
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.8]{\imagesRoot/sent_email.PNG}
+	\caption
+	{Generierte E-Mail}
+\end{figure}
+\ \newline
+\newpage
+\emph{Mögliche Fehler}
+\begin{enumerate}
+\item\emph{Aufführung wurde geändert}
+\newline
+Sollte ein anderer Benutzer die Aufführung geändert haben so erhalten Sie folgende Fehlermeldung
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{\imagesRoot/view_error_concurrent.PNG}
+	\caption
+	{Fehlermeldung Spielstätte geändert}
+\end{figure}
+\item\emph{Aufführung nicht mehr vorhanden}
+\newline
+Sollten Sie versuchen eine Aufführung zu speichern/löschen und die Aufführung wurde bereits gelöscht so erhalten Sie folgende Fehlermeldung
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{\imagesRoot/view_error_entity_not_existent.PNG}
+	\caption
+	{Fehlermeldung Spielstätte nicht gefunden}
+\end{figure}	
+\item\emph{Artist überbucht}
+\newline
+Sollten Sie versuchen eine Aufführung anzulegen/speichern und der Artist hat bereits eine Aufführung zu diesem Zeitpunkt oder die vordefinierte Pause von 1 Stunde vor und nach einer Aufführung wird unterschritten so erhalten Sie folgende Fehlermeldung
+	\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.5]{\imagesRoot/view_error_artist_overbooked.PNG}
+	\caption
+	{Artist überbucht}
+\end{figure}
+\end{enumerate}
+\ \newline
+\end{document} 

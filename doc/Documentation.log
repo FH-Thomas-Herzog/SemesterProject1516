@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.4.14)  20 DEC 2015 19:20
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.4.14)  20 DEC 2015 23:45
 entering extended mode
 **Documentation.tex
 
@@ -758,7 +758,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 120--122
 
  []
 
-<FHO_Logo_Students.jpg, id=43, 569.0058pt x 476.0184pt>
+<FHO_Logo_Students.jpg, id=51, 569.0058pt x 476.0184pt>
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
 
 <use FHO_Logo_Students.jpg>
@@ -814,7 +814,7 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[3] <images/er_diagram.PNG, id=78, 1255.69125pt x 1185.42876pt>
+[3] <images/er_diagram.PNG, id=86, 1255.69125pt x 1185.42876pt>
 File: images/er_diagram.PNG Graphic file (type png)
 
 <use images/er_diagram.PNG>
@@ -842,7 +842,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 180--181
 
  []
 
-<images/idao_map.PNG, id=85, 458.9145pt x 298.716pt>
+<images/idao_map.PNG, id=93, 458.9145pt x 298.716pt>
 File: images/idao_map.PNG Graphic file (type png)
  <use images/idao_map.PNG>
 Package pdftex.def Info: images/idao_map.PNG used on input line 186.
@@ -865,7 +865,7 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
 
 [5 <C:/Users/Thomas/Git Repositories/Github/FH-Hagenberg/SemesterProject1516/do
 c/images/idao_map.PNG>]
-<images/ientity_map.PNG, id=93, 471.56175pt x 333.6465pt>
+<images/ientity_map.PNG, id=101, 471.56175pt x 333.6465pt>
 File: images/ientity_map.PNG Graphic file (type png)
 
 <use images/ientity_map.PNG>
@@ -889,7 +889,7 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
 
 [6 <C:/Users/Thomas/Git Repositories/Github/FH-Hagenberg/SemesterProject1516/do
 c/images/ientity_map.PNG>]
-<images/ientityhelper_map.PNG, id=100, 514.92375pt x 424.58624pt>
+<images/ientityhelper_map.PNG, id=108, 514.92375pt x 424.58624pt>
 File: images/ientityhelper_map.PNG Graphic file (type png)
 
 <use images/ientityhelper_map.PNG>
@@ -913,7 +913,7 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
 
 [7 <C:/Users/Thomas/Git Repositories/Github/FH-Hagenberg/SemesterProject1516/do
 c/images/ientityhelper_map.PNG>]
-<images/basecommandbuilder_map.PNG, id=108, 411.939pt x 380.01974pt>
+<images/basecommandbuilder_map.PNG, id=116, 411.939pt x 380.01974pt>
 File: images/basecommandbuilder_map.PNG Graphic file (type png)
 
 <use images/basecommandbuilder_map.PNG>
@@ -933,7 +933,7 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
 
 [8 <C:/Users/Thomas/Git Repositories/Github/FH-Hagenberg/SemesterProject1516/do
 c/images/basecommandbuilder_map.PNG>]
-<images/iquerycreator_map.PNG, id=115, 215.6055pt x 307.74976pt>
+<images/iquerycreator_map.PNG, id=123, 215.6055pt x 307.74976pt>
 File: images/iquerycreator_map.PNG Graphic file (type png)
 
 <use images/iquerycreator_map.PNG>
@@ -1012,7 +1012,7 @@ Underfull \hbox (badness 10000) in paragraph at lines 262--263
 
  []
 
-<images/basedaotest_screenshot.PNG, id=127, 749.199pt x 493.845pt>
+<images/basedaotest_screenshot.PNG, id=135, 749.199pt x 493.845pt>
 File: images/basedaotest_screenshot.PNG Graphic file (type png)
 
 <use images/basedaotest_screenshot.PNG>
@@ -1042,9 +1042,13 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
 
 [11 <C:/Users/Thomas/Git Repositories/Github/FH-Hagenberg/SemesterProject1516/d
 oc/images/basedaotest_screenshot.PNG>]
+Underfull \hbox (badness 10000) in paragraph at lines 293--297
+
+ []
+
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
- <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 293.
+<use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 299.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1053,25 +1057,15 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
  We now make it that large for the rest of the document.
  This may cause the page layout to be inconsistent, however.
 
-[12]
-Underfull \hbox (badness 10000) in paragraph at lines 295--296
-
- []
-
-
-Underfull \hbox (badness 10000) in paragraph at lines 295--296
-
- []
-
-<images/iservice_map.PNG, id=150, 534.19576pt x 282.45525pt>
+[12] <images/iservice_map.PNG, id=158, 534.19576pt x 282.45525pt>
 File: images/iservice_map.PNG Graphic file (type png)
 
 <use images/iservice_map.PNG>
-Package pdftex.def Info: images/iservice_map.PNG used on input line 301.
+Package pdftex.def Info: images/iservice_map.PNG used on input line 304.
 (pdftex.def)             Requested size: 427.3572pt x 225.9645pt.
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
  <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 308.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 311.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1082,15 +1076,15 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
 
 [13 <C:/Users/Thomas/Git Repositories/Github/FH-Hagenberg/SemesterProject1516/d
 oc/images/iservice_map.PNG>]
-<images/basetabmodel_map.PNG, id=158, 289.68225pt x 349.305pt>
+<images/basetabmodel_map.PNG, id=166, 289.68225pt x 349.305pt>
 File: images/basetabmodel_map.PNG Graphic file (type png)
 
 <use images/basetabmodel_map.PNG>
-Package pdftex.def Info: images/basetabmodel_map.PNG used on input line 313.
+Package pdftex.def Info: images/basetabmodel_map.PNG used on input line 316.
 (pdftex.def)             Requested size: 231.74611pt x 279.44437pt.
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
  <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 320.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 323.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1101,16 +1095,16 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
 
 [14 <C:/Users/Thomas/Git Repositories/Github/FH-Hagenberg/SemesterProject1516/d
 oc/images/basetabmodel_map.PNG>]
-<images/viewmodelinheritance_map.PNG, id=165, 323.40825pt x 423.38174pt>
+<images/viewmodelinheritance_map.PNG, id=173, 323.40825pt x 423.38174pt>
 File: images/viewmodelinheritance_map.PNG Graphic file (type png)
 
 <use images/viewmodelinheritance_map.PNG>
 Package pdftex.def Info: images/viewmodelinheritance_map.PNG used on input line
- 325.
+ 328.
 (pdftex.def)             Requested size: 258.72693pt x 338.70586pt.
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
  <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 332.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 335.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1121,16 +1115,16 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
 
 [15 <C:/Users/Thomas/Git Repositories/Github/FH-Hagenberg/SemesterProject1516/d
 oc/images/viewmodelinheritance_map.PNG>]
-<images/simpleobjectmodel_map.PNG, id=172, 355.92975pt x 180.675pt>
+<images/simpleobjectmodel_map.PNG, id=180, 355.92975pt x 180.675pt>
 File: images/simpleobjectmodel_map.PNG Graphic file (type png)
 
 <use images/simpleobjectmodel_map.PNG>
-Package pdftex.def Info: images/simpleobjectmodel_map.PNG used on input line 33
-7.
+Package pdftex.def Info: images/simpleobjectmodel_map.PNG used on input line 34
+0.
 (pdftex.def)             Requested size: 284.74419pt x 144.54018pt.
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
  <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 344.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 347.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1141,15 +1135,15 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
 
 [16 <C:/Users/Thomas/Git Repositories/Github/FH-Hagenberg/SemesterProject1516/d
 oc/images/simpleobjectmodel_map.PNG>]
-<images/iconverter_map.PNG, id=179, 486.01575pt x 436.029pt>
+<images/iconverter_map.PNG, id=187, 486.01575pt x 436.029pt>
 File: images/iconverter_map.PNG Graphic file (type png)
 
 <use images/iconverter_map.PNG>
-Package pdftex.def Info: images/iconverter_map.PNG used on input line 349.
+Package pdftex.def Info: images/iconverter_map.PNG used on input line 352.
 (pdftex.def)             Requested size: 388.81313pt x 348.82367pt.
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
  <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 364.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 367.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1160,22 +1154,27 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
 
 [17 <C:/Users/Thomas/Git Repositories/Github/FH-Hagenberg/SemesterProject1516/d
 oc/images/iconverter_map.PNG>]
-<images/viewfolderstructure.PNG, id=188, 189.1065pt x 208.3785pt>
+<images/viewfolderstructure.PNG, id=196, 189.1065pt x 208.3785pt>
 File: images/viewfolderstructure.PNG Graphic file (type png)
 
 <use images/viewfolderstructure.PNG>
-Package pdftex.def Info: images/viewfolderstructure.PNG used on input line 370.
+Package pdftex.def Info: images/viewfolderstructure.PNG used on input line 372.
 
 (pdftex.def)             Requested size: 151.2854pt x 166.703pt.
 
-Overfull \hbox (0.48166pt too wide) in paragraph at lines 386--388
+Overfull \hbox (0.48166pt too wide) in paragraph at lines 388--391
 \OT1/cmr/m/n/10.95 Alle die-se Views sind als User-Con-trols im-ple-men-tiert w
 or-den und wer-den in-ner-halb von \OT1/cmr/m/it/10.95 Main-View.xaml
  []
 
+
+Underfull \hbox (badness 10000) in paragraph at lines 388--391
+
+ []
+
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
 <use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 389.
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 391.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1186,17 +1185,15 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
 
 [18 <C:/Users/Thomas/Git Repositories/Github/FH-Hagenberg/SemesterProject1516/d
 oc/images/viewfolderstructure.PNG>]
-<images/wpffolderstrukture.PNG, id=200, 260.77425pt x 498.663pt>
+<images/wpffolderstrukture.PNG, id=208, 257.763pt x 525.76425pt>
 File: images/wpffolderstrukture.PNG Graphic file (type png)
 
 <use images/wpffolderstrukture.PNG>
-Package pdftex.def Info: images/wpffolderstrukture.PNG used on input line 393.
-(pdftex.def)             Requested size: 208.61967pt x 398.93094pt.
- 
-AED: lastpage setting LastPage
+Package pdftex.def Info: images/wpffolderstrukture.PNG used on input line 395.
+(pdftex.def)             Requested size: 206.21068pt x 420.61195pt.
 File: FHO_Logo_Students.jpg Graphic file (type jpg)
-<use FHO_Logo_Students.jpg>
-Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 399.
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 402.
 (pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
 
 
@@ -1207,32 +1204,313 @@ Package Fancyhdr Warning: \headheight is too small (42.67912pt):
 
 [19 <C:/Users/Thomas/Git Repositories/Github/FH-Hagenberg/SemesterProject1516/d
 oc/images/wpffolderstrukture.PNG>]
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 399.
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 399.
+<images/view_login.PNG, id=217, 231.86626pt x 97.5645pt>
+File: images/view_login.PNG Graphic file (type png)
+
+<use images/view_login.PNG>
+Package pdftex.def Info: images/view_login.PNG used on input line 412.
+(pdftex.def)             Requested size: 115.93283pt x 48.78212pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 404--424
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 404--424
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 404--424
+
+ []
+
+<images/view_error_start_app.PNG, id=218, 312.56775pt x 118.64325pt>
+File: images/view_error_start_app.PNG Graphic file (type png)
+
+<use images/view_error_start_app.PNG>
+Package pdftex.def Info: images/view_error_start_app.PNG used on input line 430
+.
+(pdftex.def)             Requested size: 156.28348pt x 59.32147pt.
+
+<images/view_error_login_failed.PNG, id=219, 112.0185pt x 106.59825pt>
+File: images/view_error_login_failed.PNG Graphic file (type png)
+
+<use images/view_error_login_failed.PNG>
+Package pdftex.def Info: images/view_error_login_failed.PNG used on input line 
+439.
+(pdftex.def)             Requested size: 56.0091pt x 53.29898pt.
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 444.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[20 <C:/Users/Thomas/Git Repositories/Github/FH-Hagenberg/SemesterProject1516/d
+oc/images/view_login.PNG> <C:/Users/Thomas/Git Repositories/Github/FH-Hagenberg
+/SemesterProject1516/doc/images/view_error_start_app.PNG> <C:/Users/Thomas/Git 
+Repositories/Github/FH-Hagenberg/SemesterProject1516/doc/images/view_error_logi
+n_failed.PNG>] <images/view_artist.PNG, id=233, 776.30025pt x 413.74574pt>
+File: images/view_artist.PNG Graphic file (type png)
+
+<use images/view_artist.PNG>
+Package pdftex.def Info: images/view_artist.PNG used on input line 450.
+(pdftex.def)             Requested size: 388.14917pt x 206.87236pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 445--460
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 445--460
+
+ []
+
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+<use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 460.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[21 <C:/Users/Thomas/Git Repositories/Github/FH-Hagenberg/SemesterProject1516/d
+oc/images/view_artist.PNG>]
+<images/view_error_image_too_large.PNG, id=241, 145.7445pt x 107.80275pt>
+File: images/view_error_image_too_large.PNG Graphic file (type png)
+
+<use images/view_error_image_too_large.PNG>
+Package pdftex.def Info: images/view_error_image_too_large.PNG used on input li
+ne 468.
+(pdftex.def)             Requested size: 72.87207pt x 53.90123pt.
+
+<images/view_error_concurrent.PNG, id=242, 246.32025pt x 107.80275pt>
+File: images/view_error_concurrent.PNG Graphic file (type png)
+
+<use images/view_error_concurrent.PNG>
+Package pdftex.def Info: images/view_error_concurrent.PNG used on input line 47
+7.
+(pdftex.def)             Requested size: 123.15982pt x 53.90123pt.
+
+<images/view_error_entity_not_existent.PNG, id=243, 145.14224pt x 108.405pt>
+File: images/view_error_entity_not_existent.PNG Graphic file (type png)
+
+<use images/view_error_entity_not_existent.PNG>
+Package pdftex.def Info: images/view_error_entity_not_existent.PNG used on inpu
+t line 486.
+(pdftex.def)             Requested size: 72.57094pt x 54.20236pt.
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+ <use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 491.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[22 <C:/Users/Thomas/Git Repositories/Github/FH-Hagenberg/SemesterProject1516/d
+oc/images/view_error_image_too_large.PNG> <C:/Users/Thomas/Git Repositories/Git
+hub/FH-Hagenberg/SemesterProject1516/doc/images/view_error_concurrent.PNG> <C:/
+Users/Thomas/Git Repositories/Github/FH-Hagenberg/SemesterProject1516/doc/image
+s/view_error_entity_not_existent.PNG>]
+<images/view_venue.PNG, id=258, 738.96075pt x 261.97874pt>
+File: images/view_venue.PNG Graphic file (type png)
+
+<use images/view_venue.PNG>
+Package pdftex.def Info: images/view_venue.PNG used on input line 497.
+(pdftex.def)             Requested size: 369.47948pt x 130.98904pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 492--509
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 492--509
+
+ []
+
+File: images/view_error_concurrent.PNG Graphic file (type png)
+<use images/view_error_concurrent.PNG>
+Package pdftex.def Info: images/view_error_concurrent.PNG used on input line 51
+5.
+(pdftex.def)             Requested size: 123.15982pt x 53.90123pt.
+File: images/view_error_entity_not_existent.PNG Graphic file (type png)
+
+<use images/view_error_entity_not_existent.PNG>
+Package pdftex.def Info: images/view_error_entity_not_existent.PNG used on inpu
+t line 524.
+(pdftex.def)             Requested size: 72.57094pt x 54.20236pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 529--530
+
+ []
+
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+<use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 530.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[23 <C:/Users/Thomas/Git Repositories/Github/FH-Hagenberg/SemesterProject1516/d
+oc/images/view_venue.PNG>]
+<images/view_performance.PNG, id=270, 736.55174pt x 504.6855pt>
+File: images/view_performance.PNG Graphic file (type png)
+
+<use images/view_performance.PNG>
+Package pdftex.def Info: images/view_performance.PNG used on input line 535.
+(pdftex.def)             Requested size: 368.27496pt x 252.34213pt.
+
+<images/view_email_notification.PNG, id=271, 449.2785pt x 223.43475pt>
+File: images/view_email_notification.PNG Graphic file (type png)
+
+<use images/view_email_notification.PNG>
+Package pdftex.def Info: images/view_email_notification.PNG used on input line 
+549.
+(pdftex.def)             Requested size: 224.63869pt x 111.7171pt.
+
+Overfull \hbox (36.93765pt too wide) in paragraph at lines 531--555
+[]\OT1/cmr/bx/n/10.95 Auff[]uhrungen \OT1/cmr/m/n/10.95 Auf die-sem Tab k[]onne
+n Sie die Auff[]uhrungen ver-wal-ten. Die-se wer-den auf die Auff[]uhrungstage
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 531--555
+
+ []
+
+
+Underfull \hbox (badness 10000) in paragraph at lines 531--555
+
+ []
+
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+<use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 555.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[24 <C:/Users/Thomas/Git Repositories/Github/FH-Hagenberg/SemesterProject1516/d
+oc/images/view_performance.PNG> <C:/Users/Thomas/Git Repositories/Github/FH-Hag
+enberg/SemesterProject1516/doc/images/view_email_notification.PNG>]
+<images/view_success_email_sent.PNG, id=281, 158.39175pt x 105.996pt>
+File: images/view_success_email_sent.PNG Graphic file (type png)
+
+<use images/view_success_email_sent.PNG>
+Package pdftex.def Info: images/view_success_email_sent.PNG used on input line 
+559.
+(pdftex.def)             Requested size: 79.19568pt x 52.99786pt.
+
+<images/sent_email.PNG, id=282, 532.389pt x 265.59225pt>
+File: images/sent_email.PNG Graphic file (type png)
+
+<use images/sent_email.PNG>
+Package pdftex.def Info: images/sent_email.PNG used on input line 568.
+(pdftex.def)             Requested size: 425.91177pt x 212.47408pt.
+
+Underfull \hbox (badness 10000) in paragraph at lines 556--573
+
+ []
+
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+<use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 573.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[25 <C:/Users/Thomas/Git Repositories/Github/FH-Hagenberg/SemesterProject1516/d
+oc/images/view_success_email_sent.PNG> <C:/Users/Thomas/Git Repositories/Github
+/FH-Hagenberg/SemesterProject1516/doc/images/sent_email.PNG>]
+File: images/view_error_concurrent.PNG Graphic file (type png)
+
+<use images/view_error_concurrent.PNG>
+Package pdftex.def Info: images/view_error_concurrent.PNG used on input line 58
+1.
+(pdftex.def)             Requested size: 123.15982pt x 53.90123pt.
+File: images/view_error_entity_not_existent.PNG Graphic file (type png)
+
+<use images/view_error_entity_not_existent.PNG>
+Package pdftex.def Info: images/view_error_entity_not_existent.PNG used on inpu
+t line 590.
+(pdftex.def)             Requested size: 72.57094pt x 54.20236pt.
+
+<images/view_error_artist_overbooked.PNG, id=293, 308.352pt x 120.45pt>
+File: images/view_error_artist_overbooked.PNG Graphic file (type png)
+
+<use images/view_error_artist_overbooked.PNG>
+Package pdftex.def Info: images/view_error_artist_overbooked.PNG used on input 
+line 599.
+(pdftex.def)             Requested size: 154.17561pt x 60.22484pt.
+ 
+AED: lastpage setting LastPage
+
+Underfull \hbox (badness 10000) in paragraph at lines 604--605
+
+ []
+
+File: FHO_Logo_Students.jpg Graphic file (type jpg)
+<use FHO_Logo_Students.jpg>
+Package pdftex.def Info: FHO_Logo_Students.jpg used on input line 605.
+(pdftex.def)             Requested size: 56.9039pt x 47.60461pt.
+
+
+Package Fancyhdr Warning: \headheight is too small (42.67912pt): 
+ Make it at least 51.68465pt.
+ We now make it that large for the rest of the document.
+ This may cause the page layout to be inconsistent, however.
+
+[26 <C:/Users/Thomas/Git Repositories/Github/FH-Hagenberg/SemesterProject1516/d
+oc/images/view_error_artist_overbooked.PNG>]
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 605.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 605.
 
 ("C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\doc\
 Documentation.aux")
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 399.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 399.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 605.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 605.
 Package rerunfilecheck Info: File `Documentation.out' has not changed.
-(rerunfilecheck)             Checksum: 6C459EAE180CB5A2B7984AF959C11313;731.
+(rerunfilecheck)             Checksum: 97123EBD55F6948CA86B9B28E7D23014;897.
  ) 
 Here is how much of TeX's memory you used:
- 10799 strings out of 493921
- 171488 string characters out of 3144873
+ 10902 strings out of 493921
+ 174102 string characters out of 3144873
  301874 words of memory out of 3000000
- 13857 multiletter control sequences out of 15000+200000
+ 13911 multiletter control sequences out of 15000+200000
  6331 words of font info for 23 fonts, out of 3000000 for 9000
  841 hyphenation exceptions out of 8191
- 37i,16n,43p,881b,383s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 37i,16n,43p,881b,402s stack positions out of 5000i,500n,10000p,200000b,50000s
 <C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx10.pfb>
 <C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbx12.pfb><C
 :/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmbxti10.pfb><C
 :/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmr10.pfb><C:/P
 rogram Files (x86)/MiKTeX 2.9/fonts/type1/public/amsfonts/cm/cmti10.pfb>
-Output written on Documentation.pdf (19 pages, 1162497 bytes).
+Output written on Documentation.pdf (26 pages, 1358017 bytes).
 PDF statistics:
- 242 PDF objects out of 1000 (max. 8388607)
- 72 named destinations out of 1000 (max. 500000)
- 156 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 346 PDF objects out of 1000 (max. 8388607)
+ 108 named destinations out of 1000 (max. 500000)
+ 237 words of extra memory for PDF output out of 10000 (max. 10000000)
 
