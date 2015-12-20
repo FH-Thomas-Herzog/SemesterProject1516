@@ -10,7 +10,7 @@ using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Commander.Wpf.Administration.Model.Tab
 {
-    public class MasterDataTabControler : BasePropertyChangeModel
+    public class TabController : BasePropertyChangeModel
     {
         private int _SelectedTabIdx = -1;
         private ITabModel _SelectedTabModel;

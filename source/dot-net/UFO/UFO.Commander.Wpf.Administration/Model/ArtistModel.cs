@@ -8,7 +8,7 @@ using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Commander.Wpf.Administration.Model
 {
-    public class ArtistModel : BaseVersionedEntityViewModel<long?, Artist>
+    public class ArtistModel : BaseEntityViewModel<long?, Artist>
     {
         public ArtistModel(Artist entity) : base(entity)
         {

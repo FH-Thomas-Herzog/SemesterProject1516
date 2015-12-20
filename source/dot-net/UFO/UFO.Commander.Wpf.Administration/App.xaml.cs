@@ -39,7 +39,7 @@ namespace UFO.Commander.Wpf.Administration
             Exception ex = e.Exception;
             if (ex != null)
             {
-                MessageBox.Show(MainWindow, Administration.Properties.Resources.ErrorUnknwon + "( " + ex.Message + ")", Administration.Properties.Resources.ErrorMessage, MessageBoxButton.OK);
+                MessageBox.Show(MainWindow, Administration.Properties.Resources.ErrorUnknwon + $" (errorMessage={ex.Message})", Administration.Properties.Resources.ErrorMessage, MessageBoxButton.OK);
             }
             e.Handled = true;
         }

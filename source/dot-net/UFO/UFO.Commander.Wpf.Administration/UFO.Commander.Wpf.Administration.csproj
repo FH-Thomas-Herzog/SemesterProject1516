@@ -96,15 +96,15 @@
     <Compile Include="Model\ArtistModel.cs" />
     <Compile Include="Model\Selection\ArtistSelectionModel.cs" />
     <Compile Include="Model\Base\BasePropertyChangeModel.cs" />
-    <Compile Include="Model\Base\BaseTabModel.cs" />
-    <Compile Include="Model\Base\BaseVersionedEntityViewModel.cs" />
+    <Compile Include="Model\BaseTabModel.cs" />
+    <Compile Include="Model\Base\BaseEntityViewModel.cs" />
     <Compile Include="Model\Base\ITabedViewModel.cs" />
     <Compile Include="Model\Base\BaseValidationViewModel.cs" />
     <Compile Include="Model\Base\ITabModel.cs" />
     <Compile Include="Model\Base\RelayCommand.cs" />
     <Compile Include="Model\Selection\SimpleObjectMoel.cs" />
     <Compile Include="obj\TabHandlerModel.cs" />
-    <Compile Include="Model\Tab\MasterDataTabControler.cs" />
+    <Compile Include="Model\Tab\TabController.cs" />
     <Compile Include="Model\Tab\ArtistTab.cs" />
     <Compile Include="Model\Tab\PerformanceTab.cs" />
     <Compile Include="Model\Tab\VenueTab.cs" />
@@ -188,9 +188,7 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\Dialog\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\UFO.Commander.Service.Api\UFO.Commander.Service.Api.csproj">
       <Project>{d61fd5db-d14e-401c-81e1-1a49afc8559b}</Project>

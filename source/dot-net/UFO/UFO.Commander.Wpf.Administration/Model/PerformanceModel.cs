@@ -10,7 +10,7 @@ using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Commander.Wpf.Administration.Model
 {
-    public class PerformanceModel : BaseVersionedEntityViewModel<long?, Performance>
+    public class PerformanceModel : BaseEntityViewModel<long?, Performance>
     {
         public static readonly int PERFORMANCE_DURATION_HOURS = 1;
         private string _Time;

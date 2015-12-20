@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using UFO.Commander.Service.Api;
 using UFO.Commander.Service.Api.Base;
+using UFO.Commander.Service.Api.Exception;
 using UFO.Commander.Wpf.Administration.Converter;
 using UFO.Commander.Wpf.Administration.Model.Base;
 using UFO.Commander.Wpf.Administration.Model.Selection;
@@ -66,7 +67,6 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
         private ICommand _SaveCommand;
         private ICommand _EditCommand;
         private ICommand _DeleteCommand;
-        private ICommand _NotifyCommand;
         public ICommand NewCommand
         {
             get { return _NewCommand; }
@@ -87,11 +87,6 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             get { return _DeleteCommand; }
             private set { _DeleteCommand = value; FirePropertyChangedEvent(); }
         }
-        public ICommand NotifyCommand
-        {
-            get { return _NotifyCommand; }
-            private set { _NotifyCommand = value; FirePropertyChangedEvent(); }
-      }
 
         private void Save(object data)
         {
@@ -130,9 +125,31 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
                 MessageHandler.ShowErrorMessage(Resources.ErrorEntityDoesNotExists);
                 LoadPerformances();
             }
+            catch (ServiceException e)
+            {
+                if (e.ErrorCode != null)
+                {
+                    PerformanceErrorCode code = (PerformanceErrorCode)e.ErrorCode;
+                    switch (code)
+                    {
+                        case PerformanceErrorCode.ARTIST_OVERBOOKED:
+                            MessageHandler.ShowErrorMessage(Resources.ARTIST_OVERBOOKED);
+                            break;
+                        case PerformanceErrorCode.PERFORMANCE_ALREADY_STARTED:
+                            MessageHandler.ShowErrorMessage(Resources.PERFORMANCE_ALREADY_STARTED);
+                            break;
+                        case PerformanceErrorCode.PERFORMANCE_DATE_INVALID:
+                            MessageHandler.ShowErrorMessage(Resources.PERFORMANCE_DATE_INVALID);
+                            break;
+                        default:
+                            MessageHandler.ShowErrorMessage(Resources.ErrorUnknwon + $" (errorCode={code})");
+                            break;
+                    }
+                }
+            }
             catch (System.Exception e)
             {
-                MessageHandler.ShowErrorMessage(Resources.ErrorUnknwon);
+                MessageHandler.ShowErrorMessage(Resources.ErrorUnknwon + $" (errorMessage={e.Message})");
                 LoadPerformances();
             }
             Init();
@@ -159,7 +176,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             }
             catch (System.Exception e)
             {
-                MessageHandler.ShowErrorMessage(Resources.ErrorUnknwon);
+                MessageHandler.ShowErrorMessage(Resources.ErrorUnknwon + $" (errorMessage={e.Message})");
             }
             LoadPerformances();
             Init();
@@ -181,16 +198,28 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             {
                 MessageHandler.ShowErrorMessage(Resources.ErrorEntityDoesNotExists);
             }
+            catch (ServiceException e)
+            {
+                if (e.ErrorCode != null)
+                {
+                    PerformanceErrorCode code = (PerformanceErrorCode)e.ErrorCode;
+                    switch (code)
+                    {
+                        case PerformanceErrorCode.PERFORMANCE_ALREADY_STARTED:
+                            MessageHandler.ShowErrorMessage(Resources.PERFORMANCE_ALREADY_STARTED);
+                            break;
+                        default:
+                            MessageHandler.ShowErrorMessage(Resources.ErrorUnknwon + $" (errorCode={code})");
+                            break;
+                    }
+                }
+            }
             catch (System.Exception e)
             {
-                MessageHandler.ShowErrorMessage(Resources.ErrorUnknwon);
+                MessageHandler.ShowErrorMessage(Resources.ErrorUnknwon + $" (errorMessage={e.Message})");
             }
 
             Init();
-        }
-        private void Notify(object data)
-        {
-
         }
         #endregion
 
@@ -219,7 +248,6 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             SaveCommand = new RelayCommand(p => Save(p));
             DeleteCommand = new RelayCommand(p => Delete(p));
             EditCommand = new RelayCommand(p => Edit(p));
-            NotifyCommand = new RelayCommand(p => Notify(p));
         }
 
         public override void Init(PerformanceModel model = null)

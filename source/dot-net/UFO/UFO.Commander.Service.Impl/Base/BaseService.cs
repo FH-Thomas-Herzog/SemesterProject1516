@@ -11,7 +11,7 @@ using UFO.Server.Data.Api.Exception;
 
 namespace UFO.Commander.Service.Impl.Base
 {
-    public class BaseService : IService
+    public abstract class BaseService : IService
     {
         protected DbConnection Connection { get; set; }
         protected DbTransaction Transaction { get; set; }

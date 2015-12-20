@@ -8,7 +8,7 @@ namespace UFO.Commander.Service.Api.Exception
 {
     public class ServiceException : System.Exception
     {
-        public int ErrorCode { get; private set; }
+        public int? ErrorCode { get; private set; }
         public ServiceException(int errorCode) : this(errorCode, null, null) { }
         public ServiceException() { }
         public ServiceException(string message) : base(message) { }

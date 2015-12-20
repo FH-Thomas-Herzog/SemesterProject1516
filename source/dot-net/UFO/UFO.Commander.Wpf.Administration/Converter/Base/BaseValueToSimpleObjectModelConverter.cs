@@ -18,7 +18,7 @@ namespace UFO.Commander.Wpf.Administration.Converter
 
         protected BaseValueToSimpleObjectModelConverter(Type expectedType)
         {
-            if(expectedType == null)
+            if (expectedType == null)
             {
                 throw new ArgumentException("Expected type must not be null");
             }
@@ -27,7 +27,7 @@ namespace UFO.Commander.Wpf.Administration.Converter
 
         public virtual object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if(value == null)
+            if (value == null)
             {
                 return null;
             }
@@ -37,7 +37,11 @@ namespace UFO.Commander.Wpf.Administration.Converter
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return ((SimpleObjectModel)value)?.Data;
+            if (!(value is SimpleObjectModel))
+            {
+                throw new ArgumentException("ConvertBack expects an instance of SimpleObjectModel");
+            }
+            return (value as SimpleObjectModel)?.Data;
         }
 
         protected void CheckForValidType(Type currentType)

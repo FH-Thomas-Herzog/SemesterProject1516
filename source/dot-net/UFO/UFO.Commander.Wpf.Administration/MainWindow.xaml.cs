@@ -28,11 +28,11 @@ namespace UFO.Commander.Wpf.Administration
     public partial class MainWindow : Window
     {
         public UserContextModel UserContext { get { return (System.Windows.Application.Current as App).UserContext; } }
-        public MasterDataTabControler MasterDataTabControler { get; private set; }
+        public TabController MasterDataTabControler { get; private set; }
 
         public MainWindow()
         {
-            MasterDataTabControler = new MasterDataTabControler();
+            MasterDataTabControler = new TabController();
             MasterDataTabControler.Init();
             InitializeComponent();
         }

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -26,7 +27,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Dialog
 
         public PerformanceNotificationModel(IMessageHandler messageHandler) : base()
         {
-            if(messageHandler == null)
+            if (messageHandler == null)
             {
                 throw new ArgumentException("Message handler must not be null");
             }
@@ -75,11 +76,19 @@ namespace UFO.Commander.Wpf.Administration.Model.Dialog
             }
             catch (ServiceException e)
             {
-                messageHandler.ShowErrorMessage("BLABLA");
+                PerformanceErrorCode code = (PerformanceErrorCode)e.ErrorCode;
+                if (code == PerformanceErrorCode.NOTIFICATION_ERROR)
+                {
+                    messageHandler.ShowErrorMessage(Resources.NOTIFICATION_ERROR);
+                }
+                else
+                {
+                    messageHandler.ShowErrorMessage(Resources.ErrorUnknwon + $" (ErrorCode={code})");
+                }
             }
             catch (System.Exception e)
             {
-                messageHandler.ShowErrorMessage(Resources.ErrorUnknwon);
+                messageHandler.ShowErrorMessage(Resources.ErrorUnknwon + $" (error={e.Message}");
             }
         }
 

@@ -8,14 +8,14 @@ using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Commander.Wpf.Administration.Model.Base
 {
-    public abstract class BaseVersionedEntityViewModel<I, E> : BaseValidationViewModel where E : BaseVersionedEntity<long?, User, I>
+    public abstract class BaseEntityViewModel<I, E> : BaseValidationViewModel where E : IEntity<I>
 
     {
-        private E _Entity = null;
+        private E _Entity = default(E);
         private bool _IsDeletable = false;
         private bool _IsUpdateable = true;
 
-        protected BaseVersionedEntityViewModel(E entity) : base()
+        protected BaseEntityViewModel(E entity) : base()
         {
             if (entity == null)
             {
@@ -64,7 +64,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Base
             // Type check
             if ((obj != null) && (obj.GetType() == this.GetType()))
             {
-                BaseVersionedEntityViewModel<I, E> other = (BaseVersionedEntityViewModel<I, E>)obj;
+                BaseEntityViewModel<I, E> other = (BaseEntityViewModel<I, E>)obj;
                 if (Id == null)
                 {
                     // Use object id if boths ids are null
@@ -80,6 +80,11 @@ namespace UFO.Commander.Wpf.Administration.Model.Base
                 }
             }
             return false;
+        }
+
+        public override int GetHashCode()
+        {
+            return ((Entity != null) && (Entity.Id != null)) ? Entity.GetHashCode() : base.GetHashCode();
         }
     }
 }

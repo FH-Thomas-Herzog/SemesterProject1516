@@ -275,4 +275,130 @@ Die generische Testklasse \emph{BaseDaoTest}  wird mit \emph{NUNIT} Attributen v
 	\caption
 	{Ausschnitt aus der Testklasse \emph{BaseDaoTest}}
 \end{figure}
+
+\subsection{Ausbaustufe 2 (Commander)}
+Folgender Teil dokumentiert die zweite Ausbaustufe des Projektes \emph{UFO} in dem die Administration mit WPF implementiert werden sollte.\\\\
+Folgende Projekte wurden der Solution hinzugefügt.
+\begin{enumerate}
+	\item\emph{UFO.Commander.ServiceApi}\\
+	Diese Projekt enthält die Schnittstellen Spezifikation für den Service Layer.
+	\item\emph{UFO.Commander.Service.Impl}\\
+	Dieses Projekt enthält die Implementierungen der Service Schnittstellen Spezifikationen
+	\item\emph{UFO.Commander.Wpf.Administration}\\
+	Dieses Projekt enthält die WPF Anwendung, die die Administration abbildet.
+\end{enumerate}
+\ \\
+Des Weiteren wurde der Wurzelnamensraum auf \emph{UFO} beschränkt unter dem jetzt alle Projekte liegen.
+
+\newpage
+\subsubsection{Klassenhierarchien}
+Folgender Teil der Dokumentation dokumentiert die definierten Klassenhierarchien der WPF Anwendung und des Service Layers.\\\\
+
+\emph{\textbf{IService}}\\
+Folgendes Klassendiagramm zeigt die Hierarchie des Interfaces \emph{IService}, welche die Wurzel aller Service Interfaces darstellt und \emph{IDisposable} erweitert. Somit ist jeder abgeleiteter Service dazu gezwungen die Methode \emph{Dispose} zu implementieren um dort seine gebundenen Ressourcen freizugeben. Des Weiteren wurde eine Basisklasse namens \emph{BaseService} eingeführt, welche die Datenbankverbindung und Transaktionsmethoden implementiert, sodass die abgeleitet Klassen diese Nutzen können.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.8]{\imagesRoot/iservice_map.PNG}
+	\caption
+	{Basis Interface für Service Interfaces und Implementierungen}
+\end{figure}
+\ \\
+Alle Services bekommen in Ihrem Konstruktor eine \emph{DbConnection} Instanz übergeben, da alle verwendeten \emph{DAO} Implementierungen dieselbe Datenbank Verbindung nutzen müssen, damit alle sich in derselben Transaktion bewegen.
+
+\newpage
+\textbf{\emph{ITabModel}}\\
+Folgendes Klassendiagramm zeigt die Hierarchien des Interfaces \emph{ITabModel}, die Operationen definiert, die von der Klasse \emph{TabController} verwendet werden. Die Klasse \emph{TabController} wurde eingeführt um \emph{ITabModel} Instanzen zu initialisieren und beim Wechseln eines Tab aufzuräumen.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.8]{\imagesRoot/basetabmodel_map.PNG}
+	\caption
+	{Basis Interface für Tab-Model Implementierungen}
+\end{figure}
+\ \\
+Das Interface \emph{ITabedViewModel} definiert die Struktur der Implementierten Tab-Klassen, somit verhält sich jeder Tab gleichermaßen und kann beliebig erweitert werden, je nach seinem View-Content.
+
+\newpage
+\textbf{\emph{BasePropertyChangeViewModel}}\\
+Folgendes Klassendiagramm zeigt die Hierarchien der Basisklasse \emph{BasePropertyChangeViewModel}, die die Wurzelklasse aller implementierten \emph{ViewModels} darstellt, da es immer mindesten einen Property gibt der diesen Event benötigt. Des Weiteren wurde die Klasse \emph{BaseValidationViewModel} eingeführt die die erste Ableitung von \emph{BasePropertyChangeViewModel} darstellt und die Logik für die Validierung über \emph{System.ComponentModel.DataAnnotations} realisiert. Von dieser Klasse erbt die Basisklasse \emph{BaseEntityViewModel}, die als Wrapper für ViewModels verwendet wird, die eine \emph{IEntity} Instanz für die View wrappen.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.8]{\imagesRoot/viewmodelinheritance_map.PNG}
+	\caption
+	{Basisklasse für ViewModels}
+\end{figure}
+\ \\
+Die Klasse \emph{UserContextModel} wurde eingeführt um einen eingeloggten Benutzer zu repräsentieren und wird als statischer Property der Klasse \emph{App} definiert, da es nur einen eingeloggten Benutzer pro gestarteter Anwendung geben kann. Alle Klassen, die auf den UserContext angewiesen sind müssen die Instanz der Klasse \emph{App} verwenden.
+
+\newpage
+\textbf{\emph{SimpleObjectModel}}\\
+Folgendes Klassendiagramm zeigt die Hierarchien der Klasse \emph{SimpleObjectModel}, die eingeführt wurde um in Listen, Comboboxen und dergleichen Entitäten für die Darstellung zu halten. Die Controls verwenden Konverter, in denen aus der String Repräsentation wieder in die Entität konvertiert wird. Diese Klasse hält hierbei eine object Instanz (z.B.: Artist) und den anzuzeigenden Label. In den Konvertern wird eine Instanz \emph{SimpleObjectModel} aus dem zu verwaltenden Objekt erzeugt und visa versa.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.8]{\imagesRoot/simpleobjectmodel_map.PNG}
+	\caption
+	{Klasse für Controls mit Konverter}
+\end{figure}
+\ \\
+Die beiden abgeleitet Klassen erweitern hierbei die Klasse \emph{SimpleObjectModel} um spezifische Attribute, die in dern Controls verwendet werden.
+
+\newpage
+\textbf{\emph{IConverter}}\\
+Folgendes Klassendiagramm zeigt die Hierarchien der Klasse \emph{IConverter}.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.8]{\imagesRoot/iconverter_map.PNG}
+	\caption
+	{Konverter Hierarchie}
+\end{figure}
+\ \\
+Die Klasse \emph{BaseValueToSimpleObjectConverter} stellt die Basisklasse aller Konverter dar, die Instanzen von \emph{SimpleObjectModel} konvertieren. In diese Klasse wurden alle gemeinsamen Funktionalitäten wie 
+\begin{enumerate}
+	\item\emph{Typprüfung}\\
+	ES wird geprüft ob der Typ des übergebenen Value dem erwarteten Typ entspricht
+	\item\emph{ConvertBack}\\
+	Da hier nur Instanzen von \emph{SimpleObjectModel} konvertiert werden kann diese Methoden in einer Basisklasse implementiert werden, da hier nur auf den Property \emph{Data} zugegriffen wird.
+\end{enumerate}
+\ \\
+Es wurden auch Konverter für die Visibility (true=Visibility.VISIBILE, false=Visibility.HIDDEN) und zum dekodieren von Base64 Strings in Image Instanzen eingeführt.
+
+\newpage
+\subsubsection{WPF Views}
+Folgende Abbildung zeigt wie die Views innerhalb des Projektes strukturiert wurden.
+\emph{IConverter}.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.8]{\imagesRoot/viewfolderstructure.PNG}
+	\caption
+	{Verzeichnisstruktur der Views innerhalb des Projektes}
+\end{figure}
+\ \\
+Bis auf die \emph{App.xaml} und \emph{MainView.xaml} wurden alle Views innerhalb eines Verzeichnis names \emph{Views} gebündelt wobei hierbei eine Trennung zwischen den einzelnen Typen der Views duchgeführt wurde.
+\begin{enumerate}
+	\item\emph{MasterData}\\
+	Alle Views für dier Verwaltung der Stammdaten
+	\item\emph{Performance}\\
+	Alle Views für die Verwaltung des Festivalprogramms
+	\item\emph{Security}\\
+	Die Login-View
+	\item\emph{Util}\\
+	Utility Klassen um innerhalb von View-Models mit der View zu interagieren ohne Referenzen auf View Namespaces verwenden zu müssen.
+\end{enumerate}
+\ \\
+Alle diese Views sind als UserControls implementiert worden und werden innerhalb von \emph{MainView.xaml} verwendet (außer PerformanceNotification.xaml), die diese UserControls in einem Tab-Control als DataTemplate für die verschiedene Typen der Tab-Models definiert.
+
+\newpage
+Folgende Abbildung zeigt die eingeführte Verzeichnisstruktur um die WPF-Ressourcen innerhalb diese Projektes zu strukturieren.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.8]{\imagesRoot/wpffolderstrukture.PNG}
+	\caption
+	{Verzeichnisstruktur der WPF-Ressourcen}
+\end{figure}
+\ \\
+Die jeweiligen Base-Verzeichisse beinhalten die eingeführten Basisklassen für den jeweiligen Kontext (z.B.: Converter, Models, ...).
+
+\newpage
+\subsubsection{Benutzerdokumentation}
+Folgenden ist die Benutzerdokumentation der WPF-Anwendung \emph{Commander} angeführt.
+
 \end{document}  

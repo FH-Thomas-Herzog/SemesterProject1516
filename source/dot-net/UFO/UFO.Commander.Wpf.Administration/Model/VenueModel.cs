@@ -10,7 +10,7 @@ using UFO.Server.Data.Api.Entity;
 
 namespace UFO.Commander.Wpf.Administration.Model
 {
-    public class VenueModel : BaseVersionedEntityViewModel<long?, Venue>
+    public class VenueModel : BaseEntityViewModel<long?, Venue>
     {
         public VenueModel(Venue entity) : base(entity)
         {
