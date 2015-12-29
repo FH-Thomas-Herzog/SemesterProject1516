@@ -1,0 +1,21 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head></h:head>
+<h:body style="height: 100%">
+	<p:layout fullPage="true" stateful="false">
+		<p:layoutUnit position="north" resizable="false" maxSize="200"
+			collapsible="true" collapsed="true" header="menu">
+        Menu here
+    </p:layoutUnit>
+
+		<p:layoutUnit position="center" header="content">
+        <ui:insert name="centerContent"/>
+    </p:layoutUnit>
+	</p:layout>
+</h:body>
+</html>
