@@ -47,5 +47,42 @@
 				</p:columnGroup>
 			</p:subTable>
 		</p:dataTable>
+		<p:commandButton type="button" onclick="PF('userInfoDialog').show();"
+			value="openDialog" />
+	</ui:define>
+
+
+	<!-- Dialogs -->
+	<ui:define name="dialogContent">
+		<h:form id="userInfoDialogForm"
+			rendered="#{not empty performancePage.selectedUser}">
+			<p:dialog id="userInfoDialogID" widgetVar="userInfoDialog"
+				closable="true" closeOnEscape="true" draggable="true"
+				responsive="true" fitViewport="true" position="center"
+				appendTo="@(body)" header="#{msg.artist}" modal="true" width="700"
+				height="250">
+
+				<p:ajax event="close" listener="#{userInfoDialog.onClose}"
+					global="true" async="true" />
+
+				<h:panelGroup layout="block" style="margin: 10px;">
+					<p:graphicImage value="#{userInfoDialog.streamedContent}"
+						cache="false" width="150" height="200" style="float: left;" />
+					<h:panelGrid id="userInfoAttributesGrid" columns="2" border="0" cellpadding="10">
+						<h:outputText value="#{msg.firstName}" />
+						<h:outputText value="#{userInfoDialog.user.firstName}" />
+
+						<h:outputText value="#{msg.lastName}" />
+						<h:outputText value="#{userInfoDialog.user.lastName}" />
+
+						<h:outputText value="#{msg.email}" />
+						<h:outputText value="#{userInfoDialog.user.email}" />
+
+						<h:outputText value="#{msg.url}" />
+						<h:outputText value="#{userInfoDialog.user.url}" />
+					</h:panelGrid>
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
 	</ui:define>
 </ui:composition>

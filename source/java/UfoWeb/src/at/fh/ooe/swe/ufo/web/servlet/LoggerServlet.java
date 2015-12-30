@@ -1,4 +1,4 @@
-package at.fh.ooe.swe.ufo.servlet;
+package at.fh.ooe.swe.ufo.web.servlet;
 
 import java.io.IOException;
 import javax.servlet.ServletException;

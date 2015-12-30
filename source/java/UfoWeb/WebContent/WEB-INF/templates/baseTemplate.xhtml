@@ -5,7 +5,11 @@
 	xmlns:h="http://java.sun.com/jsf/html"
 	xmlns:p="http://primefaces.org/ui">
 
-<h:head></h:head>
+<h:head>
+	<meta http-equiv="cache-control" content="no-cache" />
+	<meta http-equiv="expires" content="0" />
+	<meta http-equiv="pragma" content="no-cache" />
+</h:head>
 <h:body style="height: 100%">
 	<p:layout fullPage="true" stateful="false">
 		<p:layoutUnit position="north" resizable="false" maxSize="200"
@@ -14,8 +18,12 @@
     </p:layoutUnit>
 
 		<p:layoutUnit position="center" header="content">
-        <ui:insert name="centerContent"/>
-    </p:layoutUnit>
+			<ui:insert name="centerContent" />
+		</p:layoutUnit>
 	</p:layout>
+
+	<h:panelGroup id="dialogGroup" layout="block">
+		<ui:insert name="dialogContent" />
+	</h:panelGroup>
 </h:body>
 </html>
