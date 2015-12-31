@@ -33,4 +33,7 @@ public interface MessagesBundle extends Serializable {
 	
 	@MessageTemplate("{ARTIST}")
 	String getArtist();
+	
+	@MessageTemplate("{VENUE}")
+	String getVenue();
 }

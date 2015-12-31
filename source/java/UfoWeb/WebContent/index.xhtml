@@ -12,24 +12,22 @@
 			<f:facet name="header">
             NBA Teams
         </f:facet>
-
-			<p:ajax event="filter" global="true" />
 			<p:columnGroup type="header">
 				<p:row>
-					<p:column rowspan="2" headerText="Team" />
-					<p:column colspan="2" headerText="Stats" />
-				</p:row>
-				<p:row>
-					<p:column headerText="Wins" />
-					<p:column headerText="Losses" />
+					<p:column headerText="#{msg.venue}" />
+					<ui:repeat
+						value="#{performancePage.dataTableSubPage.columnHeaders}"
+						var="item">
+						<p:column headerText="#{item.header}" />
+					</ui:repeat>
 				</p:row>
 			</p:columnGroup>
 
-			<p:subTable var="stats" value="#{team.stats}">
+			<!-- <p:subTable var="stats" value="#{team.stats}">
 				<f:facet name="header">
 					<h:outputText value="#{team.name}" />
 				</f:facet>
-				<p:column>
+				<p:column rowspan="#{team.stats.size()}">
 					<h:outputText value="#{stats.season}" />
 				</p:column>
 				<p:column>
@@ -45,7 +43,7 @@
 						<p:column footerText="#{team.allLosses}" />
 					</p:row>
 				</p:columnGroup>
-			</p:subTable>
+			</p:subTable> -->
 		</p:dataTable>
 		<p:commandButton type="button" onclick="PF('userInfoDialog').show();"
 			value="openDialog" />
@@ -68,7 +66,8 @@
 				<h:panelGroup layout="block" style="margin: 10px;">
 					<p:graphicImage value="#{userInfoDialog.streamedContent}"
 						cache="false" width="150" height="200" style="float: left;" />
-					<h:panelGrid id="userInfoAttributesGrid" columns="2" border="0" cellpadding="10">
+					<h:panelGrid id="userInfoAttributesGrid" columns="2" border="0"
+						cellpadding="10">
 						<h:outputText value="#{msg.firstName}" />
 						<h:outputText value="#{userInfoDialog.user.firstName}" />
 
