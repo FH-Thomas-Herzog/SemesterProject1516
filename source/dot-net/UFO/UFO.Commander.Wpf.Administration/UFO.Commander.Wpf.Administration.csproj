@@ -122,7 +122,7 @@
     <Compile Include="Model\Tab\Views\Security\LoginControl.xaml.cs">
       <DependentUpon>LoginControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Model\Tab\Views\ArtistMasterData.xaml.cs">
+    <Compile Include="Model\Tab\Views\MasterData\ArtistMasterData.xaml.cs">
       <DependentUpon>ArtistMasterData.xaml</DependentUpon>
     </Compile>
     <Compile Include="Model\Tab\Views\Util\IMessageHandler.cs" />
@@ -155,7 +155,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Model\Tab\Views\ArtistMasterData.xaml">
+    <Page Include="Model\Tab\Views\MasterData\ArtistMasterData.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
