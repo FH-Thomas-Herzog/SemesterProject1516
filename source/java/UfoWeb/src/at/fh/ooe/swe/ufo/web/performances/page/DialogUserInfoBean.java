@@ -3,6 +3,7 @@ package at.fh.ooe.swe.ufo.web.performances.page;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.util.Base64;
 
 import javax.annotation.PostConstruct;
@@ -12,11 +13,14 @@ import javax.inject.Named;
 import javax.servlet.ServletContext;
 
 import org.apache.deltaspike.core.api.common.DeltaSpike;
+import org.apache.logging.log4j.Logger;
 import org.primefaces.event.CloseEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
 import at.fh.ooe.swe.ufo.webservice.model.UserModel;
+import at.fh_ooe.swk.ufo.ArtistModel;
+import at.fh_ooe.swk.ufo.ArtistServiceSoap;
 
 @RequestScoped
 @Named("userInfoDialog")
@@ -29,6 +33,10 @@ public class DialogUserInfoBean implements Serializable {
 	@Inject
 	@DeltaSpike
 	private transient ServletContext servletContext;
+	@Inject
+	private ArtistServiceSoap artistWebservice;
+	@Inject
+	private Logger log;
 
 	private UserModel user;
 	private StreamedContent streamedContent;
@@ -38,7 +46,12 @@ public class DialogUserInfoBean implements Serializable {
 
 	@PostConstruct
 	public void postConstruct() {
-		// TODO: Get set user from page and load user model
+		try {
+			ArtistModel model = artistWebservice.getDetails(BigInteger.valueOf((long) 1));
+			log.info(model.getFirstName());
+		} catch (Exception e) {
+			log.error("Could not load artist model", e);
+		}
 		user = new UserModel();
 		user.setFirstName("Thomas");
 		user.setLastName("Herzog");

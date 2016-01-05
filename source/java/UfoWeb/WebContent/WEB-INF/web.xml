@@ -18,6 +18,14 @@
 
 	<!-- Context parameter -->
 	<context-param>
+		<param-name>ufo.webservice.username</param-name>
+		<param-value>WebApplication_1</param-value>
+	</context-param>
+	<context-param>
+		<param-name>ufo.webservice.password</param-name>
+		<param-value>j678ZllHOB1z~/.9eoZs@8gg,Ocl-Bqi</param-value>
+	</context-param>
+		<context-param>
 		<param-name>org.apache.myfaces.PRETTY_HTML</param-name>
 		<param-value>true</param-value>
 	</context-param>
