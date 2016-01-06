@@ -2,4 +2,7 @@
 <Context>
 	<Resource name="BeanManager" auth="Container"
 		type="javax.enterprise.inject.spi.BeanManager" factory="org.jboss.weld.resources.ManagerObjectFactory" />
+
+	<!-- Uncomment this to disable session persistence across Tomcat restarts -->
+	<Manager pathname="" />
 </Context>

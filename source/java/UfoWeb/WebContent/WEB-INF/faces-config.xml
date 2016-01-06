@@ -5,6 +5,6 @@
 	version="2.2">
 	<application>
 		<!-- Deltaspike needs this here otherwise resource bundle is not discoverable -->
-		<message-bundle>at.fh.ooe.swe.ufo.web.application.message.MessageBundle</message-bundle>
+		<message-bundle>at.fh.ooe.swk.ufo.web.application.message.MessageBundle</message-bundle>
 	</application>
 </faces-config>

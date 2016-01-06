@@ -25,5 +25,12 @@
 	<h:panelGroup id="dialogGroup" layout="block">
 		<ui:insert name="dialogContent" />
 	</h:panelGroup>
+
+	<h:panelGroup id="messageGroup" layout="block">
+		<p:growl id="globalErrorMessageRowl" autoUpdate="true"
+			globalOnly="true" showSummary="true" sticky="true" severity="error" />
+		<p:growl id="globalInfoMessageRowl" autoUpdate="true"
+			globalOnly="true" showSummary="true" life="2000" severity="info" />
+	</h:panelGroup>
 </h:body>
 </html>
