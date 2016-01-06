@@ -7,7 +7,7 @@ namespace UFO.Server.Data.MySql.Db
     /// MySql specific implementation for the BaseDbCommandBuilder.
     /// It would contain MySql specifc stuff.
     /// </summary>
-    public class MySqlDbCommandBuilder : BaseDbCommandBuilder<MySqlConnection, MySqlCommand, MySqlParameter, MySqlDbType>
+    public class MySqlDbCommandBuilder : BaseDbCommandBuilder<MySqlConnection, MySqlCommand, MySqlParameter, MySqlDbType, MySqlDbCommandBuilder>
     {
     }
 }

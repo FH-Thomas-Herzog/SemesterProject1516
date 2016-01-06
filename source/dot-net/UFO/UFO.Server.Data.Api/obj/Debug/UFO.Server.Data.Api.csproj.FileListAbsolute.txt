@@ -14,3 +14,11 @@ D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.Ap
 D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.Api\obj\Debug\UFO.Server.Data.Api.csprojResolveAssemblyReference.cache
 D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.Api\obj\Debug\UFO.Server.Data.Api.dll
 D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.Api\obj\Debug\UFO.Server.Data.Api.pdb
+C:\Users\Thomas\Git-Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.Api\bin\Debug\UFO.Server.Data.Api.dll
+C:\Users\Thomas\Git-Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.Api\bin\Debug\UFO.Server.Data.Api.pdb
+C:\Users\Thomas\Git-Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.Api\bin\Debug\Microsoft.CSharp.dll
+C:\Users\Thomas\Git-Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.Api\bin\Debug\UFO.Common.Util.dll
+C:\Users\Thomas\Git-Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.Api\bin\Debug\UFO.Common.Util.pdb
+C:\Users\Thomas\Git-Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.Api\obj\Debug\UFO.Server.Data.Api.csprojResolveAssemblyReference.cache
+C:\Users\Thomas\Git-Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.Api\obj\Debug\UFO.Server.Data.Api.dll
+C:\Users\Thomas\Git-Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.Api\obj\Debug\UFO.Server.Data.Api.pdb

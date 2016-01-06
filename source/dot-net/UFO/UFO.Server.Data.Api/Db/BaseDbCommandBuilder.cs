@@ -16,7 +16,7 @@ namespace UFO.Server.Data.Api.Db
     /// <typeparam name="T">The type of the to create DbCommand</typeparam>
     /// <typeparam name="P">The type of the used DbParameter</typeparam>
     /// <typeparam name="D">the type of the db type enumeration</typeparam>
-    public abstract class BaseDbCommandBuilder<B, T, P, D> where B : DbConnection where T : DbCommand where P : DbParameter
+    public abstract class BaseDbCommandBuilder<B, T, P, D, I> where B : DbConnection where T : DbCommand where P : DbParameter where I : BaseDbCommandBuilder<B, T, P, D, I>
     {
         IDbTypeResolver<D> typeResolver;
         B connection;
@@ -27,10 +27,10 @@ namespace UFO.Server.Data.Api.Db
         /// </summary>
         /// <param name="typeResolver">the type resolver to be set</param>
         /// <returns>the currnt builder instance</returns>
-        public BaseDbCommandBuilder<B, T, P, D> WithTypeResolver(IDbTypeResolver<D> typeResolver)
+        public I WithTypeResolver(IDbTypeResolver<D> typeResolver)
         {
             this.typeResolver = typeResolver;
-            return this;
+            return (I) this;
         }
 
         /// <summary>
@@ -38,13 +38,13 @@ namespace UFO.Server.Data.Api.Db
         /// </summary>
         /// <param name="connection">the connection to be set</param>
         /// <returns>the current builder instance</returns>
-        public BaseDbCommandBuilder<B, T, P, D> WithConnection(B connection)
+        public I WithConnection(B connection)
         {
             ClearWithConnection();
 
             this.connection = connection;
 
-            return this;
+            return (I) this;
         }
 
         /// <summary>
@@ -52,7 +52,7 @@ namespace UFO.Server.Data.Api.Db
         /// The command and connection are closed and disposed
         /// </summary>
         /// <returns>the current builder instance</returns>
-        public BaseDbCommandBuilder<B, T, P, D> ClearWithConnection()
+        public I ClearWithConnection()
         {
             // clears command
             Clear();
@@ -60,7 +60,7 @@ namespace UFO.Server.Data.Api.Db
             DbConnectionFactory.CloseDisposeConnection(connection);
             connection = null;
 
-            return this;
+            return (I)this;
         }
 
         /// <summary>
@@ -68,7 +68,7 @@ namespace UFO.Server.Data.Api.Db
         /// </summary>
         /// <param name="query">the query to create an command for</param>
         /// <returns>the current builder instance</returns>
-        public BaseDbCommandBuilder<B, T, P, D> WithQuery(string query)
+        public I WithQuery(string query)
         {
             Debug.Assert(typeResolver != null, "You need to call Init(...) before");
             Debug.Assert(query != null, "Cannot start command with null query string");
@@ -81,7 +81,7 @@ namespace UFO.Server.Data.Api.Db
             command.CommandText = query;
             command.Connection = connection;
 
-            return this;
+            return (I) this;
         }
 
         /// <summary>
@@ -90,7 +90,7 @@ namespace UFO.Server.Data.Api.Db
         /// <param name="name">the name of the parameter</param>
         /// <param name="value">the value for the parameter</param>
         /// <returns>the current builder instance</returns>
-        public BaseDbCommandBuilder<B, T, P, D> SetParameter(string name, object value)
+        public I SetParameter(string name, object value)
         {
             Debug.Assert(name != null);
 
@@ -101,7 +101,7 @@ namespace UFO.Server.Data.Api.Db
             }
             command.Parameters[name].Value = value;
 
-            return this;
+            return (I)this;
         }
         
         /// <summary>
@@ -151,7 +151,7 @@ namespace UFO.Server.Data.Api.Db
         /// Clears the builder by closing and disposing the bakced command if not null.
         /// </summary>
         /// <returns>the current builder instance</returns>
-        public BaseDbCommandBuilder<B, T, P, D> Clear()
+        public I Clear()
         {
             if (command != null)
             {
@@ -159,7 +159,7 @@ namespace UFO.Server.Data.Api.Db
             }
             command = null;
 
-            return this;
+            return (I)this;
         }
 
         #region Private

@@ -27,7 +27,7 @@ namespace UFO.Server.Data.Api.Dao.Base
                                                                     where B : DbConnection
                                                                     where T : DbCommand
                                                                     where P : DbParameter
-                                                                    where C : BaseDbCommandBuilder<B, T, P, D>
+                                                                    where C : BaseDbCommandBuilder<B, T, P, D, C>
                                                                     where Q : class, IQueryCreator
     {
 
