@@ -187,13 +187,13 @@ namespace UFO.Server.Data.MySql.Dao
                                                                    + " FROM ufo.performance performance "
                                                                    + " INNER JOIN ufo.artist as artist on performance.artist_id = artist.id "
                                                                    + " INNER JOIN ufo.artist_category as artistCategory on artist.artist_category_id = artistCategory.id "
-                                                                   + " INNER JOIN ufo.artist_group as artistGroup on artist.artist_group_id = artistGroup.id "
+                                                                   + " LEFT OUTER JOIN ufo.artist_group as artistGroup on artist.artist_group_id = artistGroup.id "
                                                                    + " INNER JOIN ufo.venue as venue on performance.venue_id = venue.id "
                                                                    + " WHERE performance.start_date >= ?startDate "
                                                                    + " AND performance.end_date <= ?endDate "
                                                                    + (((venueIds != null) && (venueIds.Count > 0)) ? (" AND venue.id IN (?venueIds) ") : "")
                                                                    + (((artistIds != null) && (artistIds.Count > 0)) ? (" AND artist.id IN (?artistIds) ") : "")
-                                                                   + " ORDER BY DATE(performance.start_date), TIME(performance.start_date)")
+                                                                   + " ORDER BY performance.start_date")
                                                           .SetParameter("?startDate", startDate)
                                                           .SetParameter("?endDate", endDate);
                 if((artistIds != null) && (artistIds.Count > 0))
