@@ -52,26 +52,51 @@ public class TestDataGenerator {
 
 	public static class Performance {
 
-		private Calendar startCal = Calendar.getInstance();
+		private Calendar startCal;
 		private final Random random = new Random();
 		boolean toogle = Boolean.FALSE;
 		private int hourOffset = 0;
+		private int initDay = 0;
+		private int offset = 0;
+		private int startHour = 8;
+		private boolean start = Boolean.FALSE;
 
 		public Performance() {
 			super();
+			startCal = Calendar.getInstance(Locale.GERMAN);
+			startCal.set(Calendar.DAY_OF_YEAR, -10);
+			initDay = startCal.get(Calendar.DAY_OF_YEAR);
+			reset();
 		}
 
 		public void reset() {
 			hourOffset = 0;
-		}
-
-		public String getStartDate(int d) {
-			startCal = Calendar.getInstance(Locale.GERMAN);
-			startCal.add(Calendar.DAY_OF_YEAR, (d < ((int) (DAYS_COUNT / 2))) ? (d * -1) : d);
-			startCal.set(Calendar.HOUR_OF_DAY, 8);
+			if (start) {
+				startCal.add(Calendar.DAY_OF_YEAR, 1);
+			} else {
+				start = Boolean.TRUE;
+			}
+			startCal.set(Calendar.HOUR_OF_DAY, startHour);
 			startCal.set(Calendar.MILLISECOND, 0);
 			startCal.set(Calendar.SECOND, 0);
 			startCal.set(Calendar.MINUTE, 0);
+		}
+
+		public void toggle() {
+			if (offset == 1) {
+				offset = 0;
+				startHour = 8;
+				initDay = startCal.get(Calendar.DAY_OF_YEAR);
+				start = Boolean.FALSE;
+			} else {
+				offset = 1;
+				startHour = 9;
+			}
+			startCal.set(Calendar.DAY_OF_YEAR, initDay);
+			reset();
+		}
+
+		public String getStartDate() {
 			startCal.add(Calendar.HOUR_OF_DAY, hourOffset);
 			hourOffset += 2;
 			return format(startCal);
@@ -244,7 +269,7 @@ public class TestDataGenerator {
 		parameters.put("artistCategoryCount", categories.size());
 		parameters.put("artistGroupCount", artistGroups.size());
 		parameters.put("venuesCount", venues.size());
-		parameters.put("performanceCount", 5);
+		parameters.put("performanceCount", 4);
 		parameters.put("daysCount", DAYS_COUNT);
 		parameters.put("categories", categories);
 		parameters.put("countries", countries);

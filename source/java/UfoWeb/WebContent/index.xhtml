@@ -4,46 +4,111 @@
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
 	template="/WEB-INF/templates/baseTemplate.xhtml"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
 
 	<ui:define name="centerContent">
 		<ui:repeat id="performanceDays"
 			rendered="#{not empty performancePage.tables}"
 			value="#{performancePage.tables}" var="item">
-			<p:dataTable id="performanceTable" value="#{item.rows}" var="row"
-				caseSensitiveSort="false" disabledSelection="true"
-				disabledTextSelection="true">
-				<f:facet name="header">
-					<h:outputText value="#{item.header}" />
-				</f:facet>
+			<h:form id="dataTableForm" prependId="true">
+				<p:dataTable id="performanceTable" value="#{item}" var="row"
+					paginator="true" rows="10" rowStatePreserved="true" reflow="true"
+					rowsPerPageTemplate="10, 20, 30, 40, 50, 100" lazy="true"
+					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+					caseSensitiveSort="false" disabledSelection="true"
+					disabledTextSelection="true" filterEvent="enter"
+					style="text-align: center; vertical-align: middle;">
 
-				<p:column headerText="#{msg.venue}" sortBy="#{row.venue.label}"
-					filterBy="#{row.venue.label}">
-					<h:outputText value="#{row.venue.label}" />
-				</p:column>
-
-				<p:columns value="#{item.columns}" var="column"
-					columnIndexVar="idxVar" style="text-align:center">
+					<p:ajax event="filter" process="@this" partialSubmit="true" />
 					<f:facet name="header">
-						<h:outputText value="#{column.header}" />
+						<h:outputText value="#{item.header}" />
 					</f:facet>
-					<ui:repeat id="hourperfroamcens"
-						rendered="#{not empty row.getModelForColumn(column.startDate)}"
-						value="#{row.getModelForColumn(column.startDate)}"
-						var="performance">
-						<h:panelGroup layout="block" style="margin:5px;">
-							<h:outputText value="#{performance.artistName}" />/>
+
+					<p:column headerText="#{msg.venue}" sortable="true"
+						sortBy="#{row.venue.label}" filterable="true"
+						filterBy="#{row.venue.label}">
+						<h:outputText value="#{row.venue.label}" />
+					</p:column>
+
+					<p:columns value="#{item.columns}" var="column"
+						columnIndexVar="idxVar" style="text-align:center"
+						filterable="true" filterBy="#{idxVar}" sortable="true"
+						sortBy="#{idxVar}">
+						<f:facet name="header">
+							<h:outputText value="#{column.header}" />
+						</f:facet>
+						<ui:param name="model"
+							value="#{row.getModelForColumn(column.startHour)}" />
+						<h:panelGroup id="performanceDetailsGrid"
+							rendered="#{not empty model}" style="margin: 5px;">
+							<p:commandLink id="infoLink" title="CLICK FOR OPEN DETAILS"
+								actionListener="#{performancePage.prepareInfoDialog(model)}"
+								style="float: left; margin-left: 10px;" global="true"
+								update=":dialogGroup"
+								oncomplete="PF('artistInfoDialog').show();">
+								<h:outputText value="#{model.name}" style="float: left;" />
+							</p:commandLink>
+							<h:graphicImage id="warningIcon" rendered="#{model.moved}"
+								library="images" name="warn.png" width="25" height="25"
+								title="HAS BEEN MOVED" style="margin-left: 10px;">
+							</h:graphicImage>
 						</h:panelGroup>
 						<br />
-					</ui:repeat>
-				</p:columns>
+					</p:columns>
 
 
-			</p:dataTable>
+				</p:dataTable>
+			</h:form>
+			<pe:tooltip value="#{msg.triggerSearchOnEnter}" shared="true"
+				atPosition="top center" myPosition="bottom center"
+				for="@(th .ui-column-filter.ui-inputfield.ui-inputtext)" />
 		</ui:repeat>
 		<h:panelGroup id="noPerformancesGroup" layout="block"
 			rendered="#{empty performancePage.tables}">
 			<h:outputText value="NO PERFORMANCES" />
 		</h:panelGroup>
+	</ui:define>
+
+	<ui:define name="dialogContent">
+		<h:form id="artistDialogForm"
+			rendered="#{performancePage.artistDialogRendered}">
+			<p:dialog id="artistInfoDialogID" widgetVar="artistInfoDialog"
+				closable="true" closeOnEscape="true" draggable="true"
+				responsive="true" fitViewport="true" position="center"
+				appendTo="@(body)" header="#{msg.artist}" modal="true" width="700"
+				height="300">
+
+				<p:ajax event="close" listener="#{artistInfoDialog.onClose}"
+					global="true" async="true" />
+
+				<h:panelGroup layout="block" style="margin: 10px;">
+					<p:graphicImage value="#{artistInfoDialog.streamedContent}"
+						cache="false" width="200" height="250" style="float: left;" />
+					<h:panelGrid id="userInfoAttributesGrid" columns="2" border="0"
+						cellpadding="10">
+
+						<h:outputText value="#{msg.firstName}" />
+						<h:outputText value="#{artistInfoDialog.artist.firstName}" />
+
+						<h:outputText value="#{msg.lastName}" />
+						<h:outputText value="#{artistInfoDialog.artist.lastName}" />
+
+						<h:outputText value="#{msg.email}" />
+						<h:outputText value="#{artistInfoDialog.artist.email}" />
+
+						<h:outputText value="#{msg.artistGroup}" />
+						<h:outputText value="#{artistInfoDialog.artist.artistGroup}" />
+
+						<h:outputText value="#{msg.country}" />
+						<h:outputText
+							value="#{artistInfoDialog.artist.getCountryName(languageBean.locale)}" />
+
+						<h:outputText value="#{msg.url}" />
+						<h:outputText value="#{artistInfoDialog.artist.url}" />
+					</h:panelGrid>
+				</h:panelGroup>
+			</p:dialog>
+		</h:form>
 	</ui:define>
 </ui:composition>

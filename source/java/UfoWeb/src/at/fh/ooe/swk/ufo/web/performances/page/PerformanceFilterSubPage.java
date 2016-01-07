@@ -34,10 +34,10 @@ public class PerformanceFilterSubPage implements Serializable {
 	public void resetFilters() {
 		startDate = Calendar.getInstance();
 		startDate.clear();
-		startDate.set(2015, Calendar.DECEMBER, 10, 1, 0, 0);
+		startDate.set(2015, Calendar.DECEMBER, 22, 0, 1, 0);
 		endDate = (Calendar) startDate.clone();
 		endDate.clear();
-		endDate.set(2015, Calendar.DECEMBER, 25, 23, 59, 00);
+		endDate.set(2015, Calendar.DECEMBER, 22, 23, 59, 00);
 		artistIds = new ArrayList<>();
 		venueIds = new ArrayList<>();
 	}

@@ -1,29 +1,78 @@
 package at.fh.ooe.swk.ufo.web.performances.model;
 
-import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Objects;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.message.LoggerNameAwareMessage;
-
+/**
+ * Row model for performances which maps the perforamnces to their start hour
+ * which is the mapping to the corresponding dynamic column.
+ * 
+ * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
+ * @date Jan 7, 2016
+ */
 public class PerformanceRowModel {
 
 	private final IdLabelModel venue;
-	private final Map<Calendar, List<PerformanceViewModel>> map;
+	private final Map<Integer, List<PerformanceViewModel>> map;
 
-	public PerformanceRowModel(IdLabelModel venue, Map<Calendar, List<PerformanceViewModel>> map) {
+	public PerformanceRowModel(IdLabelModel venue, Map<Integer, List<PerformanceViewModel>> map) {
 		super();
+		Objects.requireNonNull(venue, "Venue must be given");
+		Objects.requireNonNull(venue, "Performances map must be given");
+
 		this.venue = venue;
 		this.map = map;
 	}
 
+	// ##################################################
+	// Helper
+	// ##################################################
+	/**
+	 * PErforms the filtering on the row model for the dynmaic columns.
+	 * 
+	 * @param filters
+	 *            the filter map
+	 * @param columns
+	 *            the table columns
+	 * @return true if filter applies on the proper column model, false
+	 *         otherwise
+	 */
+	public boolean containsFilteredValue(Map<String, Object> filters, List<PerformanceColumnModel> columns) {
+		for (Entry<String, Object> entry : filters.entrySet()) {
+			final String filter = (String) entry.getValue();
+			final int startHour = columns.get(Integer.valueOf(entry.getKey())).getStartHour();
+			final List<PerformanceViewModel> models = map.get(startHour);
+			if ((models != null) && (!models.isEmpty())) {
+				for (PerformanceViewModel model : models) {
+					if (model.getName().toUpperCase().contains(filter)) {
+						return Boolean.TRUE;
+					}
+				}
+			}
+		}
+		return Boolean.FALSE;
+	}
+
+	// ##################################################
+	// Getter and Setter
+	// ##################################################
 	public IdLabelModel getVenue() {
 		return venue;
 	}
 
-	public List<PerformanceViewModel> getModelForColumn(final Calendar calendar) {
-		return map.get(calendar);
+	/**
+	 * Returns the model for the column or null if no model is mapped to the
+	 * given column
+	 * 
+	 * @param hour
+	 *            the hour represents the column
+	 * @return the found model, null otherwise
+	 */
+	public PerformanceViewModel getModelForColumn(final int hour) {
+		List<PerformanceViewModel> list = map.get(hour);
+		return (list != null) ? list.get(0) : null;
 	}
 
 	@Override

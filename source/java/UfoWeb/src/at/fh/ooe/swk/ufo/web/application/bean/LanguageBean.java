@@ -5,8 +5,10 @@ import java.util.Locale;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.inject.Named;
 
 @SessionScoped
+@Named("languageBean")
 public class LanguageBean implements Serializable {
 
 	private static final long serialVersionUID = -2187088910675901499L;

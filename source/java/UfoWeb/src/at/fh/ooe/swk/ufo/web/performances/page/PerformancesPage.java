@@ -26,6 +26,7 @@ import org.apache.logging.log4j.Logger;
 
 import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
+import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel.EntityType;
 import at.fh.ooe.swk.ufo.webservice.PerformanceModel;
 import at.fh.ooe.swk.ufo.webservice.PerformanceServiceSoap;
 
@@ -44,14 +45,16 @@ public class PerformancesPage implements Serializable {
 	private Logger log;
 
 	@Inject
-	private Instance<DataTableSubPage> dataTableSubPageInstances;
+	private Instance<PerformanceLazyDataTableModel> dataTableSubPageInstances;
 	@Inject
 	private PerformanceFilterSubPage performanceFilterPage;
 	@Inject
 	private LanguageBean languageBean;
+	@Inject
+	private ArtistInfoDialogBean artistInfoDialog;
 
-	private Integer selectedUser;
-	private List<DataTableSubPage> tables;
+	private PerformanceViewModel selectedModel;
+	private List<PerformanceLazyDataTableModel> tables;
 
 	public PerformancesPage() {
 		super();
@@ -59,13 +62,20 @@ public class PerformancesPage implements Serializable {
 
 	@PostConstruct
 	public void postConstruct() {
-		selectedUser = 1;
 		loadPerformances();
 	}
 
 	// ##################################################
 	// Event listener
 	// ##################################################
+	public void prepareInfoDialog(PerformanceViewModel model) {
+		selectedModel = model;
+		if (EntityType.ARTIST.equals(selectedModel.getType())) {
+			artistInfoDialog.init((long) selectedModel.getEntityId());
+		} else if (EntityType.ARTIST_GROUP.equals(selectedModel.getType())) {
+
+		}
+	}
 
 	// ##################################################
 	// Helper
@@ -79,9 +89,10 @@ public class PerformancesPage implements Serializable {
 				Format formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)
 						.withLocale(languageBean.getLocale()).toFormat();
 				// Load performances depending on set filter
-				performances = Arrays
-						.asList(performanceWebservice.getPerformances(performanceFilterPage.createRequestModel()))
-						.parallelStream().map(model -> new PerformanceViewModel(model)).collect(Collectors.toList());
+				final PerformanceModel[] data = performanceWebservice
+						.getPerformances(performanceFilterPage.createRequestModel());
+				performances = Arrays.asList(data).parallelStream().map(model -> new PerformanceViewModel(model))
+						.collect(Collectors.toList());
 				// group performances by their start date value
 				final Map<String, List<PerformanceViewModel>> map = performances.parallelStream()
 						.collect(Collectors.groupingBy(model -> formatter
@@ -98,35 +109,40 @@ public class PerformancesPage implements Serializable {
 				});
 				// Prepare table pages for each date
 				for (Entry<String, List<PerformanceViewModel>> entry : map.entrySet()) {
-					final DataTableSubPage table = dataTableSubPageInstances.get();
+					final PerformanceLazyDataTableModel table = dataTableSubPageInstances.get();
 					table.init(entry.getKey(), entry.getValue());
 					tables.add(table);
 				}
 
 				fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "loaded performances", "bla"));
 			} catch (Exception e) {
+				log.error("Error during load", e);
 				fc.addMessage(null,
 						new FacesMessage(FacesMessage.SEVERITY_ERROR, "Could not load performances", "bla"));
 			}
 		}
 	}
 
+	public boolean isArtistDialogRendered() {
+		return ((selectedModel != null) && (EntityType.ARTIST.equals(selectedModel.getType())));
+	}
+
+	public boolean isArtistGroupDialogRendered() {
+		return ((selectedModel != null) && (EntityType.ARTIST_GROUP.equals(selectedModel.getType())));
+	}
+
 	// ##################################################
 	// Getter and Setter
 	// ##################################################
-	public Integer getSelectedUser() {
-		return selectedUser;
-	}
-
-	public void setSelectedUser(Integer selectedUser) {
-		this.selectedUser = selectedUser;
-	}
-
-	public List<DataTableSubPage> getTables() {
+	public List<PerformanceLazyDataTableModel> getTables() {
 		return tables;
 	}
 
-	public void setTables(List<DataTableSubPage> tables) {
-		this.tables = tables;
+	public PerformanceViewModel getSelectedModel() {
+		return selectedModel;
+	}
+
+	public void setSelectedModel(PerformanceViewModel selectedModel) {
+		this.selectedModel = selectedModel;
 	}
 }

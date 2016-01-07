@@ -30,10 +30,19 @@ public interface MessagesBundle extends Serializable {
 
 	@MessageTemplate("{URL}")
 	String getUrl();
-	
+
 	@MessageTemplate("{ARTIST}")
 	String getArtist();
-	
+
+	@MessageTemplate("{ARTIST_GROUP}")
+	String getArtistGroup();
+
 	@MessageTemplate("{VENUE}")
 	String getVenue();
+
+	@MessageTemplate("{COUNTRY}")
+	String getCountry();
+
+	@MessageTemplate("{TRIGGER_SEARCH_ON_ENTER}")
+	String getTriggerSearchOnEnter();
 }

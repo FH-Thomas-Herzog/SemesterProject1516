@@ -1,119 +1,95 @@
 package at.fh.ooe.swk.ufo.web.performances.model;
 
 import java.util.Calendar;
+import java.util.TimeZone;
 
 import at.fh.ooe.swk.ufo.webservice.PerformanceModel;
 
-public class PerformanceViewModel {
+public class PerformanceViewModel implements Comparable<PerformanceViewModel> {
 
-	private Object id;
-	private Calendar startDate;
-	private Calendar endDate;
-	private boolean moved;
-	private String venueName;
-	private String artistName;
-	private String artistGroupName;
-	private Long artistId;
-	private Long artistGroupId;
-	private long venueId;
-
-	public PerformanceViewModel() {
-		super();
-		// TODO Auto-generated constructor stub
+	public static enum EntityType {
+		ARTIST, ARTIST_GROUP
 	}
+
+	private final Object id;
+	private final Calendar startDate;
+	private final Calendar endDate;
+	private final boolean moved;
+	private final String venueName;
+	private final String name;
+	private final Object entityId;
+	private final Object venueId;
+	private final EntityType type;
+
+	private static final TimeZone ZONE = TimeZone.getTimeZone("UTC");
 
 	public PerformanceViewModel(PerformanceModel model) {
 		super();
-		this.id = model.getId();
-		this.startDate = model.getStartDate();
-		this.endDate = model.getEndDate();
-		this.moved = model.isMoved();
-		this.venueId = model.getVenueId();
-		this.venueName = model.getVenueName();
-		this.artistName = model.getArtistName();
-		this.artistId = model.getArtistId();
-		this.artistGroupName = model.getArtistGroupName();
-		this.artistGroupId = model.getArtistGroupId();
+		id = model.getId();
+		startDate = model.getStartDate();
+		endDate = model.getEndDate();
+		moved = model.isMoved();
+		venueId = model.getVenueId();
+		venueName = (model.getVenueName() != null) ? model.getVenueName() : "";
+		if ((model.getArtistId() != null)) {
+			name = (model.getArtistName() != null) ? model.getArtistName() : "";
+			entityId = model.getArtistId();
+			type = EntityType.ARTIST;
+		} else {
+			name = (model.getArtistGroupName() != null) ? model.getArtistGroupName() : "";
+			entityId = model.getArtistGroupId();
+			type = EntityType.ARTIST_GROUP;
+		}
+		// Set to expected time zone
+		startDate.setTimeZone(ZONE);
+		endDate.setTimeZone(ZONE);
 	}
 
+	// ##################################################
+	// Helper
+	// ##################################################
+	@Override
+	public int compareTo(PerformanceViewModel o) {
+		return name.compareTo(o.name);
+	}
+
+	// ##################################################
+	// Getter and Setter
+	// ##################################################
 	public Object getId() {
 		return id;
-	}
-
-	public void setId(Object id) {
-		this.id = id;
 	}
 
 	public Calendar getStartDate() {
 		return startDate;
 	}
 
-	public void setStartDate(Calendar startDate) {
-		this.startDate = startDate;
-	}
-
 	public Calendar getEndDate() {
 		return endDate;
-	}
-
-	public void setEndDate(Calendar endDate) {
-		this.endDate = endDate;
 	}
 
 	public boolean isMoved() {
 		return moved;
 	}
 
-	public void setMoved(boolean moved) {
-		this.moved = moved;
-	}
-
 	public String getVenueName() {
 		return venueName;
 	}
 
-	public void setVenueName(String venueName) {
-		this.venueName = venueName;
+	public String getName() {
+		return name;
 	}
 
-	public String getArtistName() {
-		return artistName;
+	public Object getEntityId() {
+		return entityId;
 	}
 
-	public void setArtistName(String artistName) {
-		this.artistName = artistName;
-	}
-
-	public String getArtistGroupName() {
-		return artistGroupName;
-	}
-
-	public void setArtistGroupName(String artistGroupName) {
-		this.artistGroupName = artistGroupName;
-	}
-
-	public Long getArtistId() {
-		return artistId;
-	}
-
-	public void setArtistId(Long artistId) {
-		this.artistId = artistId;
-	}
-
-	public Long getArtistGroupId() {
-		return artistGroupId;
-	}
-
-	public void setArtistGroupId(Long artistGroupId) {
-		this.artistGroupId = artistGroupId;
-	}
-
-	public long getVenueId() {
+	public Object getVenueId() {
 		return venueId;
 	}
 
-	public void setVenueId(long venueId) {
-		this.venueId = venueId;
+	public EntityType getType() {
+		return type;
 	}
 
 	@Override

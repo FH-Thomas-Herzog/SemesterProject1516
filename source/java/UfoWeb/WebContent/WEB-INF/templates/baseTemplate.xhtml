@@ -3,14 +3,31 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	xmlns:p="http://primefaces.org/ui">
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
 
 <h:head>
 	<meta http-equiv="cache-control" content="no-cache" />
 	<meta http-equiv="expires" content="0" />
 	<meta http-equiv="pragma" content="no-cache" />
+
+	<h:outputStylesheet library="css" name="icon.css" />
 </h:head>
 <h:body style="height: 100%">
+	<p:ajaxStatus onstart="PF('statusDialog').show()"
+		onsuccess="PF('statusDialog').hide()" />
+
+	<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+		closable="false" resizable="false" showHeader="false"
+		appendTo="@(body)" style="z-index: -1000000000">
+		<h:panelGrid columns="2"
+			columnClasses="ui-dialog-message-image, ui-dialog-message-text">
+			<p:graphicImage library="images" name="loading.gif" width="100"
+				height="100" />
+			<h:outputText value="#{coreMsg.loadingPage}" />
+		</h:panelGrid>
+	</p:dialog>
+
 	<p:layout fullPage="true" stateful="false">
 		<p:layoutUnit position="north" resizable="false" maxSize="200"
 			collapsible="true" collapsed="true" header="menu">
