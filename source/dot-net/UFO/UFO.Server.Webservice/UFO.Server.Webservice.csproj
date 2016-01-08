@@ -77,6 +77,7 @@
   <ItemGroup>
     <Content Include="Soap\ArtistService.asmx" />
     <Content Include="Soap\PerformanceService.asmx" />
+    <Content Include="Soap\VenueService.asmx" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
@@ -97,6 +98,10 @@
     </Compile>
     <Compile Include="Soap\PerformanceService.asmx.cs">
       <DependentUpon>PerformanceService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Soap\VenueService.asmx.cs">
+      <DependentUpon>VenueService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
   </ItemGroup>
