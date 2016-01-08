@@ -33,6 +33,46 @@ namespace UFO.Server.Webservice.Soap
         [WebMethod]
         [ScriptMethod(UseHttpGet = false)]
         [SoapHeader("credentials")]
+        public List<ArtistModel> GetSimpleArtists()
+        {
+            List<ArtistModel> models = new List<ArtistModel>();
+            ArtistModel model = null;
+            if ((model = handleAuthentication()) == null)
+            {
+                try
+                {
+                    IList<Artist> artists = artistDao.FindAll();
+                    foreach (var artist in artists)
+                    {
+                        models.Add(new ArtistModel
+                        {
+                            Id = artist.Id.Value,
+                            FirstName = artist.Firstname,
+                            LastName = artist.Lastname,
+                            Email = artist.Email,
+                            CountryCode = artist.CountryCode
+                        });
+                    }
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("GetDetails: Error during processing. error: " + e.Message);
+                    models.Add(new ArtistModel
+                    {
+                        ErrorCode = (int)ErrorCode.UNKNOWN_ERROR,
+                        Error = ($"Error during processing the request. exception={e.GetType().Name}")
+                    });
+                }
+            }
+            else {
+                models.Add(model);
+            }
+            return models;
+        }
+
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = false)]
+        [SoapHeader("credentials")]
         public ArtistModel GetDetails(long id)
         {
             ArtistModel model = null;
@@ -42,14 +82,16 @@ namespace UFO.Server.Webservice.Soap
                 {
                     Artist artist = artistDao.Find(id);
                     ArtistGroup group = artistGroupDao.Find(artist.ArtistGroupId);
-                    if (artist != null)
+                    if ((artist != null) || (artist.Deleted))
                     {
                         return new ArtistModel
                         {
+                            Id = artist.Id.Value,
                             FirstName = artist.Firstname,
                             LastName = artist.Lastname,
                             Email = artist.Email,
                             CountryCode = artist.CountryCode,
+                            Url = artist.Url,
                             Image = artist.ImageData,
                             ImageType = artist.ImageFileType,
                             ArtistGroup = ((group != null) ? group.Name : "")
