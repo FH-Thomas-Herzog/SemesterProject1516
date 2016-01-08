@@ -34,6 +34,9 @@ public interface MessagesBundle extends Serializable {
 	@MessageTemplate("{ARTIST}")
 	String getArtist();
 
+	@MessageTemplate("{ARTISTS}")
+	String getArtists();
+
 	@MessageTemplate("{ARTIST_GROUP}")
 	String getArtistGroup();
 
@@ -45,4 +48,19 @@ public interface MessagesBundle extends Serializable {
 
 	@MessageTemplate("{TRIGGER_SEARCH_ON_ENTER}")
 	String getTriggerSearchOnEnter();
+
+	@MessageTemplate("{FILTERS}")
+	String getFilters();
+
+	@MessageTemplate("{PERFORMANCES}")
+	String getPerformances();
+
+	@MessageTemplate("{PLEASE_CHOOSE}")
+	String getPleaseChoose();
+
+	@MessageTemplate("UNEXPECTED_ERROR")
+	String getUnexpectedError();
+
+	@MessageTemplate("{ERROR_CONVERT_NOT_FOUND}")
+	String getErrorConvertNotFound();
 }

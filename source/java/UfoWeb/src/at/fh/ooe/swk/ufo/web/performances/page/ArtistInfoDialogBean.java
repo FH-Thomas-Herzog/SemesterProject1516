@@ -4,9 +4,9 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.io.Serializable;
-import java.util.Base64;
 
 import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletContext;
@@ -45,10 +45,10 @@ public class ArtistInfoDialogBean implements Serializable {
 	private transient ArtistServiceSoap artistWebservice;
 	@Inject
 	private Logger log;
+	@Inject
+	private Instance<ArtistViewModel> artistInstance;
 
 	private ArtistViewModel artist;
-	private StreamedContent streamedContent;
-
 	private static final String DEFAULT_IMAGE = "/images/no-profile-img.gif";
 	private static final String DEFAULT_IMAGE_MIME_TYPE = "image/gif";
 
@@ -60,7 +60,8 @@ public class ArtistInfoDialogBean implements Serializable {
 	public void init(long id) {
 		reset();
 		try {
-			artist = new ArtistViewModel(artistWebservice.getDetails(id));
+			artist = artistInstance.get();
+			artist.init(artistWebservice.getDetails(id));
 		} catch (Exception e) {
 			log.error("Could not load artist model", e);
 		}
@@ -91,14 +92,15 @@ public class ArtistInfoDialogBean implements Serializable {
 		InputStream ips;
 		String mimeType;
 		try {
-			if ((artist != null) && (artist.getImageBase64() != null)) {
-				ips = new ByteArrayInputStream(Base64.getDecoder().decode(artist.getImageBase64()));
+			if ((artist != null) && (artist.getImageData() != null)) {
+				ips = new ByteArrayInputStream(artist.getImageData());
 				mimeType = "image/" + artist.getImageType();
 			} else {
 				mimeType = DEFAULT_IMAGE_MIME_TYPE;
 				ips = new BufferedInputStream(servletContext.getResourceAsStream(DEFAULT_IMAGE));
 			}
 		} catch (Exception e) {
+			log.error("Error during creation of StreamdContent", e);
 			return null;
 		}
 
@@ -110,7 +112,6 @@ public class ArtistInfoDialogBean implements Serializable {
 	 */
 	public void reset() {
 		artist = null;
-		streamedContent = null;
 	}
 
 	// ##################################################

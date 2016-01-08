@@ -15,6 +15,7 @@ import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Instance;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -30,7 +31,7 @@ import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel.EntityType;
 import at.fh.ooe.swk.ufo.webservice.PerformanceModel;
 import at.fh.ooe.swk.ufo.webservice.PerformanceServiceSoap;
 
-@ViewAccessScoped
+@SessionScoped
 @Named("performancePage")
 public class PerformancesPage implements Serializable {
 
@@ -47,7 +48,7 @@ public class PerformancesPage implements Serializable {
 	@Inject
 	private Instance<PerformanceLazyDataTableModel> dataTableSubPageInstances;
 	@Inject
-	private PerformanceFilterSubPage performanceFilterPage;
+	private PerformanceFilterBean performanceFilterPage;
 	@Inject
 	private LanguageBean languageBean;
 	@Inject

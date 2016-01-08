@@ -14,8 +14,8 @@ import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 import at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest;
 
 @ViewAccessScoped
-@Named("performanceFilterPage")
-public class PerformanceFilterSubPage implements Serializable {
+@Named("performanceFilterBean")
+public class PerformanceFilterBean implements Serializable {
 
 	private static final long serialVersionUID = 6065461910973062558L;
 
@@ -25,7 +25,7 @@ public class PerformanceFilterSubPage implements Serializable {
 	private List<Long> venueIds;
 
 	private final TimeZone zone = TimeZone.getTimeZone("UTC");
-	
+
 	@PostConstruct
 	public void postConstruct() {
 		resetFilters();
@@ -48,4 +48,24 @@ public class PerformanceFilterSubPage implements Serializable {
 		return new PerformanceFilterRequest(startDate, endDate, artistIds.toArray(new Long[artistIds.size()]),
 				venueIds.toArray(new Long[venueIds.size()]));
 	}
+
+	// ##################################################
+	// Getter and Setter
+	// ##################################################
+	public List<Long> getArtistIds() {
+		return artistIds;
+	}
+
+	public void setArtistIds(List<Long> artistIds) {
+		this.artistIds = artistIds;
+	}
+
+	public List<Long> getVenueIds() {
+		return venueIds;
+	}
+
+	public void setVenueIds(List<Long> venueIds) {
+		this.venueIds = venueIds;
+	}
+
 }

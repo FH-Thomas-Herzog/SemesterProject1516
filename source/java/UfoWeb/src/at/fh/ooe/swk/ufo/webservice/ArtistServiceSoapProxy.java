@@ -50,5 +50,11 @@ public class ArtistServiceSoapProxy implements at.fh.ooe.swk.ufo.webservice.Arti
     return artistServiceSoap.getDetails(id);
   }
   
+  public at.fh.ooe.swk.ufo.webservice.ArtistModel[] getSimpleArtists() throws java.rmi.RemoteException{
+    if (artistServiceSoap == null)
+      _initArtistServiceSoapProxy();
+    return artistServiceSoap.getSimpleArtists();
+  }
+  
   
 }

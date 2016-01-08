@@ -1,40 +1,60 @@
 package at.fh.ooe.swk.ufo.web.performances.model;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.Base64;
-import java.util.List;
 import java.util.Locale;
 
-import org.apache.commons.lang3.LocaleUtils;
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+
+import org.apache.logging.log4j.Logger;
 
 import at.fh.ooe.swk.ufo.webservice.ArtistModel;
 
+@Dependent
 public class ArtistViewModel implements Serializable {
 
 	private static final long serialVersionUID = -8103911126863772972L;
 
-	private final String firstName;
-	private final String lastName;
-	private final String email;
-	private final Locale locale;
-	private final URL url;
-	private final String artistGroup;
-	private final String imageBase64;
-	private final String imageType;
+	@Inject
+	private Logger log;
 
-	public ArtistViewModel(ArtistModel model) {
+	private String firstName;
+	private String lastName;
+	private String email;
+	private Locale locale;
+	private URL url;
+	private String artistGroup;
+	private byte[] imageData;
+	private String imageType;
+
+	public ArtistViewModel() {
 		super();
+	}
+
+	public void init(ArtistModel model) {
 		firstName = model.getFirstName();
 		lastName = model.getLastName();
 		email = model.getEmail();
-		url = null;
 		locale = new Locale("", model.getCountryCode());
 		artistGroup = model.getArtistGroup();
-		imageBase64 = model.getImage();
-		imageType = model.getImageType();
+		URL url = null;
+		if ((model.getUrl() != null) && (!model.getUrl().isEmpty())) {
+			try {
+				url = new URL(model.getUrl());
+			} catch (Exception e) {
+				log.error("Artist with id: " + model.getId() + " has invalid url: " + model.getUrl());
+			}
+		}
+		this.url = url;
+		if ((model.getImage() != null) && (!model.getImage().isEmpty())) {
+			imageData = Base64.getDecoder().decode(model.getImage());
+			imageType = model.getImageType();
+		} else {
+			imageData = null;
+			imageType = null;
+		}
 	}
 
 	public String getFirstName() {
@@ -61,8 +81,8 @@ public class ArtistViewModel implements Serializable {
 		return artistGroup;
 	}
 
-	public String getImageBase64() {
-		return imageBase64;
+	public byte[] getImageData() {
+		return imageData;
 	}
 
 	public String getImageType() {

@@ -15,7 +15,7 @@ import javax.enterprise.context.Dependent;
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
-import at.fh.ooe.swk.ufo.web.performances.model.IdLabelModel;
+import at.fh.ooe.swk.ufo.web.application.model.IdLabelModel;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceColumnModel;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceLazySorter;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceRowModel;

@@ -29,12 +29,13 @@
 	</p:dialog>
 
 	<p:layout fullPage="true" stateful="false">
-		<p:layoutUnit position="north" resizable="false" maxSize="200"
-			collapsible="true" collapsed="true" header="menu">
-        Menu here
-    </p:layoutUnit>
+		<p:layoutUnit id="filterLayout" header="#{msg.filters}" resizable="true"
+			position="north" collapsible="true" collapsed="true" maxSize="300">
+			<ui:insert name="filterContent" />
+		</p:layoutUnit>
 
-		<p:layoutUnit position="center" header="content">
+		<p:layoutUnit id="centerLayout" header="#{msg.performances}"
+			position="center">
 			<ui:insert name="centerContent" />
 		</p:layoutUnit>
 	</p:layout>

@@ -8,6 +8,8 @@
 package at.fh.ooe.swk.ufo.webservice;
 
 public class ArtistModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  implements java.io.Serializable {
+    private long id;
+
     private java.lang.String firstName;
 
     private java.lang.String lastName;
@@ -15,6 +17,8 @@ public class ArtistModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  implem
     private java.lang.String email;
 
     private java.lang.String countryCode;
+
+    private java.lang.String url;
 
     private java.lang.String image;
 
@@ -28,23 +32,47 @@ public class ArtistModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  implem
     public ArtistModel(
            int errorCode,
            java.lang.String error,
+           long id,
            java.lang.String firstName,
            java.lang.String lastName,
            java.lang.String email,
            java.lang.String countryCode,
+           java.lang.String url,
            java.lang.String image,
            java.lang.String imageType,
            java.lang.String artistGroup) {
         super(
             errorCode,
             error);
+        this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.countryCode = countryCode;
+        this.url = url;
         this.image = image;
         this.imageType = imageType;
         this.artistGroup = artistGroup;
+    }
+
+
+    /**
+     * Gets the id value for this ArtistModel.
+     * 
+     * @return id
+     */
+    public long getId() {
+        return id;
+    }
+
+
+    /**
+     * Sets the id value for this ArtistModel.
+     * 
+     * @param id
+     */
+    public void setId(long id) {
+        this.id = id;
     }
 
 
@@ -129,6 +157,26 @@ public class ArtistModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  implem
 
 
     /**
+     * Gets the url value for this ArtistModel.
+     * 
+     * @return url
+     */
+    public java.lang.String getUrl() {
+        return url;
+    }
+
+
+    /**
+     * Sets the url value for this ArtistModel.
+     * 
+     * @param url
+     */
+    public void setUrl(java.lang.String url) {
+        this.url = url;
+    }
+
+
+    /**
      * Gets the image value for this ArtistModel.
      * 
      * @return image
@@ -199,6 +247,7 @@ public class ArtistModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  implem
         __equalsCalc = obj;
         boolean _equals;
         _equals = super.equals(obj) && 
+            this.id == other.getId() &&
             ((this.firstName==null && other.getFirstName()==null) || 
              (this.firstName!=null &&
               this.firstName.equals(other.getFirstName()))) &&
@@ -211,6 +260,9 @@ public class ArtistModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  implem
             ((this.countryCode==null && other.getCountryCode()==null) || 
              (this.countryCode!=null &&
               this.countryCode.equals(other.getCountryCode()))) &&
+            ((this.url==null && other.getUrl()==null) || 
+             (this.url!=null &&
+              this.url.equals(other.getUrl()))) &&
             ((this.image==null && other.getImage()==null) || 
              (this.image!=null &&
               this.image.equals(other.getImage()))) &&
@@ -231,6 +283,7 @@ public class ArtistModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  implem
         }
         __hashCodeCalc = true;
         int _hashCode = super.hashCode();
+        _hashCode += new Long(getId()).hashCode();
         if (getFirstName() != null) {
             _hashCode += getFirstName().hashCode();
         }
@@ -242,6 +295,9 @@ public class ArtistModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  implem
         }
         if (getCountryCode() != null) {
             _hashCode += getCountryCode().hashCode();
+        }
+        if (getUrl() != null) {
+            _hashCode += getUrl().hashCode();
         }
         if (getImage() != null) {
             _hashCode += getImage().hashCode();
@@ -263,6 +319,12 @@ public class ArtistModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  implem
     static {
         typeDesc.setXmlType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ArtistModel"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("id");
+        elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "Id"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "long"));
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("firstName");
         elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "FirstName"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
@@ -286,6 +348,13 @@ public class ArtistModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  implem
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("countryCode");
         elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "CountryCode"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("url");
+        elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "Url"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
         elemField.setMinOccurs(0);
         elemField.setNillable(false);

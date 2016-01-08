@@ -8,5 +8,6 @@
 package at.fh.ooe.swk.ufo.webservice;
 
 public interface ArtistServiceSoap extends java.rmi.Remote {
+    public at.fh.ooe.swk.ufo.webservice.ArtistModel[] getSimpleArtists() throws java.rmi.RemoteException;
     public at.fh.ooe.swk.ufo.webservice.ArtistModel getDetails(long id) throws java.rmi.RemoteException;
 }

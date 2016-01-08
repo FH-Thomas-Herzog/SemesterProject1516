@@ -3,10 +3,48 @@
 	xmlns:ui="http://java.sun.com/jsf/facelets"
 	xmlns:f="http://java.sun.com/jsf/core"
 	xmlns:h="http://java.sun.com/jsf/html"
-	template="/WEB-INF/templates/baseTemplate.xhtml"
 	xmlns:p="http://primefaces.org/ui"
-	xmlns:pe="http://primefaces.org/ui/extensions">
+	xmlns:pe="http://primefaces.org/ui/extensions"
+	template="/WEB-INF/templates/baseTemplate.xhtml">
 
+	<!-- Filters -->
+	<ui:define name="filterContent">
+		<h:form id="filterForm" prependId="true">
+			<h:panelGroup id="filterContainer"
+				styleclass="ui-grid ui-grid-responsive">
+				<h:panelGroup id="filterContainerRow" styleClass="ui-grid-row">
+					<h:panelGroup id="filterArtistCol" styleClass="ui-grid-col-2">
+						<h:panelGroup id="filterArtistContainer"
+							styleclass="ui-grid ui-grid-responsive">
+							<h:panelGroup id="filterArtistContainerRow"
+								styleClass="ui-grid-row">
+								<h:panelGroup id="filterArtistLabelCol"
+									styleClass="ui-grid-col-6">
+									<h:outputLabel id="artistFilterLabel" value="#{msg.artists}"
+										for="artistFilter" />
+								</h:panelGroup>
+								<h:panelGroup id="filterArtistControlCol"
+									styleClass="ui-grid-col-6">
+									<p:selectCheckboxMenu label="#{msg.pleaseChoose}"
+										id="artistFilter" value="#{performanceFilterBean.artistIds}"
+										filter="true" filterMatchMode="contains"
+										converter="#{artistFilterItemsConverter}" scrollHeight="200"
+										panelStyle="width:300px" caseSensitive="false"
+										disabled="false">
+
+										<f:selectItems value="#{artistFilterItems}" var="item" />
+
+									</p:selectCheckboxMenu>
+								</h:panelGroup>
+							</h:panelGroup>
+						</h:panelGroup>
+					</h:panelGroup>
+				</h:panelGroup>
+			</h:panelGroup>
+		</h:form>
+	</ui:define>
+
+	<!-- Performances -->
 	<ui:define name="centerContent">
 		<ui:repeat id="performanceDays"
 			rendered="#{not empty performancePage.tables}"
@@ -70,6 +108,7 @@
 		</h:panelGroup>
 	</ui:define>
 
+	<!-- Dialogs -->
 	<ui:define name="dialogContent">
 		<h:form id="artistDialogForm"
 			rendered="#{performancePage.artistDialogRendered}">

@@ -1,4 +1,4 @@
-package at.fh.ooe.swk.ufo.web.performances.model;
+package at.fh.ooe.swk.ufo.web.application.model;
 
 public class IdLabelModel {
 

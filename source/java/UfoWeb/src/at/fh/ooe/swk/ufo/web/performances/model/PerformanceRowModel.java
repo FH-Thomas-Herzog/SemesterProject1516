@@ -3,6 +3,9 @@ package at.fh.ooe.swk.ufo.web.performances.model;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import at.fh.ooe.swk.ufo.web.application.model.IdLabelModel;
+
 import java.util.Objects;
 
 /**
