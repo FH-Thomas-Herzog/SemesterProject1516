@@ -14,14 +14,15 @@ import org.apache.axis.message.SOAPHeaderElement;
 import org.apache.deltaspike.core.api.common.DeltaSpike;
 import org.apache.logging.log4j.Logger;
 
-import com.sun.jndi.toolkit.url.Uri;
-
 import at.fh.ooe.swk.ufo.webservice.ArtistServiceLocator;
 import at.fh.ooe.swk.ufo.webservice.ArtistServiceSoap;
 import at.fh.ooe.swk.ufo.webservice.ArtistServiceSoapStub;
 import at.fh.ooe.swk.ufo.webservice.PerformanceServiceLocator;
 import at.fh.ooe.swk.ufo.webservice.PerformanceServiceSoap;
 import at.fh.ooe.swk.ufo.webservice.PerformanceServiceSoapStub;
+import at.fh.ooe.swk.ufo.webservice.VenueServiceLocator;
+import at.fh.ooe.swk.ufo.webservice.VenueServiceSoap;
+import at.fh.ooe.swk.ufo.webservice.VenueServiceSoapStub;
 
 @ApplicationScoped
 public class WebServiceClientProducer implements Serializable {
@@ -54,7 +55,7 @@ public class WebServiceClientProducer implements Serializable {
 			service.setHeader(createSoapHeader());
 			return service;
 		} catch (Exception e) {
-			log.error("Could not produce the ArtistServiceSoap instance", e);
+			log.error("Could not produce the '" + ArtistServiceSoap.class.getName() + "'  instance", e);
 			return null;
 		}
 	}
@@ -68,7 +69,20 @@ public class WebServiceClientProducer implements Serializable {
 			service.setHeader(createSoapHeader());
 			return service;
 		} catch (Exception e) {
-			log.error("Could not produce the PerformanceServiceSoap instance", e);
+			log.error("Could not produce the '" + PerformanceServiceSoap.class.getName() + "' instance", e);
+			return null;
+		}
+	}
+
+	@Produces
+	@Dependent
+	public VenueServiceSoap produceVenueService() {
+		try {
+			VenueServiceSoapStub service = (VenueServiceSoapStub) new VenueServiceLocator().getVenueServiceSoap();
+			service.setHeader(createSoapHeader());
+			return service;
+		} catch (Exception e) {
+			log.error("Could not produce the '" + VenueServiceSoap.class.getName() + "' instance", e);
 			return null;
 		}
 	}

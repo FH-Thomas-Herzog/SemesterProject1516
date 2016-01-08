@@ -10,7 +10,6 @@ import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
@@ -24,6 +23,7 @@ import at.fh.ooe.swk.ufo.web.application.converter.SelectItemIdMapperModelConver
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 import at.fh.ooe.swk.ufo.web.application.model.IdMapperModel;
 import at.fh.ooe.swk.ufo.webservice.ArtistServiceSoap;
+import at.fh.ooe.swk.ufo.webservice.VenueServiceSoap;
 
 @ApplicationScoped
 public class PerformanceFilterSupport implements Serializable {
@@ -32,6 +32,8 @@ public class PerformanceFilterSupport implements Serializable {
 
 	@Inject
 	private transient ArtistServiceSoap artistWebservice;
+	@Inject
+	private transient VenueServiceSoap venueWebservice;
 	@Inject
 	private Logger log;
 	@Inject
@@ -49,8 +51,8 @@ public class PerformanceFilterSupport implements Serializable {
 				final String label = new StringBuilder(artist.getLastName()).append(", ").append(artist.getFirstName())
 						.toString();
 				final String description = new StringBuilder(artist.getEmail()).append("( ")
-						.append(new Locale("", artist.getCountryCode()).getDisplayCountry(locale))
-						.append(")").toString();
+						.append(new Locale("", artist.getCountryCode()).getDisplayCountry(locale)).append(")")
+						.toString();
 				return new SelectItem(new IdMapperModel<Long>(artist.getId(), UUID.randomUUID().toString()), label,
 						description);
 			}).collect(Collectors.toList());
@@ -65,6 +67,30 @@ public class PerformanceFilterSupport implements Serializable {
 	@RequestScoped
 	@Named("artistFilterItemsConverter")
 	public Converter createArtistFilterOptionsConverter(@Named("artistFilterItems") List<SelectItem> items) {
+		return new SelectItemIdMapperModelConverter(items, bundle);
+	}
+
+	@Produces
+	@RequestScoped
+	@Named("venueFilterItems")
+	public List<SelectItem> createVenueFilterOptions(LanguageBean languageBean) {
+		List<SelectItem> items = new ArrayList<>();
+		try {
+			items = Arrays.asList(venueWebservice.getVenues()).parallelStream().map(venue -> {
+				return new SelectItem(new IdMapperModel<Long>(venue.getId(), UUID.randomUUID().toString()),
+						venue.getName(), venue.getFullAddress());
+			}).collect(Collectors.toList());
+		} catch (Exception e) {
+			log.error("Could not load artists", e);
+		}
+
+		return items;
+	}
+
+	@Produces
+	@RequestScoped
+	@Named("venueFilterItemsConverter")
+	public Converter createVenueFilterOptionsConverter(@Named("venueFilterItems") List<SelectItem> items) {
 		return new SelectItemIdMapperModelConverter(items, bundle);
 	}
 }

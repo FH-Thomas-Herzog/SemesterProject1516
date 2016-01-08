@@ -7,4 +7,9 @@
 		<!-- Deltaspike needs this here otherwise resource bundle is not discoverable -->
 		<message-bundle>at.fh.ooe.swk.ufo.web.application.message.MessageBundle</message-bundle>
 	</application>
+	<factory>
+		<exception-handler-factory>
+			at.fh.ooe.swk.ufo.web.application.exception.GlobalExceptionHandlerFactory
+		</exception-handler-factory>
+	</factory>
 </faces-config>

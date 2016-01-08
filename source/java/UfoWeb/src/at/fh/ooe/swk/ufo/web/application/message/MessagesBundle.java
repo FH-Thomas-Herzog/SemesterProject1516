@@ -43,20 +43,38 @@ public interface MessagesBundle extends Serializable {
 	@MessageTemplate("{VENUE}")
 	String getVenue();
 
+	@MessageTemplate("{VENUES}")
+	String getVenues();
+
 	@MessageTemplate("{COUNTRY}")
 	String getCountry();
 
 	@MessageTemplate("{TRIGGER_SEARCH_ON_ENTER}")
 	String getTriggerSearchOnEnter();
 
-	@MessageTemplate("{FILTERS}")
-	String getFilters();
+	@MessageTemplate("{FILTER}")
+	String getFilter();
+
+	@MessageTemplate("{RESET}")
+	String getReset();
+
+	@MessageTemplate("{OPTIONS}")
+	String getOptions();
 
 	@MessageTemplate("{PERFORMANCES}")
 	String getPerformances();
 
 	@MessageTemplate("{PLEASE_CHOOSE}")
 	String getPleaseChoose();
+
+	@MessageTemplate("{FROM}")
+	String getFrom();
+
+	@MessageTemplate("{TO}")
+	String getTo();
+
+	@MessageTemplate("{DATE}")
+	String getDate();
 
 	@MessageTemplate("UNEXPECTED_ERROR")
 	String getUnexpectedError();

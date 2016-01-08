@@ -10,37 +10,94 @@
 	<!-- Filters -->
 	<ui:define name="filterContent">
 		<h:form id="filterForm" prependId="true">
-			<h:panelGroup id="filterContainer"
-				styleclass="ui-grid ui-grid-responsive">
-				<h:panelGroup id="filterContainerRow" styleClass="ui-grid-row">
-					<h:panelGroup id="filterArtistCol" styleClass="ui-grid-col-2">
-						<h:panelGroup id="filterArtistContainer"
-							styleclass="ui-grid ui-grid-responsive">
-							<h:panelGroup id="filterArtistContainerRow"
+			<div class="ui-grid ui-grid-responsive" style="max-width: 800px;">
+				<!-- Artist Filter -->
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-2" style="padding: 5px;">
+						<h:outputLabel id="artistFilterLabel" value="#{msg.artists}"
+							for="artistFilter" />
+					</div>
+					<div class="ui-grid-col-10" style="padding: 5px;">
+						<p:selectCheckboxMenu label="#{msg.pleaseChoose}"
+							id="artistFilter" value="#{performanceFilterBean.artistIds}"
+							filter="true" filterMatchMode="contains"
+							converter="#{artistFilterItemsConverter}" scrollHeight="300"
+							panelStyle="width:400px" caseSensitive="false"
+							style="width:200px;">
+
+							<f:selectItems value="#{artistFilterItems}" var="item" />
+
+						</p:selectCheckboxMenu>
+					</div>
+				</div>
+				<!-- Venue Filter -->
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-2" style="padding: 5px;">
+						<h:outputLabel id="venueFilterLabel" value="#{msg.venues}"
+							for="venueFilter" />
+					</div>
+					<div class="ui-grid-col-10" style="padding: 5px;">
+						<p:selectCheckboxMenu id="venueFilter" label="#{msg.pleaseChoose}"
+							value="#{performanceFilterBean.venueIds}" filter="true"
+							filterMatchMode="contains"
+							converter="#{venueFilterItemsConverter}" scrollHeight="300"
+							panelStyle="width:400px" caseSensitive="false"
+							style="width:200px;">
+
+							<f:selectItems value="#{venueFilterItems}" var="item" />
+
+						</p:selectCheckboxMenu>
+					</div>
+				</div>
+				<!-- Date Filter -->
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-2" style="padding: 5px;">
+						<h:outputLabel id="fromToCalendarFilterLabel" value="#{msg.date}"
+							for="fromToCalendarFilter" />
+					</div>
+					<h:panelGroup id="fromToCalendarFilter" styleClass="ui-grid-col-10"
+						style="padding:5px;">
+						<div class="ui-grid ui-grid-responsive">
+							<h:panelGroup id="filterFromToContainerRow"
 								styleClass="ui-grid-row">
-								<h:panelGroup id="filterArtistLabelCol"
+								<h:panelGroup id="filterFromToLabelCol"
 									styleClass="ui-grid-col-6">
-									<h:outputLabel id="artistFilterLabel" value="#{msg.artists}"
-										for="artistFilter" />
+									<h:outputLabel id="fromCalendarFilterLabel" value="#{msg.from}"
+										for="fromCalendarFilter" style="margin-right: 10px;" />
+									<p:calendar id="fromCalendarFilter"
+										value="#{performanceFilterBean.fromDate}"
+										locale="#{languageBean.locale}"
+										mindate="#{performanceFilterBean.minDate}"
+										maxdate="#{performanceFilterBean.maxDate}"
+										pattern="mm.dd.yyyy" />
 								</h:panelGroup>
-								<h:panelGroup id="filterArtistControlCol"
+
+								<h:panelGroup id="filterToCalendarLabelCol"
 									styleClass="ui-grid-col-6">
-									<p:selectCheckboxMenu label="#{msg.pleaseChoose}"
-										id="artistFilter" value="#{performanceFilterBean.artistIds}"
-										filter="true" filterMatchMode="contains"
-										converter="#{artistFilterItemsConverter}" scrollHeight="200"
-										panelStyle="width:300px" caseSensitive="false"
-										disabled="false">
-
-										<f:selectItems value="#{artistFilterItems}" var="item" />
-
-									</p:selectCheckboxMenu>
+									<h:outputLabel id="toCalendarFilterLabel" value="#{msg.to}"
+										for="toCalendarFilter" style="margin-right: 10px;" />
+									<p:calendar id="toCalendarFilter"
+										value="#{performanceFilterBean.toDate}"
+										locale="#{languageBean.locale}"
+										mindate="#{performanceFilterBean.minDate}"
+										maxdate="#{performanceFilterBean.maxDate}"
+										pattern="mm.dd.yyyy" />
 								</h:panelGroup>
 							</h:panelGroup>
-						</h:panelGroup>
+						</div>
 					</h:panelGroup>
-				</h:panelGroup>
-			</h:panelGroup>
+				</div>
+			</div>
+			<!-- Filter Actions -->
+			<div class="ui-grid-row">
+				<div class="ui-grid-col-12" style="padding: 5px;">
+					<p:commandButton id="filterButton" value="#{msg.filter}"
+						action="#{performanceFilterBean.filter()}" />
+					<p:commandButton id="resetButton" value="#{msg.reset}"
+						action="#{performanceFilterBean.reset()}"
+						style="margin-left:10px;" />
+				</div>
+			</div>
 		</h:form>
 	</ui:define>
 
@@ -70,16 +127,11 @@
 					</p:column>
 
 					<p:columns value="#{item.columns}" var="column"
-						columnIndexVar="idxVar" style="text-align:center"
-						filterable="true" filterBy="#{idxVar}" sortable="true"
-						sortBy="#{idxVar}">
-						<f:facet name="header">
-							<h:outputText value="#{column.header}" />
-						</f:facet>
+						columnIndexVar="idxVar" filterable="true" filterBy="#{idxVar}"
+						sortable="true" sortBy="#{idxVar}" headerText="#{column.header}">
 						<ui:param name="model"
 							value="#{row.getModelForColumn(column.startHour)}" />
-						<h:panelGroup id="performanceDetailsGrid"
-							rendered="#{not empty model}" style="margin: 5px;">
+						<h:panelGroup rendered="#{not empty model}">
 							<p:commandLink id="infoLink" title="CLICK FOR OPEN DETAILS"
 								actionListener="#{performancePage.prepareInfoDialog(model)}"
 								style="float: left; margin-left: 10px;" global="true"

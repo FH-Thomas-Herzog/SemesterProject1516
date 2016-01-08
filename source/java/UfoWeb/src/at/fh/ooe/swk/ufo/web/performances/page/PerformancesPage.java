@@ -81,7 +81,7 @@ public class PerformancesPage implements Serializable {
 	// ##################################################
 	// Helper
 	// ##################################################
-	private void loadPerformances() {
+	public void loadPerformances() {
 		tables = new ArrayList<>();
 		if (performanceWebservice != null) {
 			List<PerformanceViewModel> performances = null;
