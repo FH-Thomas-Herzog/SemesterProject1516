@@ -38,20 +38,25 @@ namespace UFO.Server.Webservice.Soap.Soap
             {
                 try
                 {
-                    IList< Performance> performances = performanceDao.GetFilteredPerformancesFull(filter.StartDate, filter.EndDate, filter.ArtistIds, filter.VenueIds);
-                    foreach (var item in performances)
+                    IList<Performance> performances = performanceDao.GetFilteredPerformancesForExport(null, filter.StartDate, filter.EndDate, filter.ArtistIds, filter.VenueIds, false);
+                    models = performances.Select(item => new PerformanceModel
                     {
-                        models.Add(new PerformanceModel {
-                            Id = item.Id.Value,
-                            StartDate = item.StartDate.Value,
-                            EndDate = item.EndDate.Value,
-                            Moved = (item.FormerStartDate != null),
-                            ArtistName = (new StringBuilder(item.Artist.Lastname).Append(", ").Append(item.Artist.Firstname).ToString()),
-                            VenueName = item.Venue.Name,
-                            ArtistId = item.Artist.Id,
-                            VenueId = item.Venue.Id.Value
-                        });
-                    }
+                        Id = item.Id.Value,
+                        StartDate = item.StartDate.Value,
+                        EndDate = item.EndDate.Value,
+                        FormerStartDate = item.FormerStartDate,
+                        Artist = new ArtistModel
+                        {
+                            Id = item.Artist.Id.Value,
+                            FirstName = item.Artist.Firstname,
+                            LastName = item.Artist.Lastname,
+                        },
+                        Venue = new VenueModel
+                        {
+                            Id = item.Venue.Id.Value,
+                            Name = item.Venue.Name
+                        }
+                    }).ToList();
                 }
                 catch (Exception e)
                 {
@@ -67,46 +72,6 @@ namespace UFO.Server.Webservice.Soap.Soap
                 models.Add(model);
             }
             return models;
-        }
-
-        [WebMethod]
-        [ScriptMethod(UseHttpGet = false)]
-        [SoapHeader("credentials")]
-        public PerformanceModel GetDetails(long id)
-        {
-            PerformanceModel model = null;
-            if ((model = handleAuthentication()) == null)
-            {
-                try
-                {
-                    Performance performance = performanceDao.Find(id);
-                    if (performance != null)
-                    {
-                        return new PerformanceModel
-                        {
-                        };
-                    }
-                    else {
-                        return new PerformanceModel
-                        {
-                            ErrorCode = (int)ErrorCode.ENTRY_NOT_FOUND,
-                            Error = "Artist could not be found for id"
-                        };
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine("GetDetails: Error during processing. error: " + e.Message);
-                    return new PerformanceModel
-                    {
-                        ErrorCode = (int)ErrorCode.UNKNOWN_ERROR,
-                        Error = ("Error during processing the request. error: " + e.Message)
-                    };
-                }
-            }
-            else {
-                return model;
-            }
         }
     }
 }

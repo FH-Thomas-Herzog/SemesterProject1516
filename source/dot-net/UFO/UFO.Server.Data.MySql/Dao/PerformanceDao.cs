@@ -161,7 +161,7 @@ namespace UFO.Server.Data.MySql.Dao
                         Performance performance = EntityBuilder.CreateFromReader<long?, Performance>(reader);
                         performance.Artist = EntityBuilder.CreateFromReader<long?, Artist>(reader, "artist__");
                         performance.Venue = EntityBuilder.CreateFromReader<long?, Venue>(reader, "venue__");
-                        if(!map.ContainsKey(performance.Artist))
+                        if (!map.ContainsKey(performance.Artist))
                         {
                             map[performance.Artist] = new List<Performance>();
                         }
@@ -178,25 +178,34 @@ namespace UFO.Server.Data.MySql.Dao
         }
 
 
-        public IList<Performance> GetFilteredPerformancesFull(DateTime startDate, DateTime endDate, IList<long?> artistIds, IList<long?> venueIds)
+        public IList<Performance> GetFilteredPerformancesForExport(long? venueId, DateTime startDate, DateTime endDate, IList<long?> artistIds, IList<long?> venueIds, bool full)
         {
             try
             {
                 IList<Performance> performances = new List<Performance>();
-                commandBuilder = commandBuilder.WithQuery(" SELECT performance.*, artist.id as artist__id, artist.firstname as artist__firstname, artist.lastname as artist__lastname, artistGroup.id artistGroup__id, artistGroup.name artistGroup__name, artistCategory.id as artistCategory__id, artistCategory.name as artistCategory__name, venue.id as venue__id, venue.name as venue__name "
-                                                                   + " FROM ufo.performance performance "
-                                                                   + " INNER JOIN ufo.artist as artist on performance.artist_id = artist.id "
-                                                                   + " INNER JOIN ufo.artist_category as artistCategory on artist.artist_category_id = artistCategory.id "
-                                                                   + " LEFT OUTER JOIN ufo.artist_group as artistGroup on artist.artist_group_id = artistGroup.id "
-                                                                   + " INNER JOIN ufo.venue as venue on performance.venue_id = venue.id "
-                                                                   + " WHERE performance.start_date >= ?startDate "
-                                                                   + " AND performance.end_date <= ?endDate "
-                                                                   + (((venueIds != null) && (venueIds.Count > 0)) ? (" AND venue.id IN (?venueIds) ") : "")
-                                                                   + (((artistIds != null) && (artistIds.Count > 0)) ? (" AND artist.id IN (?artistIds) ") : "")
-                                                                   + " ORDER BY performance.start_date")
+                commandBuilder = commandBuilder.WithQuery(" SELECT performance.*, artist.id as artist__id, artist.firstname as artist__firstname, artist.lastname as artist__lastname, "
+                                                        + " artistGroup.id artistGroup__id, artistGroup.name artistGroup__name, "
+                                                        + " artistCategory.id as artistCategory__id, artistCategory.name as artistCategory__name, "
+                                                        + " venue.id as venue__id, venue.name as venue__name "
+                                                        + (full ? ", venue.description as venue__description, venue.street as venue__street, venue.zip as venue__zip, venue.city as venue__city, venue.gps_coordinate as venue__gps_coordinate " : "")
+                                                        + " FROM ufo.performance performance "
+                                                        + " INNER JOIN ufo.artist as artist on performance.artist_id = artist.id "
+                                                        + " INNER JOIN ufo.artist_category as artistCategory on artist.artist_category_id = artistCategory.id "
+                                                        + " LEFT OUTER JOIN ufo.artist_group as artistGroup on artist.artist_group_id = artistGroup.id "
+                                                        + " INNER JOIN ufo.venue as venue on performance.venue_id = venue.id "
+                                                        + " WHERE performance.start_date >= ?startDate "
+                                                        + " AND performance.end_date <= ?endDate "
+                                                        + ((venueId != null) ? " AND venue.id = ?venueId " : "")
+                                                        + (((venueIds != null) && (venueIds.Count > 0)) ? (" AND venue.id IN (?venueIds) ") : "")
+                                                        + (((artistIds != null) && (artistIds.Count > 0)) ? (" AND artist.id IN (?artistIds) ") : "")
+                                                        + " ORDER BY performance.start_date")
                                                           .SetParameter("?startDate", startDate)
                                                           .SetParameter("?endDate", endDate);
-                if((artistIds != null) && (artistIds.Count > 0))
+                if (venueId != null)
+                {
+                    commandBuilder.SetParameter("?venueId", venueId);
+                }
+                if ((artistIds != null) && (artistIds.Count > 0))
                 {
                     commandBuilder.SetParameter("?artistIds", artistIds);
                 }

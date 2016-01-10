@@ -8,7 +8,7 @@ using UFO.Server.Webservice.Soap.Model.Base;
 namespace UFO.Server.Webservice.Soap.Model
 {
     [Serializable]
-    public class PerformanceModel: BaseModel
+    public class PerformanceModel : BaseModel
     {
         public long Id { get; set; }
 
@@ -18,18 +18,11 @@ namespace UFO.Server.Webservice.Soap.Model
         [XmlElement(DataType = "dateTime", IsNullable = false)]
         public DateTime EndDate { get; set; }
 
-        public bool Moved { get; set; }
+        [XmlElement(DataType = "dateTime", IsNullable = true)]
+        public DateTime? FormerStartDate { get; set; }
 
-        public string VenueName { get; set; }
+        public ArtistModel Artist { get; set; }
 
-        public string ArtistName { get; set; }
-
-        public string ArtistGroupName { get; set; }
-
-        public long? ArtistId { get; set; }
-
-        public long? ArtistGroupId { get; set; }
-
-        public long VenueId { get; set; }
+        public VenueModel Venue { get; set; }
     }
 }

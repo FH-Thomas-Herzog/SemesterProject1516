@@ -13,5 +13,6 @@ namespace UFO.Server.Webservice.Soap.Model
         public string Name { get; set; }
         public string FullAddress { get; set; }
         public string GpsCoordinates { get; set; }
+        public List<PerformanceModel> Performances { get; set; }
     }
 }
