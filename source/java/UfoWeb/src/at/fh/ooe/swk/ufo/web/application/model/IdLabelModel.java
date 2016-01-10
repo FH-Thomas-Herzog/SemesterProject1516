@@ -1,17 +1,17 @@
 package at.fh.ooe.swk.ufo.web.application.model;
 
-public class IdLabelModel {
+public class IdLabelModel<T> {
 
-	public final Object id;
+	public final T id;
 	public final String label;
 
-	public IdLabelModel(Object id, String label) {
+	public IdLabelModel(T id, String label) {
 		super();
 		this.id = id;
 		this.label = label;
 	}
 
-	public Object getId() {
+	public T getId() {
 		return id;
 	}
 
@@ -35,7 +35,7 @@ public class IdLabelModel {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		IdLabelModel other = (IdLabelModel) obj;
+		IdLabelModel<T> other = (IdLabelModel<T>) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;

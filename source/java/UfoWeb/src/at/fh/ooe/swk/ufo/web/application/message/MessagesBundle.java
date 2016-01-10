@@ -76,6 +76,9 @@ public interface MessagesBundle extends Serializable {
 	@MessageTemplate("{DATE}")
 	String getDate();
 
+	@MessageTemplate("{DAY}")
+	String getDay();
+	
 	@MessageTemplate("UNEXPECTED_ERROR")
 	String getUnexpectedError();
 

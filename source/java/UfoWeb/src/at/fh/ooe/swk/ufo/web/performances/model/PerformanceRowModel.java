@@ -49,7 +49,7 @@ public class PerformanceRowModel {
 			final List<PerformanceViewModel> models = map.get(startHour);
 			if ((models != null) && (!models.isEmpty())) {
 				for (PerformanceViewModel model : models) {
-					if (model.getName().toUpperCase().contains(filter)) {
+					if (model.getName().toUpperCase().contains(filter.toUpperCase())) {
 						return Boolean.TRUE;
 					}
 				}

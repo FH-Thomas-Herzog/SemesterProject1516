@@ -21,11 +21,12 @@
 						<p:selectCheckboxMenu label="#{msg.pleaseChoose}"
 							id="artistFilter" value="#{performanceFilterBean.artistIds}"
 							filter="true" filterMatchMode="contains"
-							converter="#{artistFilterItemsConverter}" scrollHeight="300"
-							panelStyle="width:400px" caseSensitive="false"
-							style="width:200px;">
+							converter="#{performanceFilterSupport.artistItemConverter}"
+							scrollHeight="300" panelStyle="width:400px" caseSensitive="false"
+							required="false" style="width:200px;">
 
-							<f:selectItems value="#{artistFilterItems}" var="item" />
+							<f:selectItems value="#{performanceFilterSupport.artistItems}"
+								var="item" />
 
 						</p:selectCheckboxMenu>
 					</div>
@@ -40,11 +41,12 @@
 						<p:selectCheckboxMenu id="venueFilter" label="#{msg.pleaseChoose}"
 							value="#{performanceFilterBean.venueIds}" filter="true"
 							filterMatchMode="contains"
-							converter="#{venueFilterItemsConverter}" scrollHeight="300"
-							panelStyle="width:400px" caseSensitive="false"
+							converter="#{performanceFilterSupport.venueItemConverter}"
+							scrollHeight="300" panelStyle="width:400px" caseSensitive="false"
 							style="width:200px;">
 
-							<f:selectItems value="#{venueFilterItems}" var="item" />
+							<f:selectItems value="#{performanceFilterSupport.venueItems}"
+								var="item" />
 
 						</p:selectCheckboxMenu>
 					</div>
@@ -53,49 +55,27 @@
 				<div class="ui-grid-row">
 					<div class="ui-grid-col-2" style="padding: 5px;">
 						<h:outputLabel id="fromToCalendarFilterLabel" value="#{msg.date}"
-							for="fromToCalendarFilter" />
+							for="calendarFilter" />
 					</div>
-					<h:panelGroup id="fromToCalendarFilter" styleClass="ui-grid-col-10"
-						style="padding:5px;">
-						<div class="ui-grid ui-grid-responsive">
-							<h:panelGroup id="filterFromToContainerRow"
-								styleClass="ui-grid-row">
-								<h:panelGroup id="filterFromToLabelCol"
-									styleClass="ui-grid-col-6">
-									<h:outputLabel id="fromCalendarFilterLabel" value="#{msg.from}"
-										for="fromCalendarFilter" style="margin-right: 10px;" />
-									<p:calendar id="fromCalendarFilter"
-										value="#{performanceFilterBean.fromDate}"
-										locale="#{languageBean.locale}"
-										mindate="#{performanceFilterBean.minDate}"
-										maxdate="#{performanceFilterBean.maxDate}"
-										pattern="mm.dd.yyyy" />
-								</h:panelGroup>
-
-								<h:panelGroup id="filterToCalendarLabelCol"
-									styleClass="ui-grid-col-6">
-									<h:outputLabel id="toCalendarFilterLabel" value="#{msg.to}"
-										for="toCalendarFilter" style="margin-right: 10px;" />
-									<p:calendar id="toCalendarFilter"
-										value="#{performanceFilterBean.toDate}"
-										locale="#{languageBean.locale}"
-										mindate="#{performanceFilterBean.minDate}"
-										maxdate="#{performanceFilterBean.maxDate}"
-										pattern="mm.dd.yyyy" />
-								</h:panelGroup>
-							</h:panelGroup>
-						</div>
-					</h:panelGroup>
+					<div class="ui-grid-col-10" style="padding: 5px;">
+						<p:calendar id="calendarFilter"
+							value="#{performanceFilterBean.fromDate}"
+							locale="#{languageBean.locale}"
+							mindate="#{performanceFilterBean.minDate}"
+							maxdate="#{performanceFilterBean.maxDate}" pattern="dd.MM.yyyy" />
+					</div>
 				</div>
 			</div>
 			<!-- Filter Actions -->
 			<div class="ui-grid-row">
 				<div class="ui-grid-col-12" style="padding: 5px;">
 					<p:commandButton id="filterButton" value="#{msg.filter}"
-						action="#{performanceFilterBean.filter()}" />
+						action="#{performanceFilterBean.filter()}" process="@form"
+						global="true" update=":performancesForm, :messageGroup" />
 					<p:commandButton id="resetButton" value="#{msg.reset}"
-						action="#{performanceFilterBean.reset()}"
-						style="margin-left:10px;" />
+						action="#{performanceFilterBean.clear()}"
+						style="margin-left:10px;" process="@this" global="true"
+						update="@form, :performancesForm, :messageGroup" />
 				</div>
 			</div>
 		</h:form>
@@ -103,27 +83,43 @@
 
 	<!-- Performances -->
 	<ui:define name="centerContent">
-		<ui:repeat id="performanceDays"
-			rendered="#{not empty performancePage.tables}"
-			value="#{performancePage.tables}" var="item">
-			<h:form id="dataTableForm" prependId="true">
+		<h:form id="performancesForm" prependId="true">
+			<ui:repeat id="performanceDays"
+				rendered="#{not empty performancePage.tables}"
+				value="#{performancePage.tables}" var="item">
+
+
 				<p:dataTable id="performanceTable" value="#{item}" var="row"
-					paginator="true" rows="10" rowStatePreserved="true" reflow="true"
+					scrollWidth="100%" paginator="true" rows="10"
+					rowStatePreserved="true" reflow="true"
 					rowsPerPageTemplate="10, 20, 30, 40, 50, 100" lazy="true"
 					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
 					caseSensitiveSort="false" disabledSelection="true"
 					disabledTextSelection="true" filterEvent="enter"
 					style="text-align: center; vertical-align: middle;">
 
-					<p:ajax event="filter" process="@this" partialSubmit="true" />
 					<f:facet name="header">
 						<h:outputText value="#{item.header}" />
 					</f:facet>
+					<p:ajax event="filter" process="@this" partialSubmit="true" />
 
-					<p:column headerText="#{msg.venue}" sortable="true"
-						sortBy="#{row.venue.label}" filterable="true"
-						filterBy="#{row.venue.label}">
-						<h:outputText value="#{row.venue.label}" />
+					<p:column sortable="true" sortBy="#{row.venue.label}"
+						filterable="true" filterBy="#{row.venue.label}">
+						<f:facet name="header">
+							<h:outputText value="#{msg.venue}" style="margin-right: 10px;" />
+							<p:commandLink action="#{venueInfoDialog.init(null)}"
+								global="true" process="@this"
+								update=":dialogGroup, :messageGroup"
+								oncomplete="PF('venueInfoDialog').show();">
+								<p:graphicImage library="images" name="info_25_25.png" />
+							</p:commandLink>
+						</f:facet>
+						<p:commandLink id="venueInfoLink" title="CLICK FOR OPEN DETAILS"
+							actionListener="#{venueInfoDialog.init(row.venue.id)}"
+							global="true" update=":dialogGroup, :messageGroup"
+							oncomplete="PF('venueInfoDialog').show();">
+							<h:outputText value="#{row.venue.label}" />
+						</p:commandLink>
 					</p:column>
 
 					<p:columns value="#{item.columns}" var="column"
@@ -133,9 +129,8 @@
 							value="#{row.getModelForColumn(column.startHour)}" />
 						<h:panelGroup rendered="#{not empty model}">
 							<p:commandLink id="infoLink" title="CLICK FOR OPEN DETAILS"
-								actionListener="#{performancePage.prepareInfoDialog(model)}"
-								style="float: left; margin-left: 10px;" global="true"
-								update=":dialogGroup"
+								actionListener="#{artistInfoDialog.init(model.id)}"
+								global="true" update=":dialogGroup, :messageGroup"
 								oncomplete="PF('artistInfoDialog').show();">
 								<h:outputText value="#{model.name}" style="float: left;" />
 							</p:commandLink>
@@ -146,14 +141,12 @@
 						</h:panelGroup>
 						<br />
 					</p:columns>
-
-
 				</p:dataTable>
-			</h:form>
-			<pe:tooltip value="#{msg.triggerSearchOnEnter}" shared="true"
-				atPosition="top center" myPosition="bottom center"
-				for="@(th .ui-column-filter.ui-inputfield.ui-inputtext)" />
-		</ui:repeat>
+			</ui:repeat>
+		</h:form>
+		<pe:tooltip value="#{msg.triggerSearchOnEnter}" shared="true"
+			atPosition="top center" myPosition="bottom center"
+			for="@(th .ui-column-filter.ui-inputfield.ui-inputtext)" />
 		<h:panelGroup id="noPerformancesGroup" layout="block"
 			rendered="#{empty performancePage.tables}">
 			<h:outputText value="NO PERFORMANCES" />
@@ -162,20 +155,21 @@
 
 	<!-- Dialogs -->
 	<ui:define name="dialogContent">
-		<h:form id="artistDialogForm"
-			rendered="#{performancePage.artistDialogRendered}">
-			<p:dialog id="artistInfoDialogID" widgetVar="artistInfoDialog"
-				closable="true" closeOnEscape="true" draggable="true"
-				responsive="true" fitViewport="true" position="center"
-				appendTo="@(body)" header="#{msg.artist}" modal="true" width="700"
-				height="300">
+		<h:form id="artistDialogForm" prependId="true">
+			<p:dialog id="artistInfoDialogID"
+				rendered="#{not empty artistInfoDialog.artist}"
+				widgetVar="artistInfoDialog" closable="true" closeOnEscape="true"
+				draggable="true" responsive="true" fitViewport="true"
+				position="center" appendTo="@(body)" header="#{msg.artist}"
+				modal="true" minWidth="600" minHeight="250">
 
 				<p:ajax event="close" listener="#{artistInfoDialog.onClose}"
-					global="true" async="true" />
+					global="true" async="true" partialSubmit="true"
+					update=":artistDialogForm, :messageGroup" />
 
 				<h:panelGroup layout="block" style="margin: 10px;">
-					<p:graphicImage value="#{artistInfoDialog.streamedContent}"
-						cache="false" width="200" height="250" style="float: left;" />
+					<p:graphicImage value="#{artistInfoDialog.artist.streamedContent}"
+						cache="false" width="150" height="200" style="float: left;" />
 					<h:panelGrid id="userInfoAttributesGrid" columns="2" border="0"
 						cellpadding="10">
 
@@ -196,9 +190,67 @@
 							value="#{artistInfoDialog.artist.getCountryName(languageBean.locale)}" />
 
 						<h:outputText value="#{msg.url}" />
-						<h:outputText value="#{artistInfoDialog.artist.url}" />
+						<h:column>
+							<h:outputLink rendered="#{not empty artistInfoDialog.artist.url}"
+								value="#{artistInfoDialog.artist.url}" />
+						</h:column>
 					</h:panelGrid>
 				</h:panelGroup>
+			</p:dialog>
+		</h:form>
+
+		<h:form id="venueDialogForm" prependId="true">
+			<p:dialog id="venueInfoDialogID"
+				rendered="#{not empty venueInfoDialog.venues}"
+				widgetVar="venueInfoDialog" closable="true" closeOnEscape="true"
+				draggable="true" responsive="true" fitViewport="true"
+				position="center" appendTo="@(body)" header="#{msg.venues}"
+				modal="true" width="650" style="padding: 10px;">
+
+				<p:ajax event="close" listener="#{venueInfoDialog.onClose}"
+					global="true" async="true" partialSubmit="true"
+					update=":venueDialogForm, :messageGroup" />
+
+				<h:panelGroup id="mapContainer" layout="block"
+					style="width:600px; height:300px; margin-bottom: 10px;">
+					<p:gmap id="venueMap" widgetVar="venueMap"
+						center="#{venueInfoDialog.defaultLocation}" zoom="15"
+						type="ROADMAP" model="#{venueInfoDialog.map}"
+						style="width:100%; height:100%;">
+					</p:gmap>
+				</h:panelGroup>
+
+				<p:carousel id="performancesList" headerText="#{msg.performances}"
+					value="#{venueInfoDialog.venues}" var="venue" numVisible="1"
+					easing="easeOutBounce" cricular="true"
+					itemStyle="width: 100%; margin: 10px;">
+
+					<h:panelGroup layout="block" style="margin-bottom: 10px;">
+						<h:outputText value="#{venue.name}"
+							style="font-weight: bold; font-size: medium; " />
+					</h:panelGroup>
+					<ui:repeat value="#{venue.performances}" var="item">
+						<div class="ui-grid ui-grid-responsive">
+							<div class="ui-grid-row">
+								<div class="ui-grid-col-6" style="padding: 5px;">
+									<h:outputText id="startDate" value="#{item.startDate.time}">
+										<f:convertDateTime type="time" locale="#{languageBean.locale}"
+											for="startDate" timeZone="#{defaultTimeZone}" />
+									</h:outputText>
+									<h:outputText value=" - " style="margin-left: 5px;" />
+									<h:outputText id="endDate" value="#{item.endDate.time}"
+										style="margin-left: 5px">
+										<f:convertDateTime type="time" locale="#{languageBean.locale}"
+											for="startDate" timeZone="#{defaultTimeZone}" />
+									</h:outputText>
+								</div>
+								<div class="ui-grid-col-6" style="padding: 5px;">
+									<h:outputText value="(#{item.name})" />
+								</div>
+							</div>
+						</div>
+					</ui:repeat>
+				</p:carousel>
 			</p:dialog>
 		</h:form>
 	</ui:define>

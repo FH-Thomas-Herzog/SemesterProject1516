@@ -32,7 +32,7 @@ public class SelectItemIdMapperModelConverter implements Converter {
 			for (SelectItem selectItem : items) {
 				final IdMapperModel<?> object = (IdMapperModel<?>) selectItem.getValue();
 				if (object.uuid.equals(value)) {
-					return object.id;
+					return object;
 				}
 			}
 		} catch (Exception e) {

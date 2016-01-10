@@ -2,6 +2,7 @@ package at.fh.ooe.swk.ufo.web.application.bean;
 
 import java.io.Serializable;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;

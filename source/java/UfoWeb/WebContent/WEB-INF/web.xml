@@ -16,7 +16,7 @@
 		<resource-env-ref-type>javax.enterprise.inject.spi.BeanManager</resource-env-ref-type>
 	</resource-env-ref>
 
-	<!-- Context parameter -->
+	<!-- Webservice Context parameter -->
 	<context-param>
 		<param-name>ufo.webservice.username</param-name>
 		<param-value>WebApplication_1</param-value>
@@ -25,7 +25,25 @@
 		<param-name>ufo.webservice.password</param-name>
 		<param-value>j678ZllHOB1z~/.9eoZs@8gg,Ocl-Bqi</param-value>
 	</context-param>
-		<context-param>
+	<context-param>
+		<param-name>ufo.webservice.artistService</param-name>
+		<param-value>https://localhost:44300/Soap/ArtistService.asmx</param-value>
+	</context-param>
+	<context-param>
+		<param-name>ufo.webservice.performanceService</param-name>
+		<param-value>https://localhost:44300/Soap/PerformanceService.asmx</param-value>
+	</context-param>
+	<context-param>
+		<param-name>ufo.webservice.venueService</param-name>
+		<param-value>https://localhost:44300/Soap/VenueService.asmx</param-value>
+	</context-param>
+	<!-- Google context parameters -->
+	<context-param>
+		<param-name>google.map.api.key</param-name>
+		<param-value>AIzaSyBPniHSAOZLz2g1MuQO6N2d4S11GA6r4bA</param-value>
+	</context-param>
+	<!-- JSF context parameters -->
+	<context-param>
 		<param-name>org.apache.myfaces.PRETTY_HTML</param-name>
 		<param-value>true</param-value>
 	</context-param>

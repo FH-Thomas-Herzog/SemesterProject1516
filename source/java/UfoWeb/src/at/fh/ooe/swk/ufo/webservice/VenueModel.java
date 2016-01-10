@@ -16,6 +16,8 @@ public class VenueModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  impleme
 
     private java.lang.String gpsCoordinates;
 
+    private at.fh.ooe.swk.ufo.webservice.PerformanceModel[] performances;
+
     public VenueModel() {
     }
 
@@ -25,7 +27,8 @@ public class VenueModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  impleme
            long id,
            java.lang.String name,
            java.lang.String fullAddress,
-           java.lang.String gpsCoordinates) {
+           java.lang.String gpsCoordinates,
+           at.fh.ooe.swk.ufo.webservice.PerformanceModel[] performances) {
         super(
             errorCode,
             error);
@@ -33,6 +36,7 @@ public class VenueModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  impleme
         this.name = name;
         this.fullAddress = fullAddress;
         this.gpsCoordinates = gpsCoordinates;
+        this.performances = performances;
     }
 
 
@@ -115,6 +119,26 @@ public class VenueModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  impleme
         this.gpsCoordinates = gpsCoordinates;
     }
 
+
+    /**
+     * Gets the performances value for this VenueModel.
+     * 
+     * @return performances
+     */
+    public at.fh.ooe.swk.ufo.webservice.PerformanceModel[] getPerformances() {
+        return performances;
+    }
+
+
+    /**
+     * Sets the performances value for this VenueModel.
+     * 
+     * @param performances
+     */
+    public void setPerformances(at.fh.ooe.swk.ufo.webservice.PerformanceModel[] performances) {
+        this.performances = performances;
+    }
+
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
         if (!(obj instanceof VenueModel)) return false;
@@ -136,7 +160,10 @@ public class VenueModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  impleme
               this.fullAddress.equals(other.getFullAddress()))) &&
             ((this.gpsCoordinates==null && other.getGpsCoordinates()==null) || 
              (this.gpsCoordinates!=null &&
-              this.gpsCoordinates.equals(other.getGpsCoordinates())));
+              this.gpsCoordinates.equals(other.getGpsCoordinates()))) &&
+            ((this.performances==null && other.getPerformances()==null) || 
+             (this.performances!=null &&
+              java.util.Arrays.equals(this.performances, other.getPerformances())));
         __equalsCalc = null;
         return _equals;
     }
@@ -157,6 +184,17 @@ public class VenueModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  impleme
         }
         if (getGpsCoordinates() != null) {
             _hashCode += getGpsCoordinates().hashCode();
+        }
+        if (getPerformances() != null) {
+            for (int i=0;
+                 i<java.lang.reflect.Array.getLength(getPerformances());
+                 i++) {
+                java.lang.Object obj = java.lang.reflect.Array.get(getPerformances(), i);
+                if (obj != null &&
+                    !obj.getClass().isArray()) {
+                    _hashCode += obj.hashCode();
+                }
+            }
         }
         __hashCodeCalc = false;
         return _hashCode;
@@ -194,6 +232,14 @@ public class VenueModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  impleme
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
         elemField.setMinOccurs(0);
         elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("performances");
+        elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "Performances"));
+        elemField.setXmlType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceModel"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        elemField.setItemQName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceModel"));
         typeDesc.addFieldDesc(elemField);
     }
 

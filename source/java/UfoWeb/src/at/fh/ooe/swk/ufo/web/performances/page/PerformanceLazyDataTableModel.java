@@ -111,8 +111,8 @@ public class PerformanceLazyDataTableModel extends LazyDataModel<PerformanceRowM
 		performancestartHours = new HashSet<>();
 
 		// Map to venues
-		Map<IdLabelModel, List<PerformanceViewModel>> map = performances.parallelStream()
-				.collect(Collectors.groupingBy(i -> new IdLabelModel(i.getVenueId(), i.getVenueName())));
+		Map<IdLabelModel<Long>, List<PerformanceViewModel>> map = performances.parallelStream()
+				.collect(Collectors.groupingBy(i -> new IdLabelModel<Long>(i.getVenueId(), i.getVenueName())));
 
 		// Build row model where each model holds value for dynamic columns
 		// mapped to their start hour

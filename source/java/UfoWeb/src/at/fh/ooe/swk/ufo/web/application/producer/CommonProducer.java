@@ -1,6 +1,7 @@
 package at.fh.ooe.swk.ufo.web.application.producer;
 
 import java.io.Serializable;
+import java.util.TimeZone;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
@@ -8,6 +9,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,5 +29,12 @@ public class CommonProducer implements Serializable {
 	@RequestScoped
 	public FacesContext produceFacesContext() {
 		return FacesContext.getCurrentInstance();
+	}
+	
+	@Produces
+	@Dependent
+	@Named("defaultTimeZone")
+	public TimeZone produceTimeZone(){
+		return TimeZone.getTimeZone("UTC");
 	}
 }

@@ -1,21 +1,14 @@
 package at.fh.ooe.swk.ufo.web.performances.page;
 
-import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
 import java.io.Serializable;
 
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.servlet.ServletContext;
 
-import org.apache.deltaspike.core.api.common.DeltaSpike;
 import org.apache.logging.log4j.Logger;
 import org.primefaces.event.CloseEvent;
-import org.primefaces.model.DefaultStreamedContent;
-import org.primefaces.model.StreamedContent;
 
 import at.fh.ooe.swk.ufo.web.performances.model.ArtistViewModel;
 import at.fh.ooe.swk.ufo.webservice.ArtistServiceSoap;
@@ -37,11 +30,6 @@ public class ArtistInfoDialogBean implements Serializable {
 	private static final long serialVersionUID = -5532729555560855764L;
 
 	@Inject
-	private PerformancesPage page;
-	@Inject
-	@DeltaSpike
-	private transient ServletContext servletContext;
-	@Inject
 	private transient ArtistServiceSoap artistWebservice;
 	@Inject
 	private Logger log;
@@ -49,8 +37,6 @@ public class ArtistInfoDialogBean implements Serializable {
 	private Instance<ArtistViewModel> artistInstance;
 
 	private ArtistViewModel artist;
-	private static final String DEFAULT_IMAGE = "/images/no-profile-img.gif";
-	private static final String DEFAULT_IMAGE_MIME_TYPE = "image/gif";
 
 	/**
 	 * Initializes with the given artist id
@@ -77,34 +63,7 @@ public class ArtistInfoDialogBean implements Serializable {
 	 *            the CloseEvent
 	 */
 	public void onClose(CloseEvent event) {
-		page.setSelectedModel(null);
 		reset();
-	}
-
-	// ##################################################
-	// Helper
-	// ##################################################
-	/**
-	 * Creates the StreamedContet for the GraphicImage
-	 * 
-	 */
-	private StreamedContent createStreamedContentForImage() {
-		InputStream ips;
-		String mimeType;
-		try {
-			if ((artist != null) && (artist.getImageData() != null)) {
-				ips = new ByteArrayInputStream(artist.getImageData());
-				mimeType = "image/" + artist.getImageType();
-			} else {
-				mimeType = DEFAULT_IMAGE_MIME_TYPE;
-				ips = new BufferedInputStream(servletContext.getResourceAsStream(DEFAULT_IMAGE));
-			}
-		} catch (Exception e) {
-			log.error("Error during creation of StreamdContent", e);
-			return null;
-		}
-
-		return new DefaultStreamedContent(ips, mimeType, "defaultImage");
 	}
 
 	/**
@@ -117,10 +76,6 @@ public class ArtistInfoDialogBean implements Serializable {
 	// ##################################################
 	// Getter and Setter
 	// ##################################################
-	public StreamedContent getStreamedContent() {
-		return createStreamedContentForImage();
-	}
-
 	public ArtistViewModel getArtist() {
 		return artist;
 	}

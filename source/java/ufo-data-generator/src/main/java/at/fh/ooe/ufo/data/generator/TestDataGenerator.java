@@ -53,6 +53,7 @@ public class TestDataGenerator {
 	public static class Performance {
 
 		private Calendar startCal;
+		private final int venueCount;
 		private final Random random = new Random();
 		boolean toogle = Boolean.FALSE;
 		private int hourOffset = 0;
@@ -60,11 +61,13 @@ public class TestDataGenerator {
 		private int offset = 0;
 		private int startHour = 8;
 		private boolean start = Boolean.FALSE;
+		private int currentVenueId = 1;
 
-		public Performance() {
+		public Performance(int venueCount) {
 			super();
+			this.venueCount = venueCount;
 			startCal = Calendar.getInstance(Locale.GERMAN);
-			startCal.set(Calendar.DAY_OF_YEAR, -10);
+			startCal.set(2016, Calendar.JANUARY, Calendar.MONDAY, startHour, 0, 0);
 			initDay = startCal.get(Calendar.DAY_OF_YEAR);
 			reset();
 		}
@@ -89,6 +92,8 @@ public class TestDataGenerator {
 				initDay = startCal.get(Calendar.DAY_OF_YEAR);
 				start = Boolean.FALSE;
 			} else {
+				currentVenueId++;
+				currentVenueId = (currentVenueId < venueCount) ? currentVenueId : 1;
 				offset = 1;
 				startHour = 9;
 			}
@@ -112,8 +117,8 @@ public class TestDataGenerator {
 			return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", new Locale("de", "DE")).format(cal.getTime());
 		}
 
-		public int getVenueId(int max) {
-			return (int) (random.nextInt(5) % max);
+		public int getVenueId() {
+			return currentVenueId;
 		}
 	}
 
@@ -277,7 +282,7 @@ public class TestDataGenerator {
 		parameters.put("artistGroups", artistGroups);
 		parameters.put("artists", artists);
 		parameters.put("venues", venues);
-		parameters.put("performance", new Performance());
+		parameters.put("performance", new Performance(venues.size()));
 		parameters.put("adminPassword", PASSWORD_ENCRYPTED);
 
 		final Configuration config = new Configuration();

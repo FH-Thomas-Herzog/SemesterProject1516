@@ -22,12 +22,11 @@ import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 import org.apache.logging.log4j.Logger;
 
 import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
+import at.fh.ooe.swk.ufo.web.application.model.IdLabelModel;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
-import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel.EntityType;
 import at.fh.ooe.swk.ufo.webservice.PerformanceModel;
 import at.fh.ooe.swk.ufo.webservice.PerformanceServiceSoap;
 
@@ -44,6 +43,8 @@ public class PerformancesPage implements Serializable {
 	private transient PerformanceServiceSoap performanceWebservice;
 	@Inject
 	private Logger log;
+	@Inject
+	private Instance<PerformanceViewModel> perforamnceModelInstance;
 
 	@Inject
 	private Instance<PerformanceLazyDataTableModel> dataTableSubPageInstances;
@@ -51,10 +52,7 @@ public class PerformancesPage implements Serializable {
 	private PerformanceFilterBean performanceFilterPage;
 	@Inject
 	private LanguageBean languageBean;
-	@Inject
-	private ArtistInfoDialogBean artistInfoDialog;
 
-	private PerformanceViewModel selectedModel;
 	private List<PerformanceLazyDataTableModel> tables;
 
 	public PerformancesPage() {
@@ -64,18 +62,6 @@ public class PerformancesPage implements Serializable {
 	@PostConstruct
 	public void postConstruct() {
 		loadPerformances();
-	}
-
-	// ##################################################
-	// Event listener
-	// ##################################################
-	public void prepareInfoDialog(PerformanceViewModel model) {
-		selectedModel = model;
-		if (EntityType.ARTIST.equals(selectedModel.getType())) {
-			artistInfoDialog.init((long) selectedModel.getEntityId());
-		} else if (EntityType.ARTIST_GROUP.equals(selectedModel.getType())) {
-
-		}
 	}
 
 	// ##################################################
@@ -92,8 +78,11 @@ public class PerformancesPage implements Serializable {
 				// Load performances depending on set filter
 				final PerformanceModel[] data = performanceWebservice
 						.getPerformances(performanceFilterPage.createRequestModel());
-				performances = Arrays.asList(data).parallelStream().map(model -> new PerformanceViewModel(model))
-						.collect(Collectors.toList());
+				performances = Arrays.asList(data).parallelStream().map(model -> {
+					final PerformanceViewModel viewModel = perforamnceModelInstance.get();
+					viewModel.init(model);
+					return viewModel;
+				}).collect(Collectors.toList());
 				// group performances by their start date value
 				final Map<String, List<PerformanceViewModel>> map = performances.parallelStream()
 						.collect(Collectors.groupingBy(model -> formatter
@@ -124,26 +113,10 @@ public class PerformancesPage implements Serializable {
 		}
 	}
 
-	public boolean isArtistDialogRendered() {
-		return ((selectedModel != null) && (EntityType.ARTIST.equals(selectedModel.getType())));
-	}
-
-	public boolean isArtistGroupDialogRendered() {
-		return ((selectedModel != null) && (EntityType.ARTIST_GROUP.equals(selectedModel.getType())));
-	}
-
 	// ##################################################
 	// Getter and Setter
 	// ##################################################
 	public List<PerformanceLazyDataTableModel> getTables() {
 		return tables;
-	}
-
-	public PerformanceViewModel getSelectedModel() {
-		return selectedModel;
-	}
-
-	public void setSelectedModel(PerformanceViewModel selectedModel) {
-		this.selectedModel = selectedModel;
 	}
 }

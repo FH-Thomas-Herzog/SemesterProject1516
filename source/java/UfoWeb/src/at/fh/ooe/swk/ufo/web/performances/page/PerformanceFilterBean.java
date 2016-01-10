@@ -6,12 +6,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import at.fh.ooe.swk.ufo.web.application.model.IdMapperModel;
 import at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest;
 
 @SessionScoped
@@ -22,24 +24,25 @@ public class PerformanceFilterBean implements Serializable {
 
 	@Inject
 	private PerformancesPage page;
+	@Inject
+	private PerformanceFilterSupport supportBean;
+	@Inject
+	private TimeZone timeZone;
 
 	private Calendar fromDate;
-	private Calendar toDate;
-	private List<Long> artistIds;
-	private List<Long> venueIds;
+	private List<IdMapperModel<Long>> artistIds;
+	private List<IdMapperModel<Long>> venueIds;
 
 	private Calendar minDate;
 	private Calendar maxDate;
-
-	private final TimeZone zone = TimeZone.getTimeZone("UTC");
 
 	@PostConstruct
 	public void postConstruct() {
 		// Set borders to current year
 		minDate = Calendar.getInstance();
 		maxDate = (Calendar) minDate.clone();
-		minDate.setTimeZone(zone);
-		maxDate.setTimeZone(zone);
+		minDate.setTimeZone(timeZone);
+		maxDate.setTimeZone(timeZone);
 		minDate.set(minDate.get(Calendar.YEAR), Calendar.JANUARY, 1, 0, 0, 0);
 		maxDate.set(maxDate.get(Calendar.YEAR), Calendar.DECEMBER, 31, 0, 0, 0);
 
@@ -48,10 +51,13 @@ public class PerformanceFilterBean implements Serializable {
 	}
 
 	public PerformanceFilterRequest createRequestModel() {
-		fromDate.setTimeZone(zone);
-		toDate.setTimeZone(zone);
-		return new PerformanceFilterRequest(fromDate, toDate, artistIds.toArray(new Long[artistIds.size()]),
-				venueIds.toArray(new Long[venueIds.size()]));
+		fromDate.setTimeZone(timeZone);
+		Calendar toDate = (Calendar) fromDate.clone();
+		toDate.set(Calendar.HOUR_OF_DAY, 23);
+		toDate.set(Calendar.MINUTE, 59);
+		return new PerformanceFilterRequest(fromDate, toDate,
+				artistIds.parallelStream().map(model -> model.id).toArray(Long[]::new),
+				venueIds.parallelStream().map(model -> model.id).toArray(Long[]::new));
 	}
 
 	// ##################################################
@@ -61,9 +67,15 @@ public class PerformanceFilterBean implements Serializable {
 		page.loadPerformances();
 	}
 
+	public void clear() {
+		reset();
+		// reload data
+		supportBean.init();
+		page.loadPerformances();
+	}
+
 	public void reset() {
-		fromDate = (Calendar) minDate.clone();
-		toDate = (Calendar) maxDate.clone();
+		fromDate = Calendar.getInstance();
 		artistIds = new ArrayList<>();
 		venueIds = new ArrayList<>();
 	}
@@ -71,19 +83,19 @@ public class PerformanceFilterBean implements Serializable {
 	// ##################################################
 	// Getter and Setter
 	// ##################################################
-	public List<Long> getArtistIds() {
+	public List<IdMapperModel<Long>> getArtistIds() {
 		return artistIds;
 	}
 
-	public void setArtistIds(List<Long> artistIds) {
+	public void setArtistIds(List<IdMapperModel<Long>> artistIds) {
 		this.artistIds = artistIds;
 	}
 
-	public List<Long> getVenueIds() {
+	public List<IdMapperModel<Long>> getVenueIds() {
 		return venueIds;
 	}
 
-	public void setVenueIds(List<Long> venueIds) {
+	public void setVenueIds(List<IdMapperModel<Long>> venueIds) {
 		this.venueIds = venueIds;
 	}
 
@@ -93,14 +105,6 @@ public class PerformanceFilterBean implements Serializable {
 
 	public void setFromDate(Date fromDate) {
 		this.fromDate.setTime(fromDate);
-	}
-
-	public Date getToDate() {
-		return toDate.getTime();
-	}
-
-	public void setToDate(Date toDate) {
-		this.toDate.setTime(toDate);
 	}
 
 	public Date getMinDate() {

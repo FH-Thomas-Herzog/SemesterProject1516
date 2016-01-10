@@ -36,7 +36,7 @@ VALUES ('${artist.firstName}', '${artist.lastName}', '${artist.email}', '${artis
 <#list 0..daysCount as d>
 	<#list 1..performanceCount as i>
 INSERT INTO ufo.performance(start_date, end_date, creation_user_id, modification_user_id, artist_id, venue_id) 
-VALUES ('${performance.startDate}', '${performance.endDate}', @userId, @userId, @artistId, (@venueOffset - ${performance.getVenueId(venuesCount)}));
+VALUES ('${performance.startDate}', '${performance.endDate}', @userId, @userId, @artistId, ${performance.venueId});
 	</#list>${performance.reset()}
 </#list>${performance.toggle()}
 </#list>

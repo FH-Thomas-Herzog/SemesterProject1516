@@ -1,48 +1,55 @@
 package at.fh.ooe.swk.ufo.web.performances.model;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.TimeZone;
 
+import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
+
+import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
 import at.fh.ooe.swk.ufo.webservice.PerformanceModel;
 
-public class PerformanceViewModel implements Comparable<PerformanceViewModel> {
+@Dependent
+public class PerformanceViewModel implements Comparable<PerformanceViewModel>, Serializable {
 
-	public static enum EntityType {
-		ARTIST, ARTIST_GROUP
+	private static final long serialVersionUID = 3692624909190619132L;
+
+	@Inject
+	private TimeZone timeZone;
+
+	private Long id;
+	private Calendar startDate;
+	private Calendar formerStartDate;
+	private Calendar endDate;
+	private boolean moved;
+	private String venueName;
+	private String groupName;
+	private String categoryName;
+	private String name;
+	private Long artistId;
+	private Long venueId;
+
+	public PerformanceViewModel() {
+		super();
 	}
 
-	private final Object id;
-	private final Calendar startDate;
-	private final Calendar endDate;
-	private final boolean moved;
-	private final String venueName;
-	private final String name;
-	private final Object entityId;
-	private final Object venueId;
-	private final EntityType type;
-
-	private static final TimeZone ZONE = TimeZone.getTimeZone("UTC");
-
-	public PerformanceViewModel(PerformanceModel model) {
-		super();
+	public void init(PerformanceModel model) {
 		id = model.getId();
 		startDate = model.getStartDate();
 		endDate = model.getEndDate();
-		moved = model.isMoved();
-		venueId = model.getVenueId();
-		venueName = (model.getVenueName() != null) ? model.getVenueName() : "";
-		if ((model.getArtistId() != null)) {
-			name = (model.getArtistName() != null) ? model.getArtistName() : "";
-			entityId = model.getArtistId();
-			type = EntityType.ARTIST;
-		} else {
-			name = (model.getArtistGroupName() != null) ? model.getArtistGroupName() : "";
-			entityId = model.getArtistGroupId();
-			type = EntityType.ARTIST_GROUP;
-		}
+		formerStartDate = model.getFormerStartDate();
+		moved = formerStartDate != null;
+		venueId = model.getVenue().getId();
+		venueName = model.getVenue().getName();
+		name = new StringBuilder(model.getArtist().getLastName()).append(", ").append(model.getArtist().getFirstName())
+				.toString();
+		groupName = model.getArtist().getArtistGroup();
+		categoryName = "";
+		artistId = model.getArtist().getId();
 		// Set to expected time zone
-		startDate.setTimeZone(ZONE);
-		endDate.setTimeZone(ZONE);
+		startDate.setTimeZone(timeZone);
+		endDate.setTimeZone(timeZone);
 	}
 
 	// ##################################################
@@ -56,7 +63,7 @@ public class PerformanceViewModel implements Comparable<PerformanceViewModel> {
 	// ##################################################
 	// Getter and Setter
 	// ##################################################
-	public Object getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -80,16 +87,20 @@ public class PerformanceViewModel implements Comparable<PerformanceViewModel> {
 		return name;
 	}
 
-	public Object getEntityId() {
-		return entityId;
+	public String getGroupName() {
+		return groupName;
 	}
 
-	public Object getVenueId() {
+	public String getCategoryName() {
+		return categoryName;
+	}
+
+	public Long getArtistId() {
+		return artistId;
+	}
+
+	public Long getVenueId() {
 		return venueId;
-	}
-
-	public EntityType getType() {
-		return type;
 	}
 
 	@Override

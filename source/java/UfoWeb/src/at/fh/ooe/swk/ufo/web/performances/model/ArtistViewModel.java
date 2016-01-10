@@ -1,5 +1,8 @@
 package at.fh.ooe.swk.ufo.web.performances.model;
 
+import java.io.BufferedInputStream;
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.net.URL;
 import java.util.Base64;
@@ -7,8 +10,12 @@ import java.util.Locale;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
+import javax.servlet.ServletContext;
 
+import org.apache.deltaspike.core.api.common.DeltaSpike;
 import org.apache.logging.log4j.Logger;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
 import at.fh.ooe.swk.ufo.webservice.ArtistModel;
 
@@ -17,6 +24,9 @@ public class ArtistViewModel implements Serializable {
 
 	private static final long serialVersionUID = -8103911126863772972L;
 
+	@Inject
+	@DeltaSpike
+	private transient ServletContext servletContext;
 	@Inject
 	private Logger log;
 
@@ -28,6 +38,9 @@ public class ArtistViewModel implements Serializable {
 	private String artistGroup;
 	private byte[] imageData;
 	private String imageType;
+
+	private static final String DEFAULT_IMAGE = "/images/no-profile-img.gif";
+	private static final String DEFAULT_IMAGE_MIME_TYPE = "image/gif";
 
 	public ArtistViewModel() {
 		super();
@@ -55,6 +68,32 @@ public class ArtistViewModel implements Serializable {
 			imageData = null;
 			imageType = null;
 		}
+	}
+
+	private StreamedContent createStreamedContentForImage() {
+		InputStream ips;
+		String mimeType;
+		try {
+			if (imageData != null) {
+				ips = new ByteArrayInputStream(imageData);
+				mimeType = "image/" + imageType;
+			} else {
+				mimeType = DEFAULT_IMAGE_MIME_TYPE;
+				ips = new BufferedInputStream(servletContext.getResourceAsStream(DEFAULT_IMAGE));
+			}
+		} catch (Exception e) {
+			log.error("Error during creation of StreamdContent", e);
+			return null;
+		}
+
+		return new DefaultStreamedContent(ips, mimeType, "defaultImage");
+	}
+
+	// ##################################################
+	// Getter and Setter
+	// ##################################################
+	public StreamedContent getStreamedContent() {
+		return createStreamedContentForImage();
 	}
 
 	public String getFirstName() {

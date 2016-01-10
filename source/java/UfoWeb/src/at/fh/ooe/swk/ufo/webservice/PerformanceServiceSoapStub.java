@@ -16,7 +16,7 @@ public class PerformanceServiceSoapStub extends org.apache.axis.client.Stub impl
     static org.apache.axis.description.OperationDesc [] _operations;
 
     static {
-        _operations = new org.apache.axis.description.OperationDesc[2];
+        _operations = new org.apache.axis.description.OperationDesc[1];
         _initOperationDesc1();
     }
 
@@ -36,17 +36,6 @@ public class PerformanceServiceSoapStub extends org.apache.axis.client.Stub impl
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
         _operations[0] = oper;
-
-        oper = new org.apache.axis.description.OperationDesc();
-        oper.setName("GetDetails");
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "id"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "long"), long.class, false, false);
-        oper.addParameter(param);
-        oper.setReturnType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceModel"));
-        oper.setReturnClass(at.fh.ooe.swk.ufo.webservice.PerformanceModel.class);
-        oper.setReturnQName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "GetDetailsResult"));
-        oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
-        oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[1] = oper;
 
     }
 
@@ -88,6 +77,13 @@ public class PerformanceServiceSoapStub extends org.apache.axis.client.Stub impl
             cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
             cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
 
+            qName = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ArtistModel");
+            cachedSerQNames.add(qName);
+            cls = at.fh.ooe.swk.ufo.webservice.ArtistModel.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
             qName = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "BaseModel");
             cachedSerQNames.add(qName);
             cls = at.fh.ooe.swk.ufo.webservice.BaseModel.class;
@@ -105,6 +101,13 @@ public class PerformanceServiceSoapStub extends org.apache.axis.client.Stub impl
             qName = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceModel");
             cachedSerQNames.add(qName);
             cls = at.fh.ooe.swk.ufo.webservice.PerformanceModel.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "VenueModel");
+            cachedSerQNames.add(qName);
+            cls = at.fh.ooe.swk.ufo.webservice.VenueModel.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
@@ -202,40 +205,6 @@ public class PerformanceServiceSoapStub extends org.apache.axis.client.Stub impl
                 return (at.fh.ooe.swk.ufo.webservice.PerformanceModel[]) _resp;
             } catch (java.lang.Exception _exception) {
                 return (at.fh.ooe.swk.ufo.webservice.PerformanceModel[]) org.apache.axis.utils.JavaUtils.convert(_resp, at.fh.ooe.swk.ufo.webservice.PerformanceModel[].class);
-            }
-        }
-  } catch (org.apache.axis.AxisFault axisFaultException) {
-  throw axisFaultException;
-}
-    }
-
-    public at.fh.ooe.swk.ufo.webservice.PerformanceModel getDetails(long id) throws java.rmi.RemoteException {
-        if (super.cachedEndpoint == null) {
-            throw new org.apache.axis.NoEndPointException();
-        }
-        org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[1]);
-        _call.setUseSOAPAction(true);
-        _call.setSOAPActionURI("https://webservice.ufo.swk.ooe.fh.at/GetDetails");
-        _call.setEncodingStyle(null);
-        _call.setProperty(org.apache.axis.client.Call.SEND_TYPE_ATTR, Boolean.FALSE);
-        _call.setProperty(org.apache.axis.AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
-        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
-        _call.setOperationName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "GetDetails"));
-
-        setRequestHeaders(_call);
-        setAttachments(_call);
- try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {new java.lang.Long(id)});
-
-        if (_resp instanceof java.rmi.RemoteException) {
-            throw (java.rmi.RemoteException)_resp;
-        }
-        else {
-            extractAttachments(_call);
-            try {
-                return (at.fh.ooe.swk.ufo.webservice.PerformanceModel) _resp;
-            } catch (java.lang.Exception _exception) {
-                return (at.fh.ooe.swk.ufo.webservice.PerformanceModel) org.apache.axis.utils.JavaUtils.convert(_resp, at.fh.ooe.swk.ufo.webservice.PerformanceModel.class);
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {

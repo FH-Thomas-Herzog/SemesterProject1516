@@ -14,19 +14,11 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
 
     private java.util.Calendar endDate;
 
-    private boolean moved;
+    private java.util.Calendar formerStartDate;
 
-    private java.lang.String venueName;
+    private at.fh.ooe.swk.ufo.webservice.ArtistModel artist;
 
-    private java.lang.String artistName;
-
-    private java.lang.String artistGroupName;
-
-    private java.lang.Long artistId;
-
-    private java.lang.Long artistGroupId;
-
-    private long venueId;
+    private at.fh.ooe.swk.ufo.webservice.VenueModel venue;
 
     public PerformanceModel() {
     }
@@ -37,26 +29,18 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
            long id,
            java.util.Calendar startDate,
            java.util.Calendar endDate,
-           boolean moved,
-           java.lang.String venueName,
-           java.lang.String artistName,
-           java.lang.String artistGroupName,
-           java.lang.Long artistId,
-           java.lang.Long artistGroupId,
-           long venueId) {
+           java.util.Calendar formerStartDate,
+           at.fh.ooe.swk.ufo.webservice.ArtistModel artist,
+           at.fh.ooe.swk.ufo.webservice.VenueModel venue) {
         super(
             errorCode,
             error);
         this.id = id;
         this.startDate = startDate;
         this.endDate = endDate;
-        this.moved = moved;
-        this.venueName = venueName;
-        this.artistName = artistName;
-        this.artistGroupName = artistGroupName;
-        this.artistId = artistId;
-        this.artistGroupId = artistGroupId;
-        this.venueId = venueId;
+        this.formerStartDate = formerStartDate;
+        this.artist = artist;
+        this.venue = venue;
     }
 
 
@@ -121,142 +105,62 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
 
 
     /**
-     * Gets the moved value for this PerformanceModel.
+     * Gets the formerStartDate value for this PerformanceModel.
      * 
-     * @return moved
+     * @return formerStartDate
      */
-    public boolean isMoved() {
-        return moved;
+    public java.util.Calendar getFormerStartDate() {
+        return formerStartDate;
     }
 
 
     /**
-     * Sets the moved value for this PerformanceModel.
+     * Sets the formerStartDate value for this PerformanceModel.
      * 
-     * @param moved
+     * @param formerStartDate
      */
-    public void setMoved(boolean moved) {
-        this.moved = moved;
+    public void setFormerStartDate(java.util.Calendar formerStartDate) {
+        this.formerStartDate = formerStartDate;
     }
 
 
     /**
-     * Gets the venueName value for this PerformanceModel.
+     * Gets the artist value for this PerformanceModel.
      * 
-     * @return venueName
+     * @return artist
      */
-    public java.lang.String getVenueName() {
-        return venueName;
+    public at.fh.ooe.swk.ufo.webservice.ArtistModel getArtist() {
+        return artist;
     }
 
 
     /**
-     * Sets the venueName value for this PerformanceModel.
+     * Sets the artist value for this PerformanceModel.
      * 
-     * @param venueName
+     * @param artist
      */
-    public void setVenueName(java.lang.String venueName) {
-        this.venueName = venueName;
+    public void setArtist(at.fh.ooe.swk.ufo.webservice.ArtistModel artist) {
+        this.artist = artist;
     }
 
 
     /**
-     * Gets the artistName value for this PerformanceModel.
+     * Gets the venue value for this PerformanceModel.
      * 
-     * @return artistName
+     * @return venue
      */
-    public java.lang.String getArtistName() {
-        return artistName;
+    public at.fh.ooe.swk.ufo.webservice.VenueModel getVenue() {
+        return venue;
     }
 
 
     /**
-     * Sets the artistName value for this PerformanceModel.
+     * Sets the venue value for this PerformanceModel.
      * 
-     * @param artistName
+     * @param venue
      */
-    public void setArtistName(java.lang.String artistName) {
-        this.artistName = artistName;
-    }
-
-
-    /**
-     * Gets the artistGroupName value for this PerformanceModel.
-     * 
-     * @return artistGroupName
-     */
-    public java.lang.String getArtistGroupName() {
-        return artistGroupName;
-    }
-
-
-    /**
-     * Sets the artistGroupName value for this PerformanceModel.
-     * 
-     * @param artistGroupName
-     */
-    public void setArtistGroupName(java.lang.String artistGroupName) {
-        this.artistGroupName = artistGroupName;
-    }
-
-
-    /**
-     * Gets the artistId value for this PerformanceModel.
-     * 
-     * @return artistId
-     */
-    public java.lang.Long getArtistId() {
-        return artistId;
-    }
-
-
-    /**
-     * Sets the artistId value for this PerformanceModel.
-     * 
-     * @param artistId
-     */
-    public void setArtistId(java.lang.Long artistId) {
-        this.artistId = artistId;
-    }
-
-
-    /**
-     * Gets the artistGroupId value for this PerformanceModel.
-     * 
-     * @return artistGroupId
-     */
-    public java.lang.Long getArtistGroupId() {
-        return artistGroupId;
-    }
-
-
-    /**
-     * Sets the artistGroupId value for this PerformanceModel.
-     * 
-     * @param artistGroupId
-     */
-    public void setArtistGroupId(java.lang.Long artistGroupId) {
-        this.artistGroupId = artistGroupId;
-    }
-
-
-    /**
-     * Gets the venueId value for this PerformanceModel.
-     * 
-     * @return venueId
-     */
-    public long getVenueId() {
-        return venueId;
-    }
-
-
-    /**
-     * Sets the venueId value for this PerformanceModel.
-     * 
-     * @param venueId
-     */
-    public void setVenueId(long venueId) {
-        this.venueId = venueId;
+    public void setVenue(at.fh.ooe.swk.ufo.webservice.VenueModel venue) {
+        this.venue = venue;
     }
 
     private java.lang.Object __equalsCalc = null;
@@ -278,23 +182,15 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
             ((this.endDate==null && other.getEndDate()==null) || 
              (this.endDate!=null &&
               this.endDate.equals(other.getEndDate()))) &&
-            this.moved == other.isMoved() &&
-            ((this.venueName==null && other.getVenueName()==null) || 
-             (this.venueName!=null &&
-              this.venueName.equals(other.getVenueName()))) &&
-            ((this.artistName==null && other.getArtistName()==null) || 
-             (this.artistName!=null &&
-              this.artistName.equals(other.getArtistName()))) &&
-            ((this.artistGroupName==null && other.getArtistGroupName()==null) || 
-             (this.artistGroupName!=null &&
-              this.artistGroupName.equals(other.getArtistGroupName()))) &&
-            ((this.artistId==null && other.getArtistId()==null) || 
-             (this.artistId!=null &&
-              this.artistId.equals(other.getArtistId()))) &&
-            ((this.artistGroupId==null && other.getArtistGroupId()==null) || 
-             (this.artistGroupId!=null &&
-              this.artistGroupId.equals(other.getArtistGroupId()))) &&
-            this.venueId == other.getVenueId();
+            ((this.formerStartDate==null && other.getFormerStartDate()==null) || 
+             (this.formerStartDate!=null &&
+              this.formerStartDate.equals(other.getFormerStartDate()))) &&
+            ((this.artist==null && other.getArtist()==null) || 
+             (this.artist!=null &&
+              this.artist.equals(other.getArtist()))) &&
+            ((this.venue==null && other.getVenue()==null) || 
+             (this.venue!=null &&
+              this.venue.equals(other.getVenue())));
         __equalsCalc = null;
         return _equals;
     }
@@ -313,23 +209,15 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
         if (getEndDate() != null) {
             _hashCode += getEndDate().hashCode();
         }
-        _hashCode += (isMoved() ? Boolean.TRUE : Boolean.FALSE).hashCode();
-        if (getVenueName() != null) {
-            _hashCode += getVenueName().hashCode();
+        if (getFormerStartDate() != null) {
+            _hashCode += getFormerStartDate().hashCode();
         }
-        if (getArtistName() != null) {
-            _hashCode += getArtistName().hashCode();
+        if (getArtist() != null) {
+            _hashCode += getArtist().hashCode();
         }
-        if (getArtistGroupName() != null) {
-            _hashCode += getArtistGroupName().hashCode();
+        if (getVenue() != null) {
+            _hashCode += getVenue().hashCode();
         }
-        if (getArtistId() != null) {
-            _hashCode += getArtistId().hashCode();
-        }
-        if (getArtistGroupId() != null) {
-            _hashCode += getArtistGroupId().hashCode();
-        }
-        _hashCode += new Long(getVenueId()).hashCode();
         __hashCodeCalc = false;
         return _hashCode;
     }
@@ -359,48 +247,23 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("moved");
-        elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "Moved"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "boolean"));
-        elemField.setNillable(false);
-        typeDesc.addFieldDesc(elemField);
-        elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("venueName");
-        elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "VenueName"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
-        elemField.setMinOccurs(0);
-        elemField.setNillable(false);
-        typeDesc.addFieldDesc(elemField);
-        elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("artistName");
-        elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ArtistName"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
-        elemField.setMinOccurs(0);
-        elemField.setNillable(false);
-        typeDesc.addFieldDesc(elemField);
-        elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("artistGroupName");
-        elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ArtistGroupName"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
-        elemField.setMinOccurs(0);
-        elemField.setNillable(false);
-        typeDesc.addFieldDesc(elemField);
-        elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("artistId");
-        elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ArtistId"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "long"));
+        elemField.setFieldName("formerStartDate");
+        elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "FormerStartDate"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "dateTime"));
         elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("artistGroupId");
-        elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ArtistGroupId"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "long"));
-        elemField.setNillable(true);
+        elemField.setFieldName("artist");
+        elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "Artist"));
+        elemField.setXmlType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ArtistModel"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("venueId");
-        elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "VenueId"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "long"));
+        elemField.setFieldName("venue");
+        elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "Venue"));
+        elemField.setXmlType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "VenueModel"));
+        elemField.setMinOccurs(0);
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
     }
