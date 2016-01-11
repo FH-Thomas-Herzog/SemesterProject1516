@@ -37,7 +37,7 @@ namespace UFO.Server.Webservice.Soap
         {
             List<ArtistModel> models = new List<ArtistModel>();
             ArtistModel model = null;
-            if ((model = handleAuthentication()) == null)
+            if ((model = HandleAuthentication()) == null)
             {
                 try
                 {
@@ -76,7 +76,7 @@ namespace UFO.Server.Webservice.Soap
         public ArtistModel GetDetails(long id)
         {
             ArtistModel model = null;
-            if ((model = handleAuthentication()) == null)
+            if ((model = HandleAuthentication()) == null)
             {
                 try
                 {

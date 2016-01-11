@@ -34,7 +34,7 @@ namespace UFO.Server.Webservice.Soap.Soap
         {
             List<PerformanceModel> models = new List<PerformanceModel>();
             PerformanceModel model = null;
-            if ((model = handleAuthentication()) == null)
+            if ((model = HandleAuthentication()) == null)
             {
                 try
                 {

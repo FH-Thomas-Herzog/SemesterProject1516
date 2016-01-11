@@ -10,17 +10,6 @@ C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\
 C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO.Server\UFO.Server.Data.MySql\obj\Debug\UFO.Server.Data.MySql.csprojResolveAssemblyReference.cache
 C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO.Server\UFO.Server.Data.MySql\obj\Debug\UFO.Server.Data.MySql.dll
 C:\Users\Thomas\Git Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO.Server\UFO.Server.Data.MySql\obj\Debug\UFO.Server.Data.MySql.pdb
-D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\bin\Debug\Resources\createDatabase.sql
-D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\bin\Debug\Resources\deleteDatabase.sql
-D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\bin\Debug\UFO.Server.Data.MySql.dll
-D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\bin\Debug\UFO.Server.Data.MySql.pdb
-D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\bin\Debug\UFO.Server.Data.Api.dll
-D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\bin\Debug\UFO.Common.Util.dll
-D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\bin\Debug\UFO.Server.Data.Api.pdb
-D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\bin\Debug\UFO.Common.Util.pdb
-D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\obj\Debug\UFO.Server.Data.MySql.csprojResolveAssemblyReference.cache
-D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\obj\Debug\UFO.Server.Data.MySql.dll
-D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\obj\Debug\UFO.Server.Data.MySql.pdb
 C:\Users\Thomas\Git-Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\bin\Debug\Resources\createDatabase.sql
 C:\Users\Thomas\Git-Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\bin\Debug\Resources\deleteDatabase.sql
 C:\Users\Thomas\Git-Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\bin\Debug\UFO.Server.Data.MySql.dll.config
@@ -34,3 +23,16 @@ C:\Users\Thomas\Git-Repositories\Github\FH-Hagenberg\SemesterProject1516\source\
 C:\Users\Thomas\Git-Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\obj\Debug\UFO.Server.Data.MySql.csprojResolveAssemblyReference.cache
 C:\Users\Thomas\Git-Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\obj\Debug\UFO.Server.Data.MySql.dll
 C:\Users\Thomas\Git-Repositories\Github\FH-Hagenberg\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\obj\Debug\UFO.Server.Data.MySql.pdb
+D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\obj\Debug\UFO.Server.Data.MySql.csprojResolveAssemblyReference.cache
+D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\bin\Debug\Resources\createDatabase.sql
+D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\bin\Debug\Resources\deleteDatabase.sql
+D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\bin\Debug\UFO.Server.Data.MySql.dll.config
+D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\bin\Debug\UFO.Server.Data.MySql.dll
+D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\bin\Debug\UFO.Server.Data.MySql.pdb
+D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\bin\Debug\MySql.Data.dll
+D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\bin\Debug\UFO.Server.Data.Api.dll
+D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\bin\Debug\UFO.Common.Util.dll
+D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\bin\Debug\UFO.Server.Data.Api.pdb
+D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\bin\Debug\UFO.Common.Util.pdb
+D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\obj\Debug\UFO.Server.Data.MySql.dll
+D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Server.Data.MySql\obj\Debug\UFO.Server.Data.MySql.pdb

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Xml.Serialization;
 
 namespace UFO.Server.Webservice.Soap.Model.Base
 {
@@ -14,7 +15,9 @@ namespace UFO.Server.Webservice.Soap.Model.Base
     }
     public class BaseModel
     {
-        public int ErrorCode { get; set; }
+        [XmlElement(IsNullable = true)]
+        public int? ErrorCode { get; set; }
+        [XmlElement(IsNullable = true)]
         public string Error { get; set; }
 
     }

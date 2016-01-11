@@ -43,6 +43,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="BCrypt.Net, Version=0.1.4141.31969, Culture=neutral, PublicKeyToken=f3bc8f8c31beeb49, processorArchitecture=MSIL">
+      <HintPath>..\packages\BCrypt.Net.0.1.0\lib\net35\BCrypt.Net.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.CodeDom.Providers.DotNetCompilerPlatform, Version=1.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.1.0.0\lib\net45\Microsoft.CodeDom.Providers.DotNetCompilerPlatform.dll</HintPath>
       <Private>True</Private>
@@ -77,6 +81,7 @@
   <ItemGroup>
     <Content Include="Soap\ArtistService.asmx" />
     <Content Include="Soap\PerformanceService.asmx" />
+    <Content Include="Soap\SecurityService.asmx" />
     <Content Include="Soap\VenueService.asmx" />
     <Content Include="Web.config" />
   </ItemGroup>
@@ -84,6 +89,7 @@
     <Compile Include="Model\ArtistModel.cs" />
     <Compile Include="Model\Base\BaseModel.cs" />
     <Compile Include="Model\EntityDetailsRequestModel.cs" />
+    <Compile Include="Model\LoginModel.cs" />
     <Compile Include="Model\PerformanceModel.cs" />
     <Compile Include="Model\PerformanceFilterRequest.cs" />
     <Compile Include="Model\VenueModel.cs" />
@@ -98,6 +104,10 @@
     </Compile>
     <Compile Include="Soap\PerformanceService.asmx.cs">
       <DependentUpon>PerformanceService.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Soap\SecurityService.asmx.cs">
+      <DependentUpon>SecurityService.asmx</DependentUpon>
       <SubType>Component</SubType>
     </Compile>
     <Compile Include="Soap\VenueService.asmx.cs">

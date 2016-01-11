@@ -37,7 +37,7 @@ namespace UFO.Server.Webservice.Soap.Soap
         {
             List<VenueModel> models = new List<VenueModel>();
             VenueModel model = null;
-            if ((model = handleAuthentication()) == null)
+            if ((model = HandleAuthentication()) == null)
             {
                 try
                 {
@@ -81,7 +81,7 @@ namespace UFO.Server.Webservice.Soap.Soap
         {
             List<VenueModel> models = null;
             VenueModel model = null;
-            if ((model = handleAuthentication()) == null)
+            if ((model = HandleAuthentication()) == null)
             {
                 try
                 {

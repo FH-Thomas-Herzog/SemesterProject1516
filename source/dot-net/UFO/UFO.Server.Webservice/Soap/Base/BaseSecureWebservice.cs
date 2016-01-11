@@ -17,7 +17,7 @@ namespace UFO.Server.Webservice.Soap.Soap.Base
         /// </summary>
         /// <returns>the model which holds the error information, or null if authentication succeeded</returns>
 
-        protected T handleAuthentication()
+        protected T HandleAuthentication()
         {
             if ((credentials == null) || (!credentials.IsValid()))
             {
