@@ -30,7 +30,7 @@ public class ArtistModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  implem
     }
 
     public ArtistModel(
-           int errorCode,
+           java.lang.Integer errorCode,
            java.lang.String error,
            long id,
            java.lang.String firstName,

@@ -37,6 +37,10 @@
 		<param-name>ufo.webservice.venueService</param-name>
 		<param-value>https://localhost:44300/Soap/VenueService.asmx</param-value>
 	</context-param>
+	<context-param>
+		<param-name>ufo.webservice.securityService</param-name>
+		<param-value>https://localhost:44300/Soap/SecurityService.asmx</param-value>
+	</context-param>
 	<!-- Google context parameters -->
 	<context-param>
 		<param-name>google.map.api.key</param-name>

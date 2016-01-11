@@ -24,7 +24,7 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
     }
 
     public PerformanceModel(
-           int errorCode,
+           java.lang.Integer errorCode,
            java.lang.String error,
            long id,
            java.util.Calendar startDate,

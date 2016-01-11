@@ -104,22 +104,26 @@
 					<p:ajax event="filter" process="@this" partialSubmit="true" />
 
 					<p:column sortable="true" sortBy="#{row.venue.label}"
-						filterable="true" filterBy="#{row.venue.label}">
+						filterable="true" filterBy="#{row.venue.label}"
+						style="text-align: left;">
 						<f:facet name="header">
 							<h:outputText value="#{msg.venue}" style="margin-right: 10px;" />
 							<p:commandLink action="#{venueInfoDialog.init(null)}"
 								global="true" process="@this"
 								update=":dialogGroup, :messageGroup"
+								title="#{msg.openVenueDialog}"
 								oncomplete="PF('venueInfoDialog').show();">
-								<p:graphicImage library="images" name="info_25_25.png" />
+								<p:graphicImage library="images" name="maps_25_25.png" />
 							</p:commandLink>
 						</f:facet>
-						<p:commandLink id="venueInfoLink" title="CLICK FOR OPEN DETAILS"
+						<p:commandLink id="venueInfoLink" title="#{msg.openVenueDialog}"
 							actionListener="#{venueInfoDialog.init(row.venue.id)}"
 							global="true" update=":dialogGroup, :messageGroup"
-							oncomplete="PF('venueInfoDialog').show();">
-							<h:outputText value="#{row.venue.label}" />
+							oncomplete="PF('venueInfoDialog').show();"
+							style="margin-right: 10px;">
+							<p:graphicImage library="images" name="maps_25_25.png" />
 						</p:commandLink>
+						<h:outputText value="#{row.venue.label}" />
 					</p:column>
 
 					<p:columns value="#{item.columns}" var="column"
@@ -204,8 +208,9 @@
 				rendered="#{not empty venueInfoDialog.venues}"
 				widgetVar="venueInfoDialog" closable="true" closeOnEscape="true"
 				draggable="true" responsive="true" fitViewport="true"
-				position="center" appendTo="@(body)" header="#{msg.venues}"
-				modal="true" width="650" style="padding: 10px;">
+				resizable="false" position="center" appendTo="@(body)"
+				header="#{msg.venues}" modal="true" width="630"
+				style="padding: 10px;">
 
 				<p:ajax event="close" listener="#{venueInfoDialog.onClose}"
 					global="true" async="true" partialSubmit="true"
@@ -217,13 +222,16 @@
 						center="#{venueInfoDialog.defaultLocation}" zoom="15"
 						type="ROADMAP" model="#{venueInfoDialog.map}"
 						style="width:100%; height:100%;">
+						<p:ajax event="overlaySelect"
+							listener="#{venueInfoDialog.onMarkerSelect}" update="@none" />
 					</p:gmap>
 				</h:panelGroup>
 
 				<p:carousel id="performancesList" headerText="#{msg.performances}"
 					value="#{venueInfoDialog.venues}" var="venue" numVisible="1"
-					easing="easeOutBounce" cricular="true"
-					itemStyle="width: 100%; margin: 10px;">
+					responsive="true" easing="easeOutBounce" cricular="false"
+					firstVisible="0" widgetVar="#{venueInfoDialog.venueCarouselVar}"
+					itemStyle="width: 100%; padding: 10px;">
 
 					<h:panelGroup layout="block" style="margin-bottom: 10px;">
 						<h:outputText value="#{venue.name}"

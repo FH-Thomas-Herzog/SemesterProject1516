@@ -44,16 +44,16 @@ public class ArtistServiceSoapProxy implements at.fh.ooe.swk.ufo.webservice.Arti
     return artistServiceSoap;
   }
   
-  public at.fh.ooe.swk.ufo.webservice.ArtistModel getDetails(long id) throws java.rmi.RemoteException{
-    if (artistServiceSoap == null)
-      _initArtistServiceSoapProxy();
-    return artistServiceSoap.getDetails(id);
-  }
-  
   public at.fh.ooe.swk.ufo.webservice.ArtistModel[] getSimpleArtists() throws java.rmi.RemoteException{
     if (artistServiceSoap == null)
       _initArtistServiceSoapProxy();
     return artistServiceSoap.getSimpleArtists();
+  }
+  
+  public at.fh.ooe.swk.ufo.webservice.ArtistModel getDetails(long id) throws java.rmi.RemoteException{
+    if (artistServiceSoap == null)
+      _initArtistServiceSoapProxy();
+    return artistServiceSoap.getDetails(id);
   }
   
   

@@ -8,7 +8,7 @@
 package at.fh.ooe.swk.ufo.webservice;
 
 public class BaseModel  implements java.io.Serializable {
-    private int errorCode;
+    private java.lang.Integer errorCode;
 
     private java.lang.String error;
 
@@ -16,7 +16,7 @@ public class BaseModel  implements java.io.Serializable {
     }
 
     public BaseModel(
-           int errorCode,
+           java.lang.Integer errorCode,
            java.lang.String error) {
            this.errorCode = errorCode;
            this.error = error;
@@ -28,7 +28,7 @@ public class BaseModel  implements java.io.Serializable {
      * 
      * @return errorCode
      */
-    public int getErrorCode() {
+    public java.lang.Integer getErrorCode() {
         return errorCode;
     }
 
@@ -38,7 +38,7 @@ public class BaseModel  implements java.io.Serializable {
      * 
      * @param errorCode
      */
-    public void setErrorCode(int errorCode) {
+    public void setErrorCode(java.lang.Integer errorCode) {
         this.errorCode = errorCode;
     }
 
@@ -74,7 +74,9 @@ public class BaseModel  implements java.io.Serializable {
         __equalsCalc = obj;
         boolean _equals;
         _equals = true && 
-            this.errorCode == other.getErrorCode() &&
+            ((this.errorCode==null && other.getErrorCode()==null) || 
+             (this.errorCode!=null &&
+              this.errorCode.equals(other.getErrorCode()))) &&
             ((this.error==null && other.getError()==null) || 
              (this.error!=null &&
               this.error.equals(other.getError())));
@@ -89,7 +91,9 @@ public class BaseModel  implements java.io.Serializable {
         }
         __hashCodeCalc = true;
         int _hashCode = 1;
-        _hashCode += getErrorCode();
+        if (getErrorCode() != null) {
+            _hashCode += getErrorCode().hashCode();
+        }
         if (getError() != null) {
             _hashCode += getError().hashCode();
         }
@@ -107,14 +111,13 @@ public class BaseModel  implements java.io.Serializable {
         elemField.setFieldName("errorCode");
         elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ErrorCode"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
-        elemField.setNillable(false);
+        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("error");
         elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "Error"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
-        elemField.setMinOccurs(0);
-        elemField.setNillable(false);
+        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
     }
 

@@ -51,6 +51,9 @@ public interface MessagesBundle extends Serializable {
 
 	@MessageTemplate("{TRIGGER_SEARCH_ON_ENTER}")
 	String getTriggerSearchOnEnter();
+	
+	@MessageTemplate("{OPEN_VENUE_DIALOG}")
+	String getOpenVenueDialog();
 
 	@MessageTemplate("{FILTER}")
 	String getFilter();
@@ -78,6 +81,12 @@ public interface MessagesBundle extends Serializable {
 
 	@MessageTemplate("{DAY}")
 	String getDay();
+
+	@MessageTemplate("{LOGIN}")
+	String getLogin();
+
+	@MessageTemplate("{LOGOUT}")
+	String getLogout();
 	
 	@MessageTemplate("UNEXPECTED_ERROR")
 	String getUnexpectedError();

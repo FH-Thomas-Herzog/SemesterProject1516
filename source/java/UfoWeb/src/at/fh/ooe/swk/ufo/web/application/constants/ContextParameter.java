@@ -6,6 +6,7 @@ public enum ContextParameter {
 	WEBSERVICE_ARTIST_SERVICE("ufo.webservice.artistService"),
 	WEBSERVICE_PERFORMANCE_SERVICE("ufo.webservice.performanceService"),
 	WEBSERVICE_VENUE_SERVICE("ufo.webservice.venueService"),
+	WEBSERVICE_SECURITY_SERVICE("ufo.webservice.securityService"),
 	GOOGLE_MAP_API_KEY("google.map.api.key");
 
 	public final String key;

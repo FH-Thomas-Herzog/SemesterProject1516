@@ -50,16 +50,16 @@ public class VenueServiceSoapProxy implements at.fh.ooe.swk.ufo.webservice.Venue
     return venueServiceSoap.getVenues();
   }
   
-  public at.fh.ooe.swk.ufo.webservice.VenueModel[] getVenueForPerformances(long id, at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest filter) throws java.rmi.RemoteException{
-    if (venueServiceSoap == null)
-      _initVenueServiceSoapProxy();
-    return venueServiceSoap.getVenueForPerformances(id, filter);
-  }
-  
   public at.fh.ooe.swk.ufo.webservice.VenueModel[] getVenuesForPerformances(at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest filter) throws java.rmi.RemoteException{
     if (venueServiceSoap == null)
       _initVenueServiceSoapProxy();
     return venueServiceSoap.getVenuesForPerformances(filter);
+  }
+  
+  public at.fh.ooe.swk.ufo.webservice.VenueModel[] getVenueForPerformances(long id, at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest filter) throws java.rmi.RemoteException{
+    if (venueServiceSoap == null)
+      _initVenueServiceSoapProxy();
+    return venueServiceSoap.getVenueForPerformances(id, filter);
   }
   
   

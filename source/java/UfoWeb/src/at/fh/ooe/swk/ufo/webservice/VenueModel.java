@@ -22,7 +22,7 @@ public class VenueModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  impleme
     }
 
     public VenueModel(
-           int errorCode,
+           java.lang.Integer errorCode,
            java.lang.String error,
            long id,
            java.lang.String name,

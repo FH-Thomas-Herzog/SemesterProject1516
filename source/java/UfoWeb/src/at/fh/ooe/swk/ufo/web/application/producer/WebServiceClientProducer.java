@@ -22,6 +22,9 @@ import at.fh.ooe.swk.ufo.webservice.ArtistServiceSoapStub;
 import at.fh.ooe.swk.ufo.webservice.PerformanceServiceLocator;
 import at.fh.ooe.swk.ufo.webservice.PerformanceServiceSoap;
 import at.fh.ooe.swk.ufo.webservice.PerformanceServiceSoapStub;
+import at.fh.ooe.swk.ufo.webservice.SecurityServiceLocator;
+import at.fh.ooe.swk.ufo.webservice.SecurityServiceSoap;
+import at.fh.ooe.swk.ufo.webservice.SecurityServiceSoapStub;
 import at.fh.ooe.swk.ufo.webservice.VenueServiceLocator;
 import at.fh.ooe.swk.ufo.webservice.VenueServiceSoap;
 import at.fh.ooe.swk.ufo.webservice.VenueServiceSoapStub;
@@ -52,10 +55,12 @@ public class WebServiceClientProducer implements Serializable {
 	private URL artistServiceURL;
 	private URL performanceServiceURL;
 	private URL venueServiceURL;
+	private URL securityServiceURL;
 
 	private ArtistServiceLocator artistServiceLocator;
 	private PerformanceServiceLocator performanceServiceLocator;
 	private VenueServiceLocator venueServiceLocator;
+	private SecurityServiceLocator securityServiceLocator;
 
 	@PostConstruct
 	public void postContruct() {
@@ -69,6 +74,8 @@ public class WebServiceClientProducer implements Serializable {
 			performanceServiceURL = new URL(
 					servletContext.getInitParameter(ContextParameter.WEBSERVICE_PERFORMANCE_SERVICE.key));
 			venueServiceURL = new URL(servletContext.getInitParameter(ContextParameter.WEBSERVICE_VENUE_SERVICE.key));
+			securityServiceURL = new URL(
+					servletContext.getInitParameter(ContextParameter.WEBSERVICE_SECURITY_SERVICE.key));
 		} catch (Exception e) {
 			log.error("Error during creation of service URL instances");
 			throw new IllegalStateException("One of the service urls was invalid. ", e);
@@ -78,6 +85,7 @@ public class WebServiceClientProducer implements Serializable {
 		artistServiceLocator = new ArtistServiceLocator();
 		performanceServiceLocator = new PerformanceServiceLocator();
 		venueServiceLocator = new VenueServiceLocator();
+		securityServiceLocator = new SecurityServiceLocator();
 	}
 
 	@Produces
@@ -118,6 +126,20 @@ public class WebServiceClientProducer implements Serializable {
 			return service;
 		} catch (Exception e) {
 			log.error("Could not produce the '" + VenueServiceSoap.class.getName() + "' instance", e);
+			return null;
+		}
+	}
+
+	@Produces
+	@Dependent
+	public SecurityServiceSoap produceSecurityService() {
+		try {
+			SecurityServiceSoapStub service = (SecurityServiceSoapStub) securityServiceLocator
+					.getSecurityServiceSoap(securityServiceURL);
+			service.setHeader(createSoapHeader());
+			return service;
+		} catch (Exception e) {
+			log.error("Could not produce the '" + SecurityServiceSoap.class.getName() + "' instance", e);
 			return null;
 		}
 	}

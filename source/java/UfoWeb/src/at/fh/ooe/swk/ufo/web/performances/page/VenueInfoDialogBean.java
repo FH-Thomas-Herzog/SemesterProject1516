@@ -20,7 +20,9 @@ import javax.servlet.ServletContext;
 
 import org.apache.deltaspike.core.api.common.DeltaSpike;
 import org.apache.logging.log4j.Logger;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.CloseEvent;
+import org.primefaces.event.map.OverlaySelectEvent;
 import org.primefaces.model.map.DefaultMapModel;
 import org.primefaces.model.map.LatLng;
 import org.primefaces.model.map.MapModel;
@@ -72,6 +74,8 @@ public class VenueInfoDialogBean implements Serializable {
 
 	private String apiKey;
 
+	private static final String VENUE_CAROUSEL_VAR = "venueCarousel";
+
 	public VenueInfoDialogBean() {
 		super();
 	}
@@ -103,6 +107,40 @@ public class VenueInfoDialogBean implements Serializable {
 		}
 	}
 
+	// ##################################################
+	// Event Listener
+	// ##################################################
+	/**
+	 * Rests this beans and releases all resources on close event.
+	 * 
+	 * @param event
+	 *            the CloseEvent
+	 */
+	public void onClose(CloseEvent event) {
+		reset();
+	}
+
+	/**
+	 * Invokes the client api for switching the carousel to the proper venue.
+	 * 
+	 * @param event
+	 *            {@link OverlaySelectEvent}
+	 */
+	public void onMarkerSelect(OverlaySelectEvent event) {
+		final Marker marker = (Marker) event.getOverlay();
+		int idx = venues.indexOf(marker.getData());
+		if (idx < 0) {
+			idx = 0;
+		}
+		RequestContext.getCurrentInstance().execute("PF('" + VENUE_CAROUSEL_VAR + "').setPage(" + idx + ")");
+	}
+
+	// ##################################################
+	// Helper
+	// ##################################################
+	/**
+	 * Prepares the primefaces map model.
+	 */
 	private void prepareMap() {
 		map = new DefaultMapModel();
 		for (VenueViewModel venue : venues) {
@@ -123,7 +161,10 @@ public class VenueInfoDialogBean implements Serializable {
 					final String title = new StringBuilder(venue.getName()).append(" (")
 							.append(venue.getPerformances().size()).append(" ").append(bundle.getPerformances())
 							.append(")").toString();
-					map.getMarkers().add(new Marker(latLng, title));
+					final Marker marker = new Marker(latLng, title);
+					marker.setData(venue);
+					marker.setId("marker_" + venue.getId().toString());
+					map.getMarkers().add(marker);
 				} catch (Exception e) {
 					log.error("Could not create marker for map. venue.location: " + venue.getLocation(), e);
 				}
@@ -131,6 +172,13 @@ public class VenueInfoDialogBean implements Serializable {
 		}
 	}
 
+	/**
+	 * Tries to get the location from google maps geocoding if venue does not
+	 * define location but its address.
+	 * 
+	 * @param venue
+	 *            the venue to get location for
+	 */
 	private void setLocationFromGeocoding(VenueViewModel venue) {
 		try {
 			GeoApiContext context = new GeoApiContext().setApiKey(apiKey);
@@ -146,19 +194,6 @@ public class VenueInfoDialogBean implements Serializable {
 		} catch (Exception e) {
 			log.error("Could not resolve location for address. address: " + venue.getAddress(), e);
 		}
-	}
-
-	// ##################################################
-	// Event Listener
-	// ##################################################
-	/**
-	 * Rests this beans and releases all resources on close event.
-	 * 
-	 * @param event
-	 *            the CloseEvent
-	 */
-	public void onClose(CloseEvent event) {
-		reset();
 	}
 
 	/**
@@ -182,6 +217,10 @@ public class VenueInfoDialogBean implements Serializable {
 
 	public String getDefaultLocation() {
 		return defaultLocation;
+	}
+
+	public String getVenueCarouselVar() {
+		return VENUE_CAROUSEL_VAR;
 	}
 
 }

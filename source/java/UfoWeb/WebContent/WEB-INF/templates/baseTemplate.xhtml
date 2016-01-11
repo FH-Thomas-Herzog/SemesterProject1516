@@ -53,5 +53,17 @@
 		<p:growl id="globalInfoMessageRowl" autoUpdate="true"
 			globalOnly="true" showSummary="true" life="2000" severity="info" />
 	</h:panelGroup>
+
+	<h:form id="menuStackForm" prependId="true">
+		<p:stack id="menuStack" icon="/resources/images/open_box_60_60.png"
+			expanded="true">
+			<p:menuitem value="#{msg.login}" rendered="#{not utxModel.logged}"
+				icon="/resources/images/lock_40_40.png"
+				url="#" global="true" update="@form, :messageGroup" />
+			<p:menuitem value="#{msg.logout}" rendered="#{utxModel.logged}"
+				icon="/resources/images/lock_40_40.png"
+				actionListener="#{loginBean.logout()}" global="true" update="@form" />
+		</p:stack>
+	</h:form>
 </h:body>
 </html>
