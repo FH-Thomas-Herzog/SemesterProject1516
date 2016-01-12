@@ -93,4 +93,10 @@ public interface MessagesBundle extends Serializable {
 
 	@MessageTemplate("{ERROR_CONVERT_NOT_FOUND}")
 	String getErrorConvertNotFound();
+
+	@MessageTemplate("{USERNAME}")
+	String getUsername();
+
+	@MessageTemplate("{PASSWORD}")
+	String getPassword();
 }

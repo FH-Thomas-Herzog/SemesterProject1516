@@ -71,11 +71,11 @@
 				<div class="ui-grid-col-12" style="padding: 5px;">
 					<p:commandButton id="filterButton" value="#{msg.filter}"
 						action="#{performanceFilterBean.filter()}" process="@form"
-						global="true" update=":performancesForm, :messageGroup" />
+						global="true" update=":performancesForm" />
 					<p:commandButton id="resetButton" value="#{msg.reset}"
 						action="#{performanceFilterBean.clear()}"
 						style="margin-left:10px;" process="@this" global="true"
-						update="@form, :performancesForm, :messageGroup" />
+						update="@form, :performancesForm" />
 				</div>
 			</div>
 		</h:form>
@@ -109,8 +109,7 @@
 						<f:facet name="header">
 							<h:outputText value="#{msg.venue}" style="margin-right: 10px;" />
 							<p:commandLink action="#{venueInfoDialog.init(null)}"
-								global="true" process="@this"
-								update=":dialogGroup, :messageGroup"
+								global="true" process="@this" update=":dialogGroup"
 								title="#{msg.openVenueDialog}"
 								oncomplete="PF('venueInfoDialog').show();">
 								<p:graphicImage library="images" name="maps_25_25.png" />
@@ -118,7 +117,7 @@
 						</f:facet>
 						<p:commandLink id="venueInfoLink" title="#{msg.openVenueDialog}"
 							actionListener="#{venueInfoDialog.init(row.venue.id)}"
-							global="true" update=":dialogGroup, :messageGroup"
+							global="true" update=":dialogGroup"
 							oncomplete="PF('venueInfoDialog').show();"
 							style="margin-right: 10px;">
 							<p:graphicImage library="images" name="maps_25_25.png" />
@@ -134,7 +133,7 @@
 						<h:panelGroup rendered="#{not empty model}">
 							<p:commandLink id="infoLink" title="CLICK FOR OPEN DETAILS"
 								actionListener="#{artistInfoDialog.init(model.id)}"
-								global="true" update=":dialogGroup, :messageGroup"
+								global="true" update=":dialogGroup"
 								oncomplete="PF('artistInfoDialog').show();">
 								<h:outputText value="#{model.name}" style="float: left;" />
 							</p:commandLink>
@@ -169,7 +168,7 @@
 
 				<p:ajax event="close" listener="#{artistInfoDialog.onClose}"
 					global="true" async="true" partialSubmit="true"
-					update=":artistDialogForm, :messageGroup" />
+					update=":artistDialogForm" />
 
 				<h:panelGroup layout="block" style="margin: 10px;">
 					<p:graphicImage value="#{artistInfoDialog.artist.streamedContent}"
@@ -214,7 +213,7 @@
 
 				<p:ajax event="close" listener="#{venueInfoDialog.onClose}"
 					global="true" async="true" partialSubmit="true"
-					update=":venueDialogForm, :messageGroup" />
+					update=":venueDialogForm" />
 
 				<h:panelGroup id="mapContainer" layout="block"
 					style="width:600px; height:300px; margin-bottom: 10px;">
@@ -230,7 +229,7 @@
 				<p:carousel id="performancesList" headerText="#{msg.performances}"
 					value="#{venueInfoDialog.venues}" var="venue" numVisible="1"
 					responsive="true" easing="easeOutBounce" cricular="false"
-					firstVisible="0" widgetVar="#{venueInfoDialog.venueCarouselVar}"
+					firstVisible="0" widgetVar="venueCarousel"
 					itemStyle="width: 100%; padding: 10px;">
 
 					<h:panelGroup layout="block" style="margin-bottom: 10px;">

@@ -16,54 +16,109 @@
 	<h:outputStylesheet library="css" name="icon.css" />
 </h:head>
 <h:body style="height: 100%">
-	<p:ajaxStatus onstart="PF('statusDialog').show()"
-		onsuccess="PF('statusDialog').hide()" />
+	<h:panelGroup id="allContentContainer" layout="block">
+		<p:ajaxStatus onstart="PF('statusDialog').show()"
+			onsuccess="PF('statusDialog').hide()" />
 
-	<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
-		closable="false" resizable="false" showHeader="false"
-		appendTo="@(body)" style="z-index: -1000000000">
-		<h:panelGrid columns="2"
-			columnClasses="ui-dialog-message-image, ui-dialog-message-text">
-			<p:graphicImage library="images" name="loading.gif" width="100"
-				height="100" />
-			<h:outputText value="#{coreMsg.loadingPage}" />
-		</h:panelGrid>
-	</p:dialog>
+		<p:layout fullPage="true" stateful="false">
+			<p:layoutUnit id="filterLayout" header="#{msg.options}"
+				resizable="true" position="north" collapsible="true"
+				collapsed="true" maxSize="300">
+				<h:panelGroup id="filterContentContainer" layout="block">
+					<ui:insert name="filterContent" />
+				</h:panelGroup>
+			</p:layoutUnit>
 
-	<p:layout fullPage="true" stateful="false">
-		<p:layoutUnit id="filterLayout" header="#{msg.options}"
-			resizable="true" position="north" collapsible="true" collapsed="true"
-			maxSize="300">
-			<ui:insert name="filterContent" />
-		</p:layoutUnit>
+			<p:layoutUnit id="centerLayout" header="#{msg.performances}"
+				position="center">
+				<h:panelGroup id="centerContentContainer" layout="block">
+					<ui:insert name="centerContent" />
+				</h:panelGroup>
+			</p:layoutUnit>
+		</p:layout>
 
-		<p:layoutUnit id="centerLayout" header="#{msg.performances}"
-			position="center">
-			<ui:insert name="centerContent" />
-		</p:layoutUnit>
-	</p:layout>
+		<h:panelGroup id="dialogGroup" layout="block">
+			<ui:insert name="dialogContent" />
 
-	<h:panelGroup id="dialogGroup" layout="block">
-		<ui:insert name="dialogContent" />
+			<p:dialog widgetVar="statusDialog" modal="true" draggable="false"
+				closable="false" resizable="false" showHeader="false"
+				appendTo="@(body)" style="z-index: -1000000000">
+				<h:panelGrid columns="2"
+					columnClasses="ui-dialog-message-image, ui-dialog-message-text">
+					<p:graphicImage library="images" name="loading.gif" width="100"
+						height="100" />
+					<h:outputText value="#{coreMsg.loadingPage}" />
+				</h:panelGrid>
+			</p:dialog>
+
+			<h:form id="loginDialogForm" prependId="true">
+				<p:dialog id="loginDialogID" rendered="#{not utxModel.logged}"
+					widgetVar="loginDialog" closable="true" closeOnEscape="true"
+					draggable="true" responsive="true" fitViewport="true"
+					resizable="true" position="center" header="#{msg.login}"
+					modal="true" width="500" style="padding: 10px;">
+
+					<p:ajax event="close" process="@this"
+						update=":filterContentContainer, :centerContentContainer, :menuStackForm" />
+
+					<h:panelGroup id="formContainer"
+						styleClass="ui-grid ui-grid-responsive" style="max-width: 800px;">
+						<div class="ui-grid-row">
+							<div class="ui-grid-col-4" style="padding: 5px;">
+								<p:outputLabel id="usernameLabel" value="#{msg.username}" />
+							</div>
+							<div class="ui-grid-col-7" style="padding: 5px;">
+								<p:inputText id="username" value="#{loginBean.username}"
+									required="true" />
+							</div>
+							<div class="ui-grid-col-1" style="padding: 5px;">
+								<p:message for="username" display="icon" />
+							</div>
+						</div>
+						<div class="ui-grid-row">
+							<div class="ui-grid-col-4" style="padding: 5px;">
+								<p:outputLabel id="passwordLabel" value="#{msg.password}" />
+							</div>
+							<div class="ui-grid-col-7" style="padding: 5px;">
+								<p:inputText id="password" value="#{loginBean.password}"
+									required="true" />
+							</div>
+							<div class="ui-grid-col-1" style="padding: 5px;">
+								<p:message for="password" display="icon" />
+							</div>
+						</div>
+						<div class="ui-grid-row">
+							<div class="ui-grid-col-12"
+								style="padding: 5px; text-align: center">
+								<p:commandButton id="loginButton"
+									actionListener="#{loginBean.login()}" value="#{msg.login}"
+									process="@form" update="formContainer" global="true" />
+							</div>
+						</div>
+					</h:panelGroup>
+				</p:dialog>
+			</h:form>
+		</h:panelGroup>
+
+		<h:panelGroup id="messageGroup" layout="block">
+			<p:growl id="globalErrorMessageRow" autoUpdate="true"
+				globalOnly="true" showSummary="true" sticky="true" severity="error" />
+			<p:growl id="globalInfoMessageRow" autoUpdate="true"
+				globalOnly="true" showSummary="true" life="2000" severity="info" />
+		</h:panelGroup>
+
+		<h:form id="menuStackForm" prependId="true">
+			<p:stack id="menuStack" icon="/resources/images/open_box_60_60.png"
+				expanded="true">
+				<p:menuitem value="#{msg.login}" rendered="#{not utxModel.logged}"
+					icon="/resources/images/lock_30_30.png" global="true"
+					update=":dialogGroup" oncomplete="PF('loginDialog').show();" />
+				<p:menuitem value="#{msg.logout}" rendered="#{utxModel.logged}"
+					icon="/resources/images/lock_30_30.png"
+					actionListener="#{loginBean.logout()}" global="true"
+					update="@form, :dialogGroup" />
+			</p:stack>
+		</h:form>
 	</h:panelGroup>
-
-	<h:panelGroup id="messageGroup" layout="block">
-		<p:growl id="globalErrorMessageRowl" autoUpdate="true"
-			globalOnly="true" showSummary="true" sticky="true" severity="error" />
-		<p:growl id="globalInfoMessageRowl" autoUpdate="true"
-			globalOnly="true" showSummary="true" life="2000" severity="info" />
-	</h:panelGroup>
-
-	<h:form id="menuStackForm" prependId="true">
-		<p:stack id="menuStack" icon="/resources/images/open_box_60_60.png"
-			expanded="true">
-			<p:menuitem value="#{msg.login}" rendered="#{not utxModel.logged}"
-				icon="/resources/images/lock_40_40.png"
-				url="#" global="true" update="@form, :messageGroup" />
-			<p:menuitem value="#{msg.logout}" rendered="#{utxModel.logged}"
-				icon="/resources/images/lock_40_40.png"
-				actionListener="#{loginBean.logout()}" global="true" update="@form" />
-		</p:stack>
-	</h:form>
 </h:body>
 </html>

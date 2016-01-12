@@ -79,8 +79,6 @@ public class VenueInfoDialogBean implements Serializable {
 
 	private String apiKey;
 
-	private static final String VENUE_CAROUSEL_VAR = "venueCarousel";
-
 	public VenueInfoDialogBean() {
 		super();
 	}
@@ -146,7 +144,7 @@ public class VenueInfoDialogBean implements Serializable {
 		if (idx < 0) {
 			idx = 0;
 		}
-		RequestContext.getCurrentInstance().execute("PF('" + VENUE_CAROUSEL_VAR + "').setPage(" + idx + ")");
+		RequestContext.getCurrentInstance().execute("PF('venueCarousel').setPage(" + idx + ")");
 	}
 
 	// ##################################################
@@ -231,10 +229,6 @@ public class VenueInfoDialogBean implements Serializable {
 
 	public String getDefaultLocation() {
 		return defaultLocation;
-	}
-
-	public String getVenueCarouselVar() {
-		return VENUE_CAROUSEL_VAR;
 	}
 
 }
