@@ -44,7 +44,7 @@ public class SecurityServiceSoapProxy implements at.fh.ooe.swk.ufo.webservice.Se
     return securityServiceSoap;
   }
   
-  public at.fh.ooe.swk.ufo.webservice.LoginModel validateUserCredentials(java.lang.String username, java.lang.String password) throws java.rmi.RemoteException{
+  public at.fh.ooe.swk.ufo.webservice.ResultModelOfNullableOfBoolean validateUserCredentials(java.lang.String username, java.lang.String password) throws java.rmi.RemoteException{
     if (securityServiceSoap == null)
       _initSecurityServiceSoapProxy();
     return securityServiceSoap.validateUserCredentials(username, password);

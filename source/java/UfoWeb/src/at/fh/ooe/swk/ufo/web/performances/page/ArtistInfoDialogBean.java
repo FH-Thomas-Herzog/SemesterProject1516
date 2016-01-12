@@ -4,14 +4,18 @@ import java.io.Serializable;
 
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Instance;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.logging.log4j.Logger;
 import org.primefaces.event.CloseEvent;
 
+import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 import at.fh.ooe.swk.ufo.web.performances.model.ArtistViewModel;
 import at.fh.ooe.swk.ufo.webservice.ArtistServiceSoap;
+import at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfArtistModel;
 
 /**
  * This class is the handler for the artist information which gets diaplyed in
@@ -30,9 +34,15 @@ public class ArtistInfoDialogBean implements Serializable {
 	private static final long serialVersionUID = -5532729555560855764L;
 
 	@Inject
-	private transient ArtistServiceSoap artistWebservice;
-	@Inject
 	private Logger log;
+	@Inject
+	private FacesContext fc;
+	@Inject
+	private MessagesBundle bundle;
+
+	@Inject
+	private transient ArtistServiceSoap artistWebservice;
+
 	@Inject
 	private Instance<ArtistViewModel> artistInstance;
 
@@ -47,9 +57,17 @@ public class ArtistInfoDialogBean implements Serializable {
 		reset();
 		try {
 			artist = artistInstance.get();
-			artist.init(artistWebservice.getDetails(id));
+			final ResultModelOfListOfArtistModel result = artistWebservice.getDetails(id);
+			if (result.getErrorCode() != null) {
+				log.error(
+						"Webservice returned error code: " + result.getErrorCode() + " / error: " + result.getError());
+				fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getUnexpectedError(), ""));
+			} else if (result.getResult().length > 0) {
+				artist.init(result.getResult()[0]);
+			}
 		} catch (Exception e) {
 			log.error("Could not load artist model", e);
+			fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getUnexpectedError(), ""));
 		}
 	}
 

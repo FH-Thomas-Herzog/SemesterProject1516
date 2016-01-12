@@ -14,6 +14,8 @@ import java.util.stream.Collectors;
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Instance;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 import javax.servlet.ServletContext;
@@ -38,6 +40,7 @@ import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.VenueViewModel;
 import at.fh.ooe.swk.ufo.webservice.PerformanceModel;
 import at.fh.ooe.swk.ufo.webservice.PerformanceServiceSoap;
+import at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel;
 import at.fh.ooe.swk.ufo.webservice.VenueServiceSoap;
 
 /**
@@ -58,6 +61,8 @@ public class VenueInfoDialogBean implements Serializable {
 	private Logger log;
 	@Inject
 	private MessagesBundle bundle;
+	@Inject
+	private FacesContext fc;
 
 	@Inject
 	private PerformanceFilterBean filterBean;
@@ -93,17 +98,26 @@ public class VenueInfoDialogBean implements Serializable {
 	public void init(Long id) {
 		reset();
 		try {
-			venues = Arrays
-					.asList(((id == null) ? venueWebservice.getVenuesForPerformances(filterBean.createRequestModel())
-							: venueWebservice.getVenueForPerformances(id, filterBean.createRequestModel())))
-					.parallelStream().map(model -> {
-						final VenueViewModel viewModel = venueInstance.get();
-						viewModel.init(model);
-						return viewModel;
-					}).collect(Collectors.toList());
-			prepareMap();
+			ResultModelOfListOfVenueModel result = ((id == null)
+					? venueWebservice.getVenuesForPerformances(filterBean.createRequestModel())
+					: venueWebservice.getVenueForPerformances(id, filterBean.createRequestModel()));
+			if (result.getErrorCode() != null) {
+				venues = new ArrayList<>();
+				map = new DefaultMapModel();
+				log.error(
+						"Webservice returned error code: " + result.getErrorCode() + " / error: " + result.getError());
+				fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getUnexpectedError(), ""));
+			} else {
+				venues = Arrays.asList(result.getResult()).parallelStream().map(model -> {
+					final VenueViewModel viewModel = venueInstance.get();
+					viewModel.init(model);
+					return viewModel;
+				}).collect(Collectors.toList());
+				prepareMap();
+			}
 		} catch (Exception e) {
 			log.error("Could not load artist model", e);
+			fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getUnexpectedError(), ""));
 		}
 	}
 

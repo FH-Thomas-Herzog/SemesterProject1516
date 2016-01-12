@@ -8,7 +8,7 @@
 package at.fh.ooe.swk.ufo.webservice;
 
 public interface VenueServiceSoap extends java.rmi.Remote {
-    public at.fh.ooe.swk.ufo.webservice.VenueModel[] getVenues() throws java.rmi.RemoteException;
-    public at.fh.ooe.swk.ufo.webservice.VenueModel[] getVenuesForPerformances(at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest filter) throws java.rmi.RemoteException;
-    public at.fh.ooe.swk.ufo.webservice.VenueModel[] getVenueForPerformances(long id, at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest filter) throws java.rmi.RemoteException;
+    public at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel getVenues() throws java.rmi.RemoteException;
+    public at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel getVenuesForPerformances(at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest filter) throws java.rmi.RemoteException;
+    public at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel getVenueForPerformances(long id, at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest filter) throws java.rmi.RemoteException;
 }

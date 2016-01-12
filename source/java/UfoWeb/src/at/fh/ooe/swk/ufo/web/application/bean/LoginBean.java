@@ -13,6 +13,7 @@ import org.apache.logging.log4j.Logger;
 
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 import at.fh.ooe.swk.ufo.webservice.LoginModel;
+import at.fh.ooe.swk.ufo.webservice.ResultModelOfNullableOfBoolean;
 import at.fh.ooe.swk.ufo.webservice.SecurityServiceSoap;
 
 @RequestScoped
@@ -30,22 +31,22 @@ public class LoginBean implements Serializable {
 
 	@Inject
 	private transient SecurityServiceSoap securityWebservice;
-	
+
 	@SessionScoped
 	private UserContextModel utxModel;
 
 	public void login() {
 		if (securityWebservice != null) {
 			try {
-				final LoginModel soapModel = securityWebservice.validateUserCredentials(utxModel.getUsername(),
-						utxModel.getPassword());
-				if (soapModel.getErrorCode() != null) {
+				final ResultModelOfNullableOfBoolean result = securityWebservice
+						.validateUserCredentials(utxModel.getUsername(), utxModel.getPassword());
+				if (result.getErrorCode() != null) {
 					fctx.addMessage(null,
 							new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getUnexpectedError(), ""));
-					log.error("WebSerivce returned error. code: " + soapModel.getErrorCode() + " / error: "
-							+ soapModel.getError());
+					log.error("WebSerivce returned error. code: " + result.getErrorCode() + " / error: "
+							+ result.getError());
 				} else {
-					utxModel.setLogged(soapModel.isValid());
+					utxModel.setLogged(result.getResult());
 				}
 			} catch (Exception e) {
 				log.error("Error during webservice call", e);

@@ -44,7 +44,7 @@ public class PerformanceServiceSoapProxy implements at.fh.ooe.swk.ufo.webservice
     return performanceServiceSoap;
   }
   
-  public at.fh.ooe.swk.ufo.webservice.PerformanceModel[] getPerformances(at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest filter) throws java.rmi.RemoteException{
+  public at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfPerformanceModel getPerformances(at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest filter) throws java.rmi.RemoteException{
     if (performanceServiceSoap == null)
       _initPerformanceServiceSoapProxy();
     return performanceServiceSoap.getPerformances(filter);
