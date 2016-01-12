@@ -19,6 +19,5 @@ namespace UFO.Server.Webservice.Soap.Model.Base
         public int? ErrorCode { get; set; }
         [XmlElement(IsNullable = true)]
         public string Error { get; set; }
-
     }
 }

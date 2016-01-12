@@ -24,7 +24,7 @@ namespace UFO.Server.Webservice.Soap.Soap
     [System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
     // [System.Web.Script.Services.ScriptService]
-    public class VenueService : BaseSecureWebservice<VenueModel>
+    public class VenueService : BaseSecureWebservice<ResultModel<List<VenueModel>>>
     {
 
         private IVenueDao venueDao = DaoFactory.CreateVenueDao();
@@ -33,16 +33,17 @@ namespace UFO.Server.Webservice.Soap.Soap
         [WebMethod]
         [ScriptMethod(UseHttpGet = false)]
         [SoapHeader("credentials")]
-        public List<VenueModel> GetVenues()
+        public ResultModel<List<VenueModel>> GetVenues()
         {
-            List<VenueModel> models = new List<VenueModel>();
-            VenueModel model = null;
+            ResultModel<List<VenueModel>> model;
             if ((model = HandleAuthentication()) == null)
             {
+                model = new ResultModel<List<VenueModel>>();
+                model.Result = new List<VenueModel>();
                 try
                 {
                     IList<Venue> venues = venueDao.FindAll();
-                    models = venues.Select(venue => new VenueModel
+                    model.Result = venues.Select(venue => new VenueModel
                     {
                         Id = venue.Id.Value,
                         Name = venue.Name,
@@ -53,23 +54,18 @@ namespace UFO.Server.Webservice.Soap.Soap
                 catch (Exception e)
                 {
                     Console.WriteLine("GetVenues: Error during processing. error: " + e.Message);
-                    models.Add(new VenueModel
-                    {
-                        ErrorCode = (int)ErrorCode.UNKNOWN_ERROR,
-                        Error = ($"Error during processing the request. exception={e.GetType().Name}")
-                    });
+                    model.ErrorCode = (int)ErrorCode.UNKNOWN_ERROR;
+                    model.Error = ($"Error during processing the request. exception={e.GetType().Name}");
                 }
             }
-            else {
-                models.Add(model);
-            }
-            return models;
+
+            return model;
         }
 
         [WebMethod]
         [ScriptMethod(UseHttpGet = false)]
         [SoapHeader("credentials")]
-        public List<VenueModel> GetVenuesForPerformances(PerformanceFilterRequest filter)
+        public ResultModel<List<VenueModel>> GetVenuesForPerformances(PerformanceFilterRequest filter)
         {
             return GetVenueForPerformances(null, filter);
         }
@@ -77,17 +73,17 @@ namespace UFO.Server.Webservice.Soap.Soap
         [WebMethod]
         [ScriptMethod(UseHttpGet = false)]
         [SoapHeader("credentials")]
-        public List<VenueModel> GetVenueForPerformances(long? id, PerformanceFilterRequest filter)
+        public ResultModel<List<VenueModel>> GetVenueForPerformances(long? id, PerformanceFilterRequest filter)
         {
-            List<VenueModel> models = null;
-            VenueModel model = null;
+            ResultModel<List<VenueModel>> model;
             if ((model = HandleAuthentication()) == null)
             {
+                model = new ResultModel<List<VenueModel>>();
                 try
                 {
                     IList<Performance> entities = performanceDao.GetFilteredPerformancesForExport(id, filter.StartDate, filter.EndDate, filter.ArtistIds, filter.VenueIds, true);
                     IDictionary<Venue, List<Performance>> mapEntities = entities.GroupBy(entity => entity.Venue).ToDictionary(entry => entry.Key, entry => entry.ToList());
-                    models = mapEntities.Select(entry =>
+                    model.Result = mapEntities.Select(entry =>
                     {
                         Venue venue = entry.Key;
                         List<Performance> performances = entry.Value;
@@ -121,18 +117,12 @@ namespace UFO.Server.Webservice.Soap.Soap
                 catch (Exception e)
                 {
                     Console.WriteLine("GetVenueForPerformances: Error during processing. error: " + e.Message);
-                    models.Add(new VenueModel
-                    {
-                        ErrorCode = (int)ErrorCode.UNKNOWN_ERROR,
-                        Error = ($"Error during processing the request. exception={e.GetType().Name}")
-                    });
+                    model.ErrorCode = (int)ErrorCode.UNKNOWN_ERROR;
+                    model.Error = ($"Error during processing the request. exception={e.GetType().Name}");
                 }
             }
-            else
-            {
-                models.Add(model);
-            }
-            return models;
+
+            return model;
         }
     }
 }

@@ -23,23 +23,23 @@ namespace UFO.Server.Webservice.Soap.Soap
     [System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
     // [System.Web.Script.Services.ScriptService]
-    public class PerformanceService : BaseSecureWebservice<PerformanceModel>
+    public class PerformanceService : BaseSecureWebservice<ResultModel<List<PerformanceModel>>>
     {
         private IPerformanceDao performanceDao = DaoFactory.CreatePerformanceDao();
 
         [WebMethod]
         [ScriptMethod(UseHttpGet = false)]
         [SoapHeader("credentials")]
-        public List<PerformanceModel> GetPerformances(PerformanceFilterRequest filter)
+        public ResultModel<List<PerformanceModel>> GetPerformances(PerformanceFilterRequest filter)
         {
-            List<PerformanceModel> models = new List<PerformanceModel>();
-            PerformanceModel model = null;
+            ResultModel<List<PerformanceModel>> model = null;
             if ((model = HandleAuthentication()) == null)
             {
+                model = new ResultModel<List<PerformanceModel>>();
                 try
                 {
                     IList<Performance> performances = performanceDao.GetFilteredPerformancesForExport(null, filter.StartDate, filter.EndDate, filter.ArtistIds, filter.VenueIds, false);
-                    models = performances.Select(item => new PerformanceModel
+                    model.Result = performances.Select(item => new PerformanceModel
                     {
                         Id = item.Id.Value,
                         StartDate = item.StartDate.Value,
@@ -61,17 +61,12 @@ namespace UFO.Server.Webservice.Soap.Soap
                 catch (Exception e)
                 {
                     Console.WriteLine("GetPerformances: Error during processing. error: " + e.Message);
-                    models.Add(new PerformanceModel
-                    {
-                        ErrorCode = (int)ErrorCode.UNKNOWN_ERROR,
-                        Error = ("Error during processing the request. error: " + e.Message)
-                    });
+                    model.ErrorCode = (int)ErrorCode.UNKNOWN_ERROR;
+                    model.Error = ("Error during processing the request. error: " + e.Message);
                 }
             }
-            else {
-                models.Add(model);
-            }
-            return models;
+
+            return model;
         }
     }
 }

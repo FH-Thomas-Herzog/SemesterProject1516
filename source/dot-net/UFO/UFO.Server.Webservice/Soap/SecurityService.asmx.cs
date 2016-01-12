@@ -22,7 +22,7 @@ namespace UFO.Server.Webservice.Soap.Soap
     [System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
     // [System.Web.Script.Services.ScriptService]
-    public class SecurityService : BaseSecureWebservice<LoginModel>
+    public class SecurityService : BaseSecureWebservice<ResultModel<bool?>>
     {
 
         private IUserDao userDao = DaoFactory.CreateUserDao();
@@ -30,38 +30,34 @@ namespace UFO.Server.Webservice.Soap.Soap
         [WebMethod]
         [ScriptMethod(UseHttpGet = false)]
         [SoapHeader("credentials")]
-        public LoginModel ValidateUserCredentials(string username, string password)
+        public ResultModel<bool?> ValidateUserCredentials(string username, string password)
         {
-            LoginModel model;
+            ResultModel<bool?> model;
             if ((model = HandleAuthentication()) == null)
             {
+                model = new ResultModel<bool?>();
                 try
                 {
                     User user = userDao.GetAdminUserForUsername(username);
                     if ((user != null) && ((BCrypt.Net.BCrypt.Verify(password, user.Password))))
                     {
-                        model = new LoginModel
-                        {
-                            Valid = true
-                        };
+                        model.Result = true;
                     }
                     else
                     {
-                        model = new LoginModel
-                        {
-                            Valid = false
-                        };
+                        model.Result = false;
                     }
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine("GetVenues: Error during processing. error: " + e.Message);
-                    model = new LoginModel
-                    {
-                        ErrorCode = (int)ErrorCode.UNKNOWN_ERROR,
-                        Error = ($"Error during processing the request. exception={e.GetType().Name}")
-                    };
+                    model.ErrorCode = (int)ErrorCode.UNKNOWN_ERROR;
+                    model.Error = ($"Error during processing the request. exception={e.GetType().Name}");
                 }
+            }
+            else
+            {
+                model.Result = false;
             }
             return model;
         }

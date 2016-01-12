@@ -25,7 +25,7 @@ namespace UFO.Server.Webservice.Soap
     [System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
     // [System.Web.Script.Services.ScriptService]
-    public class ArtistService : BaseSecureWebservice<ArtistModel>
+    public class ArtistService : BaseSecureWebservice<ResultModel<List<ArtistModel>>>
     {
         private IArtistDao artistDao = DaoFactory.CreateArtistDao();
         private IArtistGroupDao artistGroupDao = DaoFactory.CreateArtistGroupDao();
@@ -33,58 +33,52 @@ namespace UFO.Server.Webservice.Soap
         [WebMethod]
         [ScriptMethod(UseHttpGet = false)]
         [SoapHeader("credentials")]
-        public List<ArtistModel> GetSimpleArtists()
+        public ResultModel<List<ArtistModel>> GetSimpleArtists()
         {
-            List<ArtistModel> models = new List<ArtistModel>();
-            ArtistModel model = null;
+            ResultModel<List<ArtistModel>> model;
             if ((model = HandleAuthentication()) == null)
             {
+                model = new ResultModel<List<ArtistModel>>();
                 try
                 {
                     IList<Artist> artists = artistDao.FindAll();
-                    foreach (var artist in artists)
+                    model.Result = artists.Select(artist => new ArtistModel
                     {
-                        models.Add(new ArtistModel
-                        {
-                            Id = artist.Id.Value,
-                            FirstName = artist.Firstname,
-                            LastName = artist.Lastname,
-                            Email = artist.Email,
-                            CountryCode = artist.CountryCode
-                        });
-                    }
+                        Id = artist.Id.Value,
+                        FirstName = artist.Firstname,
+                        LastName = artist.Lastname,
+                        Email = artist.Email,
+                        CountryCode = artist.CountryCode
+                    }).ToList();
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine("GetDetails: Error during processing. error: " + e.Message);
-                    models.Add(new ArtistModel
-                    {
-                        ErrorCode = (int)ErrorCode.UNKNOWN_ERROR,
-                        Error = ($"Error during processing the request. exception={e.GetType().Name}")
-                    });
+                    model.ErrorCode = (int)ErrorCode.UNKNOWN_ERROR;
+                    model.Error = ($"Error during processing the request. exception={e.GetType().Name}");
                 }
             }
-            else {
-                models.Add(model);
-            }
-            return models;
+
+            return model;
         }
 
         [WebMethod]
         [ScriptMethod(UseHttpGet = false)]
         [SoapHeader("credentials")]
-        public ArtistModel GetDetails(long id)
+        public ResultModel<List<ArtistModel>> GetDetails(long id)
         {
-            ArtistModel model = null;
+            ResultModel<List<ArtistModel>> model;
             if ((model = HandleAuthentication()) == null)
             {
+                model = new ResultModel<List<ArtistModel>>();
                 try
                 {
                     Artist artist = artistDao.Find(id);
                     ArtistGroup group = artistGroupDao.Find(artist.ArtistGroupId);
                     if ((artist != null) || (artist.Deleted))
                     {
-                        return new ArtistModel
+                        model.Result = new List<ArtistModel>();
+                        model.Result.Add(new ArtistModel
                         {
                             Id = artist.Id.Value,
                             FirstName = artist.Firstname,
@@ -95,29 +89,22 @@ namespace UFO.Server.Webservice.Soap
                             Image = artist.ImageData,
                             ImageType = artist.ImageFileType,
                             ArtistGroup = ((group != null) ? group.Name : "")
-                        };
+                        });
                     }
                     else {
-                        return new ArtistModel
-                        {
-                            ErrorCode = (int)ErrorCode.ENTRY_NOT_FOUND,
-                            Error = "Artist could not be found for id"
-                        };
+                        model.ErrorCode = (int)ErrorCode.ENTRY_NOT_FOUND;
+                        model.Error = "Artist could not be found for id";
                     }
                 }
                 catch (Exception e)
                 {
                     Console.WriteLine("GetDetails: Error during processing. error: " + e.Message);
-                    return new ArtistModel
-                    {
-                        ErrorCode = (int)ErrorCode.UNKNOWN_ERROR,
-                        Error = ($"Error during processing the request. exception={e.GetType().Name}")
-                    };
+                    model.ErrorCode = (int)ErrorCode.UNKNOWN_ERROR;
+                    model.Error = ($"Error during processing the request. exception={e.GetType().Name}");
                 }
             }
-            else {
-                return model;
-            }
+
+            return model;
         }
     }
 }
