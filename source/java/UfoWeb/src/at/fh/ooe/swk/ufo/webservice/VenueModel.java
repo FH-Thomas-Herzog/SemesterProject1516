@@ -23,6 +23,7 @@ public class VenueModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  impleme
 
     public VenueModel(
            java.lang.Integer errorCode,
+           java.lang.Integer serviceErrorCode,
            java.lang.String error,
            long id,
            java.lang.String name,
@@ -31,6 +32,7 @@ public class VenueModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  impleme
            at.fh.ooe.swk.ufo.webservice.PerformanceModel[] performances) {
         super(
             errorCode,
+            serviceErrorCode,
             error);
         this.id = id;
         this.name = name;

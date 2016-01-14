@@ -1,5 +1,5 @@
 /**
- * ResultModelOfNullableOfBoolean.java
+ * SingleResultModelOfPerformanceModel.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
@@ -7,46 +7,48 @@
 
 package at.fh.ooe.swk.ufo.webservice;
 
-public class ResultModelOfNullableOfBoolean  extends at.fh.ooe.swk.ufo.webservice.BaseModel  implements java.io.Serializable {
-    private java.lang.Boolean result;
+public class SingleResultModelOfPerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  implements java.io.Serializable {
+    private at.fh.ooe.swk.ufo.webservice.PerformanceModel result;
 
-    public ResultModelOfNullableOfBoolean() {
+    public SingleResultModelOfPerformanceModel() {
     }
 
-    public ResultModelOfNullableOfBoolean(
+    public SingleResultModelOfPerformanceModel(
            java.lang.Integer errorCode,
+           java.lang.Integer serviceErrorCode,
            java.lang.String error,
-           java.lang.Boolean result) {
+           at.fh.ooe.swk.ufo.webservice.PerformanceModel result) {
         super(
             errorCode,
+            serviceErrorCode,
             error);
         this.result = result;
     }
 
 
     /**
-     * Gets the result value for this ResultModelOfNullableOfBoolean.
+     * Gets the result value for this SingleResultModelOfPerformanceModel.
      * 
      * @return result
      */
-    public java.lang.Boolean getResult() {
+    public at.fh.ooe.swk.ufo.webservice.PerformanceModel getResult() {
         return result;
     }
 
 
     /**
-     * Sets the result value for this ResultModelOfNullableOfBoolean.
+     * Sets the result value for this SingleResultModelOfPerformanceModel.
      * 
      * @param result
      */
-    public void setResult(java.lang.Boolean result) {
+    public void setResult(at.fh.ooe.swk.ufo.webservice.PerformanceModel result) {
         this.result = result;
     }
 
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
-        if (!(obj instanceof ResultModelOfNullableOfBoolean)) return false;
-        ResultModelOfNullableOfBoolean other = (ResultModelOfNullableOfBoolean) obj;
+        if (!(obj instanceof SingleResultModelOfPerformanceModel)) return false;
+        SingleResultModelOfPerformanceModel other = (SingleResultModelOfPerformanceModel) obj;
         if (obj == null) return false;
         if (this == obj) return true;
         if (__equalsCalc != null) {
@@ -78,15 +80,16 @@ public class ResultModelOfNullableOfBoolean  extends at.fh.ooe.swk.ufo.webservic
 
     // Type metadata
     private static org.apache.axis.description.TypeDesc typeDesc =
-        new org.apache.axis.description.TypeDesc(ResultModelOfNullableOfBoolean.class, true);
+        new org.apache.axis.description.TypeDesc(SingleResultModelOfPerformanceModel.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ResultModelOfNullableOfBoolean"));
+        typeDesc.setXmlType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "SingleResultModelOfPerformanceModel"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("result");
         elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "Result"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "boolean"));
-        elemField.setNillable(true);
+        elemField.setXmlType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceModel"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
     }
 

@@ -3,7 +3,6 @@ package at.fh.ooe.swk.ufo.web.application.bean;
 import java.io.Serializable;
 
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
@@ -11,12 +10,9 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.logging.log4j.Logger;
-import org.apache.myfaces.config.element.FacesFlowMethodCall;
 import org.primefaces.context.RequestContext;
 
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
-import at.fh.ooe.swk.ufo.webservice.LoginModel;
-import at.fh.ooe.swk.ufo.webservice.ResultModelOfNullableOfBoolean;
 import at.fh.ooe.swk.ufo.webservice.SecurityServiceSoap;
 import at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean;
 

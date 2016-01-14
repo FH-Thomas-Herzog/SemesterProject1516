@@ -16,7 +16,7 @@ public class PerformanceServiceSoapStub extends org.apache.axis.client.Stub impl
     static org.apache.axis.description.OperationDesc [] _operations;
 
     static {
-        _operations = new org.apache.axis.description.OperationDesc[1];
+        _operations = new org.apache.axis.description.OperationDesc[3];
         _initOperationDesc1();
     }
 
@@ -34,6 +34,35 @@ public class PerformanceServiceSoapStub extends org.apache.axis.client.Stub impl
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
         _operations[0] = oper;
+
+        oper = new org.apache.axis.description.OperationDesc();
+        oper.setName("Save");
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "request"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceRequestModel"), at.fh.ooe.swk.ufo.webservice.PerformanceRequestModel.class, false, false);
+        param.setOmittable(true);
+        oper.addParameter(param);
+        oper.setReturnType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "SingleResultModelOfPerformanceModel"));
+        oper.setReturnClass(at.fh.ooe.swk.ufo.webservice.SingleResultModelOfPerformanceModel.class);
+        oper.setReturnQName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "SaveResult"));
+        oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
+        oper.setUse(org.apache.axis.constants.Use.LITERAL);
+        _operations[1] = oper;
+
+        oper = new org.apache.axis.description.OperationDesc();
+        oper.setName("Delete");
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "username"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
+        param.setOmittable(true);
+        oper.addParameter(param);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "password"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
+        param.setOmittable(true);
+        oper.addParameter(param);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "id"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "long"), long.class, false, false);
+        oper.addParameter(param);
+        oper.setReturnType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "SingleResultModelOfNullableOfBoolean"));
+        oper.setReturnClass(at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean.class);
+        oper.setReturnQName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "DeleteResult"));
+        oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
+        oper.setUse(org.apache.axis.constants.Use.LITERAL);
+        _operations[2] = oper;
 
     }
 
@@ -106,6 +135,27 @@ public class PerformanceServiceSoapStub extends org.apache.axis.client.Stub impl
             qName = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceModel");
             cachedSerQNames.add(qName);
             cls = at.fh.ooe.swk.ufo.webservice.PerformanceModel.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceRequestModel");
+            cachedSerQNames.add(qName);
+            cls = at.fh.ooe.swk.ufo.webservice.PerformanceRequestModel.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "SingleResultModelOfNullableOfBoolean");
+            cachedSerQNames.add(qName);
+            cls = at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "SingleResultModelOfPerformanceModel");
+            cachedSerQNames.add(qName);
+            cls = at.fh.ooe.swk.ufo.webservice.SingleResultModelOfPerformanceModel.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
@@ -210,6 +260,74 @@ public class PerformanceServiceSoapStub extends org.apache.axis.client.Stub impl
                 return (at.fh.ooe.swk.ufo.webservice.ListResultModelOfPerformanceModel) _resp;
             } catch (java.lang.Exception _exception) {
                 return (at.fh.ooe.swk.ufo.webservice.ListResultModelOfPerformanceModel) org.apache.axis.utils.JavaUtils.convert(_resp, at.fh.ooe.swk.ufo.webservice.ListResultModelOfPerformanceModel.class);
+            }
+        }
+  } catch (org.apache.axis.AxisFault axisFaultException) {
+  throw axisFaultException;
+}
+    }
+
+    public at.fh.ooe.swk.ufo.webservice.SingleResultModelOfPerformanceModel save(at.fh.ooe.swk.ufo.webservice.PerformanceRequestModel request) throws java.rmi.RemoteException {
+        if (super.cachedEndpoint == null) {
+            throw new org.apache.axis.NoEndPointException();
+        }
+        org.apache.axis.client.Call _call = createCall();
+        _call.setOperation(_operations[1]);
+        _call.setUseSOAPAction(true);
+        _call.setSOAPActionURI("https://webservice.ufo.swk.ooe.fh.at/Save");
+        _call.setEncodingStyle(null);
+        _call.setProperty(org.apache.axis.client.Call.SEND_TYPE_ATTR, Boolean.FALSE);
+        _call.setProperty(org.apache.axis.AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
+        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
+        _call.setOperationName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "Save"));
+
+        setRequestHeaders(_call);
+        setAttachments(_call);
+ try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {request});
+
+        if (_resp instanceof java.rmi.RemoteException) {
+            throw (java.rmi.RemoteException)_resp;
+        }
+        else {
+            extractAttachments(_call);
+            try {
+                return (at.fh.ooe.swk.ufo.webservice.SingleResultModelOfPerformanceModel) _resp;
+            } catch (java.lang.Exception _exception) {
+                return (at.fh.ooe.swk.ufo.webservice.SingleResultModelOfPerformanceModel) org.apache.axis.utils.JavaUtils.convert(_resp, at.fh.ooe.swk.ufo.webservice.SingleResultModelOfPerformanceModel.class);
+            }
+        }
+  } catch (org.apache.axis.AxisFault axisFaultException) {
+  throw axisFaultException;
+}
+    }
+
+    public at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean delete(java.lang.String username, java.lang.String password, long id) throws java.rmi.RemoteException {
+        if (super.cachedEndpoint == null) {
+            throw new org.apache.axis.NoEndPointException();
+        }
+        org.apache.axis.client.Call _call = createCall();
+        _call.setOperation(_operations[2]);
+        _call.setUseSOAPAction(true);
+        _call.setSOAPActionURI("https://webservice.ufo.swk.ooe.fh.at/Delete");
+        _call.setEncodingStyle(null);
+        _call.setProperty(org.apache.axis.client.Call.SEND_TYPE_ATTR, Boolean.FALSE);
+        _call.setProperty(org.apache.axis.AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
+        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
+        _call.setOperationName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "Delete"));
+
+        setRequestHeaders(_call);
+        setAttachments(_call);
+ try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {username, password, new java.lang.Long(id)});
+
+        if (_resp instanceof java.rmi.RemoteException) {
+            throw (java.rmi.RemoteException)_resp;
+        }
+        else {
+            extractAttachments(_call);
+            try {
+                return (at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean) _resp;
+            } catch (java.lang.Exception _exception) {
+                return (at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean) org.apache.axis.utils.JavaUtils.convert(_resp, at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean.class);
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {

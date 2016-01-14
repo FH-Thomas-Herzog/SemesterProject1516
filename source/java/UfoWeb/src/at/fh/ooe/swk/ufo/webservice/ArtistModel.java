@@ -31,6 +31,7 @@ public class ArtistModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  implem
 
     public ArtistModel(
            java.lang.Integer errorCode,
+           java.lang.Integer serviceErrorCode,
            java.lang.String error,
            long id,
            java.lang.String firstName,
@@ -43,6 +44,7 @@ public class ArtistModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  implem
            java.lang.String artistGroup) {
         super(
             errorCode,
+            serviceErrorCode,
             error);
         this.id = id;
         this.firstName = firstName;

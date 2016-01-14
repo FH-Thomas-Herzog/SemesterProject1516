@@ -15,10 +15,12 @@ public class ListResultModelOfVenueModel  extends at.fh.ooe.swk.ufo.webservice.B
 
     public ListResultModelOfVenueModel(
            java.lang.Integer errorCode,
+           java.lang.Integer serviceErrorCode,
            java.lang.String error,
            at.fh.ooe.swk.ufo.webservice.VenueModel[] result) {
         super(
             errorCode,
+            serviceErrorCode,
             error);
         this.result = result;
     }

@@ -15,10 +15,12 @@ public class SingleResultModelOfNullableOfBoolean  extends at.fh.ooe.swk.ufo.web
 
     public SingleResultModelOfNullableOfBoolean(
            java.lang.Integer errorCode,
+           java.lang.Integer serviceErrorCode,
            java.lang.String error,
            java.lang.Boolean result) {
         super(
             errorCode,
+            serviceErrorCode,
             error);
         this.result = result;
     }

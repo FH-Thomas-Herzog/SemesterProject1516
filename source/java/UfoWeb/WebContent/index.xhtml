@@ -128,7 +128,6 @@
 						<p:commandLink id="venueInfoLink" title="#{msg.openVenueDialog}"
 							actionListener="#{venueInfoDialog.init(row.venue.id)}"
 							global="true" update=":dialogGroup" process="@this"
-							oncomplete="PF('venueInfoDialog').show();"
 							style="margin-right: 10px;">
 							<p:graphicImage library="images" name="maps_25_25.png" />
 						</p:commandLink>
@@ -142,12 +141,12 @@
 							value="#{row.getModelForColumn(column.startHour)}" />
 						<h:panelGroup rendered="#{not empty model}">
 							<p:commandLink id="infoLink" title="CLICK FOR OPEN DETAILS"
-								actionListener="#{artistInfoDialog.init(model.id)}"
-								global="true" update=":dialogGroup" process="@this"
-								oncomplete="PF('artistInfoDialog').show();">
+								actionListener="#{artistInfoDialog.init(model.artistId)}"
+								global="true" update=":dialogGroup" process="@this">
 								<h:outputText value="#{model.name}" style="float: left;" />
 							</p:commandLink>
-							<p:commandLink id="editLink" title="CLICK FOR EDIT"
+							<p:commandLink id="editLink" rendered="#{not model.inPast}"
+								title="CLICK FOR EDIT"
 								actionListener="#{performanceEditDialog.init(model)}"
 								global="true" update=":dialogGroup" process="@this"
 								oncomplete="PF('editPerformanceDialog').show();">
@@ -158,8 +157,8 @@
 								<p:resetInput target=":dialogGroup" />
 							</p:commandLink>
 							<p:graphicImage id="warningIcon" rendered="#{model.moved}"
-								library="images" name="warn.png" width="25" height="25"
-								title="HAS BEEN MOVED" style="margin-left: 10px;">
+								library="images" name="warning_25_25.png" title="HAS BEEN MOVED"
+								style="margin-left: 10px;">
 							</p:graphicImage>
 						</h:panelGroup>
 						<br />
@@ -183,8 +182,8 @@
 				rendered="#{not empty artistInfoDialog.artist}"
 				widgetVar="artistInfoDialog" closable="true" closeOnEscape="true"
 				draggable="true" responsive="true" fitViewport="true"
-				position="center" header="#{msg.artist}" modal="true" minWidth="600"
-				minHeight="250">
+				resizable="true" position="center" header="#{msg.artist}"
+				modal="true" minWidth="600" minHeight="250">
 
 				<p:ajax event="close" listener="#{artistInfoDialog.onClose}"
 					global="true" async="true" partialSubmit="true" process="@this"
@@ -192,6 +191,7 @@
 
 				<h:panelGroup layout="block" style="margin: 10px;">
 					<p:graphicImage value="#{artistInfoDialog.artist.streamedContent}"
+						rendered="#{not empty artistInfoDialog.artist.streamedContent}"
 						cache="false" width="150" height="200" style="float: left;" />
 					<h:panelGrid id="userInfoAttributesGrid" columns="2" border="0"
 						cellpadding="10">
@@ -227,7 +227,7 @@
 				rendered="#{not empty venueInfoDialog.venues}"
 				widgetVar="venueInfoDialog" closable="true" closeOnEscape="true"
 				draggable="true" responsive="true" fitViewport="true"
-				resizable="false" position="center" header="#{msg.venues}"
+				resizable="true" position="center" header="#{msg.venues}"
 				modal="true" width="630" style="padding: 10px;">
 
 				<p:ajax event="close" listener="#{venueInfoDialog.onClose}"
@@ -280,24 +280,25 @@
 			</p:dialog>
 		</h:form>
 
-		<h:form id="editPerformanceMove" prependId="true">
+		<h:form id="editPerformanceForm" prependId="true">
 			<p:dialog id="editPerformanceDialogID"
 				rendered="#{(utxModel.logged) and (performanceEditDialog.started)}"
 				widgetVar="editPerformanceDialog" closable="true"
 				closeOnEscape="true" draggable="true" responsive="true"
-				fitViewport="true" resizable="false" position="center"
+				fitViewport="true" resizable="true" position="center"
 				header="#{msg.performance}" modal="true" width="530"
 				style="padding: 10px;">
 
 				<p:ajax event="close" listener="#{performanceEditDialog.onClose()}"
 					global="true" async="true" partialSubmit="true" process="@this"
-					update=":venueDialogForm, :dialogGroup" />
+					update=":dialogGroup, :filterContentContainer, :centerContentContainer" />
 
 				<h:panelGroup id="formContainer"
 					styleClass="ui-grid ui-grid-responsive" style="max-width: 800px;">
 					<div class="ui-grid-row">
 						<div class="ui-grid-col-12" style="padding: 5px;">
-							<p:message for="formContainer" />
+							<p:message for="saveButton" />
+							<p:message for="deleteButton" />
 						</div>
 					</div>
 					<!-- Artist -->
@@ -380,26 +381,26 @@
 							<p:message for="date" display="icon" />
 						</div>
 					</div>
-				</h:panelGroup>
-				<!-- Filter Actions -->
-				<div class="ui-grid-row">
-					<div class="ui-grid-col-12"
-						style="padding: 5px; text-align: center;">
-						<p:commandButton id="saveButton"
-							value="#{(not empty performanceEditViewModel.id) ? msg.save : msg.create}"
-							actionListener="#{performanceEditDialog.save()}"
-							process="formContainer" global="true" update="formContainer"
-							style="margin-right: 10px;" />
-						<p:commandButton id="deleteButton"
-							rendered="#{not empty performanceEditViewModel.id}"
-							value="#{msg.delete}"
-							actionListener="#{performanceEditDialog.delete()}"
-							process="formContainer" global="true" update="formContainer"
-							style="margin-right: 10px;" />
-						<p:commandButton id="closeButton" value="#{msg.close}"
-							type="button" onclick="PF('editPerformanceDialog').hide();" />
+					<!-- Filter Actions -->
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-12"
+							style="padding: 5px; text-align: center;">
+							<p:commandButton id="saveButton"
+								value="#{(not empty performanceEditViewModel.id) ? msg.save : msg.create}"
+								actionListener="#{performanceEditDialog.save}"
+								process="formContainer" global="true" update="formContainer"
+								style="margin-right: 10px;" />
+							<p:commandButton id="deleteButton"
+								rendered="#{not empty performanceEditViewModel.id}"
+								value="#{msg.delete}"
+								actionListener="#{performanceEditDialog.delete}"
+								process="formContainer" global="true" update="formContainer"
+								style="margin-right: 10px;" />
+							<p:commandButton id="closeButton" value="#{msg.close}"
+								type="button" onclick="PF('editPerformanceDialog').hide();" />
+						</div>
 					</div>
-				</div>
+				</h:panelGroup>
 			</p:dialog>
 		</h:form>
 	</ui:define>

@@ -15,10 +15,12 @@ public class ListResultModelOfArtistModel  extends at.fh.ooe.swk.ufo.webservice.
 
     public ListResultModelOfArtistModel(
            java.lang.Integer errorCode,
+           java.lang.Integer serviceErrorCode,
            java.lang.String error,
            at.fh.ooe.swk.ufo.webservice.ArtistModel[] result) {
         super(
             errorCode,
+            serviceErrorCode,
             error);
         this.result = result;
     }

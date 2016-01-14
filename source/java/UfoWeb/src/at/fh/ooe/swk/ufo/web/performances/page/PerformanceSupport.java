@@ -19,8 +19,6 @@ import javax.inject.Named;
 
 import org.apache.logging.log4j.Logger;
 
-import com.sun.org.apache.bcel.internal.generic.NEWARRAY;
-
 import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
 import at.fh.ooe.swk.ufo.web.application.converter.SelectItemIdMapperModelConverter;
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
@@ -28,8 +26,6 @@ import at.fh.ooe.swk.ufo.web.application.model.IdMapperModel;
 import at.fh.ooe.swk.ufo.webservice.ArtistServiceSoap;
 import at.fh.ooe.swk.ufo.webservice.ListResultModelOfArtistModel;
 import at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel;
-import at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfArtistModel;
-import at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel;
 import at.fh.ooe.swk.ufo.webservice.VenueServiceSoap;
 
 @SessionScoped

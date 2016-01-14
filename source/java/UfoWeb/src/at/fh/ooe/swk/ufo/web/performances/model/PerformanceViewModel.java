@@ -7,7 +7,6 @@ import java.util.TimeZone;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
 import at.fh.ooe.swk.ufo.webservice.PerformanceModel;
 
 @Dependent
@@ -19,6 +18,7 @@ public class PerformanceViewModel implements Comparable<PerformanceViewModel>, S
 	private TimeZone timeZone;
 
 	private Long id;
+	private Long version;
 	private Calendar startDate;
 	private Calendar formerStartDate;
 	private Calendar endDate;
@@ -30,19 +30,24 @@ public class PerformanceViewModel implements Comparable<PerformanceViewModel>, S
 	private Long artistId;
 	private Long venueId;
 
+	private Calendar now;
+
 	public PerformanceViewModel() {
 		super();
 	}
 
 	public void init(PerformanceModel model) {
+		now = Calendar.getInstance();
+
 		id = model.getId();
+		version = model.getVersion();
 		startDate = model.getStartDate();
 		endDate = model.getEndDate();
 		formerStartDate = model.getFormerStartDate();
 		moved = formerStartDate != null;
 		venueId = model.getVenue().getId();
 		venueName = model.getVenue().getName();
-		name = new StringBuilder(model.getArtist().getLastName()).append(", ").append(model.getArtist().getFirstName())
+		name = new StringBuilder().append(model.getArtist().getLastName()).append(", ").append(model.getArtist().getFirstName())
 				.toString();
 		groupName = model.getArtist().getArtistGroup();
 		categoryName = "";
@@ -60,11 +65,27 @@ public class PerformanceViewModel implements Comparable<PerformanceViewModel>, S
 		return name.compareTo(o.name);
 	}
 
+	public boolean isInPast() {
+		return ((now == null) || (startDate == null) || (now.compareTo(startDate) >= 0));
+	}
+
 	// ##################################################
 	// Getter and Setter
 	// ##################################################
 	public Long getId() {
 		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
 	}
 
 	public Calendar getStartDate() {

@@ -3,12 +3,7 @@ package at.fh.ooe.swk.ufo.web.performances.page;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
@@ -36,12 +31,8 @@ import com.google.maps.model.GeocodingResult;
 
 import at.fh.ooe.swk.ufo.web.application.constants.ContextParameter;
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
-import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.VenueViewModel;
 import at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel;
-import at.fh.ooe.swk.ufo.webservice.PerformanceModel;
-import at.fh.ooe.swk.ufo.webservice.PerformanceServiceSoap;
-import at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel;
 import at.fh.ooe.swk.ufo.webservice.VenueServiceSoap;
 
 /**
@@ -113,6 +104,7 @@ public class VenueInfoDialogBean implements Serializable {
 					return viewModel;
 				}).collect(Collectors.toList());
 				prepareMap();
+				RequestContext.getCurrentInstance().execute("PF('venueInfoDialog').show();");
 			}
 		} catch (Exception e) {
 			log.error("Could not load artist model", e);

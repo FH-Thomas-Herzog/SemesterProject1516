@@ -10,12 +10,12 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.logging.log4j.Logger;
+import org.primefaces.context.RequestContext;
 import org.primefaces.event.CloseEvent;
 
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 import at.fh.ooe.swk.ufo.web.performances.model.ArtistViewModel;
 import at.fh.ooe.swk.ufo.webservice.ArtistServiceSoap;
-import at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfArtistModel;
 import at.fh.ooe.swk.ufo.webservice.SingleResultModelOfArtistModel;
 
 /**
@@ -60,11 +60,14 @@ public class ArtistInfoDialogBean implements Serializable {
 			artist = artistInstance.get();
 			final SingleResultModelOfArtistModel result = artistWebservice.getDetails(id);
 			if (result.getErrorCode() != null) {
+				artist = null;
 				log.error(
 						"Webservice returned error code: " + result.getErrorCode() + " / error: " + result.getError());
 				fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getUnexpectedError(), ""));
+			} else {
+				artist.init(result.getResult());
+				RequestContext.getCurrentInstance().execute("PF('artistInfoDialog').show();");
 			}
-			artist.init(result.getResult());
 		} catch (Exception e) {
 			log.error("Could not load artist model", e);
 			fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getUnexpectedError(), ""));

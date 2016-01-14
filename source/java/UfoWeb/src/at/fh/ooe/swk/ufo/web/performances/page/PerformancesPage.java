@@ -26,12 +26,9 @@ import org.apache.logging.log4j.Logger;
 
 import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
-import at.fh.ooe.swk.ufo.web.application.model.IdLabelModel;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
 import at.fh.ooe.swk.ufo.webservice.ListResultModelOfPerformanceModel;
-import at.fh.ooe.swk.ufo.webservice.PerformanceModel;
 import at.fh.ooe.swk.ufo.webservice.PerformanceServiceSoap;
-import at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfPerformanceModel;
 
 @SessionScoped
 @Named("performancePage")

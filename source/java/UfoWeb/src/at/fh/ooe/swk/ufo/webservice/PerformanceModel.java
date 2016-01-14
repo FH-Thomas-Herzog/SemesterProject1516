@@ -10,6 +10,8 @@ package at.fh.ooe.swk.ufo.webservice;
 public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  implements java.io.Serializable {
     private long id;
 
+    private long version;
+
     private java.util.Calendar startDate;
 
     private java.util.Calendar endDate;
@@ -25,8 +27,10 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
 
     public PerformanceModel(
            java.lang.Integer errorCode,
+           java.lang.Integer serviceErrorCode,
            java.lang.String error,
            long id,
+           long version,
            java.util.Calendar startDate,
            java.util.Calendar endDate,
            java.util.Calendar formerStartDate,
@@ -34,8 +38,10 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
            at.fh.ooe.swk.ufo.webservice.VenueModel venue) {
         super(
             errorCode,
+            serviceErrorCode,
             error);
         this.id = id;
+        this.version = version;
         this.startDate = startDate;
         this.endDate = endDate;
         this.formerStartDate = formerStartDate;
@@ -61,6 +67,26 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
      */
     public void setId(long id) {
         this.id = id;
+    }
+
+
+    /**
+     * Gets the version value for this PerformanceModel.
+     * 
+     * @return version
+     */
+    public long getVersion() {
+        return version;
+    }
+
+
+    /**
+     * Sets the version value for this PerformanceModel.
+     * 
+     * @param version
+     */
+    public void setVersion(long version) {
+        this.version = version;
     }
 
 
@@ -176,6 +202,7 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
         boolean _equals;
         _equals = super.equals(obj) && 
             this.id == other.getId() &&
+            this.version == other.getVersion() &&
             ((this.startDate==null && other.getStartDate()==null) || 
              (this.startDate!=null &&
               this.startDate.equals(other.getStartDate()))) &&
@@ -203,6 +230,7 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
         __hashCodeCalc = true;
         int _hashCode = super.hashCode();
         _hashCode += new Long(getId()).hashCode();
+        _hashCode += new Long(getVersion()).hashCode();
         if (getStartDate() != null) {
             _hashCode += getStartDate().hashCode();
         }
@@ -231,6 +259,12 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("id");
         elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "Id"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "long"));
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("version");
+        elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "Version"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "long"));
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);

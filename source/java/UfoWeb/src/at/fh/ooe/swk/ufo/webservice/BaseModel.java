@@ -10,6 +10,8 @@ package at.fh.ooe.swk.ufo.webservice;
 public class BaseModel  implements java.io.Serializable {
     private java.lang.Integer errorCode;
 
+    private java.lang.Integer serviceErrorCode;
+
     private java.lang.String error;
 
     public BaseModel() {
@@ -17,8 +19,10 @@ public class BaseModel  implements java.io.Serializable {
 
     public BaseModel(
            java.lang.Integer errorCode,
+           java.lang.Integer serviceErrorCode,
            java.lang.String error) {
            this.errorCode = errorCode;
+           this.serviceErrorCode = serviceErrorCode;
            this.error = error;
     }
 
@@ -40,6 +44,26 @@ public class BaseModel  implements java.io.Serializable {
      */
     public void setErrorCode(java.lang.Integer errorCode) {
         this.errorCode = errorCode;
+    }
+
+
+    /**
+     * Gets the serviceErrorCode value for this BaseModel.
+     * 
+     * @return serviceErrorCode
+     */
+    public java.lang.Integer getServiceErrorCode() {
+        return serviceErrorCode;
+    }
+
+
+    /**
+     * Sets the serviceErrorCode value for this BaseModel.
+     * 
+     * @param serviceErrorCode
+     */
+    public void setServiceErrorCode(java.lang.Integer serviceErrorCode) {
+        this.serviceErrorCode = serviceErrorCode;
     }
 
 
@@ -77,6 +101,9 @@ public class BaseModel  implements java.io.Serializable {
             ((this.errorCode==null && other.getErrorCode()==null) || 
              (this.errorCode!=null &&
               this.errorCode.equals(other.getErrorCode()))) &&
+            ((this.serviceErrorCode==null && other.getServiceErrorCode()==null) || 
+             (this.serviceErrorCode!=null &&
+              this.serviceErrorCode.equals(other.getServiceErrorCode()))) &&
             ((this.error==null && other.getError()==null) || 
              (this.error!=null &&
               this.error.equals(other.getError())));
@@ -94,6 +121,9 @@ public class BaseModel  implements java.io.Serializable {
         if (getErrorCode() != null) {
             _hashCode += getErrorCode().hashCode();
         }
+        if (getServiceErrorCode() != null) {
+            _hashCode += getServiceErrorCode().hashCode();
+        }
         if (getError() != null) {
             _hashCode += getError().hashCode();
         }
@@ -110,6 +140,12 @@ public class BaseModel  implements java.io.Serializable {
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("errorCode");
         elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ErrorCode"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
+        elemField.setNillable(true);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("serviceErrorCode");
+        elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ServiceErrorCode"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "int"));
         elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);

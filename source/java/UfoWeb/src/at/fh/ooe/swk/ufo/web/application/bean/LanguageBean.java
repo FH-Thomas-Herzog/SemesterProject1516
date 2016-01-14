@@ -2,7 +2,6 @@ package at.fh.ooe.swk.ufo.web.application.bean;
 
 import java.io.Serializable;
 import java.util.Locale;
-import java.util.TimeZone;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -18,7 +17,8 @@ public class LanguageBean implements Serializable {
 
 	@PostConstruct
 	public void postConstruct() {
-		locale = Locale.US;
+		locale = Locale.GERMAN;
+		Locale.setDefault(locale);
 	}
 
 	// ##################################################

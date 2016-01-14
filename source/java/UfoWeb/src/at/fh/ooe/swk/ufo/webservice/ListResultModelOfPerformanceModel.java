@@ -15,10 +15,12 @@ public class ListResultModelOfPerformanceModel  extends at.fh.ooe.swk.ufo.webser
 
     public ListResultModelOfPerformanceModel(
            java.lang.Integer errorCode,
+           java.lang.Integer serviceErrorCode,
            java.lang.String error,
            at.fh.ooe.swk.ufo.webservice.PerformanceModel[] result) {
         super(
             errorCode,
+            serviceErrorCode,
             error);
         this.result = result;
     }

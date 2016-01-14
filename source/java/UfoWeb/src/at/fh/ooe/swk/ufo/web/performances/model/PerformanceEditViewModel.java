@@ -3,6 +3,7 @@ package at.fh.ooe.swk.ufo.web.performances.model;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Objects;
+import java.util.TimeZone;
 
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -19,9 +20,12 @@ public class PerformanceEditViewModel implements Serializable {
 	private static final long serialVersionUID = 1994942977872442719L;
 
 	@Inject
+	private TimeZone timeZone;
+	@Inject
 	private PerformanceSupport support;
 
 	private Long id;
+	private Long version;
 	private IdMapperModel<Long> artist;
 	private IdMapperModel<Long> venue;
 	private Calendar date;
@@ -37,22 +41,26 @@ public class PerformanceEditViewModel implements Serializable {
 		date.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DATE), 0, 0, 0);
 		// prepare times
 		hour = startHour;
+
+		date.setTimeZone(timeZone);
 	}
 
-	public void init(PerformanceViewModel model, int startHour) {
+	public void init(PerformanceViewModel model) {
 		Objects.requireNonNull(model);
 
 		reset();
 
 		id = model.getId();
+		version = model.getVersion();
 		artist = support.getArtistForId(model.getArtistId());
 		venue = support.getVenueForId(model.getVenueId());
 		date = model.getStartDate();
-		hour = startHour;
+		hour = model.getStartDate().get(Calendar.HOUR_OF_DAY);
 	}
 
 	public void reset() {
 		id = null;
+		version = null;
 		artist = null;
 		venue = null;
 		date = null;
@@ -61,6 +69,10 @@ public class PerformanceEditViewModel implements Serializable {
 
 	public Long getId() {
 		return id;
+	}
+
+	public Long getVersion() {
+		return version;
 	}
 
 	public IdMapperModel<Long> getArtist() {
