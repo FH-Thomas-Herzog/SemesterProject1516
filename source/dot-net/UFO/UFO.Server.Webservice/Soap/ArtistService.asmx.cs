@@ -73,8 +73,12 @@ namespace UFO.Server.Webservice.Soap
                 model = new SingleResultModel<ArtistModel>();
                 try
                 {
-                    Artist artist = artistDao.Find(id);
-                    ArtistGroup group = artistGroupDao.Find(artist.ArtistGroupId);
+                    Artist artist = artistDao.ById(id);
+                    ArtistGroup group = null;
+                    if (artist.ArtistGroupId != null)
+                    {
+                        group = artistGroupDao.Find(artist.ArtistGroupId);
+                    }
                     if ((artist != null) || (artist.Deleted))
                     {
                         model.Result = new ArtistModel

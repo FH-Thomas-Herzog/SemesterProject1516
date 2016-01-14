@@ -11,6 +11,7 @@ namespace UFO.Server.Webservice.Soap.Model
     public class PerformanceModel : BaseModel
     {
         public long Id { get; set; }
+        public long Version { get; set; }
 
         [XmlElement(DataType = "dateTime", IsNullable = false)]
         public DateTime StartDate { get; set; }

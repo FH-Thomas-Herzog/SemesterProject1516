@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Script.Services;
 using System.Web.Services;
 using System.Web.Services.Protocols;
+using UFO.Commander.Service.Api;
+using UFO.Commander.Service.Api.Base;
 using UFO.Server.Data.Api.Dao;
 using UFO.Server.Data.Api.Dao.Base;
 using UFO.Server.Data.Api.Entity;
@@ -25,7 +27,7 @@ namespace UFO.Server.Webservice.Soap.Soap
     public class SecurityService : BaseSecureWebservice
     {
 
-        private IUserDao userDao = DaoFactory.CreateUserDao();
+        private ISecurityService securityService = ServiceFactory.CreateSecurityService();
 
         [WebMethod]
         [ScriptMethod(UseHttpGet = false)]
@@ -38,8 +40,8 @@ namespace UFO.Server.Webservice.Soap.Soap
                 model = new SingleResultModel<bool?>();
                 try
                 {
-                    User user = userDao.GetAdminUserForUsername(username);
-                    if ((user != null) && ((BCrypt.Net.BCrypt.Verify(password, user.Password))))
+                    User user = securityService.Login(username, password);
+                    if (user != null)
                     {
                         model.Result = true;
                     }
