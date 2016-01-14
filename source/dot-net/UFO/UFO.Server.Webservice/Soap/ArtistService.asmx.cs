@@ -25,7 +25,7 @@ namespace UFO.Server.Webservice.Soap
     [System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
     // [System.Web.Script.Services.ScriptService]
-    public class ArtistService : BaseSecureWebservice<ResultModel<List<ArtistModel>>>
+    public class ArtistService : BaseSecureWebservice
     {
         private IArtistDao artistDao = DaoFactory.CreateArtistDao();
         private IArtistGroupDao artistGroupDao = DaoFactory.CreateArtistGroupDao();
@@ -33,12 +33,12 @@ namespace UFO.Server.Webservice.Soap
         [WebMethod]
         [ScriptMethod(UseHttpGet = false)]
         [SoapHeader("credentials")]
-        public ResultModel<List<ArtistModel>> GetSimpleArtists()
+        public ListResultModel<ArtistModel> GetSimpleArtists()
         {
-            ResultModel<List<ArtistModel>> model;
-            if ((model = HandleAuthentication()) == null)
+            ListResultModel<ArtistModel> model;
+            if ((model = HandleAuthentication<ListResultModel<ArtistModel>>()) == null)
             {
-                model = new ResultModel<List<ArtistModel>>();
+                model = new ListResultModel<ArtistModel>();
                 try
                 {
                     IList<Artist> artists = artistDao.FindAll();
@@ -65,20 +65,19 @@ namespace UFO.Server.Webservice.Soap
         [WebMethod]
         [ScriptMethod(UseHttpGet = false)]
         [SoapHeader("credentials")]
-        public ResultModel<List<ArtistModel>> GetDetails(long id)
+        public SingleResultModel<ArtistModel> GetDetails(long id)
         {
-            ResultModel<List<ArtistModel>> model;
-            if ((model = HandleAuthentication()) == null)
+            SingleResultModel<ArtistModel> model;
+            if ((model = HandleAuthentication<SingleResultModel<ArtistModel>>()) == null)
             {
-                model = new ResultModel<List<ArtistModel>>();
+                model = new SingleResultModel<ArtistModel>();
                 try
                 {
                     Artist artist = artistDao.Find(id);
                     ArtistGroup group = artistGroupDao.Find(artist.ArtistGroupId);
                     if ((artist != null) || (artist.Deleted))
                     {
-                        model.Result = new List<ArtistModel>();
-                        model.Result.Add(new ArtistModel
+                        model.Result = new ArtistModel
                         {
                             Id = artist.Id.Value,
                             FirstName = artist.Firstname,
@@ -89,7 +88,7 @@ namespace UFO.Server.Webservice.Soap
                             Image = artist.ImageData,
                             ImageType = artist.ImageFileType,
                             ArtistGroup = ((group != null) ? group.Name : "")
-                        });
+                        };
                     }
                     else {
                         model.ErrorCode = (int)ErrorCode.ENTRY_NOT_FOUND;

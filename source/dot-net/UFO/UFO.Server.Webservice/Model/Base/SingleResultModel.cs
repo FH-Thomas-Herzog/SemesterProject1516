@@ -6,7 +6,7 @@ using System.Xml.Serialization;
 
 namespace UFO.Server.Webservice.Soap.Model.Base
 {
-    public class ResultModel<T> : BaseModel
+    public class SingleResultModel<T> : BaseModel
     {
         public T Result { get; set; }
     }

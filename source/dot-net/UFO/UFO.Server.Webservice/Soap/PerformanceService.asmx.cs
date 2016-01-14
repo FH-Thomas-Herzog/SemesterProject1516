@@ -23,19 +23,19 @@ namespace UFO.Server.Webservice.Soap.Soap
     [System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
     // [System.Web.Script.Services.ScriptService]
-    public class PerformanceService : BaseSecureWebservice<ResultModel<List<PerformanceModel>>>
+    public class PerformanceService : BaseSecureWebservice
     {
         private IPerformanceDao performanceDao = DaoFactory.CreatePerformanceDao();
 
         [WebMethod]
         [ScriptMethod(UseHttpGet = false)]
         [SoapHeader("credentials")]
-        public ResultModel<List<PerformanceModel>> GetPerformances(PerformanceFilterRequest filter)
+        public ListResultModel<PerformanceModel> GetPerformances(PerformanceFilterRequest filter)
         {
-            ResultModel<List<PerformanceModel>> model = null;
-            if ((model = HandleAuthentication()) == null)
+            ListResultModel<PerformanceModel> model = null;
+            if ((model = HandleAuthentication<ListResultModel<PerformanceModel>>()) == null)
             {
-                model = new ResultModel<List<PerformanceModel>>();
+                model = new ListResultModel<PerformanceModel>();
                 try
                 {
                     IList<Performance> performances = performanceDao.GetFilteredPerformancesForExport(null, filter.StartDate, filter.EndDate, filter.ArtistIds, filter.VenueIds, false);

@@ -22,7 +22,7 @@ namespace UFO.Server.Webservice.Soap.Soap
     [System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
     // [System.Web.Script.Services.ScriptService]
-    public class SecurityService : BaseSecureWebservice<ResultModel<bool?>>
+    public class SecurityService : BaseSecureWebservice
     {
 
         private IUserDao userDao = DaoFactory.CreateUserDao();
@@ -30,12 +30,12 @@ namespace UFO.Server.Webservice.Soap.Soap
         [WebMethod]
         [ScriptMethod(UseHttpGet = false)]
         [SoapHeader("credentials")]
-        public ResultModel<bool?> ValidateUserCredentials(string username, string password)
+        public SingleResultModel<bool?> ValidateUserCredentials(string username, string password)
         {
-            ResultModel<bool?> model;
-            if ((model = HandleAuthentication()) == null)
+            SingleResultModel<bool?> model;
+            if ((model = HandleAuthentication<SingleResultModel<bool?>>()) == null)
             {
-                model = new ResultModel<bool?>();
+                model = new SingleResultModel<bool?>();
                 try
                 {
                     User user = userDao.GetAdminUserForUsername(username);

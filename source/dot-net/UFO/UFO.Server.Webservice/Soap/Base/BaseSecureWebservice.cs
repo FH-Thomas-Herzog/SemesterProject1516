@@ -8,7 +8,7 @@ using UFO.Server.Webservice.Soap.Soap.Authentication;
 
 namespace UFO.Server.Webservice.Soap.Soap.Base
 {
-    public abstract class BaseSecureWebservice<T> : WebService where T : BaseModel, new()
+    public abstract class BaseSecureWebservice
     {
         public Credentials credentials;
 
@@ -17,7 +17,7 @@ namespace UFO.Server.Webservice.Soap.Soap.Base
         /// </summary>
         /// <returns>the model which holds the error information, or null if authentication succeeded</returns>
 
-        protected T HandleAuthentication()
+        protected T HandleAuthentication<T>() where T : BaseModel, new()
         {
             if ((credentials == null) || (!credentials.IsValid()))
             {

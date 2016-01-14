@@ -24,7 +24,7 @@ namespace UFO.Server.Webservice.Soap.Soap
     [System.ComponentModel.ToolboxItem(false)]
     // To allow this Web Service to be called from script, using ASP.NET AJAX, uncomment the following line. 
     // [System.Web.Script.Services.ScriptService]
-    public class VenueService : BaseSecureWebservice<ResultModel<List<VenueModel>>>
+    public class VenueService : BaseSecureWebservice
     {
 
         private IVenueDao venueDao = DaoFactory.CreateVenueDao();
@@ -33,13 +33,12 @@ namespace UFO.Server.Webservice.Soap.Soap
         [WebMethod]
         [ScriptMethod(UseHttpGet = false)]
         [SoapHeader("credentials")]
-        public ResultModel<List<VenueModel>> GetVenues()
+        public ListResultModel<VenueModel> GetVenues()
         {
-            ResultModel<List<VenueModel>> model;
-            if ((model = HandleAuthentication()) == null)
+            ListResultModel<VenueModel> model;
+            if ((model = HandleAuthentication<ListResultModel<VenueModel>>()) == null)
             {
-                model = new ResultModel<List<VenueModel>>();
-                model.Result = new List<VenueModel>();
+                model = new ListResultModel<VenueModel>();
                 try
                 {
                     IList<Venue> venues = venueDao.FindAll();
@@ -65,7 +64,7 @@ namespace UFO.Server.Webservice.Soap.Soap
         [WebMethod]
         [ScriptMethod(UseHttpGet = false)]
         [SoapHeader("credentials")]
-        public ResultModel<List<VenueModel>> GetVenuesForPerformances(PerformanceFilterRequest filter)
+        public ListResultModel<VenueModel> GetVenuesForPerformances(PerformanceFilterRequest filter)
         {
             return GetVenueForPerformances(null, filter);
         }
@@ -73,12 +72,12 @@ namespace UFO.Server.Webservice.Soap.Soap
         [WebMethod]
         [ScriptMethod(UseHttpGet = false)]
         [SoapHeader("credentials")]
-        public ResultModel<List<VenueModel>> GetVenueForPerformances(long? id, PerformanceFilterRequest filter)
+        public ListResultModel<VenueModel> GetVenueForPerformances(long? id, PerformanceFilterRequest filter)
         {
-            ResultModel<List<VenueModel>> model;
-            if ((model = HandleAuthentication()) == null)
+            ListResultModel<VenueModel> model;
+            if ((model = HandleAuthentication<ListResultModel<VenueModel>>()) == null)
             {
-                model = new ResultModel<List<VenueModel>>();
+                model = new ListResultModel<VenueModel>();
                 try
                 {
                     IList<Performance> entities = performanceDao.GetFilteredPerformancesForExport(id, filter.StartDate, filter.EndDate, filter.ArtistIds, filter.VenueIds, true);
