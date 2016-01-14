@@ -51,7 +51,7 @@ public interface MessagesBundle extends Serializable {
 
 	@MessageTemplate("{TRIGGER_SEARCH_ON_ENTER}")
 	String getTriggerSearchOnEnter();
-	
+
 	@MessageTemplate("{OPEN_VENUE_DIALOG}")
 	String getOpenVenueDialog();
 
@@ -63,6 +63,9 @@ public interface MessagesBundle extends Serializable {
 
 	@MessageTemplate("{OPTIONS}")
 	String getOptions();
+
+	@MessageTemplate("{PERFORMANCE}")
+	String getPerformance();
 
 	@MessageTemplate("{PERFORMANCES}")
 	String getPerformances();
@@ -87,16 +90,34 @@ public interface MessagesBundle extends Serializable {
 
 	@MessageTemplate("{LOGOUT}")
 	String getLogout();
-	
+
 	@MessageTemplate("UNEXPECTED_ERROR")
 	String getUnexpectedError();
 
 	@MessageTemplate("{ERROR_CONVERT_NOT_FOUND}")
 	String getErrorConvertNotFound();
 
+	@MessageTemplate("{ERROR_LOGN_FAILED}")
+	String getErrorLoginFailed();
+
 	@MessageTemplate("{USERNAME}")
 	String getUsername();
 
 	@MessageTemplate("{PASSWORD}")
 	String getPassword();
+
+	@MessageTemplate("{TIME}")
+	String getTime();
+
+	@MessageTemplate("{SAVE}")
+	String getSave();
+
+	@MessageTemplate("{CREATE}")
+	String getCreate();
+
+	@MessageTemplate("{CLOSE}")
+	String getClose();
+
+	@MessageTemplate("{DELETE}")
+	String getDelete();
 }

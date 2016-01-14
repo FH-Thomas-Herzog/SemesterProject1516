@@ -64,6 +64,11 @@
 					<h:panelGroup id="formContainer"
 						styleClass="ui-grid ui-grid-responsive" style="max-width: 800px;">
 						<div class="ui-grid-row">
+							<div class="ui-grid-col-12" style="padding: 5px;">
+								<p:messages for="loginButton" />
+							</div>
+						</div>
+						<div class="ui-grid-row">
 							<div class="ui-grid-col-4" style="padding: 5px;">
 								<p:outputLabel id="usernameLabel" value="#{msg.username}" />
 							</div>
@@ -91,8 +96,9 @@
 							<div class="ui-grid-col-12"
 								style="padding: 5px; text-align: center">
 								<p:commandButton id="loginButton"
-									actionListener="#{loginBean.login()}" value="#{msg.login}"
-									process="@form" update="formContainer" global="true" />
+									actionListener="#{loginBean.login}" value="#{msg.login}"
+									process="@form" update="formContainer" global="true">
+								</p:commandButton>
 							</div>
 						</div>
 					</h:panelGroup>
@@ -112,11 +118,13 @@
 				expanded="true">
 				<p:menuitem value="#{msg.login}" rendered="#{not utxModel.logged}"
 					icon="/resources/images/lock_30_30.png" global="true"
-					update=":dialogGroup" oncomplete="PF('loginDialog').show();" />
+					update=":dialogGroup" oncomplete="PF('loginDialog').show();">
+					<p:resetInput target=":dialogGroup" />
+				</p:menuitem>
 				<p:menuitem value="#{msg.logout}" rendered="#{utxModel.logged}"
 					icon="/resources/images/lock_30_30.png"
 					actionListener="#{loginBean.logout()}" global="true"
-					update="@form, :dialogGroup" />
+					update="@form, :filterContentContainer, :centerContentContainer, :menuStackForm" />
 			</p:stack>
 		</h:form>
 	</h:panelGroup>

@@ -16,6 +16,7 @@ import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 import at.fh.ooe.swk.ufo.web.performances.model.ArtistViewModel;
 import at.fh.ooe.swk.ufo.webservice.ArtistServiceSoap;
 import at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfArtistModel;
+import at.fh.ooe.swk.ufo.webservice.SingleResultModelOfArtistModel;
 
 /**
  * This class is the handler for the artist information which gets diaplyed in
@@ -57,14 +58,13 @@ public class ArtistInfoDialogBean implements Serializable {
 		reset();
 		try {
 			artist = artistInstance.get();
-			final ResultModelOfListOfArtistModel result = artistWebservice.getDetails(id);
+			final SingleResultModelOfArtistModel result = artistWebservice.getDetails(id);
 			if (result.getErrorCode() != null) {
 				log.error(
 						"Webservice returned error code: " + result.getErrorCode() + " / error: " + result.getError());
 				fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getUnexpectedError(), ""));
-			} else if (result.getResult().length > 0) {
-				artist.init(result.getResult()[0]);
 			}
+			artist.init(result.getResult());
 		} catch (Exception e) {
 			log.error("Could not load artist model", e);
 			fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getUnexpectedError(), ""));

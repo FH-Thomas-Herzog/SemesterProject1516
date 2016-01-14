@@ -31,8 +31,8 @@ public class SecurityServiceSoapStub extends org.apache.axis.client.Stub impleme
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "password"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
         param.setOmittable(true);
         oper.addParameter(param);
-        oper.setReturnType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ResultModelOfNullableOfBoolean"));
-        oper.setReturnClass(at.fh.ooe.swk.ufo.webservice.ResultModelOfNullableOfBoolean.class);
+        oper.setReturnType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "SingleResultModelOfNullableOfBoolean"));
+        oper.setReturnClass(at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean.class);
         oper.setReturnQName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ValidateUserCredentialsResult"));
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
@@ -76,9 +76,9 @@ public class SecurityServiceSoapStub extends org.apache.axis.client.Stub impleme
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-            qName = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ResultModelOfNullableOfBoolean");
+            qName = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "SingleResultModelOfNullableOfBoolean");
             cachedSerQNames.add(qName);
-            cls = at.fh.ooe.swk.ufo.webservice.ResultModelOfNullableOfBoolean.class;
+            cls = at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
@@ -149,7 +149,7 @@ public class SecurityServiceSoapStub extends org.apache.axis.client.Stub impleme
         }
     }
 
-    public at.fh.ooe.swk.ufo.webservice.ResultModelOfNullableOfBoolean validateUserCredentials(java.lang.String username, java.lang.String password) throws java.rmi.RemoteException {
+    public at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean validateUserCredentials(java.lang.String username, java.lang.String password) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -173,9 +173,9 @@ public class SecurityServiceSoapStub extends org.apache.axis.client.Stub impleme
         else {
             extractAttachments(_call);
             try {
-                return (at.fh.ooe.swk.ufo.webservice.ResultModelOfNullableOfBoolean) _resp;
+                return (at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean) _resp;
             } catch (java.lang.Exception _exception) {
-                return (at.fh.ooe.swk.ufo.webservice.ResultModelOfNullableOfBoolean) org.apache.axis.utils.JavaUtils.convert(_resp, at.fh.ooe.swk.ufo.webservice.ResultModelOfNullableOfBoolean.class);
+                return (at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean) org.apache.axis.utils.JavaUtils.convert(_resp, at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean.class);
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {

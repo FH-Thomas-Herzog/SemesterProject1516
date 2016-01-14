@@ -26,13 +26,15 @@ import at.fh.ooe.swk.ufo.web.application.converter.SelectItemIdMapperModelConver
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 import at.fh.ooe.swk.ufo.web.application.model.IdMapperModel;
 import at.fh.ooe.swk.ufo.webservice.ArtistServiceSoap;
+import at.fh.ooe.swk.ufo.webservice.ListResultModelOfArtistModel;
+import at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel;
 import at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfArtistModel;
 import at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel;
 import at.fh.ooe.swk.ufo.webservice.VenueServiceSoap;
 
 @SessionScoped
-@Named("performanceFilterSupport")
-public class PerformanceFilterSupport implements Serializable {
+@Named("performanceSupport")
+public class PerformanceSupport implements Serializable {
 
 	private static final long serialVersionUID = -2624440244824919675L;
 
@@ -64,7 +66,7 @@ public class PerformanceFilterSupport implements Serializable {
 		// Caused context not active if used in lambda expression
 		final Locale locale = languageBean.getLocale();
 		try {
-			final ResultModelOfListOfArtistModel result = artistWebservice.getSimpleArtists();
+			final ListResultModelOfArtistModel result = artistWebservice.getSimpleArtists();
 			if (result.getErrorCode() != null) {
 				artistItems = new ArrayList<>();
 				log.error(
@@ -90,7 +92,7 @@ public class PerformanceFilterSupport implements Serializable {
 
 	public void loadVenueFilterOptions() {
 		try {
-			final ResultModelOfListOfVenueModel result = venueWebservice.getVenues();
+			final ListResultModelOfVenueModel result = venueWebservice.getVenues();
 			if (result.getErrorCode() != null) {
 				log.error(
 						"webservice returned error code: " + result.getErrorCode() + " / error: " + result.getError());
@@ -108,6 +110,26 @@ public class PerformanceFilterSupport implements Serializable {
 			fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getUnexpectedError(), ""));
 		}
 		venueItemConverter = new SelectItemIdMapperModelConverter(venueItems, bundle);
+	}
+
+	public IdMapperModel<Long> getArtistForId(long id) {
+		for (SelectItem selectItem : artistItems) {
+			final IdMapperModel<Long> model = (IdMapperModel<Long>) selectItem.getValue();
+			if (model.getId().equals(id)) {
+				return (IdMapperModel<Long>) selectItem.getValue();
+			}
+		}
+		return null;
+	}
+
+	public IdMapperModel<Long> getVenueForId(long id) {
+		for (SelectItem selectItem : venueItems) {
+			final IdMapperModel<Long> model = (IdMapperModel<Long>) selectItem.getValue();
+			if (model.getId().equals(id)) {
+				return (IdMapperModel<Long>) selectItem.getValue();
+			}
+		}
+		return null;
 	}
 
 	public Converter getArtistItemConverter() {

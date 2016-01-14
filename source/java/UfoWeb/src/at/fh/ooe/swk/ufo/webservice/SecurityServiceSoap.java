@@ -8,5 +8,5 @@
 package at.fh.ooe.swk.ufo.webservice;
 
 public interface SecurityServiceSoap extends java.rmi.Remote {
-    public at.fh.ooe.swk.ufo.webservice.ResultModelOfNullableOfBoolean validateUserCredentials(java.lang.String username, java.lang.String password) throws java.rmi.RemoteException;
+    public at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean validateUserCredentials(java.lang.String username, java.lang.String password) throws java.rmi.RemoteException;
 }

@@ -25,7 +25,7 @@ public class PerformanceFilterBean implements Serializable {
 	@Inject
 	private PerformancesPage page;
 	@Inject
-	private PerformanceFilterSupport supportBean;
+	private PerformanceSupport supportBean;
 	@Inject
 	private TimeZone timeZone;
 

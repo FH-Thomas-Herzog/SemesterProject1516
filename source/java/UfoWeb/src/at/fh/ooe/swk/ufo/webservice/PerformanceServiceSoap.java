@@ -8,5 +8,5 @@
 package at.fh.ooe.swk.ufo.webservice;
 
 public interface PerformanceServiceSoap extends java.rmi.Remote {
-    public at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfPerformanceModel getPerformances(at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest filter) throws java.rmi.RemoteException;
+    public at.fh.ooe.swk.ufo.webservice.ListResultModelOfPerformanceModel getPerformances(at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest filter) throws java.rmi.RemoteException;
 }

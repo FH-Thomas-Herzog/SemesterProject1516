@@ -38,6 +38,7 @@ import at.fh.ooe.swk.ufo.web.application.constants.ContextParameter;
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.VenueViewModel;
+import at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel;
 import at.fh.ooe.swk.ufo.webservice.PerformanceModel;
 import at.fh.ooe.swk.ufo.webservice.PerformanceServiceSoap;
 import at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel;
@@ -96,7 +97,7 @@ public class VenueInfoDialogBean implements Serializable {
 	public void init(Long id) {
 		reset();
 		try {
-			ResultModelOfListOfVenueModel result = ((id == null)
+			ListResultModelOfVenueModel result = ((id == null)
 					? venueWebservice.getVenuesForPerformances(filterBean.createRequestModel())
 					: venueWebservice.getVenueForPerformances(id, filterBean.createRequestModel()));
 			if (result.getErrorCode() != null) {

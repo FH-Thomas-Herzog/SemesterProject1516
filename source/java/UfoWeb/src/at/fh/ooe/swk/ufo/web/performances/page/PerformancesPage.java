@@ -28,6 +28,7 @@ import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 import at.fh.ooe.swk.ufo.web.application.model.IdLabelModel;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
+import at.fh.ooe.swk.ufo.webservice.ListResultModelOfPerformanceModel;
 import at.fh.ooe.swk.ufo.webservice.PerformanceModel;
 import at.fh.ooe.swk.ufo.webservice.PerformanceServiceSoap;
 import at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfPerformanceModel;
@@ -80,7 +81,7 @@ public class PerformancesPage implements Serializable {
 				// Formatter for current set locale
 				Format formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG)
 						.withLocale(languageBean.getLocale()).toFormat();
-				final ResultModelOfListOfPerformanceModel result = performanceWebservice
+				final ListResultModelOfPerformanceModel result = performanceWebservice
 						.getPerformances(performanceFilterPage.createRequestModel());
 				if (result.getErrorCode() != null) {
 					log.error("Webservice returned error code: " + result.getErrorCode() + " / error: "

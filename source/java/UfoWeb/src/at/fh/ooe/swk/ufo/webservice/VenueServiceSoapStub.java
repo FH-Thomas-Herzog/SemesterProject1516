@@ -25,8 +25,8 @@ public class VenueServiceSoapStub extends org.apache.axis.client.Stub implements
         org.apache.axis.description.ParameterDesc param;
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("GetVenues");
-        oper.setReturnType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ResultModelOfListOfVenueModel"));
-        oper.setReturnClass(at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel.class);
+        oper.setReturnType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ListResultModelOfVenueModel"));
+        oper.setReturnClass(at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel.class);
         oper.setReturnQName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "GetVenuesResult"));
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
@@ -37,8 +37,8 @@ public class VenueServiceSoapStub extends org.apache.axis.client.Stub implements
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "filter"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceFilterRequest"), at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest.class, false, false);
         param.setOmittable(true);
         oper.addParameter(param);
-        oper.setReturnType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ResultModelOfListOfVenueModel"));
-        oper.setReturnClass(at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel.class);
+        oper.setReturnType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ListResultModelOfVenueModel"));
+        oper.setReturnClass(at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel.class);
         oper.setReturnQName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "GetVenuesForPerformancesResult"));
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
@@ -52,8 +52,8 @@ public class VenueServiceSoapStub extends org.apache.axis.client.Stub implements
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "filter"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceFilterRequest"), at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest.class, false, false);
         param.setOmittable(true);
         oper.addParameter(param);
-        oper.setReturnType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ResultModelOfListOfVenueModel"));
-        oper.setReturnClass(at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel.class);
+        oper.setReturnType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ListResultModelOfVenueModel"));
+        oper.setReturnClass(at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel.class);
         oper.setReturnQName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "GetVenueForPerformancesResult"));
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
@@ -122,6 +122,13 @@ public class VenueServiceSoapStub extends org.apache.axis.client.Stub implements
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
+            qName = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ListResultModelOfVenueModel");
+            cachedSerQNames.add(qName);
+            cls = at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
             qName = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceFilterRequest");
             cachedSerQNames.add(qName);
             cls = at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest.class;
@@ -132,13 +139,6 @@ public class VenueServiceSoapStub extends org.apache.axis.client.Stub implements
             qName = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceModel");
             cachedSerQNames.add(qName);
             cls = at.fh.ooe.swk.ufo.webservice.PerformanceModel.class;
-            cachedSerClasses.add(cls);
-            cachedSerFactories.add(beansf);
-            cachedDeserFactories.add(beandf);
-
-            qName = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ResultModelOfListOfVenueModel");
-            cachedSerQNames.add(qName);
-            cls = at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
@@ -216,7 +216,7 @@ public class VenueServiceSoapStub extends org.apache.axis.client.Stub implements
         }
     }
 
-    public at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel getVenues() throws java.rmi.RemoteException {
+    public at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel getVenues() throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -240,9 +240,9 @@ public class VenueServiceSoapStub extends org.apache.axis.client.Stub implements
         else {
             extractAttachments(_call);
             try {
-                return (at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel) _resp;
+                return (at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel) _resp;
             } catch (java.lang.Exception _exception) {
-                return (at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel) org.apache.axis.utils.JavaUtils.convert(_resp, at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel.class);
+                return (at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel) org.apache.axis.utils.JavaUtils.convert(_resp, at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel.class);
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {
@@ -250,7 +250,7 @@ public class VenueServiceSoapStub extends org.apache.axis.client.Stub implements
 }
     }
 
-    public at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel getVenuesForPerformances(at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest filter) throws java.rmi.RemoteException {
+    public at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel getVenuesForPerformances(at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest filter) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -274,9 +274,9 @@ public class VenueServiceSoapStub extends org.apache.axis.client.Stub implements
         else {
             extractAttachments(_call);
             try {
-                return (at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel) _resp;
+                return (at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel) _resp;
             } catch (java.lang.Exception _exception) {
-                return (at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel) org.apache.axis.utils.JavaUtils.convert(_resp, at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel.class);
+                return (at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel) org.apache.axis.utils.JavaUtils.convert(_resp, at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel.class);
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {
@@ -284,7 +284,7 @@ public class VenueServiceSoapStub extends org.apache.axis.client.Stub implements
 }
     }
 
-    public at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel getVenueForPerformances(long id, at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest filter) throws java.rmi.RemoteException {
+    public at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel getVenueForPerformances(long id, at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest filter) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -308,9 +308,9 @@ public class VenueServiceSoapStub extends org.apache.axis.client.Stub implements
         else {
             extractAttachments(_call);
             try {
-                return (at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel) _resp;
+                return (at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel) _resp;
             } catch (java.lang.Exception _exception) {
-                return (at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel) org.apache.axis.utils.JavaUtils.convert(_resp, at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel.class);
+                return (at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel) org.apache.axis.utils.JavaUtils.convert(_resp, at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel.class);
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {

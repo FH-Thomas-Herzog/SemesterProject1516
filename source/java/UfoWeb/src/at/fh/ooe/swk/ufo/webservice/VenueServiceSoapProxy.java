@@ -44,19 +44,19 @@ public class VenueServiceSoapProxy implements at.fh.ooe.swk.ufo.webservice.Venue
     return venueServiceSoap;
   }
   
-  public at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel getVenues() throws java.rmi.RemoteException{
+  public at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel getVenues() throws java.rmi.RemoteException{
     if (venueServiceSoap == null)
       _initVenueServiceSoapProxy();
     return venueServiceSoap.getVenues();
   }
   
-  public at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel getVenuesForPerformances(at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest filter) throws java.rmi.RemoteException{
+  public at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel getVenuesForPerformances(at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest filter) throws java.rmi.RemoteException{
     if (venueServiceSoap == null)
       _initVenueServiceSoapProxy();
     return venueServiceSoap.getVenuesForPerformances(filter);
   }
   
-  public at.fh.ooe.swk.ufo.webservice.ResultModelOfListOfVenueModel getVenueForPerformances(long id, at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest filter) throws java.rmi.RemoteException{
+  public at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel getVenueForPerformances(long id, at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest filter) throws java.rmi.RemoteException{
     if (venueServiceSoap == null)
       _initVenueServiceSoapProxy();
     return venueServiceSoap.getVenueForPerformances(id, filter);
