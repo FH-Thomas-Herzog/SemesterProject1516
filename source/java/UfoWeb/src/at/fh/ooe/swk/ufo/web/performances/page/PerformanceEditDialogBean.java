@@ -1,11 +1,8 @@
 package at.fh.ooe.swk.ufo.web.performances.page;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.TimeZone;
-import java.util.stream.Collectors;
 
 import javax.enterprise.inject.Instance;
 import javax.faces.application.FacesMessage;
@@ -17,14 +14,12 @@ import javax.inject.Named;
 import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 import org.apache.logging.log4j.Logger;
 import org.primefaces.context.RequestContext;
-import org.primefaces.model.map.DefaultMapModel;
 
 import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
 import at.fh.ooe.swk.ufo.web.application.bean.UserContextModel;
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceEditViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
-import at.fh.ooe.swk.ufo.web.performances.model.VenueViewModel;
 import at.fh.ooe.swk.ufo.webservice.PerformanceRequestModel;
 import at.fh.ooe.swk.ufo.webservice.PerformanceServiceSoap;
 import at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean;
@@ -88,18 +83,31 @@ public class PerformanceEditDialogBean implements Serializable {
 	// ##################################################
 	// Actions
 	// ##################################################
+	public void newEntry(ActionEvent event) {
+		init(null);
+	}
+	
 	public void save(ActionEvent event) {
 		final String clientId = event.getComponent().getClientId();
 		final Calendar startDate = editViewModel.getDate();
 		startDate.set(Calendar.HOUR_OF_DAY, editViewModel.getHour());
 
 		try {
-			final PerformanceRequestModel request = new PerformanceRequestModel(null, null, null, utx.getUsername(),
-					utx.getPassword(), editViewModel.getId(), editViewModel.getVersion(),
-					editViewModel.getArtist().getId(), editViewModel.getVenue().getId(),
-					languageBean.getLocale().toString(), startDate);
+			// prepare request
+			final PerformanceRequestModel request = new PerformanceRequestModel();
+			request.setUsername(utx.getUsername());
+			request.setPassword(utx.getPassword());
+			request.setLanguage(languageBean.getLocale().getLanguage());
+			request.setId(editViewModel.getId());
+			request.setVersion(editViewModel.getVersion());
+			request.setArtistId(editViewModel.getArtist().getId());
+			request.setVenueId(editViewModel.getVenue().getId());
+			request.setStartDate(startDate);
 
+			// Call web service
 			SingleResultModelOfPerformanceModel result = performanceWebservice.save(request);
+			
+			// Handle response
 			if ((result.getErrorCode() == null) && (result.getServiceErrorCode() == null)) {
 				support.loadArtistFilterOptions();
 				support.loadVenueFilterOptions();
@@ -111,7 +119,7 @@ public class PerformanceEditDialogBean implements Serializable {
 			} else if (result.getServiceErrorCode() != null) {
 				log.error("Webservice throw logical error code: " + result.getErrorCode() + " / error: "
 						+ result.getError());
-				fc.addMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_WARN, result.getError(), ""));
+				fc.addMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_WARN, "", result.getError()));
 			} else if (result.getErrorCode() != null) {
 				log.error("Webservice throw error code: " + result.getErrorCode() + " / error: " + result.getError());
 				fc.addMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_WARN, bundle.getUnexpectedError(), ""));
@@ -125,8 +133,18 @@ public class PerformanceEditDialogBean implements Serializable {
 	public void delete(ActionEvent event) {
 		final String clientId = event.getComponent().getClientId();
 		try {
-			SingleResultModelOfNullableOfBoolean result = performanceWebservice.delete(utx.getUsername(),
-					utx.getPassword(), editViewModel.getId());
+			// Prepare request
+			final PerformanceRequestModel request = new PerformanceRequestModel();
+			request.setId(editViewModel.getId());
+			request.setVersion(editViewModel.getVersion());
+			request.setUsername(utx.getUsername());
+			request.setPassword(utx.getPassword());
+			request.setLanguage(languageBean.getLocale().getLanguage());
+
+			// Call web service
+			SingleResultModelOfNullableOfBoolean result = performanceWebservice.delete(request);
+			
+			// Handle response
 			if ((result.getErrorCode() == null) && (result.getServiceErrorCode() == null)) {
 				support.loadArtistFilterOptions();
 				support.loadVenueFilterOptions();

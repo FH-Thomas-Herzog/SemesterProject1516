@@ -1,12 +1,17 @@
 package at.fh.ooe.swk.ufo.web.performances.model;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
+import org.apache.commons.lang3.time.DateFormatUtils;
+
+import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
 import at.fh.ooe.swk.ufo.webservice.PerformanceModel;
 
 @Dependent
@@ -16,12 +21,15 @@ public class PerformanceViewModel implements Comparable<PerformanceViewModel>, S
 
 	@Inject
 	private TimeZone timeZone;
+	@Inject
+	private LanguageBean languageBean;
 
 	private Long id;
 	private Long version;
 	private Calendar startDate;
 	private Calendar formerStartDate;
 	private Calendar endDate;
+	private Calendar formerEndDate;
 	private boolean moved;
 	private String venueName;
 	private String groupName;
@@ -44,17 +52,22 @@ public class PerformanceViewModel implements Comparable<PerformanceViewModel>, S
 		startDate = model.getStartDate();
 		endDate = model.getEndDate();
 		formerStartDate = model.getFormerStartDate();
+		formerEndDate = model.getFormerEndDate();
 		moved = formerStartDate != null;
 		venueId = model.getVenue().getId();
 		venueName = model.getVenue().getName();
-		name = new StringBuilder().append(model.getArtist().getLastName()).append(", ").append(model.getArtist().getFirstName())
-				.toString();
+		name = new StringBuilder().append(model.getArtist().getLastName()).append(", ")
+				.append(model.getArtist().getFirstName()).toString();
 		groupName = model.getArtist().getArtistGroup();
 		categoryName = "";
 		artistId = model.getArtist().getId();
+
 		// Set to expected time zone
 		startDate.setTimeZone(timeZone);
 		endDate.setTimeZone(timeZone);
+		if (formerStartDate != null) {
+			formerStartDate.setTimeZone(timeZone);
+		}
 	}
 
 	// ##################################################
@@ -94,6 +107,14 @@ public class PerformanceViewModel implements Comparable<PerformanceViewModel>, S
 
 	public Calendar getEndDate() {
 		return endDate;
+	}
+
+	public Calendar getFormerStartDate() {
+		return formerStartDate;
+	}
+
+	public Calendar getFormerEndDate() {
+		return formerEndDate;
 	}
 
 	public boolean isMoved() {

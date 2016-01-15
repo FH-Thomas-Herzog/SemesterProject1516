@@ -99,15 +99,13 @@
 					style="text-align: center; vertical-align: middle;">
 
 					<f:facet name="header">
-						<h:outputText value="#{item.header}" />
-						<p:commandLink id="newLink" title="CLICK FOR NEW"
+						<h:outputText value="#{item.header}" style="margin-right: 10px;" />
+						<p:commandLink id="newLink" styleClass="fa fa-edit"
+							title="#{msg.clickCreatePerformance}"
+							rendered="#{utxModel.logged}"
 							actionListener="#{performanceEditDialog.init(null)}"
 							global="true" update=":dialogGroup" process="@this"
 							oncomplete="PF('editPerformanceDialog').show();">
-							<p:graphicImage id="newIcon" rendered="#{utxModel.logged}"
-								library="images" name="edit_25_25.png" title="EDIT HERE"
-								style="margin-left: 10px;">
-							</p:graphicImage>
 							<p:resetInput target=":dialogGroup" />
 						</p:commandLink>
 					</f:facet>
@@ -145,21 +143,52 @@
 								global="true" update=":dialogGroup" process="@this">
 								<h:outputText value="#{model.name}" style="float: left;" />
 							</p:commandLink>
-							<p:commandLink id="editLink" rendered="#{not model.inPast}"
-								title="CLICK FOR EDIT"
+							<p:commandLink id="editLink" styleClass="fa fa-edit"
+								title="#{msg.clickEditPerformance}"
+								rendered="#{(utxModel.logged) and (not model.inPast)}"
 								actionListener="#{performanceEditDialog.init(model)}"
 								global="true" update=":dialogGroup" process="@this"
 								oncomplete="PF('editPerformanceDialog').show();">
-								<p:graphicImage id="editIcon" rendered="#{utxModel.logged}"
-									library="images" name="edit_25_25.png" title="EDIT HERE"
-									style="margin-left: 10px;">
-								</p:graphicImage>
 								<p:resetInput target=":dialogGroup" />
 							</p:commandLink>
-							<p:graphicImage id="warningIcon" rendered="#{model.moved}"
-								library="images" name="warning_25_25.png" title="HAS BEEN MOVED"
-								style="margin-left: 10px;">
-							</p:graphicImage>
+							<h:panelGroup id="movedWarning" layout="block"
+								styleClass="fa fa-warning" style="color:red;"
+								rendered="#{model.moved}">
+								<pe:tooltip shared="false" atPosition="top center"
+									myPosition="bottom center" for="movedWarning" >
+									<h:outputText value="#{msg.warningPerformanceMoved}"
+										style="font-weight: bold; color: red; font-size: medium" />
+									<h:panelGrid id="tooltipGrid" columns="2" cellspacing="5"
+										border="0"
+										style="margin-top: 10px; font-size: medium">
+										<h:outputText value="#{msg.from}:" style="font-weight: bold;" />
+										<h:column>
+											<h:outputText value="#{model.formerStartDate.time}">
+												<f:convertDateTime type="both" dateStyle="medium"
+													timeStyle="short" locale="#{languageBean.locale}" />
+											</h:outputText>
+											<h:outputText value=" - " />
+											<h:outputText value="#{model.formerEndDate.time}">
+												<f:convertDateTime type="time" timeStyle="short"
+													locale="#{languageBean.locale}" />
+											</h:outputText>
+										</h:column>
+
+										<h:outputText value="#{msg.at}:" style="font-weight: bold;" />
+										<h:column>
+											<h:outputText value="#{model.startDate.time}">
+												<f:convertDateTime type="both" dateStyle="medium"
+													timeStyle="short" locale="#{languageBean.locale}" />
+											</h:outputText>
+											<h:outputText value=" - " />
+											<h:outputText value="#{model.endDate.time}">
+												<f:convertDateTime type="time" timeStyle="short"
+													locale="#{languageBean.locale}" />
+											</h:outputText>
+										</h:column>
+									</h:panelGrid>
+								</pe:tooltip>
+							</h:panelGroup>
 						</h:panelGroup>
 						<br />
 					</p:columns>
@@ -297,8 +326,39 @@
 					styleClass="ui-grid ui-grid-responsive" style="max-width: 800px;">
 					<div class="ui-grid-row">
 						<div class="ui-grid-col-12" style="padding: 5px;">
-							<p:message for="saveButton" />
-							<p:message for="deleteButton" />
+							<p:message for="saveButton" showSummary="true" />
+							<p:message for="deleteButton" showSummary="true" />
+						</div>
+					</div>
+					<!-- Actions -->
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-12" style="padding-left: 5px;">
+							<p:commandButton id="newButton" icon="fa fa-plus"
+								title="#{msg.newEntry}"
+								actionListener="#{performanceEditDialog.newEntry}"
+								process="@this" global="true" update="formContainer"
+								style="margin-right: 10px;">
+								<p:resetInput target=":formContainer" />
+							</p:commandButton>
+							<p:commandButton id="saveButton" icon="fa fa-save"
+								title="#{(not empty performanceEditViewModel.id) ? msg.save : msg.create}"
+								actionListener="#{performanceEditDialog.save}"
+								process="formContainer" global="true" update="formContainer"
+								style="margin-right: 10px;" />
+							<p:commandButton id="deleteButton" icon="fa fa-trash"
+								title="#{msg.delete}"
+								rendered="#{not empty performanceEditViewModel.id}"
+								actionListener="#{performanceEditDialog.delete}"
+								process="formContainer" global="true" update="formContainer"
+								style="margin-right: 10px;" />
+							<p:commandButton id="closeButton" icon="fa fa-close"
+								title="#{msg.close}" type="button"
+								onclick="PF('editPerformanceDialog').hide();" />
+						</div>
+					</div>
+					<div class="ui-grid-row">
+						<div class="ui-grid-col-12" style="padding: 5px;">
+							<p:separator />
 						</div>
 					</div>
 					<!-- Artist -->
@@ -379,25 +439,6 @@
 						</div>
 						<div class="ui-grid-col-1" style="padding: 5px;">
 							<p:message for="date" display="icon" />
-						</div>
-					</div>
-					<!-- Filter Actions -->
-					<div class="ui-grid-row">
-						<div class="ui-grid-col-12"
-							style="padding: 5px; text-align: center;">
-							<p:commandButton id="saveButton"
-								value="#{(not empty performanceEditViewModel.id) ? msg.save : msg.create}"
-								actionListener="#{performanceEditDialog.save}"
-								process="formContainer" global="true" update="formContainer"
-								style="margin-right: 10px;" />
-							<p:commandButton id="deleteButton"
-								rendered="#{not empty performanceEditViewModel.id}"
-								value="#{msg.delete}"
-								actionListener="#{performanceEditDialog.delete}"
-								process="formContainer" global="true" update="formContainer"
-								style="margin-right: 10px;" />
-							<p:commandButton id="closeButton" value="#{msg.close}"
-								type="button" onclick="PF('editPerformanceDialog').hide();" />
 						</div>
 					</div>
 				</h:panelGroup>

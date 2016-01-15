@@ -120,4 +120,19 @@ public interface MessagesBundle extends Serializable {
 
 	@MessageTemplate("{DELETE}")
 	String getDelete();
+
+	@MessageTemplate("{NEW_ENTRY}")
+	String getNewEntry();
+
+	@MessageTemplate("{AT}")
+	String getAt();
+
+	@MessageTemplate("{CLICK_CREATE_PERFORMANCE}")
+	String getClickCreatePerformance();
+
+	@MessageTemplate("{CLICK_EDIT_PERFORMANCE}")
+	String getClickEditPerformance();
+
+	@MessageTemplate("{WARNING_PERFORMANCE_MOVED}")
+	String getWarningPerformanceMoved();
 }

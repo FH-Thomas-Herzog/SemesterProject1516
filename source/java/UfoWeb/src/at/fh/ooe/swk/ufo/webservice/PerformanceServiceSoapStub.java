@@ -49,13 +49,8 @@ public class PerformanceServiceSoapStub extends org.apache.axis.client.Stub impl
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("Delete");
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "username"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "request"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceRequestModel"), at.fh.ooe.swk.ufo.webservice.PerformanceRequestModel.class, false, false);
         param.setOmittable(true);
-        oper.addParameter(param);
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "password"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"), java.lang.String.class, false, false);
-        param.setOmittable(true);
-        oper.addParameter(param);
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "id"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "long"), long.class, false, false);
         oper.addParameter(param);
         oper.setReturnType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "SingleResultModelOfNullableOfBoolean"));
         oper.setReturnClass(at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean.class);
@@ -301,7 +296,7 @@ public class PerformanceServiceSoapStub extends org.apache.axis.client.Stub impl
 }
     }
 
-    public at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean delete(java.lang.String username, java.lang.String password, long id) throws java.rmi.RemoteException {
+    public at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean delete(at.fh.ooe.swk.ufo.webservice.PerformanceRequestModel request) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
@@ -317,7 +312,7 @@ public class PerformanceServiceSoapStub extends org.apache.axis.client.Stub impl
 
         setRequestHeaders(_call);
         setAttachments(_call);
- try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {username, password, new java.lang.Long(id)});
+ try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {request});
 
         if (_resp instanceof java.rmi.RemoteException) {
             throw (java.rmi.RemoteException)_resp;

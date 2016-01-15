@@ -56,10 +56,10 @@ public class PerformanceServiceSoapProxy implements at.fh.ooe.swk.ufo.webservice
     return performanceServiceSoap.save(request);
   }
   
-  public at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean delete(java.lang.String username, java.lang.String password, long id) throws java.rmi.RemoteException{
+  public at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean delete(at.fh.ooe.swk.ufo.webservice.PerformanceRequestModel request) throws java.rmi.RemoteException{
     if (performanceServiceSoap == null)
       _initPerformanceServiceSoapProxy();
-    return performanceServiceSoap.delete(username, password, id);
+    return performanceServiceSoap.delete(request);
   }
   
   

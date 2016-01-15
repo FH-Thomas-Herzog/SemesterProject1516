@@ -12,13 +12,15 @@ public class PerformanceRequestModel  extends at.fh.ooe.swk.ufo.webservice.BaseM
 
     private java.lang.String password;
 
+    private java.lang.String language;
+
     private java.lang.Long id;
 
     private java.lang.Long version;
 
-    private long artistId;
+    private java.lang.Long artistId;
 
-    private long venueId;
+    private java.lang.Long venueId;
 
     private java.lang.String locale;
 
@@ -33,10 +35,11 @@ public class PerformanceRequestModel  extends at.fh.ooe.swk.ufo.webservice.BaseM
            java.lang.String error,
            java.lang.String username,
            java.lang.String password,
+           java.lang.String language,
            java.lang.Long id,
            java.lang.Long version,
-           long artistId,
-           long venueId,
+           java.lang.Long artistId,
+           java.lang.Long venueId,
            java.lang.String locale,
            java.util.Calendar startDate) {
         super(
@@ -45,6 +48,7 @@ public class PerformanceRequestModel  extends at.fh.ooe.swk.ufo.webservice.BaseM
             error);
         this.username = username;
         this.password = password;
+        this.language = language;
         this.id = id;
         this.version = version;
         this.artistId = artistId;
@@ -95,6 +99,26 @@ public class PerformanceRequestModel  extends at.fh.ooe.swk.ufo.webservice.BaseM
 
 
     /**
+     * Gets the language value for this PerformanceRequestModel.
+     * 
+     * @return language
+     */
+    public java.lang.String getLanguage() {
+        return language;
+    }
+
+
+    /**
+     * Sets the language value for this PerformanceRequestModel.
+     * 
+     * @param language
+     */
+    public void setLanguage(java.lang.String language) {
+        this.language = language;
+    }
+
+
+    /**
      * Gets the id value for this PerformanceRequestModel.
      * 
      * @return id
@@ -139,7 +163,7 @@ public class PerformanceRequestModel  extends at.fh.ooe.swk.ufo.webservice.BaseM
      * 
      * @return artistId
      */
-    public long getArtistId() {
+    public java.lang.Long getArtistId() {
         return artistId;
     }
 
@@ -149,7 +173,7 @@ public class PerformanceRequestModel  extends at.fh.ooe.swk.ufo.webservice.BaseM
      * 
      * @param artistId
      */
-    public void setArtistId(long artistId) {
+    public void setArtistId(java.lang.Long artistId) {
         this.artistId = artistId;
     }
 
@@ -159,7 +183,7 @@ public class PerformanceRequestModel  extends at.fh.ooe.swk.ufo.webservice.BaseM
      * 
      * @return venueId
      */
-    public long getVenueId() {
+    public java.lang.Long getVenueId() {
         return venueId;
     }
 
@@ -169,7 +193,7 @@ public class PerformanceRequestModel  extends at.fh.ooe.swk.ufo.webservice.BaseM
      * 
      * @param venueId
      */
-    public void setVenueId(long venueId) {
+    public void setVenueId(java.lang.Long venueId) {
         this.venueId = venueId;
     }
 
@@ -231,14 +255,21 @@ public class PerformanceRequestModel  extends at.fh.ooe.swk.ufo.webservice.BaseM
             ((this.password==null && other.getPassword()==null) || 
              (this.password!=null &&
               this.password.equals(other.getPassword()))) &&
+            ((this.language==null && other.getLanguage()==null) || 
+             (this.language!=null &&
+              this.language.equals(other.getLanguage()))) &&
             ((this.id==null && other.getId()==null) || 
              (this.id!=null &&
               this.id.equals(other.getId()))) &&
             ((this.version==null && other.getVersion()==null) || 
              (this.version!=null &&
               this.version.equals(other.getVersion()))) &&
-            this.artistId == other.getArtistId() &&
-            this.venueId == other.getVenueId() &&
+            ((this.artistId==null && other.getArtistId()==null) || 
+             (this.artistId!=null &&
+              this.artistId.equals(other.getArtistId()))) &&
+            ((this.venueId==null && other.getVenueId()==null) || 
+             (this.venueId!=null &&
+              this.venueId.equals(other.getVenueId()))) &&
             ((this.locale==null && other.getLocale()==null) || 
              (this.locale!=null &&
               this.locale.equals(other.getLocale()))) &&
@@ -262,14 +293,21 @@ public class PerformanceRequestModel  extends at.fh.ooe.swk.ufo.webservice.BaseM
         if (getPassword() != null) {
             _hashCode += getPassword().hashCode();
         }
+        if (getLanguage() != null) {
+            _hashCode += getLanguage().hashCode();
+        }
         if (getId() != null) {
             _hashCode += getId().hashCode();
         }
         if (getVersion() != null) {
             _hashCode += getVersion().hashCode();
         }
-        _hashCode += new Long(getArtistId()).hashCode();
-        _hashCode += new Long(getVenueId()).hashCode();
+        if (getArtistId() != null) {
+            _hashCode += getArtistId().hashCode();
+        }
+        if (getVenueId() != null) {
+            _hashCode += getVenueId().hashCode();
+        }
         if (getLocale() != null) {
             _hashCode += getLocale().hashCode();
         }
@@ -301,6 +339,13 @@ public class PerformanceRequestModel  extends at.fh.ooe.swk.ufo.webservice.BaseM
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("language");
+        elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "Language"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("id");
         elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "Id"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "long"));
@@ -316,13 +361,13 @@ public class PerformanceRequestModel  extends at.fh.ooe.swk.ufo.webservice.BaseM
         elemField.setFieldName("artistId");
         elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ArtistId"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "long"));
-        elemField.setNillable(false);
+        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("venueId");
         elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "VenueId"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "long"));
-        elemField.setNillable(false);
+        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("locale");
@@ -335,7 +380,7 @@ public class PerformanceRequestModel  extends at.fh.ooe.swk.ufo.webservice.BaseM
         elemField.setFieldName("startDate");
         elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "StartDate"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "dateTime"));
-        elemField.setNillable(false);
+        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
     }
 

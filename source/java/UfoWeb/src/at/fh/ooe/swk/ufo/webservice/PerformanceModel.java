@@ -18,6 +18,8 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
 
     private java.util.Calendar formerStartDate;
 
+    private java.util.Calendar formerEndDate;
+
     private at.fh.ooe.swk.ufo.webservice.ArtistModel artist;
 
     private at.fh.ooe.swk.ufo.webservice.VenueModel venue;
@@ -34,6 +36,7 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
            java.util.Calendar startDate,
            java.util.Calendar endDate,
            java.util.Calendar formerStartDate,
+           java.util.Calendar formerEndDate,
            at.fh.ooe.swk.ufo.webservice.ArtistModel artist,
            at.fh.ooe.swk.ufo.webservice.VenueModel venue) {
         super(
@@ -45,6 +48,7 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
         this.startDate = startDate;
         this.endDate = endDate;
         this.formerStartDate = formerStartDate;
+        this.formerEndDate = formerEndDate;
         this.artist = artist;
         this.venue = venue;
     }
@@ -151,6 +155,26 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
 
 
     /**
+     * Gets the formerEndDate value for this PerformanceModel.
+     * 
+     * @return formerEndDate
+     */
+    public java.util.Calendar getFormerEndDate() {
+        return formerEndDate;
+    }
+
+
+    /**
+     * Sets the formerEndDate value for this PerformanceModel.
+     * 
+     * @param formerEndDate
+     */
+    public void setFormerEndDate(java.util.Calendar formerEndDate) {
+        this.formerEndDate = formerEndDate;
+    }
+
+
+    /**
      * Gets the artist value for this PerformanceModel.
      * 
      * @return artist
@@ -212,6 +236,9 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
             ((this.formerStartDate==null && other.getFormerStartDate()==null) || 
              (this.formerStartDate!=null &&
               this.formerStartDate.equals(other.getFormerStartDate()))) &&
+            ((this.formerEndDate==null && other.getFormerEndDate()==null) || 
+             (this.formerEndDate!=null &&
+              this.formerEndDate.equals(other.getFormerEndDate()))) &&
             ((this.artist==null && other.getArtist()==null) || 
              (this.artist!=null &&
               this.artist.equals(other.getArtist()))) &&
@@ -239,6 +266,9 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
         }
         if (getFormerStartDate() != null) {
             _hashCode += getFormerStartDate().hashCode();
+        }
+        if (getFormerEndDate() != null) {
+            _hashCode += getFormerEndDate().hashCode();
         }
         if (getArtist() != null) {
             _hashCode += getArtist().hashCode();
@@ -283,6 +313,12 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("formerStartDate");
         elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "FormerStartDate"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "dateTime"));
+        elemField.setNillable(true);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("formerEndDate");
+        elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "FormerEndDate"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "dateTime"));
         elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
