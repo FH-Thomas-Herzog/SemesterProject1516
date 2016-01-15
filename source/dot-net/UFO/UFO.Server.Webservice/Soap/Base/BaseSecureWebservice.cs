@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Resources;
 using System.Web;
 using System.Web.Services;
 using UFO.Server.Webservice.Soap.Model.Base;
@@ -10,6 +13,7 @@ namespace UFO.Server.Webservice.Soap.Soap.Base
 {
     public abstract class BaseSecureWebservice
     {
+
         public Credentials credentials;
 
         /// <summary>
@@ -30,5 +34,6 @@ namespace UFO.Server.Webservice.Soap.Soap.Base
             }
             return null;
         }
+
     }
 }

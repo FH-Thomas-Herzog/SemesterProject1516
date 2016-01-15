@@ -187,15 +187,6 @@ namespace UFO.Commander.Wpf.Administration.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Der Artist hat bereits eine Führung zu diesem Zeitpunkt oder die einzuhaltende Pause  zwischen den Aufführungen wurde unterschritten .
-        /// </summary>
-        public static string ARTIST_OVERBOOKED {
-            get {
-                return ResourceManager.GetString("ARTIST_OVERBOOKED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Künstlerkategorie.
         /// </summary>
         public static string ArtistCategory {
@@ -538,15 +529,6 @@ namespace UFO.Commander.Wpf.Administration.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Das Versenden der E-Mails ist fehlgeschlagen.
-        /// </summary>
-        public static string NOTIFICATION_ERROR {
-            get {
-                return ResourceManager.GetString("NOTIFICATION_ERROR", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Dateiauswahl öffnen.
         /// </summary>
         public static string OpenFileBrowser {
@@ -570,24 +552,6 @@ namespace UFO.Commander.Wpf.Administration.Properties {
         public static string Performance {
             get {
                 return ResourceManager.GetString("Performance", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Die Aufführung wurde bereits gestartet.
-        /// </summary>
-        public static string PERFORMANCE_ALREADY_STARTED {
-            get {
-                return ResourceManager.GetString("PERFORMANCE_ALREADY_STARTED", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Das Aufführungsdatum ist ungültig.
-        /// </summary>
-        public static string PERFORMANCE_DATE_INVALID {
-            get {
-                return ResourceManager.GetString("PERFORMANCE_DATE_INVALID", resourceCulture);
             }
         }
         

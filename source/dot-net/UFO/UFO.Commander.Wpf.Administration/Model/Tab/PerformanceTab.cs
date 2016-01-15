@@ -1,7 +1,10 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Globalization;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
@@ -23,6 +26,8 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
 {
     public class PerformanceTab : BaseTabModel<PerformanceModel, SimpleObjectModel>
     {
+        private static ResourceManager serviceResource = new ResourceManager(typeof(Commander.Service.Api.Properties.Resource));
+
         #region TabResources
         private IPerformanceDao performanceDao;
         private IArtistDao artistDao;
@@ -128,25 +133,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             }
             catch (ServiceException e)
             {
-                if (e.ErrorCode != null)
-                {
-                    PerformanceErrorCode code = (PerformanceErrorCode)e.ErrorCode;
-                    switch (code)
-                    {
-                        case PerformanceErrorCode.ARTIST_OVERBOOKED:
-                            MessageHandler.ShowErrorMessage(Resources.ARTIST_OVERBOOKED);
-                            break;
-                        case PerformanceErrorCode.PERFORMANCE_ALREADY_STARTED:
-                            MessageHandler.ShowErrorMessage(Resources.PERFORMANCE_ALREADY_STARTED);
-                            break;
-                        case PerformanceErrorCode.PERFORMANCE_DATE_INVALID:
-                            MessageHandler.ShowErrorMessage(Resources.PERFORMANCE_DATE_INVALID);
-                            break;
-                        default:
-                            MessageHandler.ShowErrorMessage(Resources.ErrorUnknwon + $" (errorCode={code})");
-                            break;
-                    }
-                }
+                MessageHandler.ShowErrorMessage(GetErrorMessageForPerformanceErrorcdeo(e.ErrorCode));
             }
             catch (System.Exception e)
             {
@@ -203,16 +190,7 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             {
                 if (e.ErrorCode != null)
                 {
-                    PerformanceErrorCode code = (PerformanceErrorCode)e.ErrorCode;
-                    switch (code)
-                    {
-                        case PerformanceErrorCode.PERFORMANCE_ALREADY_STARTED:
-                            MessageHandler.ShowErrorMessage(Resources.PERFORMANCE_ALREADY_STARTED);
-                            break;
-                        default:
-                            MessageHandler.ShowErrorMessage(Resources.ErrorUnknwon + $" (errorCode={code})");
-                            break;
-                    }
+                    MessageHandler.ShowErrorMessage(GetErrorMessageForPerformanceErrorcdeo(e.ErrorCode));
                 }
             }
             catch (System.Exception e)
@@ -357,6 +335,17 @@ namespace UFO.Commander.Wpf.Administration.Model.Tab
             {
                 SelectedSelectionModel = null;
             }
+        }
+
+        private String GetErrorMessageForPerformanceErrorcdeo(int? code)
+        {
+            if ((code != null) && (Enum.IsDefined(typeof(PerformanceErrorCode), code)))
+            {
+                DictionaryEntry entry = serviceResource.GetResourceSet(System.Threading.Thread.CurrentThread.CurrentUICulture, true, true).OfType<DictionaryEntry>().FirstOrDefault(de => de.Key.ToString() == (Enum.GetName(typeof(PerformanceErrorCode), code)));
+                return (entry.Value != null) ? (entry.Value.ToString()) : (Resources.ErrorUnknwon + " (code=" + code + ")");
+            }
+
+            return (Resources.ErrorUnknwon + " (code=" + code + ")");
         }
         #endregion
     }

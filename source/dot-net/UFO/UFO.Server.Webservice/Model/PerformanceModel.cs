@@ -22,6 +22,9 @@ namespace UFO.Server.Webservice.Soap.Model
         [XmlElement(DataType = "dateTime", IsNullable = true)]
         public DateTime? FormerStartDate { get; set; }
 
+        [XmlElement(DataType = "dateTime", IsNullable = true)]
+        public DateTime? FormerEndDate { get; set; }
+
         public ArtistModel Artist { get; set; }
 
         public VenueModel Venue { get; set; }

@@ -1,6 +1,9 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
+using System.Resources;
 using System.Text;
 using System.Web;
 using System.Web.Script.Services;
@@ -28,6 +31,8 @@ namespace UFO.Server.Webservice.Soap.Soap
     // [System.Web.Script.Services.ScriptService]
     public class PerformanceService : BaseSecureWebservice
     {
+        private ResourceManager resource = new ResourceManager(typeof(Commander.Service.Api.Properties.Resource));
+
         private IPerformanceDao performanceDao = DaoFactory.CreatePerformanceDao();
         private ISecurityService securityService = ServiceFactory.CreateSecurityService();
         private IPerformanceService performanceService = ServiceFactory.CreatePerformanceService();
@@ -51,6 +56,7 @@ namespace UFO.Server.Webservice.Soap.Soap
                         StartDate = item.StartDate.Value,
                         EndDate = item.EndDate.Value,
                         FormerStartDate = item.FormerStartDate,
+                        FormerEndDate = item.FormerEndDate,
                         Artist = new ArtistModel
                         {
                             Id = item.Artist.Id.Value,
@@ -83,14 +89,15 @@ namespace UFO.Server.Webservice.Soap.Soap
             SingleResultModel<PerformanceModel> model = null;
             if ((model = HandleAuthentication<SingleResultModel<PerformanceModel>>()) == null)
             {
+                model = new SingleResultModel<PerformanceModel>();
                 try
                 {
                     User user = null;
                     if ((user = securityService.Login(request.Username, request.Password)) != null)
                     {
                         model = new SingleResultModel<PerformanceModel>();
-                        DateTime endDate = request.StartDate.AddHours(1);
-                        Performance performance=null;
+                        DateTime endDate = request.StartDate.Value.AddHours(1);
+                        Performance performance = null;
                         if (request.Id != null)
                         {
                             performance = performanceDao.ById(request.Id);
@@ -131,8 +138,15 @@ namespace UFO.Server.Webservice.Soap.Soap
                 }
                 catch (ServiceException e)
                 {
-                    model.Error = "Service throw error: " + e.Message;
-                    model.ServiceErrorCode = (int)e.ErrorCode;
+                    if (e.ErrorCode != null)
+                    {
+                        model.Error = GetMessageForPerformanceErrorCode(request.Language, e.ErrorCode);
+                        model.ServiceErrorCode = (int)e.ErrorCode;
+                    }
+                    else {
+                        model.Error = "Service throw error: " + e.Message;
+                        model.ServiceErrorCode = (int)ErrorCode.UNKNOWN_ERROR;
+                    }
                 }
                 catch (Exception e)
                 {
@@ -148,7 +162,7 @@ namespace UFO.Server.Webservice.Soap.Soap
         [WebMethod]
         [ScriptMethod(UseHttpGet = false)]
         [SoapHeader("credentials")]
-        public SingleResultModel<bool?> Delete(string username, string password, long id)
+        public SingleResultModel<bool?> Delete(PerformanceRequestModel request)
         {
             SingleResultModel<bool?> model = null;
             if ((model = HandleAuthentication<SingleResultModel<bool?>>()) == null)
@@ -156,9 +170,9 @@ namespace UFO.Server.Webservice.Soap.Soap
                 model = new SingleResultModel<bool?>();
                 try
                 {
-                    if (securityService.Login(username, password) != null)
+                    if (securityService.Login(request.Username, request.Password) != null)
                     {
-                        performanceService.Delete(id);
+                        performanceService.Delete(request.Id);
                     }
                     else
                     {
@@ -168,8 +182,15 @@ namespace UFO.Server.Webservice.Soap.Soap
                 }
                 catch (ServiceException e)
                 {
-                    model.Error = "Service throw error: " + e.Message;
-                    model.ServiceErrorCode = (int)e.ErrorCode;
+                    if (e.ErrorCode != null)
+                    {
+                        model.Error = GetMessageForPerformanceErrorCode(request.Language, e.ErrorCode);
+                        model.ServiceErrorCode = (int)e.ErrorCode;
+                    }
+                    else {
+                        model.Error = "Service throw error: " + e.Message;
+                        model.ServiceErrorCode = (int)ErrorCode.UNKNOWN_ERROR;
+                    }
                 }
                 catch (Exception e)
                 {
@@ -181,5 +202,22 @@ namespace UFO.Server.Webservice.Soap.Soap
             return model;
         }
 
+        protected string GetMessageForPerformanceErrorCode(string language, int? errorCode)
+        {
+            if (language == null)
+            {
+                throw new ArgumentException("Need a language for localizing the message");
+            }
+
+
+            if ((errorCode != null) && (Enum.IsDefined(typeof(PerformanceErrorCode), errorCode)))
+            {
+                string key = Enum.GetName(typeof(PerformanceErrorCode), errorCode);
+                DictionaryEntry entry = resource.GetResourceSet(CultureInfo.CreateSpecificCulture(language), true, true).OfType<DictionaryEntry>().FirstOrDefault(e => e.Key.ToString() == key);
+                return (entry.Value != null) ? entry.Value.ToString() : "not avilable";
+            }
+
+            return "not available";
+        }
     }
 }

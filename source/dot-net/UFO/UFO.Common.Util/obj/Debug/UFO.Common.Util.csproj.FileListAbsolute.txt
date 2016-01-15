@@ -11,4 +11,3 @@ D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Common.Util\bi
 D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Common.Util\bin\Debug\UFO.Common.Util.pdb
 D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Common.Util\obj\Debug\UFO.Common.Util.dll
 D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Common.Util\obj\Debug\UFO.Common.Util.pdb
-D:\repositories\Github\SemesterProject1516\source\dot-net\UFO\UFO.Common.Util\obj\Debug\UFO.Common.Util.csprojResolveAssemblyReference.cache

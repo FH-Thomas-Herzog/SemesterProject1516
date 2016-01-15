@@ -79,7 +79,7 @@ namespace UFO.Commander.Wpf.Administration.Model
                 PerformanceErrorCode code = (PerformanceErrorCode)e.ErrorCode;
                 if (code == PerformanceErrorCode.NOTIFICATION_ERROR)
                 {
-                    messageHandler.ShowErrorMessage(Resources.NOTIFICATION_ERROR);
+                    messageHandler.ShowErrorMessage(Service.Api.Properties.Resource.NOTIFICATION_ERROR);
                 }
                 else
                 {

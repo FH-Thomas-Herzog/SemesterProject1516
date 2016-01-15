@@ -61,6 +61,15 @@ namespace UFO.Commander.Service.Api.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Der Artist hat bereits eine Führung zu diesem Zeitpunkt oder die einzuhaltende Pause  zwischen den Aufführungen wurde unterschritten.
+        /// </summary>
+        public static string ARTIST_OVERBOOKED {
+            get {
+                return ResourceManager.GetString("ARTIST_OVERBOOKED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Folgende Auflistung zeigt Ihre angelegten/geänderten Vorstellungen..
         /// </summary>
         public static string Email_NotifyChange_Content {
@@ -75,6 +84,42 @@ namespace UFO.Commander.Service.Api.Properties {
         public static string Email_NotifyChange_Subject {
             get {
                 return ResourceManager.GetString("Email_NotifyChange_Subject", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Das Versenden der E-Mails ist fehlgeschlagen.
+        /// </summary>
+        public static string NOTIFICATION_ERROR {
+            get {
+                return ResourceManager.GetString("NOTIFICATION_ERROR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Die Aufführung wurde bereits gestartet.
+        /// </summary>
+        public static string PERFORMANCE_ALREADY_STARTED {
+            get {
+                return ResourceManager.GetString("PERFORMANCE_ALREADY_STARTED", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Das Aufführungsdatum ist ungültig.
+        /// </summary>
+        public static string PERFORMANCE_DATE_INVALID {
+            get {
+                return ResourceManager.GetString("PERFORMANCE_DATE_INVALID", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Auf dieser Spilstätte findet bereits eine Aufführung statt.
+        /// </summary>
+        public static string VENUE_OVERBOOKED {
+            get {
+                return ResourceManager.GetString("VENUE_OVERBOOKED", resourceCulture);
             }
         }
     }

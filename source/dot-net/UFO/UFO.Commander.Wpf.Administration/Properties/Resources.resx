@@ -339,16 +339,4 @@
   <data name="SuccessMessage" xml:space="preserve">
     <value>Erfolgsmeldung</value>
   </data>
-  <data name="ARTIST_OVERBOOKED" xml:space="preserve">
-    <value>Der Artist hat bereits eine Führung zu diesem Zeitpunkt oder die einzuhaltende Pause  zwischen den Aufführungen wurde unterschritten </value>
-  </data>
-  <data name="NOTIFICATION_ERROR" xml:space="preserve">
-    <value>Das Versenden der E-Mails ist fehlgeschlagen</value>
-  </data>
-  <data name="PERFORMANCE_ALREADY_STARTED" xml:space="preserve">
-    <value>Die Aufführung wurde bereits gestartet</value>
-  </data>
-  <data name="PERFORMANCE_DATE_INVALID" xml:space="preserve">
-    <value>Das Aufführungsdatum ist ungültig</value>
-  </data>
 </root>

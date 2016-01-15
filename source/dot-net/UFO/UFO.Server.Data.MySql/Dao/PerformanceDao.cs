@@ -73,6 +73,27 @@ namespace UFO.Server.Data.MySql.Dao
             }
         }
 
+        public bool VenueHasPerformanceOnDate(long venueId, DateTime startDate, DateTime endDate, long? performanceId)
+        {
+            try
+            {
+                return (commandBuilder.WithQuery(" SELECT DISTINCT(id) FROM ufo.performance "
+                                               + " WHERE id != ?performanceId "
+                                               + " AND start_date = ?startDate "
+                                               + " AND end_date = ?endDate "
+                                               + " AND venue_id = ?venueId ")
+                                      .SetParameter("?performanceId", performanceId)
+                                      .SetParameter("?startDate", startDate)
+                                      .SetParameter("?endDate", endDate)
+                                      .SetParameter("?venueId", venueId)
+                                      .ExecuteScalar() != null);
+            }
+            finally
+            {
+                commandBuilder.Clear();
+            }
+        }
+
         public IList<PerformanceSummaryView> GetAllPerformanceSummaryViews()
         {
             IList<PerformanceSummaryView> views = new List<PerformanceSummaryView>();

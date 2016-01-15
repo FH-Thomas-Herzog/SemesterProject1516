@@ -13,8 +13,10 @@ namespace UFO.Commander.Service.Api
         PERFORMANCE_ALREADY_STARTED = 0,
         PERFORMANCE_DATE_INVALID = 1,
         ARTIST_OVERBOOKED = 2,
-        NOTIFICATION_ERROR= 3
+        NOTIFICATION_ERROR= 3,
+        VENUE_OVERBOOKED = 4
     };
+
     public interface IPerformanceService : IService
     {
         void Delete(long? id);

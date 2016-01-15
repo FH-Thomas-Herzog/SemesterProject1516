@@ -13,11 +13,12 @@ namespace UFO.Server.Webservice.Soap.Model
 
         public string Username { get; set; }
         public string Password { get; set; }
+        public string Language { get; set; }
         public long? Id { get; set; }
         public long? Version { get; set; }
-        public long ArtistId { get; set; }
-        public long VenueId { get; set; }
-        public string Locale{ get; set; }
-        public DateTime StartDate { get { return _StartDate; } set { _StartDate = DateTime.SpecifyKind(value, DateTimeKind.Utc); } }
+        public long? ArtistId { get; set; }
+        public long? VenueId { get; set; }
+        public string Locale { get; set; }
+        public DateTime? StartDate { get { return _StartDate; } set { _StartDate = DateTime.SpecifyKind(value.Value, DateTimeKind.Utc); } }
     }
 }
