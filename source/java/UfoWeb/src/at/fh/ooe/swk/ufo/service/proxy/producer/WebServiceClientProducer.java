@@ -1,4 +1,4 @@
-package at.fh.ooe.swk.ufo.web.application.producer;
+package at.fh.ooe.swk.ufo.service.proxy.producer;
 
 import java.io.Serializable;
 import java.net.URL;
@@ -15,6 +15,7 @@ import org.apache.axis.message.SOAPHeaderElement;
 import org.apache.deltaspike.core.api.common.DeltaSpike;
 import org.apache.logging.log4j.Logger;
 
+import at.fh.ooe.swk.ufo.service.proxy.api.PerformanceServiceProxy;
 import at.fh.ooe.swk.ufo.web.application.constants.ContextParameter;
 import at.fh.ooe.swk.ufo.webservice.ArtistServiceLocator;
 import at.fh.ooe.swk.ufo.webservice.ArtistServiceSoap;
@@ -34,7 +35,7 @@ import at.fh.ooe.swk.ufo.webservice.VenueServiceSoapStub;
  * instances are defined by context-params from the web.xml which defines the
  * authentication data and the urls where the webservice can be reached.
  * 
- * Be aware that the JVM needs a proper truststore available if ssl is used.
+ * Be aware that the JVM needs a proper truststore available if ssl is used. (password = ufo)
  * 
  * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
  * @date Jan 9, 2016

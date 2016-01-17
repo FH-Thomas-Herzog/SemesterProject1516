@@ -1,15 +1,10 @@
 package at.fh.ooe.swk.ufo.web.performances.page;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.enterprise.inject.Instance;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -29,11 +24,12 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
 
+import at.fh.ooe.swk.ufo.service.proxy.api.VenueServiceProxy;
+import at.fh.ooe.swk.ufo.service.proxy.model.ResultModel;
+import at.fh.ooe.swk.ufo.web.application.ProxyServiceExceptionHandler;
 import at.fh.ooe.swk.ufo.web.application.constants.ContextParameter;
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 import at.fh.ooe.swk.ufo.web.performances.model.VenueViewModel;
-import at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel;
-import at.fh.ooe.swk.ufo.webservice.VenueServiceSoap;
 
 /**
  * 
@@ -60,10 +56,9 @@ public class VenueInfoDialogBean implements Serializable {
 	private PerformanceFilterBean filterBean;
 
 	@Inject
-	private transient VenueServiceSoap venueWebservice;
-
+	private transient VenueServiceProxy venueService;
 	@Inject
-	private Instance<VenueViewModel> venueInstance;
+	private ProxyServiceExceptionHandler proxyExceptionHandler;
 
 	private String defaultLocation;
 	private MapModel map;
@@ -87,28 +82,14 @@ public class VenueInfoDialogBean implements Serializable {
 	 */
 	public void init(Long id) {
 		reset();
-		try {
-			ListResultModelOfVenueModel result = ((id == null)
-					? venueWebservice.getVenuesForPerformances(filterBean.createRequestModel())
-					: venueWebservice.getVenueForPerformances(id, filterBean.createRequestModel()));
-			if (result.getErrorCode() != null) {
-				venues = new ArrayList<>();
-				map = new DefaultMapModel();
-				log.error(
-						"Webservice returned error code: " + result.getErrorCode() + " / error: " + result.getError());
-				fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getUnexpectedError(), ""));
-			} else {
-				venues = Arrays.asList(result.getResult()).parallelStream().map(model -> {
-					final VenueViewModel viewModel = venueInstance.get();
-					viewModel.init(model);
-					return viewModel;
-				}).collect(Collectors.toList());
-				prepareMap();
-				RequestContext.getCurrentInstance().execute("PF('venueInfoDialog').show();");
-			}
-		} catch (Exception e) {
-			log.error("Could not load artist model", e);
-			fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getUnexpectedError(), ""));
+
+		ResultModel<List<VenueViewModel>> result = ((id == null)
+				? venueService.getVenuesForPerformances(filterBean.createFilter())
+				: venueService.getVenueForPerformances(id, filterBean.createFilter()));
+		if ((!proxyExceptionHandler.handleException(null, result)) && (result.getResult() != null)) {
+			venues = result.getResult();
+			prepareMap();
+			RequestContext.getCurrentInstance().execute("PF('venueInfoDialog').show();");
 		}
 	}
 
@@ -205,6 +186,7 @@ public class VenueInfoDialogBean implements Serializable {
 	 * Resets the bean held states
 	 */
 	public void reset() {
+		defaultLocation = null;
 		venues = null;
 		map = null;
 	}

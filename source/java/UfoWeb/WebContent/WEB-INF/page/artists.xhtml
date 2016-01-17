@@ -1,0 +1,32 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<h:form id="artistsForm" prependId="true">
+		<h:panelGroup id="artistActionsContainer" layout="block"
+			style="margin: 10px;">
+			<p:commandButton id="refreshArtists" icon="fa fa-refresh"
+				title="#{msg.refresh}"
+				actionListener="#{performancePage.loadArtists()}" process="@this"
+				update="artistsContainer" />
+		</h:panelGroup>
+		<p:separator />
+		<h:panelGroup id="artistsContainer" layout="block">
+			<p:dataList value="#{performancePage.artists}" var="artist"
+				emptyMessage="#{msg.artistsNotAvialable}" type="definition">
+				<h:panelGroup id="artistItem" layout="block" style="margin: 5px;">
+					<p:commandLink id="artistInfoLink"
+						actionListener="#{performancePage.prepareArtistDialog(artist.id)}"
+						process="@this" global="true" update=":dialogGroup"
+						title="#{msg.clickOpenArtistDetails}">
+						<h:outputText value="#{artist.fullName}" />
+					</p:commandLink>
+				</h:panelGroup>
+			</p:dataList>
+		</h:panelGroup>
+	</h:form>
+</ui:composition>

@@ -15,15 +15,15 @@ import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 import org.apache.logging.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
+import at.fh.ooe.swk.ufo.service.proxy.api.PerformanceServiceProxy;
+import at.fh.ooe.swk.ufo.service.proxy.model.PerformanceModel;
+import at.fh.ooe.swk.ufo.service.proxy.model.ResultModel;
+import at.fh.ooe.swk.ufo.web.application.ProxyServiceExceptionHandler;
 import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
 import at.fh.ooe.swk.ufo.web.application.bean.UserContextModel;
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceEditViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
-import at.fh.ooe.swk.ufo.webservice.PerformanceRequestModel;
-import at.fh.ooe.swk.ufo.webservice.PerformanceServiceSoap;
-import at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean;
-import at.fh.ooe.swk.ufo.webservice.SingleResultModelOfPerformanceModel;
 
 @ViewAccessScoped
 @Named("performanceEditDialog")
@@ -41,7 +41,9 @@ public class PerformanceEditDialogBean implements Serializable {
 	private TimeZone timeZone;
 
 	@Inject
-	private transient PerformanceServiceSoap performanceWebservice;
+	private PerformanceServiceProxy performanceService;
+	@Inject
+	private ProxyServiceExceptionHandler proxaExceptionHanlder;
 
 	@Inject
 	private LanguageBean languageBean;
@@ -54,8 +56,6 @@ public class PerformanceEditDialogBean implements Serializable {
 	@Inject
 	private UserContextModel utx;
 
-	@Inject
-	private Instance<PerformanceViewModel> perforamnceViewModelInstance;
 	private Calendar minDate;
 	private Calendar maxDate;
 	private Integer startHour;
@@ -86,7 +86,7 @@ public class PerformanceEditDialogBean implements Serializable {
 	public void newEntry(ActionEvent event) {
 		init(null);
 	}
-	
+
 	public void save(ActionEvent event) {
 		final String clientId = event.getComponent().getClientId();
 		final Calendar startDate = editViewModel.getDate();
@@ -94,35 +94,26 @@ public class PerformanceEditDialogBean implements Serializable {
 
 		try {
 			// prepare request
-			final PerformanceRequestModel request = new PerformanceRequestModel();
-			request.setUsername(utx.getUsername());
-			request.setPassword(utx.getPassword());
-			request.setLanguage(languageBean.getLocale().getLanguage());
-			request.setId(editViewModel.getId());
-			request.setVersion(editViewModel.getVersion());
-			request.setArtistId(editViewModel.getArtist().getId());
-			request.setVenueId(editViewModel.getVenue().getId());
-			request.setStartDate(startDate);
+			final PerformanceModel model = new PerformanceModel();
+			model.setUsername(utx.getUsername());
+			model.setPassword(utx.getPassword());
+			model.setLanguageCode(languageBean.getLocale().getLanguage());
+			model.setId(editViewModel.getId());
+			model.setVersion(editViewModel.getVersion());
+			model.setArtistId(editViewModel.getArtist().getId());
+			model.setVenueId(editViewModel.getVenue().getId());
+			model.setStartDate(startDate);
 
 			// Call web service
-			SingleResultModelOfPerformanceModel result = performanceWebservice.save(request);
-			
+			ResultModel<PerformanceViewModel> result = performanceService.save(model);
+
 			// Handle response
-			if ((result.getErrorCode() == null) && (result.getServiceErrorCode() == null)) {
+			if ((!proxaExceptionHanlder.handleException(null, result)) && (result.getResult() != null)) {
 				support.loadArtistFilterOptions();
 				support.loadVenueFilterOptions();
 				page.loadPerformances();
-				final PerformanceViewModel viewModel = perforamnceViewModelInstance.get();
-				viewModel.init(result.getResult());
-				init(viewModel);
+				init(result.getResult());
 				RequestContext.getCurrentInstance().execute("updateFilterAndContent();");
-			} else if (result.getServiceErrorCode() != null) {
-				log.error("Webservice throw logical error code: " + result.getErrorCode() + " / error: "
-						+ result.getError());
-				fc.addMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_WARN, "", result.getError()));
-			} else if (result.getErrorCode() != null) {
-				log.error("Webservice throw error code: " + result.getErrorCode() + " / error: " + result.getError());
-				fc.addMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_WARN, bundle.getUnexpectedError(), ""));
 			}
 		} catch (Exception e) {
 			log.error("Could not save perforamnce", e);
@@ -134,28 +125,23 @@ public class PerformanceEditDialogBean implements Serializable {
 		final String clientId = event.getComponent().getClientId();
 		try {
 			// Prepare request
-			final PerformanceRequestModel request = new PerformanceRequestModel();
-			request.setId(editViewModel.getId());
-			request.setVersion(editViewModel.getVersion());
-			request.setUsername(utx.getUsername());
-			request.setPassword(utx.getPassword());
-			request.setLanguage(languageBean.getLocale().getLanguage());
+			final PerformanceModel model = new PerformanceModel();
+			model.setId(editViewModel.getId());
+			model.setVersion(editViewModel.getVersion());
+			model.setUsername(utx.getUsername());
+			model.setPassword(utx.getPassword());
+			model.setLanguageCode(languageBean.getLocale().getLanguage());
 
 			// Call web service
-			SingleResultModelOfNullableOfBoolean result = performanceWebservice.delete(request);
-			
+			ResultModel<Boolean> result = performanceService.delete(model);
+
 			// Handle response
-			if ((result.getErrorCode() == null) && (result.getServiceErrorCode() == null)) {
+			if ((!proxaExceptionHanlder.handleException(null, result)) && (result.getResult() != null)) {
 				support.loadArtistFilterOptions();
 				support.loadVenueFilterOptions();
 				page.loadPerformances();
 				init(null);
 				RequestContext.getCurrentInstance().execute("updateFilterAndContent();");
-			} else if (result.getServiceErrorCode() != null) {
-				fc.addMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_WARN, result.getError(), ""));
-			} else if (result.getErrorCode() != null) {
-				log.error("Webservice throw error code: " + result.getErrorCode() + " / error: " + result.getError());
-				fc.addMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_WARN, bundle.getUnexpectedError(), ""));
 			}
 		} catch (Exception e) {
 			log.error("Could not delete perforamnce", e);

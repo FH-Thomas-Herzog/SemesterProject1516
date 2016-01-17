@@ -1,0 +1,83 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<h:form id="performancesForm" prependId="true">
+		<ui:repeat id="performanceDays"
+			rendered="#{not empty performancePage.tables}"
+			value="#{performancePage.tables}" var="item">
+
+			<p:dataTable id="performanceTable" value="#{item}" var="row"
+				scrollWidth="100%" paginator="true" rows="10"
+				rowStatePreserved="true" reflow="true"
+				rowsPerPageTemplate="10, 20, 30, 40, 50, 100" lazy="true"
+				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
+				caseSensitiveSort="false" disabledSelection="true"
+				disabledTextSelection="true" filterEvent="enter"
+				style="text-align: center; vertical-align: middle;">
+
+				<f:facet name="header">
+					<h:outputText value="#{item.header}" />
+					<p:commandLink id="newLink" styleClass="fa fa-edit"
+						style="margin-left: 10px;color: green;"
+						title="#{msg.clickCreatePerformance}"
+						rendered="#{utxModel.logged}"
+						actionListener="#{performanceEditDialog.init(null)}" global="true"
+						update=":dialogGroup" process="@this"
+						oncomplete="PF('editPerformanceDialog').show();">
+						<p:resetInput target=":dialogGroup" />
+					</p:commandLink>
+				</f:facet>
+				<p:ajax event="filter" process="@this" partialSubmit="true" />
+
+				<p:column sortable="true" sortBy="#{row.venue.label}"
+					filterable="true" filterBy="#{row.venue.label}"
+					style="text-align: left;">
+					<f:facet name="header">
+						<h:outputText value="#{msg.venue}" style="margin-right: 10px;" />
+						<p:commandLink action="#{venueInfoDialog.init(null)}"
+							global="true" process="@this" update=":dialogGroup"
+							title="#{msg.openVenueDialog}"
+							oncomplete="PF('venueInfoDialog').show();">
+							<p:graphicImage library="images" name="maps_25_25.png" />
+						</p:commandLink>
+					</f:facet>
+					<p:commandLink id="venueInfoLink" title="#{msg.openVenueDialog}"
+						actionListener="#{venueInfoDialog.init(row.venue.id)}"
+						global="true" update=":dialogGroup" process="@this"
+						style="margin-right: 10px;">
+						<p:graphicImage library="images" name="maps_25_25.png" />
+					</p:commandLink>
+					<h:outputText value="#{row.venue.label}" />
+				</p:column>
+
+				<p:columns value="#{item.columns}" var="column"
+					columnIndexVar="idxVar" filterable="true" filterBy="#{column.hour}"
+					sortable="true" sortBy="#{idxVar}" headerText="#{column.header}">
+					<!-- Column via template -->
+					<ui:include src="/WEB-INF/page/templates/performance_column.xhtml">
+						<ui:param name="model"
+							value="#{row.getModelForColumn(column.startHour)}" />
+						<ui:param name="pageBean" value="#{performancePage}" />
+						<ui:param name="editDialog" value="#{performanceEditDialog}" />
+						<ui:param name="editDialogVar" value="editPerformanceDialog" />
+					</ui:include>
+				</p:columns>
+			</p:dataTable>
+		</ui:repeat>
+	</h:form>
+	<pe:tooltip value="#{msg.triggerSearchOnEnter}" shared="true"
+		atPosition="top center" myPosition="bottom center"
+		for="@(th .ui-column-filter.ui-inputfield.ui-inputtext)" />
+	<h:panelGroup id="noPerformancesGroup" layout="block"
+		rendered="#{empty performancePage.tables}"
+		style="margin-top: 10px; text-align: center; width: 100%">
+		<h:outputText value="" styleClass="fa fa-warning"
+			style="color: orange; margin-right: 10px;" />
+		<h:outputText value="#{msg.performanceNotAvialable}" />
+	</h:panelGroup>
+</ui:composition>

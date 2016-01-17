@@ -36,5 +36,10 @@ public class StartupListener implements ServletContextListener {
 		final String localeString = arg0.getServletContext().getInitParameter(ContextParameter.LOCALE.key);
 		final Locale locale = LocaleUtils.toLocale(localeString);
 		Locale.setDefault(locale);
+
+		// Set truststore
+		System.setProperty("javax.net.ssl.trustStore",
+				"C:\\Users\\herzo\\Applications\\apache-tomcat-8.0.27\\truststore.jks");
+		System.setProperty("javax.net.ssl.trustStorePassword", "ufo");
 	}
 }

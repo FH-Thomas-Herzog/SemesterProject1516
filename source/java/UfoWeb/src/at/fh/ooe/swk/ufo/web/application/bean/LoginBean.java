@@ -9,12 +9,12 @@ import javax.faces.event.ActionEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.apache.logging.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
+import at.fh.ooe.swk.ufo.service.proxy.api.SecurityServiceProxy;
+import at.fh.ooe.swk.ufo.service.proxy.model.ResultModel;
+import at.fh.ooe.swk.ufo.web.application.ProxyServiceExceptionHandler;
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
-import at.fh.ooe.swk.ufo.webservice.SecurityServiceSoap;
-import at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean;
 
 @RequestScoped
 @Named("loginBean")
@@ -23,14 +23,14 @@ public class LoginBean implements Serializable {
 	private static final long serialVersionUID = -1357295414632657607L;
 
 	@Inject
-	private Logger log;
-	@Inject
 	private FacesContext fc;
 	@Inject
 	private MessagesBundle bundle;
 
 	@Inject
-	private transient SecurityServiceSoap securityWebservice;
+	private SecurityServiceProxy securityService;
+	@Inject
+	private ProxyServiceExceptionHandler proxyExceptionHandler;
 
 	@Inject
 	private UserContextModel utxModel;
@@ -40,29 +40,15 @@ public class LoginBean implements Serializable {
 
 	public void login(ActionEvent event) {
 		final String clientId = event.getComponent().getClientId();
-		if (securityWebservice != null) {
-			try {
-				final SingleResultModelOfNullableOfBoolean result = securityWebservice.validateUserCredentials(username,
-						password);
-				if (result.getErrorCode() != null) {
-					log.error("WebSerivce returned error. code: " + result.getErrorCode() + " / error: "
-							+ result.getError());
-					fc.addMessage(clientId,
-							new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getUnexpectedError(), ""));
-				} else {
-					utxModel.setLogged(result.getResult());
-					if (utxModel.isLogged()) {
-						utxModel.setUsername(username);
-						utxModel.setPassword(password);
-						RequestContext.getCurrentInstance().execute("PF('loginDialog').hide();");
-					} else {
-						fc.addMessage(clientId,
-								new FacesMessage(FacesMessage.SEVERITY_WARN, bundle.getErrorLoginFailed(), ""));
-					}
-				}
-			} catch (Exception e) {
-				log.error("Error during webservice call", e);
-				fc.addMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getUnexpectedError(), ""));
+		final ResultModel<Boolean> result = securityService.login(username, password);
+		if ((!proxyExceptionHandler.handleException(clientId, result)) && (result.getResult() != null)) {
+			utxModel.setLogged(result.getResult());
+			if (utxModel.isLogged()) {
+				utxModel.setUsername(username);
+				utxModel.setPassword(password);
+				RequestContext.getCurrentInstance().execute("PF('loginDialog').hide();");
+			} else {
+				fc.addMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_WARN, bundle.getErrorLoginFailed(), ""));
 			}
 		}
 	}

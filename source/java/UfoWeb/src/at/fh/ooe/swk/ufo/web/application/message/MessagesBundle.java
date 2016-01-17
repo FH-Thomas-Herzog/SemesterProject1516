@@ -135,4 +135,16 @@ public interface MessagesBundle extends Serializable {
 
 	@MessageTemplate("{WARNING_PERFORMANCE_MOVED}")
 	String getWarningPerformanceMoved();
+
+	@MessageTemplate("{PERFORMANCE_NOT_AVAILABLE}")
+	String getPerformanceNotAvialable();
+	
+	@MessageTemplate("{ARTISTS_NOT_AVAILABLE}")
+	String getArtistsNotAvialable();
+
+	@MessageTemplate("{REFRESH}")
+	String getRefresh();
+
+	@MessageTemplate("{CLICK_OPEN_ARTIST_DETAILS}")
+	String getClickOpenArtistDetails();
 }

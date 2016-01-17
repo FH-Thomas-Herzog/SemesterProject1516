@@ -30,6 +30,8 @@ public class ArtistViewModel implements Serializable {
 	@Inject
 	private Logger log;
 
+	private Long id;
+	private String fullName;
 	private String firstName;
 	private String lastName;
 	private String email;
@@ -47,8 +49,11 @@ public class ArtistViewModel implements Serializable {
 	}
 
 	public void init(ArtistModel model) {
+		id = model.getId();
 		firstName = model.getFirstName();
 		lastName = model.getLastName();
+		fullName = new StringBuilder().append((lastName == null) ? "" : lastName).append(", ")
+				.append((firstName == null) ? "" : firstName).toString();
 		email = model.getEmail();
 		locale = new Locale("", model.getCountryCode());
 		artistGroup = model.getArtistGroup();
@@ -94,6 +99,18 @@ public class ArtistViewModel implements Serializable {
 	// ##################################################
 	public StreamedContent getStreamedContent() {
 		return createStreamedContentForImage();
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getFullName() {
+		return fullName;
 	}
 
 	public String getFirstName() {

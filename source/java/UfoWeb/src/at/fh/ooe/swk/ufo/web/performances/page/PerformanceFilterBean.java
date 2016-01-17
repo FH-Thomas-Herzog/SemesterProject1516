@@ -6,12 +6,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import at.fh.ooe.swk.ufo.service.proxy.model.PerformanceFilter;
 import at.fh.ooe.swk.ufo.web.application.model.IdMapperModel;
 import at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest;
 
@@ -49,14 +51,36 @@ public class PerformanceFilterBean implements Serializable {
 		reset();
 	}
 
-	public PerformanceFilterRequest createRequestModel() {
-		fromDate.setTimeZone(timeZone);
-		Calendar toDate = (Calendar) fromDate.clone();
-		toDate.set(Calendar.HOUR_OF_DAY, 23);
-		toDate.set(Calendar.MINUTE, 59);
-		return new PerformanceFilterRequest(fromDate, toDate,
-				artistIds.parallelStream().map(model -> model.id).toArray(Long[]::new),
-				venueIds.parallelStream().map(model -> model.id).toArray(Long[]::new));
+	public PerformanceFilter createFilter() {
+		final Calendar fromDateTmp = (Calendar) fromDate.clone();
+		fromDateTmp.setTimeZone(timeZone);
+		final Calendar toDateTmp = (Calendar) fromDate.clone();
+		toDateTmp.set(Calendar.HOUR_OF_DAY, 23);
+		toDateTmp.set(Calendar.MINUTE, 59);
+
+		return new PerformanceFilter() {
+
+			@Override
+			public Calendar getFromDate() {
+				return fromDateTmp;
+			}
+
+			@Override
+			public Calendar getToDate() {
+				return toDateTmp;
+			}
+
+			@Override
+			public List<Long> getArtistIds() {
+				return artistIds.parallelStream().map(model -> model.id).collect(Collectors.toList());
+			}
+
+			@Override
+			public List<Long> getVenueIds() {
+				return venueIds.parallelStream().map(model -> model.id).collect(Collectors.toList());
+			}
+
+		};
 	}
 
 	// ##################################################
