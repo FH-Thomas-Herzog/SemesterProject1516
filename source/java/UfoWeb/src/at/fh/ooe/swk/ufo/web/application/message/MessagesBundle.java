@@ -19,6 +19,9 @@ import org.apache.deltaspike.core.api.message.MessageTemplate;
 @Named("msg")
 public interface MessagesBundle extends Serializable {
 
+	@MessageTemplate("{NAME}")
+	String getName();
+
 	@MessageTemplate("{FIRST_NAME}")
 	String getFirstName();
 
@@ -39,6 +42,9 @@ public interface MessagesBundle extends Serializable {
 
 	@MessageTemplate("{ARTIST_GROUP}")
 	String getArtistGroup();
+
+	@MessageTemplate("{ARTIST_CATEGORY}")
+	String getArtistCategory();
 
 	@MessageTemplate("{VENUE}")
 	String getVenue();
@@ -94,12 +100,6 @@ public interface MessagesBundle extends Serializable {
 	@MessageTemplate("UNEXPECTED_ERROR")
 	String getUnexpectedError();
 
-	@MessageTemplate("{ERROR_CONVERT_NOT_FOUND}")
-	String getErrorConvertNotFound();
-
-	@MessageTemplate("{ERROR_LOGN_FAILED}")
-	String getErrorLoginFailed();
-
 	@MessageTemplate("{USERNAME}")
 	String getUsername();
 
@@ -127,24 +127,45 @@ public interface MessagesBundle extends Serializable {
 	@MessageTemplate("{AT}")
 	String getAt();
 
+	@MessageTemplate("{REFRESH}")
+	String getRefresh();
+
+	@MessageTemplate("{Search}")
+	String getSearch();
+
+	@MessageTemplate("{ADDRESS}")
+	String getAddress();
+
+	@MessageTemplate("{WARNING_PERFORMANCE_MOVED}")
+	String getWarningPerformanceMoved();
+
+	@MessageTemplate("{NO_PERFORMANCES_AVAILABLE}")
+	String getNoPerformancesAvialable();
+
+	@MessageTemplate("{NO_ARTISTS_AVAILABLE}")
+	String getNoArtistsAvialable();
+
+	@MessageTemplate("{NO_VENUES_AVAILABLE}")
+	String getNoVenuesAvialable();
+
 	@MessageTemplate("{CLICK_CREATE_PERFORMANCE}")
 	String getClickCreatePerformance();
 
 	@MessageTemplate("{CLICK_EDIT_PERFORMANCE}")
 	String getClickEditPerformance();
 
-	@MessageTemplate("{WARNING_PERFORMANCE_MOVED}")
-	String getWarningPerformanceMoved();
-
-	@MessageTemplate("{PERFORMANCE_NOT_AVAILABLE}")
-	String getPerformanceNotAvialable();
-	
-	@MessageTemplate("{ARTISTS_NOT_AVAILABLE}")
-	String getArtistsNotAvialable();
-
-	@MessageTemplate("{REFRESH}")
-	String getRefresh();
-
 	@MessageTemplate("{CLICK_OPEN_ARTIST_DETAILS}")
 	String getClickOpenArtistDetails();
+
+	@MessageTemplate("{CLICK_OPEN_VENUE_DETAILS}")
+	String getClickOpenVenueDetails();
+
+	@MessageTemplate("{ERROR_CONVERT_NOT_FOUND}")
+	String getErrorConvertNotFound();
+
+	@MessageTemplate("{ERROR_LOGN_FAILED}")
+	String getErrorLoginFailed();
+
+	@MessageTemplate("{ERROR_VENUE_NOT_FOUND}")
+	String getVenueNotFound();
 }

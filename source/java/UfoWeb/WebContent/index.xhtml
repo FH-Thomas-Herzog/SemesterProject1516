@@ -8,18 +8,35 @@
 	template="/WEB-INF/templates/baseTemplate.xhtml">
 
 	<!-- Filters -->
-	<ui:define name="filterContent">
+	<ui:define name="northContentHeader">
+		<h:outputText value="#{msg.filter}" />
+	</ui:define>
+	<ui:define name="northContent">
 		<ui:include src="/WEB-INF/page/filter.xhtml" />
 	</ui:define>
 
 	<!-- Artists -->
+	<ui:define name="westContentHeader">
+		<h:outputText value="#{msg.artists}" />
+	</ui:define>
 	<ui:define name="westContent">
 		<ui:include src="/WEB-INF/page/artists.xhtml" />
 	</ui:define>
 
 	<!-- Performances -->
+	<ui:define name="centerContentHeader">
+		<h:outputText value="#{msg.performances}" />
+	</ui:define>
 	<ui:define name="centerContent">
 		<ui:include src="/WEB-INF/page/performances.xhtml" />
+	</ui:define>
+
+	<!-- Venues -->
+	<ui:define name="eastContentHeader">
+		<h:outputText value="#{msg.venues}" />
+	</ui:define>
+	<ui:define name="eastContent">
+		<ui:include src="/WEB-INF/page/venues.xhtml" />
 	</ui:define>
 
 	<!-- Dialogs -->

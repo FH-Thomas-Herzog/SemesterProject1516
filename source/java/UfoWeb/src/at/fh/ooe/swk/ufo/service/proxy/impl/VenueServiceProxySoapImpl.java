@@ -27,6 +27,34 @@ public class VenueServiceProxySoapImpl implements VenueServiceProxy {
 	private Instance<VenueViewModel> venueInstance;
 
 	@Override
+	public ResultModel<List<VenueViewModel>> getVenues() {
+		final ResultModel<List<VenueViewModel>> result = new ResultModel<>();
+		try {
+			final ListResultModelOfVenueModel soapResult = soapService.getVenues();
+			if (soapResult.getErrorCode() != null) {
+				result.setInternalError("Webservice returned error code: " + soapResult.getErrorCode() + " / error: "
+						+ soapResult.getError());
+			}
+			if (soapResult.getServiceErrorCode() != null) {
+				result.setInternalError("Webservice returned logical error code: " + soapResult.getServiceErrorCode()
+						+ " / error: " + soapResult.getError());
+			}
+			if (soapResult.getResult() != null) {
+				result.setResult(Arrays.asList(soapResult.getResult()).parallelStream().map(model -> {
+					final VenueViewModel viewModel = venueInstance.get();
+					viewModel.init(model);
+					return viewModel;
+				}).sorted((o1, o2) -> o1.getName().compareTo(o2.getName())).collect(Collectors.toList()));
+			}
+		} catch (Exception e) {
+			result.setInternalError("Could not invoke web service");
+			result.setException(e);
+		}
+
+		return result;
+	}
+
+	@Override
 	public ResultModel<List<VenueViewModel>> getVenuesForPerformances(PerformanceFilter filter) {
 		ResultModel<List<VenueViewModel>> result = new ResultModel<>();
 		try {

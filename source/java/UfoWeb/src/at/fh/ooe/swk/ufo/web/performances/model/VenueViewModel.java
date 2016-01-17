@@ -36,17 +36,18 @@ public class VenueViewModel implements Serializable {
 		name = model.getName();
 		address = model.getFullAddress();
 		location = model.getGpsCoordinates();
-		performances = Arrays.asList(model.getPerformances()).parallelStream().map(performance -> {
-			final PerformanceViewModel viewModel = perforamnceModelInstance.get();
-			viewModel.init(performance);
-			return viewModel;
-		}).collect(Collectors.toList());
-		performances.sort(new Comparator<PerformanceViewModel>() {
-			@Override
-			public int compare(PerformanceViewModel o1, PerformanceViewModel o2) {
-				return o1.getStartDate().compareTo(o2.getStartDate());
-			}
-		});
+		if (model.getPerformances() != null) {
+			performances = Arrays.asList(model.getPerformances()).parallelStream().map(performance -> {
+				final PerformanceViewModel viewModel = perforamnceModelInstance.get();
+				viewModel.init(performance);
+				return viewModel;
+			}).sorted(new Comparator<PerformanceViewModel>() {
+				@Override
+				public int compare(PerformanceViewModel o1, PerformanceViewModel o2) {
+					return o1.getStartDate().compareTo(o2.getStartDate());
+				}
+			}).collect(Collectors.toList());
+		}
 	}
 
 	public Long getId() {

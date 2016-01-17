@@ -77,10 +77,11 @@
 				</p:gmap>
 			</h:panelGroup>
 
-			<p:carousel id="performancesList" headerText="#{msg.performances}"
-				value="#{venueInfoDialog.venues}" var="venue" numVisible="1"
-				responsive="true" easing="easeOutBounce" cricular="false"
-				firstVisible="0" widgetVar="venueCarousel"
+			<p:carousel id="performancesList"
+				rendered="#{venueInfoDialog.withPerformances}"
+				headerText="#{msg.performances}" value="#{venueInfoDialog.venues}"
+				var="venue" numVisible="1" responsive="true" easing="easeOutBounce"
+				cricular="false" firstVisible="0" widgetVar="venueCarousel"
 				itemStyle="width: 100%; padding: 10px;">
 
 				<h:panelGroup layout="block" style="margin-bottom: 10px;">
@@ -123,7 +124,7 @@
 
 			<p:ajax event="close" listener="#{performanceEditDialog.onClose()}"
 				global="true" async="true" partialSubmit="true" process="@this"
-				update=":dialogGroup, :filterContentContainer, :centerContentContainer" />
+				update=":dialogGroup, :centerContentContainer" />
 
 			<h:panelGroup id="formContainer"
 				styleClass="ui-grid ui-grid-responsive" style="max-width: 800px;">

@@ -1,10 +1,12 @@
 package at.fh.ooe.swk.ufo.web.performances.page;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -53,7 +55,11 @@ public class VenueInfoDialogBean implements Serializable {
 	private FacesContext fc;
 
 	@Inject
+	private PerformancesPage page;
+	@Inject
 	private PerformanceFilterBean filterBean;
+	@Inject
+	private PerformanceSupport support;
 
 	@Inject
 	private transient VenueServiceProxy venueService;
@@ -63,6 +69,7 @@ public class VenueInfoDialogBean implements Serializable {
 	private String defaultLocation;
 	private MapModel map;
 	private List<VenueViewModel> venues;
+	private boolean withPerformances = Boolean.FALSE;
 
 	private String apiKey;
 
@@ -80,16 +87,32 @@ public class VenueInfoDialogBean implements Serializable {
 	 * 
 	 * @param id
 	 */
-	public void init(Long id) {
+	public void init(Long id, boolean withPerforamnces) {
 		reset();
 
-		ResultModel<List<VenueViewModel>> result = ((id == null)
-				? venueService.getVenuesForPerformances(filterBean.createFilter())
-				: venueService.getVenueForPerformances(id, filterBean.createFilter()));
-		if ((!proxyExceptionHandler.handleException(null, result)) && (result.getResult() != null)) {
-			venues = result.getResult();
-			prepareMap();
-			RequestContext.getCurrentInstance().execute("PF('venueInfoDialog').show();");
+		this.withPerformances = withPerforamnces;
+
+		if (withPerforamnces) {
+			final ResultModel<List<VenueViewModel>> result = ((id == null)
+					? venueService.getVenuesForPerformances(filterBean.createFilter())
+					: venueService.getVenueForPerformances(id, filterBean.createFilter()));
+			if ((!proxyExceptionHandler.handleException(null, result)) && (result.getResult() != null)) {
+				venues = result.getResult();
+				prepareMap();
+				RequestContext.getCurrentInstance().execute("PF('venueInfoDialog').show();");
+			}
+		} else {
+			if (id == null) {
+				venues = (page.getVenueSearch() != null) ? page.getFilteredVenues() : support.getVenues();
+			} else {
+				venues = Arrays.asList(support.getVenueViewForId(id));
+			}
+			if (!venues.isEmpty()) {
+				prepareMap();
+				RequestContext.getCurrentInstance().execute("PF('venueInfoDialog').show();");
+			} else {
+				fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getVenueNotFound(), ""));
+			}
 		}
 	}
 
@@ -144,9 +167,12 @@ public class VenueInfoDialogBean implements Serializable {
 					final String[] splitLocation = venue.getLocation().split(",");
 					final LatLng latLng = new LatLng(Double.valueOf(splitLocation[0].trim()),
 							Double.valueOf(splitLocation[1].trim()));
-					final String title = new StringBuilder(venue.getName()).append(" (")
-							.append(venue.getPerformances().size()).append(" ").append(bundle.getPerformances())
-							.append(")").toString();
+					final StringBuilder sb = new StringBuilder(venue.getName());
+					if (withPerformances) {
+						sb.append(" (").append(venue.getPerformances().size()).append(" ")
+								.append(bundle.getPerformances()).append(")");
+					}
+					final String title = sb.toString();
 					final Marker marker = new Marker(latLng, title);
 					marker.setData(venue);
 					marker.setId("marker_" + venue.getId().toString());
@@ -189,6 +215,7 @@ public class VenueInfoDialogBean implements Serializable {
 		defaultLocation = null;
 		venues = null;
 		map = null;
+		withPerformances = Boolean.FALSE;
 	}
 
 	// ##################################################
@@ -204,6 +231,10 @@ public class VenueInfoDialogBean implements Serializable {
 
 	public String getDefaultLocation() {
 		return defaultLocation;
+	}
+
+	public boolean isWithPerformances() {
+		return withPerformances;
 	}
 
 }

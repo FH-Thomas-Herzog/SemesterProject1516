@@ -52,8 +52,8 @@ public class PerformanceEditViewModel implements Serializable {
 
 		id = model.getId();
 		version = model.getVersion();
-		artist = support.getArtistForId(model.getArtistId());
-		venue = support.getVenueForId(model.getVenueId());
+		artist = support.getArtistIdMapperForId(model.getArtistId());
+		venue = support.getVenueItMapperForId(model.getVenueId());
 		date = model.getStartDate();
 		hour = model.getStartDate().get(Calendar.HOUR_OF_DAY);
 	}

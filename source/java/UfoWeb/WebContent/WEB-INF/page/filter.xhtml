@@ -66,10 +66,11 @@
 			<div class="ui-grid-col-12" style="padding: 5px;">
 				<p:commandButton id="filterButton" value="#{msg.filter}"
 					action="#{performanceFilterBean.filter()}" process="@form"
-					global="true" update=":performancesForm" />
+					global="true" update=":centerContentContainer" />
 				<p:commandButton id="resetButton" value="#{msg.reset}"
 					action="#{performanceFilterBean.clear()}" style="margin-left:10px;"
-					process="@this" global="true" update="@form, :performancesForm" />
+					process="@this" global="true"
+					update=":northContentContainer, :centerContentContainer, :westContentContainer, :eastContentContainer" />
 			</div>
 		</div>
 	</h:form>

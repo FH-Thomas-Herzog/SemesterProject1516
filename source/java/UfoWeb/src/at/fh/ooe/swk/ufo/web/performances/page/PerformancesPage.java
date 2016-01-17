@@ -5,7 +5,6 @@ import java.text.Format;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -30,8 +29,11 @@ import at.fh.ooe.swk.ufo.service.proxy.model.ResultModel;
 import at.fh.ooe.swk.ufo.web.application.ProxyServiceExceptionHandler;
 import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
+import at.fh.ooe.swk.ufo.web.performances.constants.ArtistSearchOption;
+import at.fh.ooe.swk.ufo.web.performances.constants.VenueSearchOption;
 import at.fh.ooe.swk.ufo.web.performances.model.ArtistViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
+import at.fh.ooe.swk.ufo.web.performances.model.VenueViewModel;
 
 @SessionScoped
 @Named("performancePage")
@@ -47,6 +49,8 @@ public class PerformancesPage implements Serializable {
 	@Inject
 	private MessagesBundle bundle;
 	@Inject
+	private LanguageBean languageBean;
+	@Inject
 	private ProxyServiceExceptionHandler proxyExceptionHandler;
 
 	@Inject
@@ -59,11 +63,18 @@ public class PerformancesPage implements Serializable {
 	@Inject
 	private PerformanceFilterBean performanceFilterPage;
 	@Inject
-	private LanguageBean languageBean;
+	private PerformanceSupport support;
 
-	private ArtistViewModel selectedArtist;
 	private List<PerformanceLazyDataTableModel> tables;
-	private List<ArtistViewModel> artists;
+
+	private String artistSearch;
+	private ArtistViewModel selectedArtist;
+	private ArtistSearchOption selectedArtistSearchOption;
+	private List<ArtistViewModel> filteredArtists;
+
+	private String venueSearch;
+	private VenueSearchOption selectedVenueSearchOption;
+	private List<VenueViewModel> filteredVenues;
 
 	public PerformancesPage() {
 		super();
@@ -71,8 +82,40 @@ public class PerformancesPage implements Serializable {
 
 	@PostConstruct
 	public void postConstruct() {
+		onArtistsSearchReset();
+		onVenuesSearchReset();
 		loadPerformances();
-		loadArtists();
+	}
+
+	// ##################################################
+	// Artist section
+	// ##################################################
+	public void onArtistsSearchReset() {
+		selectedArtistSearchOption = ArtistSearchOption.NAME;
+		filteredArtists = null;
+		artistSearch = null;
+	}
+
+	public void onArtistSearch() {
+		if ((artistSearch == null) || (artistSearch.trim().isEmpty())) {
+			onArtistsSearchReset();
+		} else {
+			final String query = artistSearch.toUpperCase();
+			filteredArtists = support.getArtists().parallelStream().filter(artist -> {
+				switch (selectedArtistSearchOption) {
+				case NAME:
+					return artist.getFullName().toUpperCase().contains(query);
+				case ARTIST_GROUP:
+					return ((artist.getArtistGroup() != null)
+							&& (artist.getArtistGroup().toUpperCase().contains(query)));
+				case ARTIST_CATEGORY:
+					return Boolean.FALSE;
+				default:
+					throw new IllegalArgumentException(
+							"SearchOption: " + selectedArtistSearchOption.name() + " not supported");
+				}
+			}).collect(Collectors.toList());
+		}
 	}
 
 	public void prepareArtistDialog(Long id) {
@@ -86,6 +129,35 @@ public class PerformancesPage implements Serializable {
 
 	public void onArtistDialogClose() {
 		selectedArtist = null;
+	}
+
+	// ##################################################
+	// Venue section
+	// ##################################################
+	public void onVenuesSearchReset() {
+		selectedVenueSearchOption = VenueSearchOption.NAME;
+		filteredVenues = null;
+		venueSearch = null;
+	}
+
+	public void onVenueSearch() {
+		if ((venueSearch == null) || (venueSearch.trim().isEmpty())) {
+			onVenuesSearchReset();
+		} else {
+			final String query = venueSearch.toUpperCase();
+			filteredVenues = support.getVenues().parallelStream().filter(venue -> {
+				switch (selectedVenueSearchOption) {
+				case NAME:
+					return venue.getName().toUpperCase().contains(query);
+				case ADDRESS:
+					return venue.getAddress().toUpperCase().contains(query);
+				default:
+					throw new IllegalArgumentException(
+							"SearchOption: " + selectedArtistSearchOption.name() + " not supported");
+				}
+
+			}).collect(Collectors.toList());
+		}
 	}
 
 	// ##################################################
@@ -129,18 +201,17 @@ public class PerformancesPage implements Serializable {
 		}
 	}
 
-	public void loadArtists() {
-		final ResultModel<List<ArtistViewModel>> result = artistServiceProxy.getSimpleArtists();
-		if (!proxyExceptionHandler.handleException(null, result)) {
-			artists = (result.getResult() != null) ? result.getResult() : Collections.EMPTY_LIST;
-		} else {
-			artists = Collections.EMPTY_LIST;
-		}
-	}
-
 	// ##################################################
 	// Getter and Setter
 	// ##################################################
+	public String getArtistSearch() {
+		return artistSearch;
+	}
+
+	public void setArtistSearch(String artistSearch) {
+		this.artistSearch = artistSearch;
+	}
+
 	public List<PerformanceLazyDataTableModel> getTables() {
 		return tables;
 	}
@@ -149,7 +220,36 @@ public class PerformancesPage implements Serializable {
 		return selectedArtist;
 	}
 
-	public List<ArtistViewModel> getArtists() {
-		return artists;
+	public ArtistSearchOption getSelectedArtistSearchOption() {
+		return selectedArtistSearchOption;
 	}
+
+	public void setSelectedArtistSearchOption(ArtistSearchOption selectedArtistSearchOption) {
+		this.selectedArtistSearchOption = selectedArtistSearchOption;
+	}
+
+	public List<ArtistViewModel> getFilteredArtists() {
+		return filteredArtists;
+	}
+
+	public VenueSearchOption getSelectedVenueSearchOption() {
+		return selectedVenueSearchOption;
+	}
+
+	public void setSelectedVenueSearchOption(VenueSearchOption selectedVenueSearchOption) {
+		this.selectedVenueSearchOption = selectedVenueSearchOption;
+	}
+
+	public String getVenueSearch() {
+		return venueSearch;
+	}
+
+	public void setVenueSearch(String venueSearch) {
+		this.venueSearch = venueSearch;
+	}
+
+	public List<VenueViewModel> getFilteredVenues() {
+		return filteredVenues;
+	}
+
 }

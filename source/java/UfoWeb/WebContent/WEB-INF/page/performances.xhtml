@@ -39,19 +39,17 @@
 					style="text-align: left;">
 					<f:facet name="header">
 						<h:outputText value="#{msg.venue}" style="margin-right: 10px;" />
-						<p:commandLink action="#{venueInfoDialog.init(null)}"
+						<p:commandLink action="#{venueInfoDialog.init(null, true)}"
+							styleClass="fa fa-map-marker fa-3x" style="color: red;"
 							global="true" process="@this" update=":dialogGroup"
 							title="#{msg.openVenueDialog}"
-							oncomplete="PF('venueInfoDialog').show();">
-							<p:graphicImage library="images" name="maps_25_25.png" />
-						</p:commandLink>
+							oncomplete="PF('venueInfoDialog').show();" />
 					</f:facet>
 					<p:commandLink id="venueInfoLink" title="#{msg.openVenueDialog}"
-						actionListener="#{venueInfoDialog.init(row.venue.id)}"
+						actionListener="#{venueInfoDialog.init(row.venue.id, true)}"
 						global="true" update=":dialogGroup" process="@this"
-						style="margin-right: 10px;">
-						<p:graphicImage library="images" name="maps_25_25.png" />
-					</p:commandLink>
+						styleClass="fa fa-map-marker fa-3x"
+						style="margin-right: 10px; color:red;" />
 					<h:outputText value="#{row.venue.label}" />
 				</p:column>
 
@@ -78,6 +76,6 @@
 		style="margin-top: 10px; text-align: center; width: 100%">
 		<h:outputText value="" styleClass="fa fa-warning"
 			style="color: orange; margin-right: 10px;" />
-		<h:outputText value="#{msg.performanceNotAvialable}" />
+		<h:outputText value="#{msg.noPerformancesAvailable}" />
 	</h:panelGroup>
 </ui:composition>
