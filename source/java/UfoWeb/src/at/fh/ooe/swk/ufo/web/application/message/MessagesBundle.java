@@ -140,7 +140,7 @@ public interface MessagesBundle extends Serializable {
 	String getWarningPerformanceMoved();
 
 	@MessageTemplate("{NO_PERFORMANCES_AVAILABLE}")
-	String getNoPerformancesAvialable();
+	String getNoPerformancesAvailable();
 
 	@MessageTemplate("{NO_ARTISTS_AVAILABLE}")
 	String getNoArtistsAvialable();
