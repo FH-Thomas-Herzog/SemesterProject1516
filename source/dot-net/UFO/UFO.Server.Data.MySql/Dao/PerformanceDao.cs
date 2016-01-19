@@ -3,6 +3,7 @@ using MySql.Data.MySqlClient;
 using System;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using UFO.Server.Data.Api.Dao;
 using UFO.Server.Data.Api.Db;
 using UFO.Server.Data.Api.Entity;
@@ -217,8 +218,8 @@ namespace UFO.Server.Data.MySql.Dao
                                                         + " WHERE performance.start_date >= ?startDate "
                                                         + " AND performance.end_date <= ?endDate "
                                                         + ((venueId != null) ? " AND venue.id = ?venueId " : "")
-                                                        + (((venueIds != null) && (venueIds.Count > 0)) ? (" AND venue.id IN (?venueIds) ") : "")
-                                                        + (((artistIds != null) && (artistIds.Count > 0)) ? (" AND artist.id IN (?artistIds) ") : "")
+                                                        + (((venueIds != null) && (venueIds.Count > 0)) ? ($" AND venue.id IN ({string.Join(",", Enumerable.Range(0, venueIds.Count).Select(i => $"?venue_id_{i}"))}) ") : "")
+                                                        + (((artistIds != null) && (artistIds.Count > 0)) ? ($" AND artist.id IN ({string.Join(",", Enumerable.Range(0, artistIds.Count).Select(i => $"?artist_id_{i}"))}) ") : "")
                                                         + " ORDER BY performance.start_date")
                                                           .SetParameter("?startDate", startDate)
                                                           .SetParameter("?endDate", endDate);
@@ -228,11 +229,17 @@ namespace UFO.Server.Data.MySql.Dao
                 }
                 if ((artistIds != null) && (artistIds.Count > 0))
                 {
-                    commandBuilder.SetParameter("?artistIds", artistIds);
+                    for (int i = 0; i < artistIds.Count; i++)
+                    {
+                        commandBuilder.SetParameter($"?artist_id_{i}", artistIds.ElementAt(i));
+                    }
                 }
                 if ((venueIds != null) && (venueIds.Count > 0))
                 {
-                    commandBuilder.SetParameter("?venueIds", venueIds);
+                    for (int i = 0; i < venueIds.Count; i++)
+                    {
+                        commandBuilder.SetParameter($"?venue_id_{i}", venueIds.ElementAt(i));
+                    }
                 }
 
                 using (IDataReader reader = commandBuilder.ExecuteReader())
