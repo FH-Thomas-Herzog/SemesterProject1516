@@ -16,7 +16,7 @@
 				style="margin-right: 10px;" />
 			<p:commandButton id="openVenuesDialogButton" icon="fa fa-map-marker"
 				partialSubmit="true" title="#{msg.clickOpenVenueDetails}"
-				actionListener="#{venueInfoDialog.init(null, false)}"
+				actionListener="#{venueInfoDialog.init(null, null, false)}"
 				process="@this" update=":dialogGroup" style="margin-right: 10px;" />
 			<p:commandButton id="resetVenuesFiltersButton" icon="fa fa-close"
 				partialSubmit="true" title="#{msg.reset}"
@@ -64,7 +64,7 @@
 					<p:commandLink id="venueInfoLink" styleClass="fa fa-map-marker"
 						style="margin-right: 10px; color: red;"
 						title="#{msg.clickOpenVenueDetails}"
-						actionListener="#{venueInfoDialog.init(venue.id, false)}"
+						actionListener="#{venueInfoDialog.init(venue.id, null, false)}"
 						process="@this" global="true" update=":dialogGroup" />
 					<h:outputText id="venueItem" value="#{venue.name}"
 						title="#{venue.address}" />

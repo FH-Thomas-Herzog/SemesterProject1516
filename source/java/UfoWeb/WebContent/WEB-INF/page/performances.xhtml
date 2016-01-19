@@ -12,16 +12,19 @@
 			value="#{performancePage.tables}" var="item">
 
 			<p:dataTable id="performanceTable" value="#{item}" var="row"
-				scrollWidth="100%" paginator="true" rows="10"
+				scrollWidth="100%" paginator="true" rows="25"
 				rowStatePreserved="true" reflow="true"
-				rowsPerPageTemplate="10, 20, 30, 40, 50, 100" lazy="true"
+				rowsPerPageTemplate="25,50,75,100" lazy="true"
 				paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}"
 				caseSensitiveSort="false" disabledSelection="true"
 				disabledTextSelection="true" filterEvent="enter"
-				style="text-align: center; vertical-align: middle;">
+				style="text-align: center; vertical-align: middle; margin: 10px;">
 
 				<f:facet name="header">
-					<h:outputText value="#{item.header}" />
+					<h:outputText value="#{item.date.time}">
+						<f:convertDateTime dateStyle="medium" type="date"
+							locale="#{languageBean.locale}" />
+					</h:outputText>
 					<p:commandLink id="newLink" styleClass="fa fa-edit"
 						style="margin-left: 10px;color: green;"
 						title="#{msg.clickCreatePerformance}"
@@ -39,14 +42,15 @@
 					style="text-align: left;">
 					<f:facet name="header">
 						<h:outputText value="#{msg.venue}" style="margin-right: 10px;" />
-						<p:commandLink action="#{venueInfoDialog.init(null, true)}"
+						<p:commandLink
+							action="#{venueInfoDialog.init(null, item.date,true)}"
 							styleClass="fa fa-map-marker fa-3x" style="color: red;"
 							global="true" process="@this" update=":dialogGroup"
 							title="#{msg.openVenueDialog}"
 							oncomplete="PF('venueInfoDialog').show();" />
 					</f:facet>
 					<p:commandLink id="venueInfoLink" title="#{msg.openVenueDialog}"
-						actionListener="#{venueInfoDialog.init(row.venue.id, true)}"
+						actionListener="#{venueInfoDialog.init(row.venue.id, item.date, true)}"
 						global="true" update=":dialogGroup" process="@this"
 						styleClass="fa fa-map-marker fa-3x"
 						style="margin-right: 10px; color:red;" />
@@ -54,7 +58,7 @@
 				</p:column>
 
 				<p:columns value="#{item.columns}" var="column"
-					columnIndexVar="idxVar" filterable="true" filterBy="#{column.hour}"
+					columnIndexVar="idxVar" filterable="true" filterBy="#{idxVar}"
 					sortable="true" sortBy="#{idxVar}" headerText="#{column.header}">
 					<!-- Column via template -->
 					<ui:include src="/WEB-INF/page/templates/performance_column.xhtml">

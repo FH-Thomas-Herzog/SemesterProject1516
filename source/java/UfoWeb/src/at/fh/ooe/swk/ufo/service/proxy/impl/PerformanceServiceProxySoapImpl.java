@@ -78,6 +78,7 @@ public class PerformanceServiceProxySoapImpl implements PerformanceServiceProxy 
 			request.setLanguage(model.getLanguageCode());
 			request.setArtistId(model.getArtistId());
 			request.setVenueId(model.getVenueId());
+			request.setStartDate(model.getStartDate());
 
 			final SingleResultModelOfPerformanceModel soapResult = soapService.save(request);
 			if (soapResult.getErrorCode() != null) {

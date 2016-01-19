@@ -55,6 +55,7 @@ public class PerformanceFilterBean implements Serializable {
 		final Calendar fromDateTmp = (Calendar) fromDate.clone();
 		fromDateTmp.setTimeZone(timeZone);
 		final Calendar toDateTmp = (Calendar) fromDate.clone();
+//		toDateTmp.add(Calendar.DAY_OF_YEAR, 10); Just for testing
 		toDateTmp.set(Calendar.HOUR_OF_DAY, 23);
 		toDateTmp.set(Calendar.MINUTE, 59);
 
@@ -99,6 +100,7 @@ public class PerformanceFilterBean implements Serializable {
 
 	public void reset() {
 		fromDate = Calendar.getInstance();
+		fromDate.set(fromDate.get(Calendar.YEAR), fromDate.get(Calendar.MONTH), fromDate.get(Calendar.DATE), 0, 0);
 		artistIds = new ArrayList<>();
 		venueIds = new ArrayList<>();
 	}

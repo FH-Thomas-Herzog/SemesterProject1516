@@ -32,7 +32,7 @@ public class PerformanceLazyDataTableModel extends LazyDataModel<PerformanceRowM
 
 	private static final long serialVersionUID = -4489424237412049760L;
 
-	private String header;
+	private Calendar date;
 	private List<PerformanceColumnModel> columns;
 	private List<PerformanceRowModel> rows;
 	private Set<Integer> performancestartHours;
@@ -40,8 +40,8 @@ public class PerformanceLazyDataTableModel extends LazyDataModel<PerformanceRowM
 	/**
 	 * Initializes this data model
 	 * 
-	 * @param header
-	 *            the table header
+	 * @param date
+	 *            the table date
 	 * @param performances
 	 *            the list of performances
 	 * @throws NullPointerException
@@ -49,12 +49,12 @@ public class PerformanceLazyDataTableModel extends LazyDataModel<PerformanceRowM
 	 * @throws IllegalArgumentException
 	 *             if performances list is empty
 	 */
-	public void init(final String header, final List<PerformanceViewModel> performances) {
+	public void init(final Calendar header, final List<PerformanceViewModel> performances) {
 		Objects.requireNonNull(performances, "DataTabelSubPage needs performances to be given");
 		if (performances.isEmpty()) {
 			throw new IllegalArgumentException("Performances must not be empty");
 		}
-		this.header = header;
+		this.date = header;
 		buildRows(performances);
 		buildColumns(performances.get(0).getStartDate().get(Calendar.HOUR_OF_DAY),
 				performances.get(performances.size() - 1).getStartDate().get(Calendar.HOUR_OF_DAY));
@@ -145,8 +145,8 @@ public class PerformanceLazyDataTableModel extends LazyDataModel<PerformanceRowM
 	// ##################################################
 	// Getter and Setter
 	// ##################################################
-	public String getHeader() {
-		return header;
+	public Calendar getDate() {
+		return date;
 	}
 
 	public List<PerformanceColumnModel> getColumns() {

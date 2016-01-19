@@ -136,6 +136,12 @@ public interface MessagesBundle extends Serializable {
 	@MessageTemplate("{ADDRESS}")
 	String getAddress();
 
+	@MessageTemplate("{ITEMS_SELECTED}")
+	String getItemsSelected(String param);
+
+	@MessageTemplate("{ALL}")
+	String getAll();
+
 	@MessageTemplate("{WARNING_PERFORMANCE_MOVED}")
 	String getWarningPerformanceMoved();
 

@@ -7,7 +7,7 @@
 	xmlns:pe="http://primefaces.org/ui/extensions">
 
 	<h:panelGroup rendered="#{not empty model}">
-		<p:commandLink id="infoLink" title="CLICK FOR OPEN DETAILS"
+		<p:commandLink id="infoLink" title="#{msg.clickOpenArtistDetails}"
 			actionListener="#{pageBean.prepareArtistDialog(model.artistId)}"
 			global="true" update=":dialogGroup" process="@this">
 			<h:outputText value="#{model.name}" style="float: left;" />
@@ -18,7 +18,7 @@
 			rendered="#{(utxModel.logged) and (not model.inPast)}"
 			actionListener="#{editDialog.init(model)}" global="true"
 			update=":dialogGroup" process="@this"
-			oncomplete="PF('editDialogVar').show();">
+			oncomplete="PF('editPerformanceDialog').show();">
 			<p:resetInput target=":dialogGroup" />
 		</p:commandLink>
 		<h:panelGroup id="movedWarning" layout="block"

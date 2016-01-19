@@ -53,57 +53,34 @@ public class TestDataGenerator {
 	public static class Performance {
 
 		private Calendar startCal;
-		private final int venueCount;
-		private final Random random = new Random();
+		private int artistId = 1;
+		private final int artistCount;
 		boolean toogle = Boolean.FALSE;
-		private int hourOffset = 0;
-		private int initDay = 0;
-		private int offset = 0;
 		private int startHour = 8;
-		private boolean start = Boolean.FALSE;
-		private int currentVenueId = 1;
+		private int endHour = 18;
+		private int startMonth;
+		private int startDate;
+		private boolean toggled = Boolean.FALSE;
 
-		public Performance(int venueCount) {
+		public Performance(int artistCount) {
 			super();
-			this.venueCount = venueCount;
+			this.artistCount = artistCount;
 			startCal = Calendar.getInstance(Locale.GERMAN);
-			startCal.set(2016, Calendar.JANUARY, Calendar.MONDAY, startHour, 0, 0);
-			initDay = startCal.get(Calendar.DAY_OF_YEAR);
+			startDate = startCal.get(Calendar.DATE);
+			startMonth = startCal.get(Calendar.MONTH);
 			reset();
 		}
 
 		public void reset() {
-			hourOffset = 0;
-			if (start) {
-				startCal.add(Calendar.DAY_OF_YEAR, 1);
-			} else {
-				start = Boolean.TRUE;
-			}
-			startCal.set(Calendar.HOUR_OF_DAY, startHour);
-			startCal.set(Calendar.MILLISECOND, 0);
-			startCal.set(Calendar.SECOND, 0);
-			startCal.set(Calendar.MINUTE, 0);
-		}
-
-		public void toggle() {
-			if (offset == 1) {
-				offset = 0;
-				startHour = 8;
-				initDay = startCal.get(Calendar.DAY_OF_YEAR);
-				start = Boolean.FALSE;
-			} else {
-				currentVenueId++;
-				currentVenueId = (currentVenueId < venueCount) ? currentVenueId : 1;
-				offset = 1;
-				startHour = 9;
-			}
-			startCal.set(Calendar.DAY_OF_YEAR, initDay);
-			reset();
+			startCal.set(2016, startMonth, startDate, startHour, 0, 0);
 		}
 
 		public String getStartDate() {
-			startCal.add(Calendar.HOUR_OF_DAY, hourOffset);
-			hourOffset += 2;
+			if (startCal.get(Calendar.HOUR_OF_DAY) == endHour) {
+				startCal.add(Calendar.DAY_OF_YEAR, 1);
+				startCal.set(Calendar.HOUR_OF_DAY, startHour);
+			}
+			startCal.add(Calendar.HOUR_OF_DAY, 1);
 			return format(startCal);
 		}
 
@@ -117,8 +94,14 @@ public class TestDataGenerator {
 			return new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", new Locale("de", "DE")).format(cal.getTime());
 		}
 
-		public int getVenueId() {
-			return currentVenueId;
+		public int getArtistId() {
+			if (artistId > artistCount) {
+				artistId = (toggled) ? 1 : 2;
+				toggled = !toggled;
+			}
+			final int tmp = artistId;
+			artistId = artistId + 2;
+			return tmp;
 		}
 	}
 
@@ -274,6 +257,7 @@ public class TestDataGenerator {
 		parameters.put("artistCategoryCount", categories.size());
 		parameters.put("artistGroupCount", artistGroups.size());
 		parameters.put("venuesCount", venues.size());
+		parameters.put("artistsCount", artists.size());
 		parameters.put("performanceCount", 4);
 		parameters.put("daysCount", DAYS_COUNT);
 		parameters.put("categories", categories);

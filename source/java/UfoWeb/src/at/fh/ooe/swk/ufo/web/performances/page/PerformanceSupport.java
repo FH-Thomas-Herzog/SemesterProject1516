@@ -2,7 +2,6 @@ package at.fh.ooe.swk.ufo.web.performances.page;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
@@ -13,14 +12,10 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Produces;
-import javax.faces.application.FacesMessage;
-import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
 import javax.inject.Inject;
 import javax.inject.Named;
-
-import org.apache.logging.log4j.Logger;
 
 import at.fh.ooe.swk.ufo.service.proxy.api.ArtistServiceProxy;
 import at.fh.ooe.swk.ufo.service.proxy.api.VenueServiceProxy;
@@ -35,10 +30,6 @@ import at.fh.ooe.swk.ufo.web.performances.constants.ArtistSearchOption;
 import at.fh.ooe.swk.ufo.web.performances.constants.VenueSearchOption;
 import at.fh.ooe.swk.ufo.web.performances.model.ArtistViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.VenueViewModel;
-import at.fh.ooe.swk.ufo.webservice.ArtistServiceSoap;
-import at.fh.ooe.swk.ufo.webservice.ListResultModelOfArtistModel;
-import at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel;
-import at.fh.ooe.swk.ufo.webservice.VenueServiceSoap;
 
 @SessionScoped
 @Named("performanceSupport")
@@ -54,13 +45,9 @@ public class PerformanceSupport implements Serializable {
 	private ProxyServiceExceptionHandler proxyExceptionHandler;
 
 	@Inject
-	private Logger log;
-	@Inject
 	private MessagesBundle bundle;
 	@Inject
 	private LanguageBean languageBean;
-	@Inject
-	private FacesContext fc;
 
 	private List<ArtistViewModel> artists;
 	private List<VenueViewModel> venues;

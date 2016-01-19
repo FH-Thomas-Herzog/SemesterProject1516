@@ -108,7 +108,7 @@ public class PerformanceEditDialogBean implements Serializable {
 			ResultModel<PerformanceViewModel> result = performanceService.save(model);
 
 			// Handle response
-			if ((!proxaExceptionHanlder.handleException(null, result)) && (result.getResult() != null)) {
+			if ((!proxaExceptionHanlder.handleException(clientId, result)) && (result.getResult() != null)) {
 				support.loadArtistFilterOptions();
 				support.loadVenueFilterOptions();
 				page.loadPerformances();
@@ -136,7 +136,7 @@ public class PerformanceEditDialogBean implements Serializable {
 			ResultModel<Boolean> result = performanceService.delete(model);
 
 			// Handle response
-			if ((!proxaExceptionHanlder.handleException(null, result)) && (result.getResult() != null)) {
+			if ((!proxaExceptionHanlder.handleException(clientId, result)) && (result.getResult() != null)) {
 				support.loadArtistFilterOptions();
 				support.loadVenueFilterOptions();
 				page.loadPerformances();

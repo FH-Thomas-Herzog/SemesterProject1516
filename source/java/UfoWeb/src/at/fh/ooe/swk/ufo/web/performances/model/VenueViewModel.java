@@ -25,6 +25,7 @@ public class VenueViewModel implements Serializable {
 	private String address;
 	private String location;
 	private boolean fromAddress = Boolean.FALSE;
+	private List<PerformanceViewModel> filteredPerformances;
 	private List<PerformanceViewModel> performances;
 
 	public VenueViewModel() {

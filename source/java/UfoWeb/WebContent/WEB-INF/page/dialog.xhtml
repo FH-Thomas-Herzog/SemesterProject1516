@@ -58,16 +58,27 @@
 		<p:dialog id="venueInfoDialogID"
 			rendered="#{not empty venueInfoDialog.venues}"
 			widgetVar="venueInfoDialog" closable="true" closeOnEscape="true"
-			draggable="true" responsive="true" fitViewport="true"
-			resizable="true" position="center" header="#{msg.venues}"
-			modal="true" width="630" style="padding: 10px;">
+			draggable="true" position="center" modal="true" width="650"
+			height="#{venueInfoDialog.withPerformances} ? 300 : 440"
+			style="padding: 10px;" resizable="true" responsive="true"
+			fitViewport="true">
 
+			<f:facet name="header">
+				<h:outputText value="#{msg.venues}" />
+				<h:panelGroup rendered="#{not empty venueInfoDialog.date}">
+					<h:outputText value=" - " />
+					<h:outputText value="#{venueInfoDialog.date.time}">
+						<f:convertDateTime type="date" dateStyle="medium"
+							locale="#{languageBean.locale}" />
+					</h:outputText>
+				</h:panelGroup>
+			</f:facet>
 			<p:ajax event="close" listener="#{venueInfoDialog.onClose}"
 				global="true" async="true" partialSubmit="true" process="@this"
 				update=":venueDialogForm, :dialogGroup" />
 
 			<h:panelGroup id="mapContainer" layout="block"
-				style="width:600px; height:300px; margin-bottom: 10px;">
+				style="width:600px; height:350px; margin-bottom: 10px;">
 				<p:gmap id="venueMap" widgetVar="venueMap"
 					center="#{venueInfoDialog.defaultLocation}" zoom="15"
 					type="ROADMAP" model="#{venueInfoDialog.map}"
@@ -82,33 +93,32 @@
 				headerText="#{msg.performances}" value="#{venueInfoDialog.venues}"
 				var="venue" numVisible="1" responsive="true" easing="easeOutBounce"
 				cricular="false" firstVisible="0" widgetVar="venueCarousel"
-				itemStyle="width: 100%; padding: 10px;">
+				itemStyle="width: 100%; padding: 10px;" vertical="true"
+				style="height: 400px;">
 
-				<h:panelGroup layout="block" style="margin-bottom: 10px;">
-					<h:outputText value="#{venue.name}"
-						style="font-weight: bold; font-size: medium; " />
-				</h:panelGroup>
-				<ui:repeat value="#{venue.performances}" var="item">
-					<div class="ui-grid ui-grid-responsive">
-						<div class="ui-grid-row">
-							<div class="ui-grid-col-6" style="padding: 5px;">
-								<h:outputText id="startDate" value="#{item.startDate.time}">
-									<f:convertDateTime type="time" locale="#{languageBean.locale}"
-										for="startDate" timeZone="#{defaultTimeZone}" />
-								</h:outputText>
-								<h:outputText value=" - " style="margin-left: 5px;" />
-								<h:outputText id="endDate" value="#{item.endDate.time}"
-									style="margin-left: 5px">
-									<f:convertDateTime type="time" locale="#{languageBean.locale}"
-										for="startDate" timeZone="#{defaultTimeZone}" />
-								</h:outputText>
-							</div>
-							<div class="ui-grid-col-6" style="padding: 5px;">
-								<h:outputText value="(#{item.name})" />
-							</div>
-						</div>
-					</div>
-				</ui:repeat>
+				<p:dataTable value="#{venue.performances}" var="item" rows="10"
+					paginator="true" paginatorPosition="top" filterEvent="event"
+					paginatorTemplate="{RowsPerPageDropdown} {FirstPageLink} {PreviousPageLink} {CurrentPageReport} {NextPageLink} {LastPageLink}">
+					<p:ajax event="page" global="false" process="@this" />
+					<f:facet name="header">
+						<h:outputText value="#{venue.name}" />
+					</f:facet>
+					<p:column sortBy="#{item.startDate}" headerText="#{msg.time}">
+						<h:outputText id="startDate" value="#{item.startDate.time}">
+							<f:convertDateTime type="time" locale="#{languageBean.locale}"
+								for="startDate" timeZone="#{defaultTimeZone}" />
+						</h:outputText>
+						<h:outputText value=" - " style="margin-left: 5px;" />
+						<h:outputText id="endDate" value="#{item.endDate.time}"
+							style="margin-left: 5px">
+							<f:convertDateTime type="time" locale="#{languageBean.locale}"
+								for="startDate" timeZone="#{defaultTimeZone}" />
+						</h:outputText>
+					</p:column>
+					<p:column headerText="#{msg.artist}">
+						<h:outputText value="(#{item.name})" />
+					</p:column>
+				</p:dataTable>
 			</p:carousel>
 		</p:dialog>
 	</h:form>

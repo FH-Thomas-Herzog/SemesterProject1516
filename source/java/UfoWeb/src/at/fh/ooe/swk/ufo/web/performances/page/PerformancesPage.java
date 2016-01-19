@@ -5,6 +5,7 @@ import java.text.Format;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -166,10 +167,6 @@ public class PerformancesPage implements Serializable {
 	public void loadPerformances() {
 		tables = new ArrayList<>();
 
-		// Formatter for current set locale
-		Format formatter = DateTimeFormatter.ofLocalizedDate(FormatStyle.LONG).withLocale(languageBean.getLocale())
-				.toFormat();
-
 		// Load performances via proxy
 		final ResultModel<List<PerformanceViewModel>> result = performanceServiceProxy
 				.getPerforamnces(performanceFilterPage.createFilter());
@@ -179,12 +176,15 @@ public class PerformancesPage implements Serializable {
 		// Handle loaded performances
 		if (result.getResult() != null) {
 			// group performances by their start date value
-			final Map<String, List<PerformanceViewModel>> map = result.getResult().parallelStream()
-					.collect(Collectors.groupingBy(
-							model -> formatter.format(((GregorianCalendar) model.getStartDate()).toZonedDateTime())));
+			final Map<Calendar, List<PerformanceViewModel>> map = result.getResult().parallelStream()
+					.collect(Collectors.groupingBy(model -> {
+						final Calendar cal = (Calendar) model.getStartDate().clone();
+						cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE), 0, 0);
+						return cal;
+					}));
 			// Sort performances by their full startDate
-			map.entrySet().forEach(new Consumer<Entry<String, List<PerformanceViewModel>>>() {
-				public void accept(Entry<String, List<PerformanceViewModel>> t) {
+			map.entrySet().forEach(new Consumer<Entry<Calendar, List<PerformanceViewModel>>>() {
+				public void accept(Entry<Calendar, List<PerformanceViewModel>> t) {
 					t.getValue().sort(new Comparator<PerformanceViewModel>() {
 						public int compare(PerformanceViewModel o1, PerformanceViewModel o2) {
 							return o1.getStartDate().compareTo(o2.getStartDate());
@@ -193,7 +193,7 @@ public class PerformancesPage implements Serializable {
 				};
 			});
 			// Prepare table pages for each date
-			for (Entry<String, List<PerformanceViewModel>> entry : map.entrySet()) {
+			for (Entry<Calendar, List<PerformanceViewModel>> entry : map.entrySet()) {
 				final PerformanceLazyDataTableModel table = dataTableSubPageInstances.get();
 				table.init(entry.getKey(), entry.getValue());
 				tables.add(table);

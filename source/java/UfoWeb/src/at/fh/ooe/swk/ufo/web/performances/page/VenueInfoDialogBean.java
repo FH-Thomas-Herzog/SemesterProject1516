@@ -2,7 +2,9 @@ package at.fh.ooe.swk.ufo.web.performances.page;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
+import java.util.Objects;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -27,6 +29,7 @@ import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
 
 import at.fh.ooe.swk.ufo.service.proxy.api.VenueServiceProxy;
+import at.fh.ooe.swk.ufo.service.proxy.model.PerformanceFilter;
 import at.fh.ooe.swk.ufo.service.proxy.model.ResultModel;
 import at.fh.ooe.swk.ufo.web.application.ProxyServiceExceptionHandler;
 import at.fh.ooe.swk.ufo.web.application.constants.ContextParameter;
@@ -66,6 +69,7 @@ public class VenueInfoDialogBean implements Serializable {
 	@Inject
 	private ProxyServiceExceptionHandler proxyExceptionHandler;
 
+	private Calendar date;
 	private String defaultLocation;
 	private MapModel map;
 	private List<VenueViewModel> venues;
@@ -87,15 +91,17 @@ public class VenueInfoDialogBean implements Serializable {
 	 * 
 	 * @param id
 	 */
-	public void init(Long id, boolean withPerforamnces) {
+	public void init(Long id, Calendar date, boolean withPerforamnces) {
 		reset();
 
 		this.withPerformances = withPerforamnces;
+		this.date = date;
 
 		if (withPerforamnces) {
+			Objects.requireNonNull(date, "With perforamnces requires date to be set");
 			final ResultModel<List<VenueViewModel>> result = ((id == null)
-					? venueService.getVenuesForPerformances(filterBean.createFilter())
-					: venueService.getVenueForPerformances(id, filterBean.createFilter()));
+					? venueService.getVenuesForPerformances(createModifiedFilter(date))
+					: venueService.getVenueForPerformances(id, createModifiedFilter(date)));
 			if ((!proxyExceptionHandler.handleException(null, result)) && (result.getResult() != null)) {
 				venues = result.getResult();
 				prepareMap();
@@ -136,12 +142,14 @@ public class VenueInfoDialogBean implements Serializable {
 	 *            {@link OverlaySelectEvent}
 	 */
 	public void onMarkerSelect(OverlaySelectEvent event) {
-		final Marker marker = (Marker) event.getOverlay();
-		int idx = venues.indexOf(marker.getData());
-		if (idx < 0) {
-			idx = 0;
+		if (withPerformances) {
+			final Marker marker = (Marker) event.getOverlay();
+			int idx = venues.indexOf(marker.getData());
+			if (idx < 0) {
+				idx = 0;
+			}
+			RequestContext.getCurrentInstance().execute("PF('venueCarousel').setPage(" + idx + ")");
 		}
-		RequestContext.getCurrentInstance().execute("PF('venueCarousel').setPage(" + idx + ")");
 	}
 
 	// ##################################################
@@ -212,10 +220,40 @@ public class VenueInfoDialogBean implements Serializable {
 	 * Resets the bean held states
 	 */
 	public void reset() {
+		Calendar date = null;
 		defaultLocation = null;
 		venues = null;
 		map = null;
 		withPerformances = Boolean.FALSE;
+	}
+
+	private PerformanceFilter createModifiedFilter(final Calendar date) {
+		final PerformanceFilter filter = filterBean.createFilter();
+		final Calendar toDate = (Calendar) date.clone();
+		toDate.set(Calendar.HOUR_OF_DAY, 23);
+		toDate.set(Calendar.HOUR_OF_DAY, 59);
+		return new PerformanceFilter() {
+
+			@Override
+			public List<Long> getVenueIds() {
+				return filter.getVenueIds();
+			}
+
+			@Override
+			public Calendar getToDate() {
+				return toDate;
+			}
+
+			@Override
+			public Calendar getFromDate() {
+				return date;
+			}
+
+			@Override
+			public List<Long> getArtistIds() {
+				return filter.getArtistIds();
+			}
+		};
 	}
 
 	// ##################################################
@@ -237,4 +275,7 @@ public class VenueInfoDialogBean implements Serializable {
 		return withPerformances;
 	}
 
+	public Calendar getDate() {
+		return date;
+	}
 }
