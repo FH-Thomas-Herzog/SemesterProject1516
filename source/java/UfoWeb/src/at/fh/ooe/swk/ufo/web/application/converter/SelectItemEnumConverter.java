@@ -1,6 +1,7 @@
 package at.fh.ooe.swk.ufo.web.application.converter;
 
 import java.util.List;
+import java.util.Objects;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.component.UIComponent;
@@ -12,6 +13,12 @@ import javax.faces.model.SelectItem;
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 import at.fh.ooe.swk.ufo.web.application.model.IdMapperModel;
 
+/**
+ * Converter for {@link SelectItem} which hold enum values
+ * 
+ * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
+ * @date Jan 19, 2016
+ */
 public class SelectItemEnumConverter implements Converter {
 
 	private final MessagesBundle bundle;
@@ -19,6 +26,8 @@ public class SelectItemEnumConverter implements Converter {
 
 	public SelectItemEnumConverter(List<SelectItem> items, MessagesBundle bundle) {
 		super();
+		Objects.requireNonNull(items);
+		Objects.requireNonNull(bundle);
 		this.items = items;
 		this.bundle = bundle;
 	}

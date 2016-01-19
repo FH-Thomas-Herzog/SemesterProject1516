@@ -1,8 +1,14 @@
-package at.fh.ooe.swk.ufo.service.proxy.model;
+package at.fh.ooe.swk.ufo.service.proxy.api.model;
 
 import java.util.Calendar;
 
-public class PerformanceModel extends AbstractCredentialsModel {
+/**
+ * The request model for the perfomance save/delete operation.
+ * 
+ * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
+ * @date Jan 19, 2016
+ */
+public class PerformanceServiceRequestModel extends AbstractAuthenticationServiceRequestModel {
 
 	private Long id;
 	private Long version;
@@ -10,11 +16,11 @@ public class PerformanceModel extends AbstractCredentialsModel {
 	private Long venueId;
 	private Calendar startDate;
 
-	public PerformanceModel() {
+	public PerformanceServiceRequestModel() {
 		super();
 	}
 
-	public PerformanceModel(String username, String password, String languageCode, Long id, Long version, Long artistId,
+	public PerformanceServiceRequestModel(String username, String password, String languageCode, Long id, Long version, Long artistId,
 			Long venueId, Calendar startDate) {
 		super(username, password, languageCode);
 		this.id = id;

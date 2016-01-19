@@ -17,8 +17,14 @@ import org.apache.logging.log4j.Logger;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
-import at.fh.ooe.swk.ufo.webservice.ArtistModel;
+import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
 
+/**
+ * The artist view model which
+ * 
+ * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
+ * @date Jan 19, 2016
+ */
 @Dependent
 public class ArtistViewModel implements Serializable {
 
@@ -29,6 +35,8 @@ public class ArtistViewModel implements Serializable {
 	private transient ServletContext servletContext;
 	@Inject
 	private Logger log;
+	@Inject
+	private LanguageBean languageBean;
 
 	private Long id;
 	private String fullName;
@@ -38,6 +46,7 @@ public class ArtistViewModel implements Serializable {
 	private Locale locale;
 	private URL url;
 	private String artistGroup;
+	private String artistCategory;
 	private byte[] imageData;
 	private String imageType;
 
@@ -48,30 +57,27 @@ public class ArtistViewModel implements Serializable {
 		super();
 	}
 
-	public void init(ArtistModel model) {
-		id = model.getId();
-		firstName = model.getFirstName();
-		lastName = model.getLastName();
-		fullName = new StringBuilder().append((lastName == null) ? "" : lastName).append(", ")
+	public void init(Long id, String firstName, String lastName, String email, String countryCode, String url,
+			String artistGroup, String artistCategory, String imageBase64, String imageType) {
+		this.id = id;
+		this.firstName = firstName;
+		this.lastName = lastName;
+		this.fullName = new StringBuilder().append((lastName == null) ? "" : lastName).append(", ")
 				.append((firstName == null) ? "" : firstName).toString();
-		email = model.getEmail();
-		locale = new Locale("", model.getCountryCode());
-		artistGroup = model.getArtistGroup();
-		URL url = null;
-		if ((model.getUrl() != null) && (!model.getUrl().isEmpty())) {
+		this.email = email;
+		this.locale = new Locale("", countryCode);
+		if ((url != null) && (!url.isEmpty())) {
 			try {
-				url = new URL(model.getUrl());
+				this.url = new URL(url);
 			} catch (Exception e) {
-				log.error("Artist with id: " + model.getId() + " has invalid url: " + model.getUrl());
+				log.error("Artist with id: " + id + " has invalid url: " + url);
 			}
 		}
-		this.url = url;
-		if ((model.getImage() != null) && (!model.getImage().isEmpty())) {
-			imageData = Base64.getDecoder().decode(model.getImage());
-			imageType = model.getImageType();
-		} else {
-			imageData = null;
-			imageType = null;
+		this.artistGroup = artistGroup;
+		this.artistCategory = artistCategory;
+		if ((imageBase64 != null) && (!imageBase64.isEmpty())) {
+			this.imageData = Base64.getDecoder().decode(imageBase64);
+			this.imageType = imageType;
 		}
 	}
 
@@ -125,8 +131,8 @@ public class ArtistViewModel implements Serializable {
 		return email;
 	}
 
-	public String getCountryName(Locale locale) {
-		return (this.locale != null) ? this.locale.getDisplayCountry(locale) : null;
+	public String getCountryName() {
+		return (this.locale != null) ? this.locale.getDisplayCountry() : null;
 	}
 
 	public String getUrl() {
@@ -135,6 +141,10 @@ public class ArtistViewModel implements Serializable {
 
 	public String getArtistGroup() {
 		return artistGroup;
+	}
+
+	public String getArtistCategory() {
+		return artistCategory;
 	}
 
 	public byte[] getImageData() {

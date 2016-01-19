@@ -26,9 +26,9 @@ import org.primefaces.context.RequestContext;
 
 import at.fh.ooe.swk.ufo.service.proxy.api.ArtistServiceProxy;
 import at.fh.ooe.swk.ufo.service.proxy.api.PerformanceServiceProxy;
-import at.fh.ooe.swk.ufo.service.proxy.model.ResultModel;
-import at.fh.ooe.swk.ufo.web.application.ProxyServiceExceptionHandler;
+import at.fh.ooe.swk.ufo.service.proxy.api.model.ResultModel;
 import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
+import at.fh.ooe.swk.ufo.web.application.exception.ProxyServiceExceptionHandler;
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 import at.fh.ooe.swk.ufo.web.performances.constants.ArtistSearchOption;
 import at.fh.ooe.swk.ufo.web.performances.constants.VenueSearchOption;
@@ -43,30 +43,13 @@ public class PerformancesPage implements Serializable {
 	private static final long serialVersionUID = 5519942591137456554L;
 
 	@Inject
-	private FacesContext fc;
-	@Inject
-	private Logger log;
-
-	@Inject
-	private MessagesBundle bundle;
-	@Inject
-	private LanguageBean languageBean;
-	@Inject
 	private ProxyServiceExceptionHandler proxyExceptionHandler;
 
-	@Inject
-	private PerformanceServiceProxy performanceServiceProxy;
 	@Inject
 	private ArtistServiceProxy artistServiceProxy;
 
 	@Inject
-	private Instance<PerformanceLazyDataTableModel> dataTableSubPageInstances;
-	@Inject
-	private PerformanceFilterBean performanceFilterPage;
-	@Inject
 	private PerformanceSupport support;
-
-	private List<PerformanceLazyDataTableModel> tables;
 
 	private String artistSearch;
 	private ArtistViewModel selectedArtist;
@@ -85,7 +68,6 @@ public class PerformancesPage implements Serializable {
 	public void postConstruct() {
 		onArtistsSearchReset();
 		onVenuesSearchReset();
-		loadPerformances();
 	}
 
 	// ##################################################
@@ -110,7 +92,11 @@ public class PerformancesPage implements Serializable {
 					return ((artist.getArtistGroup() != null)
 							&& (artist.getArtistGroup().toUpperCase().contains(query)));
 				case ARTIST_CATEGORY:
-					return Boolean.FALSE;
+					return (artist.getArtistCategory() != null)
+							? artist.getArtistCategory().toUpperCase().contains(query) : Boolean.FALSE;
+				case COUNTRY:
+					return (artist.getCountryName() != null) ? artist.getCountryName().toUpperCase().contains(query)
+							: Boolean.FALSE;
 				default:
 					throw new IllegalArgumentException(
 							"SearchOption: " + selectedArtistSearchOption.name() + " not supported");
@@ -162,46 +148,6 @@ public class PerformancesPage implements Serializable {
 	}
 
 	// ##################################################
-	// Load Methods
-	// ##################################################
-	public void loadPerformances() {
-		tables = new ArrayList<>();
-
-		// Load performances via proxy
-		final ResultModel<List<PerformanceViewModel>> result = performanceServiceProxy
-				.getPerforamnces(performanceFilterPage.createFilter());
-
-		// HAndle Exception
-		proxyExceptionHandler.handleException(null, result);
-		// Handle loaded performances
-		if (result.getResult() != null) {
-			// group performances by their start date value
-			final Map<Calendar, List<PerformanceViewModel>> map = result.getResult().parallelStream()
-					.collect(Collectors.groupingBy(model -> {
-						final Calendar cal = (Calendar) model.getStartDate().clone();
-						cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE), 0, 0);
-						return cal;
-					}));
-			// Sort performances by their full startDate
-			map.entrySet().forEach(new Consumer<Entry<Calendar, List<PerformanceViewModel>>>() {
-				public void accept(Entry<Calendar, List<PerformanceViewModel>> t) {
-					t.getValue().sort(new Comparator<PerformanceViewModel>() {
-						public int compare(PerformanceViewModel o1, PerformanceViewModel o2) {
-							return o1.getStartDate().compareTo(o2.getStartDate());
-						};
-					});
-				};
-			});
-			// Prepare table pages for each date
-			for (Entry<Calendar, List<PerformanceViewModel>> entry : map.entrySet()) {
-				final PerformanceLazyDataTableModel table = dataTableSubPageInstances.get();
-				table.init(entry.getKey(), entry.getValue());
-				tables.add(table);
-			}
-		}
-	}
-
-	// ##################################################
 	// Getter and Setter
 	// ##################################################
 	public String getArtistSearch() {
@@ -210,10 +156,6 @@ public class PerformancesPage implements Serializable {
 
 	public void setArtistSearch(String artistSearch) {
 		this.artistSearch = artistSearch;
-	}
-
-	public List<PerformanceLazyDataTableModel> getTables() {
-		return tables;
 	}
 
 	public ArtistViewModel getSelectedArtist() {

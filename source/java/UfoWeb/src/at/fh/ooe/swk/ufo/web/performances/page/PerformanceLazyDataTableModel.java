@@ -1,5 +1,6 @@
 package at.fh.ooe.swk.ufo.web.performances.page;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -11,10 +12,12 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 
 import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
+import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
 import at.fh.ooe.swk.ufo.web.application.model.IdLabelModel;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceColumnModel;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceLazySorter;
@@ -32,6 +35,10 @@ public class PerformanceLazyDataTableModel extends LazyDataModel<PerformanceRowM
 
 	private static final long serialVersionUID = -4489424237412049760L;
 
+	@Inject
+	private LanguageBean languageBean;
+
+	private int dataCount = 0;
 	private Calendar date;
 	private List<PerformanceColumnModel> columns;
 	private List<PerformanceRowModel> rows;
@@ -54,6 +61,7 @@ public class PerformanceLazyDataTableModel extends LazyDataModel<PerformanceRowM
 		if (performances.isEmpty()) {
 			throw new IllegalArgumentException("Performances must not be empty");
 		}
+		this.dataCount = performances.size();
 		this.date = header;
 		buildRows(performances);
 		buildColumns(performances.get(0).getStartDate().get(Calendar.HOUR_OF_DAY),
@@ -116,15 +124,16 @@ public class PerformanceLazyDataTableModel extends LazyDataModel<PerformanceRowM
 
 		// Build row model where each model holds value for dynamic columns
 		// mapped to their start hour
-		rows = map.entrySet().parallelStream()
-				.map(entry -> new PerformanceRowModel(entry.getKey(), (Map<Integer, List<PerformanceViewModel>>) entry
-						.getValue().parallelStream().collect(Collectors.groupingBy(model -> {
-							final int hour = model.getStartDate().get(Calendar.HOUR_OF_DAY);
-							// remember start hour for filtering columns
-							performancestartHours.add(hour);
-							return hour;
-						}))))
-				.collect(Collectors.toList());
+		rows = map.entrySet().parallelStream().map(entry -> {
+			final Map<Integer, List<PerformanceViewModel>> performanceMap = entry.getValue().parallelStream()
+					.collect(Collectors.groupingBy(model -> {
+				final int hour = model.getStartDate().get(Calendar.HOUR_OF_DAY);
+				// remember start hour for filtering columns
+				performancestartHours.add(hour);
+				return hour;
+			}));
+			return new PerformanceRowModel(entry.getKey(), performanceMap);
+		}).collect(Collectors.toList());
 	}
 
 	/**
@@ -149,7 +158,15 @@ public class PerformanceLazyDataTableModel extends LazyDataModel<PerformanceRowM
 		return date;
 	}
 
+	public String getLocalizedDate() {
+		return DateFormat.getDateInstance(DateFormat.MEDIUM, languageBean.getLocale()).format(date.getTime());
+	}
+
 	public List<PerformanceColumnModel> getColumns() {
 		return columns;
+	}
+
+	public long getDataCount() {
+		return dataCount;
 	}
 }

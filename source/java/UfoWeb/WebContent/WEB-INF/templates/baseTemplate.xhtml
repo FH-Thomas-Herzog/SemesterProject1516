@@ -24,7 +24,7 @@
 </h:head>
 <h:body style="height: 100%">
 	<h:form id="remoteCommandForm" prependId="true">
-		<!-- update=":filterContentContainer, :centerContentContainer" -->
+		<!-- update=":filterContentContainer, :performanceContainer" -->
 		<p:remoteCommand name="updateFilterAndContent" global="false"
 			async="true" partialSubmit="true" />
 	</h:form>
@@ -37,36 +37,28 @@
 			<f:facet name="header">
 				<ui:insert name="northContentHeader" />
 			</f:facet>
-			<h:panelGroup id="northContentContainer" layout="block">
-				<ui:insert name="northContent" />
-			</h:panelGroup>
+			<ui:insert name="northContent" />
 		</pe:layoutPane>
 
 		<pe:layoutPane position="west" minSize="20%" initClosed="true">
 			<f:facet name="header">
 				<ui:insert name="westContentHeader" />
 			</f:facet>
-			<h:panelGroup id="westContentContainer" layout="block">
-				<ui:insert name="westContent" />
-			</h:panelGroup>
+			<ui:insert name="westContent" />
 		</pe:layoutPane>
 
 		<pe:layoutPane position="center">
 			<f:facet name="header">
 				<ui:insert name="centerContentHeader" />
 			</f:facet>
-			<h:panelGroup id="centerContentContainer" layout="block">
-				<ui:insert name="centerContent" />
-			</h:panelGroup>
+			<ui:insert name="centerContent" />
 		</pe:layoutPane>
 
 		<pe:layoutPane position="east" minSize="20%" initClosed="true">
 			<f:facet name="header">
 				<ui:insert name="eastContentHeader" />
 			</f:facet>
-			<h:panelGroup id="eastContentContainer" layout="block">
-				<ui:insert name="eastContent" />
-			</h:panelGroup>
+			<ui:insert name="eastContent" />
 		</pe:layoutPane>
 	</pe:layout>
 
@@ -92,7 +84,7 @@
 				modal="true" width="500" style="padding: 10px;">
 
 				<p:ajax event="close" process="@this"
-					update=":centerContentContainer, :menuStackForm" />
+					update=":performanceContainer, :menuStackForm" />
 
 				<h:panelGroup id="formContainer"
 					styleClass="ui-grid ui-grid-responsive" style="max-width: 800px;">
@@ -157,7 +149,7 @@
 			<p:menuitem value="#{msg.logout}" rendered="#{utxModel.logged}"
 				icon="/resources/images/lock.png"
 				actionListener="#{loginBean.logout()}" global="true"
-				update="@form, :centerContentContainer, :menuStackForm" />
+				update="@form, :performanceContainer, :menuStackForm" />
 		</p:stack>
 	</h:form>
 </h:body>

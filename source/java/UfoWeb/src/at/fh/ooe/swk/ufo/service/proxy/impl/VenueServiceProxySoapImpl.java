@@ -1,6 +1,7 @@
 package at.fh.ooe.swk.ufo.service.proxy.impl;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -9,13 +10,21 @@ import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import at.fh.ooe.swk.ufo.service.proxy.api.VenueServiceProxy;
-import at.fh.ooe.swk.ufo.service.proxy.model.PerformanceFilter;
-import at.fh.ooe.swk.ufo.service.proxy.model.ResultModel;
+import at.fh.ooe.swk.ufo.service.proxy.api.model.PerformanceFilter;
+import at.fh.ooe.swk.ufo.service.proxy.api.model.ResultModel;
+import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.VenueViewModel;
 import at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel;
 import at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest;
+import at.fh.ooe.swk.ufo.webservice.VenueModel;
 import at.fh.ooe.swk.ufo.webservice.VenueServiceSoap;
 
+/**
+ * The venue proxy implementation for the soap service.
+ * 
+ * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
+ * @date Jan 19, 2016
+ */
 @ApplicationScoped
 public class VenueServiceProxySoapImpl implements VenueServiceProxy {
 
@@ -25,6 +34,9 @@ public class VenueServiceProxySoapImpl implements VenueServiceProxy {
 	private transient VenueServiceSoap soapService;
 	@Inject
 	private Instance<VenueViewModel> venueInstance;
+
+	@Inject
+	private Instance<PerformanceViewModel> perforamnceModelInstance;
 
 	@Override
 	public ResultModel<List<VenueViewModel>> getVenues() {
@@ -40,11 +52,9 @@ public class VenueServiceProxySoapImpl implements VenueServiceProxy {
 						+ " / error: " + soapResult.getError());
 			}
 			if (soapResult.getResult() != null) {
-				result.setResult(Arrays.asList(soapResult.getResult()).parallelStream().map(model -> {
-					final VenueViewModel viewModel = venueInstance.get();
-					viewModel.init(model);
-					return viewModel;
-				}).sorted((o1, o2) -> o1.getName().compareTo(o2.getName())).collect(Collectors.toList()));
+				result.setResult(Arrays.asList(soapResult.getResult()).parallelStream()
+						.map(model -> venueToviewModel(model, venueInstance.get(), perforamnceModelInstance))
+						.sorted((o1, o2) -> o1.getName().compareTo(o2.getName())).collect(Collectors.toList()));
 			}
 		} catch (Exception e) {
 			result.setInternalError("Could not invoke web service");
@@ -97,11 +107,9 @@ public class VenueServiceProxySoapImpl implements VenueServiceProxy {
 						+ " / error: " + soapResult.getError());
 			}
 			if (soapResult.getResult() != null) {
-				result.setResult(Arrays.asList(soapResult.getResult()).parallelStream().map(model -> {
-					final VenueViewModel viewModel = venueInstance.get();
-					viewModel.init(model);
-					return viewModel;
-				}).collect(Collectors.toList()));
+				result.setResult(Arrays.asList(soapResult.getResult()).parallelStream()
+						.map(model -> venueToviewModel(model, venueInstance.get(), perforamnceModelInstance))
+						.collect(Collectors.toList()));
 			}
 		} catch (Exception e) {
 			result.setInternalError("Could not invoke web service");
@@ -109,5 +117,30 @@ public class VenueServiceProxySoapImpl implements VenueServiceProxy {
 		}
 
 		return result;
+	}
+
+	private static VenueViewModel venueToviewModel(VenueModel model, VenueViewModel viewModel,
+			Instance<PerformanceViewModel> performanceViewModelInstance) {
+		VenueViewModel result = null;
+		if (model != null) {
+			result = viewModel;
+			List<PerformanceViewModel> performanceViewModels = null;
+			if (model.getPerformances() != null) {
+				performanceViewModels = Arrays.asList(model.getPerformances())
+						.parallelStream().map(performance -> PerformanceServiceProxySoapImpl
+								.performanceToViewModel(performance, performanceViewModelInstance.get()))
+						.sorted(new Comparator<PerformanceViewModel>() {
+							@Override
+							public int compare(PerformanceViewModel o1, PerformanceViewModel o2) {
+								return o1.getStartDate().compareTo(o2.getStartDate());
+							}
+						}).collect(Collectors.toList());
+			}
+			viewModel.init(model.getId(), model.getName(), model.getFullAddress(), model.getGpsCoordinates(),
+					performanceViewModels);
+		}
+
+		return result;
+
 	}
 }

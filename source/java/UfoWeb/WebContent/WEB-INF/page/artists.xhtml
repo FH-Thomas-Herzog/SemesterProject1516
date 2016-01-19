@@ -6,51 +6,55 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:pe="http://primefaces.org/ui/extensions">
 
-	<h:form id="artistsForm" prependId="true">
-		<h:panelGroup id="artistActionsContainer" layout="block"
-			style="margin: 10px;">
-			<p:commandButton id="refreshArtistsButton" icon="fa fa-refresh"
-				partialSubmit="true" title="#{msg.refresh}"
-				actionListener="#{performanceSupport.loadArtistFilterOptions()}"
-				process="@this" update="artistsContainer, :northContentContainer"
-				style="margin-right: 10px;" />
-			<p:commandButton id="resetFiltersButton" icon="fa fa-close"
-				partialSubmit="true" title="#{msg.reset}"
-				actionListener="#{performancePage.onArtistsSearchReset()}"
-				process="@this" update="@form" />
-		</h:panelGroup>
-		<h:panelGroup id="artistsSearchContainer" layout="block"
-			styleClass="ui-grid ui-grid-responsive" style="margin:10px;">
-			<!-- ArtistSearchOption selection-->
-			<div class="ui-grid-row">
-				<div class="ui-grid-col-12" style="padding: 5px;">
-					<p:selectOneRadio id="artistSeachOptionSelection"
-						value="#{performancePage.selectedArtistSearchOption}"
-						converter="#{artistSearchOptionItemsConverter}" layout="grid"
-						columns="2">
-						<p:ajax event="change" partialSubmit="true" process="@this"
-							update="@none" global="false" />
-						<f:selectItems value="#{artistSearchOptionItems}" />
-					</p:selectOneRadio>
+	<pe:layoutPane position="north">
+		<h:form id="artistsForm" prependId="true">
+			<h:panelGroup id="artistActionsContainer" layout="block"
+				style="margin: 10px;">
+				<p:commandButton id="refreshArtistsButton" icon="fa fa-refresh"
+					partialSubmit="true" title="#{msg.refresh}"
+					actionListener="#{performanceSupport.loadArtistFilterOptions()}"
+					process="@this"
+					update="artistsContainer, :performancefilterContainer"
+					style="margin-right: 10px;" />
+				<p:commandButton id="resetFiltersButton" icon="fa fa-close"
+					partialSubmit="true" title="#{msg.reset}"
+					actionListener="#{performancePage.onArtistsSearchReset()}"
+					process="@this" update="@form" />
+			</h:panelGroup>
+			<h:panelGroup id="artistsSearchContainer" layout="block"
+				styleClass="ui-grid ui-grid-responsive" style="margin:10px;">
+				<!-- ArtistSearchOption selection-->
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-12" style="padding: 5px;">
+						<p:selectOneRadio id="artistSeachOptionSelection"
+							value="#{performancePage.selectedArtistSearchOption}"
+							converter="#{artistSearchOptionItemsConverter}" layout="grid"
+							columns="2">
+							<p:ajax event="change" partialSubmit="true" process="@this"
+								update="@none" global="false" />
+							<f:selectItems value="#{artistSearchOptionItems}" />
+						</p:selectOneRadio>
+					</div>
 				</div>
-			</div>
-			<!-- Filter text-->
-			<div class="ui-grid-row">
-				<div class="ui-grid-col-12" style="padding: 5px;">
-					<p:inputText id="artistSearch"
-						value="#{performancePage.artistSearch}" style="width: 100%">
-						<p:ajax event="keyup" onstart="return isEnterKey(event);"
-							partialSubmit="true"
-							listener="#{performancePage.onArtistSearch()}" process="@this"
-							update="artistsContainer" global="true" />
-						<pe:tooltip value="#{msg.triggerSearchOnEnter}"
-							atPosition="top center" myPosition="bottom center"
-							for="artistSearch" />
-					</p:inputText>
+				<!-- Filter text-->
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-12" style="padding: 5px;">
+						<p:inputText id="artistSearch"
+							value="#{performancePage.artistSearch}" style="width: 100%">
+							<p:ajax event="keyup" onstart="return isEnterKey(event);"
+								partialSubmit="true"
+								listener="#{performancePage.onArtistSearch()}" process="@this"
+								update="artistsContainer" global="true" />
+							<pe:tooltip value="#{msg.triggerSearchOnEnter}"
+								atPosition="top center" myPosition="bottom center"
+								for="artistSearch" />
+						</p:inputText>
+					</div>
 				</div>
-			</div>
-		</h:panelGroup>
-		<p:separator />
+			</h:panelGroup>
+		</h:form>
+	</pe:layoutPane>
+	<pe:layoutPane position="center">
 		<h:panelGroup id="artistsContainer" layout="block">
 			<p:dataList
 				value="#{(not empty performancePage.artistSearch) ? performancePage.filteredArtists : performanceSupport.artists}"
@@ -63,9 +67,9 @@
 						title="#{msg.clickOpenArtistDetails}"
 						actionListener="#{performancePage.prepareArtistDialog(artist.id)}"
 						process="@this" global="true" update=":dialogGroup" />
-					<h:outputText value="#{artist.fullName}" />
+					<h:outputText value="#{artist.fullName}" title="#{artist.email}" />
 				</h:panelGrid>
 			</p:dataList>
 		</h:panelGroup>
-	</h:form>
+	</pe:layoutPane>
 </ui:composition>

@@ -5,6 +5,12 @@ import java.io.Serializable;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
+/**
+ * Holds the user authenticaton data in the users session.
+ * 
+ * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
+ * @date Jan 19, 2016
+ */
 @SessionScoped
 @Named("utxModel")
 public class UserContextModel implements Serializable {

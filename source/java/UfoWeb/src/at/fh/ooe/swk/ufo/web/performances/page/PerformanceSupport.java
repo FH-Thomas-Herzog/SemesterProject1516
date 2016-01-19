@@ -2,15 +2,22 @@ package at.fh.ooe.swk.ufo.web.performances.page;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 import java.util.UUID;
+import java.util.Map.Entry;
+import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
@@ -18,17 +25,19 @@ import javax.inject.Inject;
 import javax.inject.Named;
 
 import at.fh.ooe.swk.ufo.service.proxy.api.ArtistServiceProxy;
+import at.fh.ooe.swk.ufo.service.proxy.api.PerformanceServiceProxy;
 import at.fh.ooe.swk.ufo.service.proxy.api.VenueServiceProxy;
-import at.fh.ooe.swk.ufo.service.proxy.model.ResultModel;
-import at.fh.ooe.swk.ufo.web.application.ProxyServiceExceptionHandler;
+import at.fh.ooe.swk.ufo.service.proxy.api.model.ResultModel;
 import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
 import at.fh.ooe.swk.ufo.web.application.converter.SelectItemEnumConverter;
 import at.fh.ooe.swk.ufo.web.application.converter.SelectItemIdMapperModelConverter;
+import at.fh.ooe.swk.ufo.web.application.exception.ProxyServiceExceptionHandler;
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 import at.fh.ooe.swk.ufo.web.application.model.IdMapperModel;
 import at.fh.ooe.swk.ufo.web.performances.constants.ArtistSearchOption;
 import at.fh.ooe.swk.ufo.web.performances.constants.VenueSearchOption;
 import at.fh.ooe.swk.ufo.web.performances.model.ArtistViewModel;
+import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.VenueViewModel;
 
 @SessionScoped
@@ -42,13 +51,21 @@ public class PerformanceSupport implements Serializable {
 	@Inject
 	private VenueServiceProxy venueServiceProxy;
 	@Inject
+	private PerformanceServiceProxy performanceServiceProxy;
+	@Inject
 	private ProxyServiceExceptionHandler proxyExceptionHandler;
+
+	@Inject
+	private Instance<PerformanceLazyDataTableModel> dataTableSubPageInstances;
 
 	@Inject
 	private MessagesBundle bundle;
 	@Inject
 	private LanguageBean languageBean;
+	@Inject
+	private PerformanceFilterBean performanceFilter;
 
+	private List<PerformanceLazyDataTableModel> performanceTableModels;
 	private List<ArtistViewModel> artists;
 	private List<VenueViewModel> venues;
 	private List<SelectItem> artistItems = new ArrayList<>();
@@ -65,6 +82,7 @@ public class PerformanceSupport implements Serializable {
 	public void init() {
 		loadArtistFilterOptions();
 		loadVenueFilterOptions();
+		loadPerformances();
 	}
 
 	@Produces
@@ -75,6 +93,7 @@ public class PerformanceSupport implements Serializable {
 		items.add(new SelectItem(ArtistSearchOption.NAME, bundle.getName()));
 		items.add(new SelectItem(ArtistSearchOption.ARTIST_CATEGORY, bundle.getArtistCategory()));
 		items.add(new SelectItem(ArtistSearchOption.ARTIST_GROUP, bundle.getArtistGroup()));
+		items.add(new SelectItem(ArtistSearchOption.COUNTRY, bundle.getCountry()));
 
 		return items;
 	}
@@ -119,7 +138,7 @@ public class PerformanceSupport implements Serializable {
 				final String label = new StringBuilder(artist.getLastName()).append(", ").append(artist.getFirstName())
 						.toString();
 				final String description = new StringBuilder(artist.getEmail()).append("( ")
-						.append(artist.getCountryName(locale)).append(")").toString();
+						.append(artist.getCountryName()).append(")").toString();
 				return new SelectItem(new IdMapperModel<Long>(artist.getId(), UUID.randomUUID().toString()), label,
 						description);
 			}).sorted(new SelectItemComparator()).collect(Collectors.toList());
@@ -139,6 +158,52 @@ public class PerformanceSupport implements Serializable {
 				return new SelectItem(new IdMapperModel<Long>(venue.getId(), UUID.randomUUID().toString()),
 						venue.getName(), venue.getAddress());
 			}).sorted(new SelectItemComparator()).collect(Collectors.toList());
+		}
+	}
+
+	public void loadPerformances() {
+		performanceTableModels = new ArrayList<>();
+
+		// Load performances via proxy
+		final ResultModel<List<PerformanceViewModel>> result = performanceServiceProxy
+				.getPerforamnces(performanceFilter.createFilter());
+
+		// HAndle Exception
+		proxyExceptionHandler.handleException(null, result);
+		// Handle loaded performances
+		if (result.getResult() != null) {
+			final SortedMap<Calendar, List<PerformanceViewModel>> sortedMap = new TreeMap<>(new Comparator<Calendar>() {
+				@Override
+				public int compare(Calendar o1, Calendar o2) {
+					final Calendar cal1 = (Calendar) o1.clone();
+					cal1.set(cal1.get(Calendar.YEAR), cal1.get(Calendar.MONTH), cal1.get(Calendar.DATE), 0, 0);
+					final Calendar cal2 = (Calendar) o2.clone();
+					cal2.set(cal2.get(Calendar.YEAR), cal2.get(Calendar.MONTH), cal2.get(Calendar.DATE), 0, 0);
+					return cal1.compareTo(cal2);
+				}
+			});
+			// group performances by their start date value
+			sortedMap.putAll(result.getResult().parallelStream().collect(Collectors.groupingBy(model -> {
+				final Calendar cal = (Calendar) model.getStartDate().clone();
+				cal.set(cal.get(Calendar.YEAR), cal.get(Calendar.MONTH), cal.get(Calendar.DATE), 0, 0);
+				return cal;
+			})));
+			// Sort performances by their full startDate
+			sortedMap.entrySet().forEach(new Consumer<Entry<Calendar, List<PerformanceViewModel>>>() {
+				public void accept(Entry<Calendar, List<PerformanceViewModel>> t) {
+					t.getValue().sort(new Comparator<PerformanceViewModel>() {
+						public int compare(PerformanceViewModel o1, PerformanceViewModel o2) {
+							return o1.getStartDate().compareTo(o2.getStartDate());
+						};
+					});
+				};
+			});
+			// Prepare table pages for each date
+			for (Entry<Calendar, List<PerformanceViewModel>> entry : sortedMap.entrySet()) {
+				final PerformanceLazyDataTableModel table = dataTableSubPageInstances.get();
+				table.init(entry.getKey(), entry.getValue());
+				performanceTableModels.add(table);
+			}
 		}
 	}
 
@@ -192,4 +257,7 @@ public class PerformanceSupport implements Serializable {
 		return venues;
 	}
 
+	public List<PerformanceLazyDataTableModel> getPerformanceTableModels() {
+		return performanceTableModels;
+	}
 }

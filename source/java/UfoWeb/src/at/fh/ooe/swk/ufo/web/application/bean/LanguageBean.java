@@ -7,6 +7,12 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
+/**
+ * This beans holds the locale information for the current seassion.
+ * 
+ * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
+ * @date Jan 19, 2016
+ */
 @SessionScoped
 @Named("languageBean")
 public class LanguageBean implements Serializable {
@@ -17,8 +23,7 @@ public class LanguageBean implements Serializable {
 
 	@PostConstruct
 	public void postConstruct() {
-		locale = Locale.GERMAN;
-		Locale.setDefault(locale);
+		locale = Locale.getDefault();
 	}
 
 	// ##################################################

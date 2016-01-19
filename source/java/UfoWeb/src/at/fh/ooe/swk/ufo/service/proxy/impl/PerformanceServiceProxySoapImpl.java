@@ -9,17 +9,24 @@ import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import at.fh.ooe.swk.ufo.service.proxy.api.PerformanceServiceProxy;
-import at.fh.ooe.swk.ufo.service.proxy.model.PerformanceFilter;
-import at.fh.ooe.swk.ufo.service.proxy.model.PerformanceModel;
-import at.fh.ooe.swk.ufo.service.proxy.model.ResultModel;
+import at.fh.ooe.swk.ufo.service.proxy.api.model.PerformanceFilter;
+import at.fh.ooe.swk.ufo.service.proxy.api.model.PerformanceServiceRequestModel;
+import at.fh.ooe.swk.ufo.service.proxy.api.model.ResultModel;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
 import at.fh.ooe.swk.ufo.webservice.ListResultModelOfPerformanceModel;
 import at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest;
+import at.fh.ooe.swk.ufo.webservice.PerformanceModel;
 import at.fh.ooe.swk.ufo.webservice.PerformanceRequestModel;
 import at.fh.ooe.swk.ufo.webservice.PerformanceServiceSoap;
 import at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean;
 import at.fh.ooe.swk.ufo.webservice.SingleResultModelOfPerformanceModel;
 
+/**
+ * The perforamnce proxy implementation for the soap service.
+ * 
+ * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
+ * @date Jan 19, 2016
+ */
 @ApplicationScoped
 public class PerformanceServiceProxySoapImpl implements PerformanceServiceProxy {
 
@@ -52,11 +59,9 @@ public class PerformanceServiceProxySoapImpl implements PerformanceServiceProxy 
 			}
 			if (soapResult.getResult() != null) {
 				// Load performances depending on set filter
-				result.setResult(Arrays.asList(soapResult.getResult()).parallelStream().map(model -> {
-					final PerformanceViewModel viewModel = perforamnceModelInstance.get();
-					viewModel.init(model);
-					return viewModel;
-				}).collect(Collectors.toList()));
+				result.setResult(Arrays.asList(soapResult.getResult()).parallelStream()
+						.map(model -> performanceToViewModel(model, perforamnceModelInstance.get()))
+						.collect(Collectors.toList()));
 			}
 		} catch (Exception e) {
 			result.setInternalError("Could not invoke web service");
@@ -67,7 +72,7 @@ public class PerformanceServiceProxySoapImpl implements PerformanceServiceProxy 
 	}
 
 	@Override
-	public ResultModel<PerformanceViewModel> save(PerformanceModel model) {
+	public ResultModel<PerformanceViewModel> save(PerformanceServiceRequestModel model) {
 		final ResultModel<PerformanceViewModel> result = new ResultModel<>();
 		try {
 			final PerformanceRequestModel request = new PerformanceRequestModel();
@@ -89,9 +94,7 @@ public class PerformanceServiceProxySoapImpl implements PerformanceServiceProxy 
 				result.setError(soapResult.getError());
 			}
 			if (soapResult.getResult() != null) {
-				final PerformanceViewModel viewModel = perforamnceModelInstance.get();
-				viewModel.init(soapResult.getResult());
-				result.setResult(viewModel);
+				result.setResult(performanceToViewModel(soapResult.getResult(), perforamnceModelInstance.get()));
 			}
 		} catch (Exception e) {
 			result.setInternalError("Could not invoke web service");
@@ -102,7 +105,7 @@ public class PerformanceServiceProxySoapImpl implements PerformanceServiceProxy 
 	}
 
 	@Override
-	public ResultModel<Boolean> delete(PerformanceModel model) {
+	public ResultModel<Boolean> delete(PerformanceServiceRequestModel model) {
 		final ResultModel<Boolean> result = new ResultModel<>();
 		try {
 			final PerformanceRequestModel request = new PerformanceRequestModel();
@@ -130,4 +133,18 @@ public class PerformanceServiceProxySoapImpl implements PerformanceServiceProxy 
 		return result;
 	}
 
+	public static PerformanceViewModel performanceToViewModel(PerformanceModel model, PerformanceViewModel viewModel) {
+		PerformanceViewModel result = null;
+		if (model != null) {
+			result = viewModel;
+			viewModel.init(model.getId(), model.getVersion(), model.getStartDate(), model.getFormerStartDate(),
+					model.getEndDate(), model.getFormerEndDate(), model.getVenue().getName(),
+					model.getArtist().getArtistGroup(), "not available yet",
+					(new StringBuilder().append(model.getArtist().getLastName()).append(", ")
+							.append(model.getArtist().getFirstName()).toString()),
+					model.getArtist().getId(), model.getVenue().getId());
+		}
+
+		return result;
+	}
 }

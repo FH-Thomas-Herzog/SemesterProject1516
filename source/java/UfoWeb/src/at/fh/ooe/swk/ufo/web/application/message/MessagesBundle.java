@@ -12,8 +12,8 @@ import org.apache.deltaspike.core.api.message.MessageTemplate;
  * Thanks to deltaspike this bean is available to the EL as well if annotated
  * with "@Named"
  * 
- * @author Thomas
- *
+ * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
+ * @date Jan 19, 2016
  */
 @MessageBundle
 @Named("msg")

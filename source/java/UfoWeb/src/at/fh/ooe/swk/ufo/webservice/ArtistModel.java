@@ -26,6 +26,8 @@ public class ArtistModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  implem
 
     private java.lang.String artistGroup;
 
+    private java.lang.String artistCategory;
+
     public ArtistModel() {
     }
 
@@ -41,7 +43,8 @@ public class ArtistModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  implem
            java.lang.String url,
            java.lang.String image,
            java.lang.String imageType,
-           java.lang.String artistGroup) {
+           java.lang.String artistGroup,
+           java.lang.String artistCategory) {
         super(
             errorCode,
             serviceErrorCode,
@@ -55,6 +58,7 @@ public class ArtistModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  implem
         this.image = image;
         this.imageType = imageType;
         this.artistGroup = artistGroup;
+        this.artistCategory = artistCategory;
     }
 
 
@@ -237,6 +241,26 @@ public class ArtistModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  implem
         this.artistGroup = artistGroup;
     }
 
+
+    /**
+     * Gets the artistCategory value for this ArtistModel.
+     * 
+     * @return artistCategory
+     */
+    public java.lang.String getArtistCategory() {
+        return artistCategory;
+    }
+
+
+    /**
+     * Sets the artistCategory value for this ArtistModel.
+     * 
+     * @param artistCategory
+     */
+    public void setArtistCategory(java.lang.String artistCategory) {
+        this.artistCategory = artistCategory;
+    }
+
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
         if (!(obj instanceof ArtistModel)) return false;
@@ -273,7 +297,10 @@ public class ArtistModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  implem
               this.imageType.equals(other.getImageType()))) &&
             ((this.artistGroup==null && other.getArtistGroup()==null) || 
              (this.artistGroup!=null &&
-              this.artistGroup.equals(other.getArtistGroup())));
+              this.artistGroup.equals(other.getArtistGroup()))) &&
+            ((this.artistCategory==null && other.getArtistCategory()==null) || 
+             (this.artistCategory!=null &&
+              this.artistCategory.equals(other.getArtistCategory())));
         __equalsCalc = null;
         return _equals;
     }
@@ -309,6 +336,9 @@ public class ArtistModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  implem
         }
         if (getArtistGroup() != null) {
             _hashCode += getArtistGroup().hashCode();
+        }
+        if (getArtistCategory() != null) {
+            _hashCode += getArtistCategory().hashCode();
         }
         __hashCodeCalc = false;
         return _hashCode;
@@ -378,6 +408,13 @@ public class ArtistModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  implem
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("artistGroup");
         elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ArtistGroup"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("artistCategory");
+        elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ArtistCategory"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
         elemField.setMinOccurs(0);
         elemField.setNillable(false);

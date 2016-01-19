@@ -1,18 +1,13 @@
 package at.fh.ooe.swk.ufo.web.performances.model;
 
 import java.io.Serializable;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.TimeZone;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import org.apache.commons.lang3.time.DateFormatUtils;
-
-import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
-import at.fh.ooe.swk.ufo.webservice.PerformanceModel;
+import at.fh.ooe.swk.ufo.web.application.annotation.ServiceTimeZone;
 
 @Dependent
 public class PerformanceViewModel implements Comparable<PerformanceViewModel>, Serializable {
@@ -20,9 +15,8 @@ public class PerformanceViewModel implements Comparable<PerformanceViewModel>, S
 	private static final long serialVersionUID = 3692624909190619132L;
 
 	@Inject
-	private TimeZone timeZone;
-	@Inject
-	private LanguageBean languageBean;
+	@ServiceTimeZone
+	private TimeZone serviceTimeZone;
 
 	private Long id;
 	private Long version;
@@ -44,29 +38,30 @@ public class PerformanceViewModel implements Comparable<PerformanceViewModel>, S
 		super();
 	}
 
-	public void init(PerformanceModel model) {
+	public void init(Long id, Long version, Calendar startDate, Calendar formerStartDate, Calendar endDate,
+			Calendar formerEndDate, String venueName, String groupName, String categoryName, String name, Long artistId,
+			Long venueId) {
 		now = Calendar.getInstance();
 
-		id = model.getId();
-		version = model.getVersion();
-		startDate = model.getStartDate();
-		endDate = model.getEndDate();
-		formerStartDate = model.getFormerStartDate();
-		formerEndDate = model.getFormerEndDate();
-		moved = formerStartDate != null;
-		venueId = model.getVenue().getId();
-		venueName = model.getVenue().getName();
-		name = new StringBuilder().append(model.getArtist().getLastName()).append(", ")
-				.append(model.getArtist().getFirstName()).toString();
-		groupName = model.getArtist().getArtistGroup();
-		categoryName = "";
-		artistId = model.getArtist().getId();
+		this.id = id;
+		this.version = version;
+		this.startDate = startDate;
+		this.formerStartDate = formerStartDate;
+		this.endDate = endDate;
+		this.formerEndDate = formerEndDate;
+		this.venueName = venueName;
+		this.groupName = groupName;
+		this.categoryName = categoryName;
+		this.name = name;
+		this.artistId = artistId;
+		this.venueId = venueId;
+		this.moved = formerStartDate != null;
 
 		// Set to expected time zone
-		startDate.setTimeZone(timeZone);
-		endDate.setTimeZone(timeZone);
+		startDate.setTimeZone(serviceTimeZone);
+		endDate.setTimeZone(serviceTimeZone);
 		if (formerStartDate != null) {
-			formerStartDate.setTimeZone(timeZone);
+			formerStartDate.setTimeZone(serviceTimeZone);
 		}
 	}
 

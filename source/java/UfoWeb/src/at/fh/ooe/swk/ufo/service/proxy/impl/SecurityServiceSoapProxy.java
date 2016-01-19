@@ -4,10 +4,16 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
 import at.fh.ooe.swk.ufo.service.proxy.api.SecurityServiceProxy;
-import at.fh.ooe.swk.ufo.service.proxy.model.ResultModel;
+import at.fh.ooe.swk.ufo.service.proxy.api.model.ResultModel;
 import at.fh.ooe.swk.ufo.webservice.SecurityServiceSoap;
 import at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean;
 
+/**
+ * The service proxy implementation for the soap service.
+ * 
+ * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
+ * @date Jan 19, 2016
+ */
 @ApplicationScoped
 public class SecurityServiceSoapProxy implements SecurityServiceProxy {
 

@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
+import java.util.TimeZone;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
@@ -29,10 +30,11 @@ import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
 
 import at.fh.ooe.swk.ufo.service.proxy.api.VenueServiceProxy;
-import at.fh.ooe.swk.ufo.service.proxy.model.PerformanceFilter;
-import at.fh.ooe.swk.ufo.service.proxy.model.ResultModel;
-import at.fh.ooe.swk.ufo.web.application.ProxyServiceExceptionHandler;
+import at.fh.ooe.swk.ufo.service.proxy.api.model.PerformanceFilter;
+import at.fh.ooe.swk.ufo.service.proxy.api.model.ResultModel;
+import at.fh.ooe.swk.ufo.web.application.annotation.ServiceTimeZone;
 import at.fh.ooe.swk.ufo.web.application.constants.ContextParameter;
+import at.fh.ooe.swk.ufo.web.application.exception.ProxyServiceExceptionHandler;
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 import at.fh.ooe.swk.ufo.web.performances.model.VenueViewModel;
 
@@ -56,6 +58,9 @@ public class VenueInfoDialogBean implements Serializable {
 	private MessagesBundle bundle;
 	@Inject
 	private FacesContext fc;
+	@Inject
+	@ServiceTimeZone
+	private TimeZone serviceTimeZone;
 
 	@Inject
 	private PerformancesPage page;
@@ -228,6 +233,7 @@ public class VenueInfoDialogBean implements Serializable {
 	}
 
 	private PerformanceFilter createModifiedFilter(final Calendar date) {
+		date.setTimeZone(serviceTimeZone);
 		final PerformanceFilter filter = filterBean.createFilter();
 		final Calendar toDate = (Calendar) date.clone();
 		toDate.set(Calendar.HOUR_OF_DAY, 23);

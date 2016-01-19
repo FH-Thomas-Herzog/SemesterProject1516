@@ -1,7 +1,6 @@
 package at.fh.ooe.swk.ufo.service.proxy.impl;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -10,12 +9,19 @@ import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import at.fh.ooe.swk.ufo.service.proxy.api.ArtistServiceProxy;
-import at.fh.ooe.swk.ufo.service.proxy.model.ResultModel;
+import at.fh.ooe.swk.ufo.service.proxy.api.model.ResultModel;
 import at.fh.ooe.swk.ufo.web.performances.model.ArtistViewModel;
+import at.fh.ooe.swk.ufo.webservice.ArtistModel;
 import at.fh.ooe.swk.ufo.webservice.ArtistServiceSoap;
 import at.fh.ooe.swk.ufo.webservice.ListResultModelOfArtistModel;
 import at.fh.ooe.swk.ufo.webservice.SingleResultModelOfArtistModel;
 
+/**
+ * The artist proxy implementation for soap service.
+ * 
+ * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
+ * @date Jan 19, 2016
+ */
 @ApplicationScoped
 public class ArtistServiceProxySoapImpl implements ArtistServiceProxy {
 
@@ -41,9 +47,7 @@ public class ArtistServiceProxySoapImpl implements ArtistServiceProxy {
 			}
 			if (soapResult.getResult() != null) {
 				result.setResult(Arrays.asList(soapResult.getResult()).parallelStream().map(model -> {
-					final ArtistViewModel viewModel = artistViewModelInstance.get();
-					viewModel.init(model);
-					return viewModel;
+					return artistToViewModel(model);
 				}).sorted((o1, o2) -> o1.getFullName().compareTo(o2.getFullName())).collect(Collectors.toList()));
 			}
 		} catch (Exception e) {
@@ -68,9 +72,7 @@ public class ArtistServiceProxySoapImpl implements ArtistServiceProxy {
 						+ " / error: " + soapResult.getError());
 			}
 			if (soapResult.getResult() != null) {
-				final ArtistViewModel viewModel = artistViewModelInstance.get();
-				viewModel.init(soapResult.getResult());
-				result.setResult(viewModel);
+				result.setResult(artistToViewModel(soapResult.getResult()));
 			}
 		} catch (Exception e) {
 			result.setInternalError("Could not invoke web service");
@@ -80,4 +82,15 @@ public class ArtistServiceProxySoapImpl implements ArtistServiceProxy {
 		return result;
 	}
 
+	private ArtistViewModel artistToViewModel(ArtistModel model) {
+		ArtistViewModel viewModel = null;
+		if (model != null) {
+			viewModel = artistViewModelInstance.get();
+			viewModel.init(model.getId(), model.getFirstName(), model.getLastName(), model.getEmail(),
+					model.getCountryCode(), model.getUrl(), model.getArtistGroup(), model.getArtistCategory(),
+					model.getImage(), model.getImageType());
+		}
+
+		return viewModel;
+	}
 }

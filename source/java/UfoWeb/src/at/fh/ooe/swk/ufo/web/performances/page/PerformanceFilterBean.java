@@ -13,9 +13,9 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import at.fh.ooe.swk.ufo.service.proxy.model.PerformanceFilter;
+import at.fh.ooe.swk.ufo.service.proxy.api.model.PerformanceFilter;
+import at.fh.ooe.swk.ufo.web.application.annotation.ServiceTimeZone;
 import at.fh.ooe.swk.ufo.web.application.model.IdMapperModel;
-import at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest;
 
 @SessionScoped
 @Named("performanceFilterBean")
@@ -24,11 +24,10 @@ public class PerformanceFilterBean implements Serializable {
 	private static final long serialVersionUID = 6065461910973062558L;
 
 	@Inject
-	private PerformancesPage page;
+	private PerformanceSupport support;
 	@Inject
-	private PerformanceSupport supportBean;
-	@Inject
-	private TimeZone timeZone;
+	@ServiceTimeZone
+	private TimeZone serviceTimeZone;
 
 	private Calendar fromDate;
 	private List<IdMapperModel<Long>> artistIds;
@@ -42,8 +41,6 @@ public class PerformanceFilterBean implements Serializable {
 		// Set borders to current year
 		minDate = Calendar.getInstance();
 		maxDate = (Calendar) minDate.clone();
-		minDate.setTimeZone(timeZone);
-		maxDate.setTimeZone(timeZone);
 		minDate.set(minDate.get(Calendar.YEAR), Calendar.JANUARY, 1, 0, 0, 0);
 		maxDate.set(maxDate.get(Calendar.YEAR), Calendar.DECEMBER, 31, 0, 0, 0);
 
@@ -53,9 +50,10 @@ public class PerformanceFilterBean implements Serializable {
 
 	public PerformanceFilter createFilter() {
 		final Calendar fromDateTmp = (Calendar) fromDate.clone();
-		fromDateTmp.setTimeZone(timeZone);
+		fromDateTmp.setTimeZone(serviceTimeZone);
 		final Calendar toDateTmp = (Calendar) fromDate.clone();
-//		toDateTmp.add(Calendar.DAY_OF_YEAR, 10); Just for testing
+		toDateTmp.setTimeZone(serviceTimeZone);
+		toDateTmp.add(Calendar.DAY_OF_YEAR, 10); //Just for testing
 		toDateTmp.set(Calendar.HOUR_OF_DAY, 23);
 		toDateTmp.set(Calendar.MINUTE, 59);
 
@@ -88,14 +86,13 @@ public class PerformanceFilterBean implements Serializable {
 	// Actions
 	// ##################################################
 	public void filter() {
-		page.loadPerformances();
+		support.loadPerformances();
 	}
 
 	public void clear() {
 		reset();
 		// reload data
-		supportBean.init();
-		page.loadPerformances();
+		support.init();
 	}
 
 	public void reset() {

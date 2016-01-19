@@ -16,11 +16,12 @@ import org.apache.logging.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
 import at.fh.ooe.swk.ufo.service.proxy.api.PerformanceServiceProxy;
-import at.fh.ooe.swk.ufo.service.proxy.model.PerformanceModel;
-import at.fh.ooe.swk.ufo.service.proxy.model.ResultModel;
-import at.fh.ooe.swk.ufo.web.application.ProxyServiceExceptionHandler;
+import at.fh.ooe.swk.ufo.service.proxy.api.model.PerformanceServiceRequestModel;
+import at.fh.ooe.swk.ufo.service.proxy.api.model.ResultModel;
+import at.fh.ooe.swk.ufo.web.application.annotation.ServiceTimeZone;
 import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
 import at.fh.ooe.swk.ufo.web.application.bean.UserContextModel;
+import at.fh.ooe.swk.ufo.web.application.exception.ProxyServiceExceptionHandler;
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceEditViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
@@ -38,7 +39,8 @@ public class PerformanceEditDialogBean implements Serializable {
 	@Inject
 	private MessagesBundle bundle;
 	@Inject
-	private TimeZone timeZone;
+	@ServiceTimeZone
+	private TimeZone serviceTimeZone;
 
 	@Inject
 	private PerformanceServiceProxy performanceService;
@@ -75,8 +77,6 @@ public class PerformanceEditDialogBean implements Serializable {
 			editViewModel.init(model);
 		}
 
-		minDate.setTimeZone(timeZone);
-		maxDate.setTimeZone(timeZone);
 		started = Boolean.TRUE;
 	}
 
@@ -94,7 +94,8 @@ public class PerformanceEditDialogBean implements Serializable {
 
 		try {
 			// prepare request
-			final PerformanceModel model = new PerformanceModel();
+			startDate.setTimeZone(serviceTimeZone);
+			final PerformanceServiceRequestModel model = new PerformanceServiceRequestModel();
 			model.setUsername(utx.getUsername());
 			model.setPassword(utx.getPassword());
 			model.setLanguageCode(languageBean.getLocale().getLanguage());
@@ -109,9 +110,7 @@ public class PerformanceEditDialogBean implements Serializable {
 
 			// Handle response
 			if ((!proxaExceptionHanlder.handleException(clientId, result)) && (result.getResult() != null)) {
-				support.loadArtistFilterOptions();
-				support.loadVenueFilterOptions();
-				page.loadPerformances();
+				support.loadPerformances();
 				init(result.getResult());
 				RequestContext.getCurrentInstance().execute("updateFilterAndContent();");
 			}
@@ -123,29 +122,22 @@ public class PerformanceEditDialogBean implements Serializable {
 
 	public void delete(ActionEvent event) {
 		final String clientId = event.getComponent().getClientId();
-		try {
-			// Prepare request
-			final PerformanceModel model = new PerformanceModel();
-			model.setId(editViewModel.getId());
-			model.setVersion(editViewModel.getVersion());
-			model.setUsername(utx.getUsername());
-			model.setPassword(utx.getPassword());
-			model.setLanguageCode(languageBean.getLocale().getLanguage());
+		// Prepare request
+		final PerformanceServiceRequestModel model = new PerformanceServiceRequestModel();
+		model.setId(editViewModel.getId());
+		model.setVersion(editViewModel.getVersion());
+		model.setUsername(utx.getUsername());
+		model.setPassword(utx.getPassword());
+		model.setLanguageCode(languageBean.getLocale().getLanguage());
 
-			// Call web service
-			ResultModel<Boolean> result = performanceService.delete(model);
+		// Call web service
+		ResultModel<Boolean> result = performanceService.delete(model);
 
-			// Handle response
-			if ((!proxaExceptionHanlder.handleException(clientId, result)) && (result.getResult() != null)) {
-				support.loadArtistFilterOptions();
-				support.loadVenueFilterOptions();
-				page.loadPerformances();
-				init(null);
-				RequestContext.getCurrentInstance().execute("updateFilterAndContent();");
-			}
-		} catch (Exception e) {
-			log.error("Could not delete perforamnce", e);
-			fc.addMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getUnexpectedError(), ""));
+		// Handle response
+		if ((!proxaExceptionHanlder.handleException(clientId, result)) && (result.getResult() != null)) {
+			support.loadPerformances();
+			init(null);
+			RequestContext.getCurrentInstance().execute("updateFilterAndContent();");
 		}
 	}
 

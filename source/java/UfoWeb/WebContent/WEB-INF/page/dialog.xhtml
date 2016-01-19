@@ -40,8 +40,7 @@
 					<h:outputText value="#{performancePage.selectedArtist.artistGroup}" />
 
 					<h:outputText value="#{msg.country}" />
-					<h:outputText
-						value="#{performancePage.selectedArtist.getCountryName(languageBean.locale)}" />
+					<h:outputText value="#{performancePage.selectedArtist.countryName}" />
 
 					<h:outputText value="#{msg.url}" />
 					<h:column>
@@ -134,7 +133,7 @@
 
 			<p:ajax event="close" listener="#{performanceEditDialog.onClose()}"
 				global="true" async="true" partialSubmit="true" process="@this"
-				update=":dialogGroup, :centerContentContainer" />
+				update=":dialogGroup, :performanceContainer" />
 
 			<h:panelGroup id="formContainer"
 				styleClass="ui-grid ui-grid-responsive" style="max-width: 800px;">

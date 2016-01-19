@@ -12,10 +12,16 @@ import javax.inject.Named;
 import org.primefaces.context.RequestContext;
 
 import at.fh.ooe.swk.ufo.service.proxy.api.SecurityServiceProxy;
-import at.fh.ooe.swk.ufo.service.proxy.model.ResultModel;
-import at.fh.ooe.swk.ufo.web.application.ProxyServiceExceptionHandler;
+import at.fh.ooe.swk.ufo.service.proxy.api.model.ResultModel;
+import at.fh.ooe.swk.ufo.web.application.exception.ProxyServiceExceptionHandler;
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 
+/**
+ * This beans handles the login and logout actions
+ * 
+ * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
+ * @date Jan 19, 2016
+ */
 @RequestScoped
 @Named("loginBean")
 public class LoginBean implements Serializable {
@@ -26,11 +32,11 @@ public class LoginBean implements Serializable {
 	private FacesContext fc;
 	@Inject
 	private MessagesBundle bundle;
+	@Inject
+	private ProxyServiceExceptionHandler proxyExceptionHandler;
 
 	@Inject
 	private SecurityServiceProxy securityService;
-	@Inject
-	private ProxyServiceExceptionHandler proxyExceptionHandler;
 
 	@Inject
 	private UserContextModel utxModel;
@@ -38,6 +44,12 @@ public class LoginBean implements Serializable {
 	private String username;
 	private String password;
 
+	/**
+	 * Performs the login action
+	 * 
+	 * @param event
+	 *            {@link ActionEvent}
+	 */
 	public void login(ActionEvent event) {
 		final String clientId = event.getComponent().getClientId();
 		final ResultModel<Boolean> result = securityService.login(username, password);
@@ -53,12 +65,18 @@ public class LoginBean implements Serializable {
 		}
 	}
 
+	/**
+	 * Performs the logout action
+	 */
 	public void logout() {
 		utxModel.setUsername(null);
 		utxModel.setPassword(null);
 		utxModel.setLogged(Boolean.FALSE);
 	}
 
+	// ##################################################
+	// Getter and Setter
+	// ##################################################
 	public String getUsername() {
 		return username;
 	}
@@ -74,5 +92,4 @@ public class LoginBean implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
-
 }

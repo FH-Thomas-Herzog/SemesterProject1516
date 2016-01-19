@@ -238,10 +238,10 @@ public class VenueModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  impleme
         elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("performances");
         elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "Performances"));
-        elemField.setXmlType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceModel"));
+        elemField.setXmlType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceServiceRequestModel"));
         elemField.setMinOccurs(0);
         elemField.setNillable(false);
-        elemField.setItemQName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceModel"));
+        elemField.setItemQName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceServiceRequestModel"));
         typeDesc.addFieldDesc(elemField);
     }
 

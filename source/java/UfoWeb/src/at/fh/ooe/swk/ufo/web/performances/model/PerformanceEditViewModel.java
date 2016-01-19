@@ -10,6 +10,7 @@ import javax.inject.Named;
 
 import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 
+import at.fh.ooe.swk.ufo.web.application.annotation.ServiceTimeZone;
 import at.fh.ooe.swk.ufo.web.application.model.IdMapperModel;
 import at.fh.ooe.swk.ufo.web.performances.page.PerformanceSupport;
 
@@ -20,7 +21,8 @@ public class PerformanceEditViewModel implements Serializable {
 	private static final long serialVersionUID = 1994942977872442719L;
 
 	@Inject
-	private TimeZone timeZone;
+	@ServiceTimeZone
+	private TimeZone serviecTimeZone;
 	@Inject
 	private PerformanceSupport support;
 
@@ -42,7 +44,7 @@ public class PerformanceEditViewModel implements Serializable {
 		// prepare times
 		hour = startHour;
 
-		date.setTimeZone(timeZone);
+		date.setTimeZone(serviecTimeZone);
 	}
 
 	public void init(PerformanceViewModel model) {

@@ -1,4 +1,4 @@
-package at.fh.ooe.swk.ufo.service.proxy.producer;
+package at.fh.ooe.swk.ufo.service.proxy.impl.producer;
 
 import java.io.Serializable;
 import java.net.URL;
@@ -31,17 +31,13 @@ import at.fh.ooe.swk.ufo.webservice.VenueServiceSoap;
 import at.fh.ooe.swk.ufo.webservice.VenueServiceSoapStub;
 
 /**
- * This class represents the producer for the webservice instances. These
- * instances are defined by context-params from the web.xml which defines the
- * authentication data and the urls where the webservice can be reached.
- * 
- * Be aware that the JVM needs a proper truststore available if ssl is used. (password = ufo)
+ * This clss produces the soap service instances for the proxy services.
  * 
  * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
  * @date Jan 9, 2016
  */
 @ApplicationScoped
-public class WebServiceClientProducer implements Serializable {
+public class SoapWebServiceProducer implements Serializable {
 
 	private static final long serialVersionUID = 2842670772849028624L;
 
@@ -68,6 +64,10 @@ public class WebServiceClientProducer implements Serializable {
 		// Get authentication data from web.xml
 		username = servletContext.getInitParameter(ContextParameter.WEBSERVICE_USERNAME.key);
 		password = servletContext.getInitParameter(ContextParameter.WEBSERVICE_PASSWORD.key);
+
+		if ((username == null) || (password == null)) {
+			throw new IllegalStateException("Username and password need to be provided via web.xml");
+		}
 
 		// Get webservice-urls from web.xml
 		try {

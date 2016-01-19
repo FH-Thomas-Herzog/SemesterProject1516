@@ -16,10 +16,10 @@ import at.fh.ooe.swk.ufo.web.application.model.IdLabelModel;
  */
 public class PerformanceRowModel {
 
-	private final IdLabelModel venue;
+	private final IdLabelModel<Long> venue;
 	private final Map<Integer, List<PerformanceViewModel>> map;
 
-	public PerformanceRowModel(IdLabelModel venue, Map<Integer, List<PerformanceViewModel>> map) {
+	public PerformanceRowModel(IdLabelModel<Long> venue, Map<Integer, List<PerformanceViewModel>> map) {
 		super();
 		Objects.requireNonNull(venue, "Venue must be given");
 		Objects.requireNonNull(venue, "Performances map must be given");

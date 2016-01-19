@@ -1,5 +1,12 @@
-package at.fh.ooe.swk.ufo.service.proxy.model;
+package at.fh.ooe.swk.ufo.service.proxy.api.model;
 
+/**
+ * The result model for the service results.
+ * 
+ * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
+ * @date Jan 19, 2016
+ * @param <T>
+ */
 public class ResultModel<T> {
 
 	public String error;
