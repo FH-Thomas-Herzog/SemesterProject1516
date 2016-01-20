@@ -44,7 +44,7 @@ public class SelectItemArtistViewModelConverter implements Converter {
 			}
 		} catch (Exception e) {
 			throw new ConverterException(
-					new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getUnexpectedError(), ""));
+					new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getErrorUnexpected(), ""));
 		}
 
 		throw new ConverterException(

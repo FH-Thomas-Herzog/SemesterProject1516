@@ -1,7 +1,9 @@
 package at.fh.ooe.swk.ufo.service.proxy.impl;
 
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.List;
+import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -12,6 +14,7 @@ import at.fh.ooe.swk.ufo.service.proxy.api.PerformanceServiceProxy;
 import at.fh.ooe.swk.ufo.service.proxy.api.model.PerformanceFilter;
 import at.fh.ooe.swk.ufo.service.proxy.api.model.PerformanceServiceRequestModel;
 import at.fh.ooe.swk.ufo.service.proxy.api.model.ResultModel;
+import at.fh.ooe.swk.ufo.web.application.annotation.ServiceTimeZone;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
 import at.fh.ooe.swk.ufo.webservice.ListResultModelOfPerformanceModel;
 import at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest;
@@ -31,6 +34,10 @@ import at.fh.ooe.swk.ufo.webservice.SingleResultModelOfPerformanceModel;
 public class PerformanceServiceProxySoapImpl implements PerformanceServiceProxy {
 
 	private static final long serialVersionUID = 3140505551983271806L;
+
+	@Inject
+	@ServiceTimeZone
+	private TimeZone serviceTimeZone;
 
 	@Inject
 	private transient PerformanceServiceSoap soapService;
@@ -60,7 +67,7 @@ public class PerformanceServiceProxySoapImpl implements PerformanceServiceProxy 
 			if (soapResult.getResult() != null) {
 				// Load performances depending on set filter
 				result.setResult(Arrays.asList(soapResult.getResult()).parallelStream()
-						.map(model -> performanceToViewModel(model, perforamnceModelInstance.get()))
+						.map(model -> performanceToViewModel(model, perforamnceModelInstance.get(), serviceTimeZone))
 						.collect(Collectors.toList()));
 			}
 		} catch (Exception e) {
@@ -94,7 +101,8 @@ public class PerformanceServiceProxySoapImpl implements PerformanceServiceProxy 
 				result.setError(soapResult.getError());
 			}
 			if (soapResult.getResult() != null) {
-				result.setResult(performanceToViewModel(soapResult.getResult(), perforamnceModelInstance.get()));
+				result.setResult(performanceToViewModel(soapResult.getResult(), perforamnceModelInstance.get(),
+						serviceTimeZone));
 			}
 		} catch (Exception e) {
 			result.setInternalError("Could not invoke web service");
@@ -133,13 +141,25 @@ public class PerformanceServiceProxySoapImpl implements PerformanceServiceProxy 
 		return result;
 	}
 
-	public static PerformanceViewModel performanceToViewModel(PerformanceModel model, PerformanceViewModel viewModel) {
+	public static PerformanceViewModel performanceToViewModel(PerformanceModel model, PerformanceViewModel viewModel,
+			TimeZone timeZone) {
 		PerformanceViewModel result = null;
 		if (model != null) {
 			result = viewModel;
-			viewModel.init(model.getId(), model.getVersion(), model.getStartDate(), model.getFormerStartDate(),
-					model.getEndDate(), model.getFormerEndDate(), model.getVenue().getName(),
-					model.getArtist().getArtistGroup(), "not available yet",
+			final Calendar startDate = model.getStartDate();
+			final Calendar endDate = model.getEndDate();
+			final Calendar formerStartDate = model.getFormerStartDate();
+			final Calendar formerEndDate = model.getFormerEndDate();
+			startDate.setTimeZone(timeZone);
+			endDate.setTimeZone(timeZone);
+			if (formerStartDate != null) {
+				formerStartDate.setTimeZone(timeZone);
+			}
+			if (formerEndDate != null) {
+				formerEndDate.setTimeZone(timeZone);
+			}
+			viewModel.init(model.getId(), model.getVersion(), startDate, formerStartDate, endDate, formerEndDate,
+					model.getVenue().getName(), model.getArtist().getArtistGroup(), "not available yet",
 					(new StringBuilder().append(model.getArtist().getLastName()).append(", ")
 							.append(model.getArtist().getFirstName()).toString()),
 					model.getArtist().getId(), model.getVenue().getId());

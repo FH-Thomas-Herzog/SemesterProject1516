@@ -1,6 +1,5 @@
 package at.fh.ooe.swk.ufo.web.performances.model;
 
-import java.io.Serializable;
 import java.util.Calendar;
 import java.util.TimeZone;
 
@@ -8,15 +7,12 @@ import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
 import at.fh.ooe.swk.ufo.web.application.annotation.ServiceTimeZone;
+import at.fh.ooe.swk.ufo.web.application.model.IdHolder;
 
 @Dependent
-public class PerformanceViewModel implements Comparable<PerformanceViewModel>, Serializable {
+public class PerformanceViewModel implements Comparable<PerformanceViewModel>, IdHolder<Long> {
 
 	private static final long serialVersionUID = 3692624909190619132L;
-
-	@Inject
-	@ServiceTimeZone
-	private TimeZone serviceTimeZone;
 
 	private Long id;
 	private Long version;
@@ -56,13 +52,6 @@ public class PerformanceViewModel implements Comparable<PerformanceViewModel>, S
 		this.artistId = artistId;
 		this.venueId = venueId;
 		this.moved = formerStartDate != null;
-
-		// Set to expected time zone
-		startDate.setTimeZone(serviceTimeZone);
-		endDate.setTimeZone(serviceTimeZone);
-		if (formerStartDate != null) {
-			formerStartDate.setTimeZone(serviceTimeZone);
-		}
 	}
 
 	// ##################################################

@@ -1,9 +1,14 @@
 package at.fh.ooe.swk.ufo.web.performances.page;
 
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -21,8 +26,12 @@ import javax.enterprise.inject.Instance;
 import javax.enterprise.inject.Produces;
 import javax.faces.convert.Converter;
 import javax.faces.model.SelectItem;
+import javax.faces.model.SelectItemGroup;
 import javax.inject.Inject;
 import javax.inject.Named;
+
+import org.joda.time.format.DateTimeFormat;
+import org.primefaces.component.datatable.feature.DataTableFeatureKey;
 
 import at.fh.ooe.swk.ufo.service.proxy.api.ArtistServiceProxy;
 import at.fh.ooe.swk.ufo.service.proxy.api.PerformanceServiceProxy;
@@ -30,6 +39,7 @@ import at.fh.ooe.swk.ufo.service.proxy.api.VenueServiceProxy;
 import at.fh.ooe.swk.ufo.service.proxy.api.model.ResultModel;
 import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
 import at.fh.ooe.swk.ufo.web.application.converter.SelectItemEnumConverter;
+import at.fh.ooe.swk.ufo.web.application.converter.SelectItemIdHolderLongConverter;
 import at.fh.ooe.swk.ufo.web.application.converter.SelectItemIdMapperModelConverter;
 import at.fh.ooe.swk.ufo.web.application.exception.ProxyServiceExceptionHandler;
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
@@ -65,9 +75,10 @@ public class PerformanceSupport implements Serializable {
 	@Inject
 	private PerformanceFilterBean performanceFilter;
 
-	private List<PerformanceLazyDataTableModel> performanceTableModels;
-	private List<ArtistViewModel> artists;
-	private List<VenueViewModel> venues;
+	private List<PerformanceLazyDataTableModel> performanceTableModels = new ArrayList<>();
+	private List<PerformanceViewModel> performances = new ArrayList<>();
+	private List<ArtistViewModel> artists = new ArrayList<>();
+	private List<VenueViewModel> venues = new ArrayList<>();
 	private List<SelectItem> artistItems = new ArrayList<>();
 	private List<SelectItem> venueItems = new ArrayList<>();
 
@@ -124,6 +135,47 @@ public class PerformanceSupport implements Serializable {
 		return new SelectItemEnumConverter(items, bundle);
 	}
 
+	@Produces
+	@RequestScoped
+	@Named("performanceItems")
+	public List<SelectItemGroup> getPerformanceItems() {
+		final Calendar now = Calendar.getInstance();
+		final List<SelectItemGroup> items = new ArrayList<>();
+
+		// DateTimeFormatter for the group label
+		final DateFormat dateTimeFormatter = DateFormat.getDateTimeInstance(DateFormat.SHORT, DateFormat.SHORT,
+				languageBean.getLocale());
+
+		// Map performances to their startDate value
+		final Map<Calendar, List<PerformanceViewModel>> groups = performances.parallelStream()
+				.filter(m -> (now.compareTo(m.getStartDate()) < 0))
+				.collect(Collectors.groupingBy(model -> model.getStartDate()));
+
+		// Create items groups
+		groups.entrySet().forEach(entry -> {
+			final List<SelectItem> groupedItems = entry.getValue().parallelStream()
+					.map(m -> new SelectItem(m,
+							new StringBuilder(m.getVenueName()).append(" - ").append(m.getName()).toString()))
+					.sorted(new SelectItemComparator()).collect(Collectors.toList());
+			final SelectItemGroup group = new SelectItemGroup(dateTimeFormatter.format(entry.getKey().getTime()), "",
+					Boolean.FALSE, groupedItems.toArray(new SelectItem[groupedItems.size()]));
+			items.add(group);
+		});
+
+		items.sort(new SelectItemComparator());
+
+		return items;
+	}
+
+	@Produces
+	@RequestScoped
+	@Named("performanceItemsConverter")
+	public Converter getPerformanceItemsConverter(final @Named("performanceItems") List<SelectItemGroup> items) {
+		return new SelectItemIdHolderLongConverter(items.stream()
+				.flatMap(group -> Arrays.asList(group.getSelectItems()).parallelStream()).collect(Collectors.toList()),
+				bundle);
+	}
+
 	public void loadArtistFilterOptions() {
 		artists = new ArrayList<>();
 		artistItems = new ArrayList<>();
@@ -162,6 +214,7 @@ public class PerformanceSupport implements Serializable {
 	}
 
 	public void loadPerformances() {
+		performances = new ArrayList<>();
 		performanceTableModels = new ArrayList<>();
 
 		// Load performances via proxy
@@ -172,6 +225,7 @@ public class PerformanceSupport implements Serializable {
 		proxyExceptionHandler.handleException(null, result);
 		// Handle loaded performances
 		if (result.getResult() != null) {
+			performances = result.getResult();
 			final SortedMap<Calendar, List<PerformanceViewModel>> sortedMap = new TreeMap<>(new Comparator<Calendar>() {
 				@Override
 				public int compare(Calendar o1, Calendar o2) {

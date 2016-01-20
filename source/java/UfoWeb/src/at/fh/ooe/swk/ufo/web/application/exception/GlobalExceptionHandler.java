@@ -55,7 +55,7 @@ public class GlobalExceptionHandler extends ExceptionHandlerWrapper {
 
 			try {
 				log.error("Critical Exception!", t);
-				fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getUnexpectedError(), ""));
+				fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getErrorUnexpected(), ""));
 				fc.renderResponse();
 
 			} catch (Exception e) {

@@ -25,7 +25,7 @@
 							required="false" style="width: 100%">
 
 							<p:ajax event="change" process="@this" global="false"
-								update="artistFilterSelectionMeta" />
+								update="artistFilterSelectionMeta" partialSubmit="true" />
 							<f:selectItems value="#{performanceSupport.artistItems}"
 								var="item" />
 
@@ -51,7 +51,7 @@
 							style="width:100%">
 
 							<p:ajax event="change" process="@this" global="false"
-								update="venueFilterSelectionMeta" />
+								update="venueFilterSelectionMeta" partialSubmit="true" />
 							<f:selectItems value="#{performanceSupport.venueItems}"
 								var="item" />
 
@@ -81,7 +81,7 @@
 							<p:ajax event="dateSelect"
 								listener="#{performanceFilterBean.onFromDateSelect}"
 								global="false" process="calendarFilterContainer"
-								update="calendarFilterContainer" />
+								update="calendarFilterContainer" partialSubmit="true" />
 						</p:calendar>
 					</h:panelGroup>
 					<h:panelGroup id="calendartoFilterContainer" layout="block"
@@ -98,7 +98,7 @@
 							<p:ajax event="dateSelect"
 								listener="#{performanceFilterBean.onToDateSelect}"
 								global="false" process="calendarFilterContainer"
-								update="calendarFilterContainer" />
+								update="calendarFilterContainer" partialSubmit="true" />
 						</p:calendar>
 					</h:panelGroup>
 					<div class="ui-grid-col-2" style="padding: 10px;">
@@ -110,13 +110,14 @@
 			<!-- Filter Actions -->
 			<div class="ui-grid-row">
 				<div class="ui-grid-col-12" style="padding: 5px;">
-					<p:commandButton id="filterButton" value="#{msg.filter}"
-						action="#{performanceFilterBean.filter()}" process="@form"
-						global="true" update=":performanceContainer" />
-					<p:commandButton id="resetButton" value="#{msg.reset}"
-						action="#{performanceFilterBean.clear()}"
+					<p:commandButton id="filterButton" icon="fa fa-refresh"
+						title="#{msg.refresh}" action="#{performanceFilterBean.filter()}"
+						process="@form" global="true" update=":performanceContainer"
+						partialSubmit="true" />
+					<p:commandButton id="resetButton" icon="fa fa-close"
+						title="#{msg.reset}" action="#{performanceFilterBean.clear()}"
 						style="margin-left:10px;" process="@this" global="true"
-						update=":performancefilterContainer, :performanceContainer" />
+						update=":performanceContainer" partialSubmit="true" />
 				</div>
 			</div>
 		</h:form>

@@ -75,60 +75,6 @@
 				<h:outputText value="#{coreMsg.loadingPage}" />
 			</h:panelGrid>
 		</p:dialog>
-
-		<h:form id="loginDialogForm" prependId="true">
-			<p:dialog id="loginDialogID" rendered="#{not utxModel.logged}"
-				widgetVar="loginDialog" closable="true" closeOnEscape="true"
-				draggable="true" responsive="true" fitViewport="true"
-				resizable="true" position="center" header="#{msg.login}"
-				modal="true" width="500" style="padding: 10px;">
-
-				<p:ajax event="close" process="@this"
-					update=":performanceContainer, :menuStackForm" />
-
-				<h:panelGroup id="formContainer"
-					styleClass="ui-grid ui-grid-responsive" style="max-width: 800px;">
-					<div class="ui-grid-row">
-						<div class="ui-grid-col-12" style="padding: 5px;">
-							<p:messages for="loginButton" />
-						</div>
-					</div>
-					<div class="ui-grid-row">
-						<div class="ui-grid-col-4" style="padding: 5px;">
-							<p:outputLabel id="usernameLabel" value="#{msg.username}" />
-						</div>
-						<div class="ui-grid-col-7" style="padding: 5px;">
-							<p:inputText id="username" value="#{loginBean.username}"
-								required="true" />
-						</div>
-						<div class="ui-grid-col-1" style="padding: 5px;">
-							<p:message for="username" display="icon" />
-						</div>
-					</div>
-					<div class="ui-grid-row">
-						<div class="ui-grid-col-4" style="padding: 5px;">
-							<p:outputLabel id="passwordLabel" value="#{msg.password}" />
-						</div>
-						<div class="ui-grid-col-7" style="padding: 5px;">
-							<p:inputText id="password" value="#{loginBean.password}"
-								required="true" />
-						</div>
-						<div class="ui-grid-col-1" style="padding: 5px;">
-							<p:message for="password" display="icon" />
-						</div>
-					</div>
-					<div class="ui-grid-row">
-						<div class="ui-grid-col-12"
-							style="padding: 5px; text-align: center">
-							<p:commandButton id="loginButton" icon="fa fa-key"
-								title="#{msg.login}" actionListener="#{loginBean.login}"
-								process="@form" update="formContainer" global="true">
-							</p:commandButton>
-						</div>
-					</div>
-				</h:panelGroup>
-			</p:dialog>
-		</h:form>
 	</h:panelGroup>
 
 	<h:panelGroup id="messageGroup" layout="block">
@@ -138,19 +84,8 @@
 			showSummary="true" life="2000" severity="info" />
 	</h:panelGroup>
 
-	<h:form id="menuStackForm" prependId="true">
-		<p:stack id="menuStack" icon="/resources/images/stack.png"
-			expanded="false">
-			<p:menuitem value="#{msg.login}" rendered="#{not utxModel.logged}"
-				icon="/resources/images/lock.png" global="true"
-				update=":dialogGroup" oncomplete="PF('loginDialog').show();">
-				<p:resetInput target=":dialogGroup" />
-			</p:menuitem>
-			<p:menuitem value="#{msg.logout}" rendered="#{utxModel.logged}"
-				icon="/resources/images/lock.png"
-				actionListener="#{loginBean.logout()}" global="true"
-				update="@form, :performanceContainer, :menuStackForm" />
-		</p:stack>
-	</h:form>
+	<h:panelGroup id="endContentContainer">
+		<ui:insert name="endContent" />
+	</h:panelGroup>
 </h:body>
 </html>

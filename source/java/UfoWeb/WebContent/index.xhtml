@@ -43,4 +43,25 @@
 	<ui:define name="dialogContent">
 		<ui:include src="/WEB-INF/page/dialog.xhtml" />
 	</ui:define>
+
+	<ui:define name="endContent">
+		<h:form id="menuStackForm" prependId="true">
+			<p:stack id="menuStack" icon="/resources/images/stack.png"
+				expanded="#{utxModel.logged ? true : false}">
+				<p:menuitem value="#{msg.login}" rendered="#{not utxModel.logged}"
+					global="true" update=":dialogGroup"
+					oncomplete="PF('loginDialog').show();">
+					<p:resetInput target=":dialogGroup" />
+				</p:menuitem>
+				<p:menuitem value="#{msg.logout}" rendered="#{utxModel.logged}"
+					actionListener="#{loginBean.logout()}" partialSubmit="true"
+					global="true" update=":performanceContainer, @form" />
+				<p:menuitem value="#{msg.performances}"
+					rendered="#{utxModel.logged}"
+					actionListener="#{performanceEditDialog.init(null)}" global="true"
+					update=":dialogGroup" partialSubmit="true"
+					oncomplete="PF('editPerformanceDialog').show();" />
+			</p:stack>
+		</h:form>
+	</ui:define>
 </ui:composition>

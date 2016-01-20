@@ -1,12 +1,13 @@
 package at.fh.ooe.swk.ufo.web.performances.model;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.enterprise.context.Dependent;
 
+import at.fh.ooe.swk.ufo.web.application.model.IdHolder;
+
 @Dependent
-public class VenueViewModel implements Serializable {
+public class VenueViewModel implements IdHolder<Long> {
 
 	private static final long serialVersionUID = -677421592574262160L;
 

@@ -42,6 +42,7 @@ public class PerformanceLazyDataTableModel extends LazyDataModel<PerformanceRowM
 	private Calendar date;
 	private List<PerformanceColumnModel> columns;
 	private List<PerformanceRowModel> rows;
+	private List<PerformanceViewModel> performances;
 	private Set<Integer> performancestartHours;
 
 	/**
@@ -58,6 +59,7 @@ public class PerformanceLazyDataTableModel extends LazyDataModel<PerformanceRowM
 	 */
 	public void init(final Calendar header, final List<PerformanceViewModel> performances) {
 		Objects.requireNonNull(performances, "DataTabelSubPage needs performances to be given");
+		this.performances = performances;
 		if (performances.isEmpty()) {
 			throw new IllegalArgumentException("Performances must not be empty");
 		}
@@ -164,6 +166,10 @@ public class PerformanceLazyDataTableModel extends LazyDataModel<PerformanceRowM
 
 	public List<PerformanceColumnModel> getColumns() {
 		return columns;
+	}
+
+	public List<PerformanceViewModel> getPerformances() {
+		return performances;
 	}
 
 	public long getDataCount() {

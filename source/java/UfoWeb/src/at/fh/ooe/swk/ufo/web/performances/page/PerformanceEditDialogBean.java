@@ -8,12 +8,14 @@ import javax.enterprise.inject.Instance;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import javax.faces.event.ValueChangeEvent;
 import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 import org.apache.logging.log4j.Logger;
 import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 
 import at.fh.ooe.swk.ufo.service.proxy.api.PerformanceServiceProxy;
 import at.fh.ooe.swk.ufo.service.proxy.api.model.PerformanceServiceRequestModel;
@@ -52,18 +54,19 @@ public class PerformanceEditDialogBean implements Serializable {
 	@Inject
 	private PerformanceSupport support;
 	@Inject
-	private PerformancesPage page;
-	@Inject
 	private PerformanceEditViewModel editViewModel;
 	@Inject
 	private UserContextModel utx;
 
+	private PerformanceViewModel selectedPerformance;
 	private Calendar minDate;
 	private Calendar maxDate;
 	private Integer startHour;
 	private Boolean started;
 
 	public void init(PerformanceViewModel model) {
+		reset();
+		this.selectedPerformance = model;
 		final Calendar now = Calendar.getInstance();
 		// prepare date borders
 		minDate = Calendar.getInstance();
@@ -110,13 +113,12 @@ public class PerformanceEditDialogBean implements Serializable {
 
 			// Handle response
 			if ((!proxaExceptionHanlder.handleException(clientId, result)) && (result.getResult() != null)) {
-				support.loadPerformances();
 				init(result.getResult());
 				RequestContext.getCurrentInstance().execute("updateFilterAndContent();");
 			}
 		} catch (Exception e) {
 			log.error("Could not save perforamnce", e);
-			fc.addMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getUnexpectedError(), ""));
+			fc.addMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getErrorUnexpected(), ""));
 		}
 	}
 
@@ -134,8 +136,8 @@ public class PerformanceEditDialogBean implements Serializable {
 		ResultModel<Boolean> result = performanceService.delete(model);
 
 		// Handle response
-		if ((!proxaExceptionHanlder.handleException(clientId, result)) && (result.getResult() != null)) {
-			support.loadPerformances();
+		proxaExceptionHanlder.handleException(clientId, result);
+		if (result.getResult() != null) {
 			init(null);
 			RequestContext.getCurrentInstance().execute("updateFilterAndContent();");
 		}
@@ -145,10 +147,20 @@ public class PerformanceEditDialogBean implements Serializable {
 	// Event Listener
 	// ##################################################
 	public void onClose() {
+		support.loadPerformances();
 		reset();
 	}
 
+	public void onPerformanceSelect(ValueChangeEvent event) {
+		PerformanceViewModel model = (PerformanceViewModel) event.getNewValue();
+		init(model);
+	}
+
+	// ##################################################
+	// Helper
+	// ##################################################
 	public void reset() {
+		selectedPerformance = null;
 		minDate = null;
 		maxDate = null;
 		startHour = null;
@@ -175,5 +187,13 @@ public class PerformanceEditDialogBean implements Serializable {
 
 	public Boolean getStarted() {
 		return started;
+	}
+
+	public PerformanceViewModel getSelectedPerformance() {
+		return selectedPerformance;
+	}
+
+	public void setSelectedPerformance(PerformanceViewModel selectedPerformance) {
+		this.selectedPerformance = selectedPerformance;
 	}
 }

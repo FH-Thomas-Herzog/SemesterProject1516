@@ -6,6 +6,60 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:pe="http://primefaces.org/ui/extensions">
 
+	<h:form id="loginDialogForm" prependId="true">
+		<p:dialog id="loginDialogID" rendered="#{not utxModel.logged}"
+			widgetVar="loginDialog" closable="true" closeOnEscape="true"
+			draggable="true" responsive="true" fitViewport="true"
+			resizable="true" position="center" header="#{msg.login}" modal="true"
+			width="500" style="padding: 10px;">
+
+			<p:ajax event="close" process="@this"
+				update=":performanceContainer, :menuStackForm" />
+
+			<h:panelGroup id="formContainer"
+				styleClass="ui-grid ui-grid-responsive" style="max-width: 800px;">
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-12" style="padding: 5px;">
+						<p:messages for="loginButton" />
+					</div>
+				</div>
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-4" style="padding: 5px;">
+						<p:outputLabel id="usernameLabel" value="#{msg.username}" />
+					</div>
+					<div class="ui-grid-col-7" style="padding: 5px;">
+						<p:inputText id="username" value="#{loginBean.username}"
+							required="true" />
+					</div>
+					<div class="ui-grid-col-1" style="padding: 5px;">
+						<p:message for="username" display="icon" />
+					</div>
+				</div>
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-4" style="padding: 5px;">
+						<p:outputLabel id="passwordLabel" value="#{msg.password}" />
+					</div>
+					<div class="ui-grid-col-7" style="padding: 5px;">
+						<p:password id="password" value="#{loginBean.password}"
+							required="true" />
+					</div>
+					<div class="ui-grid-col-1" style="padding: 5px;">
+						<p:message for="password" display="icon" />
+					</div>
+				</div>
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-12"
+						style="padding: 5px; text-align: center">
+						<p:commandButton id="loginButton" icon="fa fa-key"
+							title="#{msg.login}" actionListener="#{loginBean.login}"
+							process="@form" update="formContainer" global="true">
+						</p:commandButton>
+					</div>
+				</div>
+			</h:panelGroup>
+		</p:dialog>
+	</h:form>
+
 	<h:form id="artistDialogForm" prependId="true">
 		<p:dialog id="artistInfoDialogID"
 			rendered="#{not empty performancePage.selectedArtist}"
@@ -105,13 +159,13 @@
 					<p:column sortBy="#{item.startDate}" headerText="#{msg.time}">
 						<h:outputText id="startDate" value="#{item.startDate.time}">
 							<f:convertDateTime type="time" locale="#{languageBean.locale}"
-								for="startDate" timeZone="#{defaultTimeZone}" />
+								for="startDate" />
 						</h:outputText>
 						<h:outputText value=" - " style="margin-left: 5px;" />
 						<h:outputText id="endDate" value="#{item.endDate.time}"
 							style="margin-left: 5px">
 							<f:convertDateTime type="time" locale="#{languageBean.locale}"
-								for="startDate" timeZone="#{defaultTimeZone}" />
+								for="startDate" />
 						</h:outputText>
 					</p:column>
 					<p:column headerText="#{msg.artist}">
@@ -150,20 +204,20 @@
 							title="#{msg.newEntry}"
 							actionListener="#{performanceEditDialog.newEntry}"
 							process="@this" global="true" update="formContainer"
-							style="margin-right: 10px;">
-							<p:resetInput target=":formContainer" />
+							style="margin-right: 10px;" partialSubmit="true">
+							<p:resetInput target="formContainer" />
 						</p:commandButton>
 						<p:commandButton id="saveButton" icon="fa fa-save"
 							title="#{(not empty performanceEditViewModel.id) ? msg.save : msg.create}"
 							actionListener="#{performanceEditDialog.save}"
 							process="formContainer" global="true" update="formContainer"
-							style="margin-right: 10px;" />
+							style="margin-right: 10px;" partialSubmit="true" />
 						<p:commandButton id="deleteButton" icon="fa fa-trash"
 							title="#{msg.delete}"
 							rendered="#{not empty performanceEditViewModel.id}"
 							actionListener="#{performanceEditDialog.delete}"
 							process="formContainer" global="true" update="formContainer"
-							style="margin-right: 10px;" />
+							style="margin-right: 10px;" partialSubmit="true" />
 						<p:commandButton id="closeButton" icon="fa fa-close"
 							title="#{msg.close}" type="button"
 							onclick="PF('editPerformanceDialog').hide();" />
@@ -171,13 +225,44 @@
 				</div>
 				<div class="ui-grid-row">
 					<div class="ui-grid-col-12" style="padding: 5px;">
-						<p:separator />
+						<p:separator style="margin: 5px 0px 5px 0px;" />
+					</div>
+				</div>
+				<!-- Performances -->
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-4" style="padding: 5px;">
+						<p:outputLabel id="performanceLabel" value="#{msg.performance}"
+							for="performance" />
+					</div>
+					<div class="ui-grid-col-7" style="padding: 5px;">
+						<p:selectOneMenu id="performance"
+							value="#{performanceEditDialog.selectedPerformance}"
+							filter="true" filterMatchMode="contains"
+							converter="#{performanceItemsConverter}" scrollHeight="300"
+							panelStyle="max-width:500px" caseSensitive="false"
+							style="width:90%;"
+							valueChangeListener="#{performanceEditDialog.onPerformanceSelect}">
+
+							<p:ajax event="change" process="@this" partialSubmit="true"
+								update="formContainer" />
+							<f:selectItem itemLabel="#{msg.newEntry}" itemValue="#{null}" />
+							<f:selectItems value="#{performanceItems}" var="item" />
+
+						</p:selectOneMenu>
+					</div>
+					<div class="ui-grid-col-1" style="padding: 5px;">
+						<p:message for="performance" display="icon" />
+					</div>
+				</div>
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-12" style="padding: 5px;">
+						<p:separator style="margin: 5px 0px 5px 0px;" />
 					</div>
 				</div>
 				<!-- Artist -->
 				<div class="ui-grid-row">
 					<div class="ui-grid-col-4" style="padding: 5px;">
-						<h:outputLabel id="artistLabel" value="#{msg.artist}" for="artist" />
+						<p:outputLabel id="artistLabel" value="#{msg.artist}" for="artist" />
 					</div>
 					<div class="ui-grid-col-7" style="padding: 5px;">
 						<p:selectOneMenu label="#{msg.pleaseChoose}" id="artist"
@@ -200,7 +285,7 @@
 				<!-- Venue -->
 				<div class="ui-grid-row">
 					<div class="ui-grid-col-4" style="padding: 5px;">
-						<h:outputLabel id="venueLabel" value="#{msg.venue}" for="venue" />
+						<p:outputLabel id="venueLabel" value="#{msg.venue}" for="venue" />
 					</div>
 					<div class="ui-grid-col-7" style="padding: 5px;">
 						<p:selectOneMenu id="venue" label="#{msg.pleaseChoose}"
@@ -223,7 +308,7 @@
 				<!-- Date -->
 				<div class="ui-grid-row">
 					<div class="ui-grid-col-4" style="padding: 5px;">
-						<h:outputLabel id="dateLabel" value="#{msg.date}" for="date" />
+						<p:outputLabel id="dateLabel" value="#{msg.date}" for="date" />
 					</div>
 					<div class="ui-grid-col-7" style="padding: 5px;">
 						<p:calendar id="date"
@@ -240,7 +325,7 @@
 				<!-- Time -->
 				<div class="ui-grid-row">
 					<div class="ui-grid-col-4" style="padding: 5px;">
-						<h:outputLabel id="timeLabel" value="#{msg.time}" for="date" />
+						<p:outputLabel id="timeLabel" value="#{msg.time}" for="date" />
 					</div>
 					<div class="ui-grid-col-7" style="padding: 5px;">
 						<p:spinner id="fromHour" value="#{performanceEditViewModel.hour}"

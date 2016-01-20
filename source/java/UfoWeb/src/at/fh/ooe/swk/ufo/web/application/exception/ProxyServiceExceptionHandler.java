@@ -42,7 +42,7 @@ public class ProxyServiceExceptionHandler implements Serializable {
 		// Handle internal error
 		if (result.getInternalError() != null) {
 			log.error("ServiceProxy throw error: " + result.getInternalError(), result.getException());
-			fc.addMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getUnexpectedError(), ""));
+			fc.addMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getErrorUnexpected(), ""));
 			handled = Boolean.TRUE;
 		}
 

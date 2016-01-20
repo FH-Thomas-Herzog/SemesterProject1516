@@ -95,8 +95,7 @@ public class PerformanceFilterBean implements Serializable {
 
 	public void clear() {
 		reset();
-		// reload data
-		support.init();
+		filter();
 	}
 
 	public void reset() {
@@ -117,7 +116,13 @@ public class PerformanceFilterBean implements Serializable {
 		final Date date = (Date) event.getObject();
 		final Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
+		// In case day range overflowed
 		if (isDayOverflow((Calendar) cal.clone(), (Calendar) toDate.clone())) {
+			toDate = (Calendar) cal.clone();
+			toDate.add(Calendar.DAY_OF_YEAR, MAX_DAY_COUNT);
+		}
+		// In case of invalid range
+		else if (toDate.compareTo(fromDate) < 0) {
 			toDate = (Calendar) cal.clone();
 		}
 		setFromDate(date);
@@ -127,7 +132,13 @@ public class PerformanceFilterBean implements Serializable {
 		final Date date = (Date) event.getObject();
 		final Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
+		// In case day range overflowed
 		if (isDayOverflow((Calendar) fromDate.clone(), (Calendar) cal.clone())) {
+			fromDate = (Calendar) cal.clone();
+			fromDate.add(Calendar.DAY_OF_YEAR, -MAX_DAY_COUNT);
+		}
+		// In case of invalid range
+		else if (toDate.compareTo(fromDate) < 0) {
 			fromDate = (Calendar) cal.clone();
 		}
 		setToDate(date);

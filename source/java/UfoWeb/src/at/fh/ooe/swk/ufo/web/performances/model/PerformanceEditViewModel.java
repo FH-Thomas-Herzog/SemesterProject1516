@@ -1,6 +1,5 @@
 package at.fh.ooe.swk.ufo.web.performances.model;
 
-import java.io.Serializable;
 import java.util.Calendar;
 import java.util.Objects;
 import java.util.TimeZone;
@@ -11,12 +10,13 @@ import javax.inject.Named;
 import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 
 import at.fh.ooe.swk.ufo.web.application.annotation.ServiceTimeZone;
+import at.fh.ooe.swk.ufo.web.application.model.IdHolder;
 import at.fh.ooe.swk.ufo.web.application.model.IdMapperModel;
 import at.fh.ooe.swk.ufo.web.performances.page.PerformanceSupport;
 
 @ViewAccessScoped
 @Named("performanceEditViewModel")
-public class PerformanceEditViewModel implements Serializable {
+public class PerformanceEditViewModel implements IdHolder<Long> {
 
 	private static final long serialVersionUID = 1994942977872442719L;
 

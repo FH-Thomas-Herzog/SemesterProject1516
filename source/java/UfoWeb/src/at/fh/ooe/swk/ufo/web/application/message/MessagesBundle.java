@@ -97,9 +97,6 @@ public interface MessagesBundle extends Serializable {
 	@MessageTemplate("{LOGOUT}")
 	String getLogout();
 
-	@MessageTemplate("UNEXPECTED_ERROR")
-	String getUnexpectedError();
-
 	@MessageTemplate("{USERNAME}")
 	String getUsername();
 
@@ -177,4 +174,7 @@ public interface MessagesBundle extends Serializable {
 
 	@MessageTemplate("{ERROR_VENUE_NOT_FOUND}")
 	String getVenueNotFound();
+	
+	@MessageTemplate("{ERROR_UNEXPECTED}")
+	String getErrorUnexpected();
 }
