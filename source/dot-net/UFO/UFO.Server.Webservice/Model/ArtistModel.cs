@@ -18,6 +18,7 @@ namespace UFO.Server.Webservice.Soap.Model
         public string Image { get; set; }
         public string ImageType { get; set; }
         public string ArtistGroup { get; set; }
+        public string ArtistCategory { get; set; }
 
     }
 }

@@ -27,13 +27,12 @@ namespace UFO.Server.Webservice.Soap.Soap
     public class SecurityService : BaseSecureWebservice
     {
 
-        private ISecurityService securityService = ServiceFactory.CreateSecurityService();
-
         [WebMethod]
         [ScriptMethod(UseHttpGet = false)]
         [SoapHeader("credentials")]
         public SingleResultModel<bool?> ValidateUserCredentials(string username, string password)
         {
+            ISecurityService securityService = ServiceFactory.CreateSecurityService();
             SingleResultModel<bool?> model;
             if ((model = HandleAuthentication<SingleResultModel<bool?>>()) == null)
             {
@@ -55,6 +54,10 @@ namespace UFO.Server.Webservice.Soap.Soap
                     Console.WriteLine("GetVenues: Error during processing. error: " + e.Message);
                     model.ErrorCode = (int)ErrorCode.UNKNOWN_ERROR;
                     model.Error = ($"Error during processing the request. exception={e.GetType().Name}");
+                }
+                finally
+                {
+                    ServiceFactory.DisposeService(securityService);
                 }
             }
             else

@@ -27,14 +27,12 @@ namespace UFO.Server.Webservice.Soap.Soap
     public class VenueService : BaseSecureWebservice
     {
 
-        private IVenueDao venueDao = DaoFactory.CreateVenueDao();
-        private IPerformanceDao performanceDao = DaoFactory.CreatePerformanceDao();
-
         [WebMethod]
         [ScriptMethod(UseHttpGet = false)]
         [SoapHeader("credentials")]
         public ListResultModel<VenueModel> GetVenues()
         {
+            IVenueDao venueDao = DaoFactory.CreateVenueDao();
             ListResultModel<VenueModel> model;
             if ((model = HandleAuthentication<ListResultModel<VenueModel>>()) == null)
             {
@@ -56,6 +54,10 @@ namespace UFO.Server.Webservice.Soap.Soap
                     model.ErrorCode = (int)ErrorCode.UNKNOWN_ERROR;
                     model.Error = ($"Error during processing the request. exception={e.GetType().Name}");
                 }
+                finally
+                {
+                    DaoFactory.DisposeDao(venueDao);
+                }
             }
 
             return model;
@@ -74,6 +76,7 @@ namespace UFO.Server.Webservice.Soap.Soap
         [SoapHeader("credentials")]
         public ListResultModel<VenueModel> GetVenueForPerformances(long? id, PerformanceFilterRequest filter)
         {
+            IPerformanceDao performanceDao = DaoFactory.CreatePerformanceDao();
             ListResultModel<VenueModel> model;
             if ((model = HandleAuthentication<ListResultModel<VenueModel>>()) == null)
             {
@@ -118,6 +121,10 @@ namespace UFO.Server.Webservice.Soap.Soap
                     Console.WriteLine("GetVenueForPerformances: Error during processing. error: " + e.Message);
                     model.ErrorCode = (int)ErrorCode.UNKNOWN_ERROR;
                     model.Error = ($"Error during processing the request. exception={e.GetType().Name}");
+                }
+                finally
+                {
+                    DaoFactory.DisposeDao(performanceDao);
                 }
             }
 

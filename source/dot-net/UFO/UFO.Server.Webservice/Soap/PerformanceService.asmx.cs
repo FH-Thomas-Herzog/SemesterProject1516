@@ -31,17 +31,14 @@ namespace UFO.Server.Webservice.Soap.Soap
     // [System.Web.Script.Services.ScriptService]
     public class PerformanceService : BaseSecureWebservice
     {
-        private ResourceManager resource = new ResourceManager(typeof(Commander.Service.Api.Properties.Resource));
-
-        private IPerformanceDao performanceDao = DaoFactory.CreatePerformanceDao();
-        private ISecurityService securityService = ServiceFactory.CreateSecurityService();
-        private IPerformanceService performanceService = ServiceFactory.CreatePerformanceService();
+        private static readonly ResourceManager resource = new ResourceManager(typeof(Commander.Service.Api.Properties.Resource));
 
         [WebMethod]
         [ScriptMethod(UseHttpGet = false)]
         [SoapHeader("credentials")]
         public ListResultModel<PerformanceModel> GetPerformances(PerformanceFilterRequest filter)
         {
+            IPerformanceDao performanceDao = DaoFactory.CreatePerformanceDao();
             ListResultModel<PerformanceModel> model = null;
             if ((model = HandleAuthentication<ListResultModel<PerformanceModel>>()) == null)
             {
@@ -76,6 +73,10 @@ namespace UFO.Server.Webservice.Soap.Soap
                     model.ErrorCode = (int)ErrorCode.UNKNOWN_ERROR;
                     model.Error = ("Error during processing the request. error: " + e.Message);
                 }
+                finally
+                {
+                    DaoFactory.DisposeDao(performanceDao);
+                }
             }
 
             return model;
@@ -86,9 +87,12 @@ namespace UFO.Server.Webservice.Soap.Soap
         [SoapHeader("credentials")]
         public SingleResultModel<PerformanceModel> Save(PerformanceRequestModel request)
         {
+            ISecurityService securityService = ServiceFactory.CreateSecurityService();
+            IPerformanceService performanceService = ServiceFactory.CreatePerformanceService();
             SingleResultModel<PerformanceModel> model = null;
             if ((model = HandleAuthentication<SingleResultModel<PerformanceModel>>()) == null)
             {
+                IPerformanceDao performanceDao = DaoFactory.CreatePerformanceDao();
                 model = new SingleResultModel<PerformanceModel>();
                 try
                 {
@@ -154,6 +158,12 @@ namespace UFO.Server.Webservice.Soap.Soap
                     model.ErrorCode = (int)ErrorCode.UNKNOWN_ERROR;
                     model.Error = ("Error during processing the request. error: " + e.Message);
                 }
+                finally
+                {
+                    DaoFactory.DisposeDao(performanceDao);
+                    ServiceFactory.DisposeService(securityService);
+                    ServiceFactory.DisposeService(performanceService);
+                }
             }
 
             return model;
@@ -164,6 +174,8 @@ namespace UFO.Server.Webservice.Soap.Soap
         [SoapHeader("credentials")]
         public SingleResultModel<bool?> Delete(PerformanceRequestModel request)
         {
+            ISecurityService securityService = ServiceFactory.CreateSecurityService();
+            IPerformanceService performanceService = ServiceFactory.CreatePerformanceService();
             SingleResultModel<bool?> model = null;
             if ((model = HandleAuthentication<SingleResultModel<bool?>>()) == null)
             {
@@ -197,6 +209,11 @@ namespace UFO.Server.Webservice.Soap.Soap
                     Console.WriteLine("Delete: Error during processing. error: " + e.Message);
                     model.ErrorCode = (int)ErrorCode.UNKNOWN_ERROR;
                     model.Error = ("Error during processing the request. error: " + e.Message);
+                }
+                finally
+                {
+                    ServiceFactory.DisposeService(securityService);
+                    ServiceFactory.DisposeService(performanceService);
                 }
             }
             return model;

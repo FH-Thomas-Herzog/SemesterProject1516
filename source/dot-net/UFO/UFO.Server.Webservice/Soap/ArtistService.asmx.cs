@@ -27,28 +27,29 @@ namespace UFO.Server.Webservice.Soap
     // [System.Web.Script.Services.ScriptService]
     public class ArtistService : BaseSecureWebservice
     {
-        private IArtistDao artistDao = DaoFactory.CreateArtistDao();
-        private IArtistGroupDao artistGroupDao = DaoFactory.CreateArtistGroupDao();
 
         [WebMethod]
         [ScriptMethod(UseHttpGet = false)]
         [SoapHeader("credentials")]
         public ListResultModel<ArtistModel> GetSimpleArtists()
         {
+            IArtistDao artistDao = DaoFactory.CreateArtistDao();
             ListResultModel<ArtistModel> model;
             if ((model = HandleAuthentication<ListResultModel<ArtistModel>>()) == null)
             {
                 model = new ListResultModel<ArtistModel>();
                 try
                 {
-                    IList<Artist> artists = artistDao.FindAll();
+                    IList<Artist> artists = artistDao.FindAllFull();
                     model.Result = artists.Select(artist => new ArtistModel
                     {
                         Id = artist.Id.Value,
                         FirstName = artist.Firstname,
                         LastName = artist.Lastname,
                         Email = artist.Email,
-                        CountryCode = artist.CountryCode
+                        CountryCode = artist.CountryCode,
+                        ArtistGroup = ((artist.ArtistGroup != null) ? artist.ArtistGroup.Name : ""),
+                        ArtistCategory = ((artist.ArtistCategory != null) ? artist.ArtistCategory.Name : "")
                     }).ToList();
                 }
                 catch (Exception e)
@@ -56,6 +57,10 @@ namespace UFO.Server.Webservice.Soap
                     Console.WriteLine("GetDetails: Error during processing. error: " + e.Message);
                     model.ErrorCode = (int)ErrorCode.UNKNOWN_ERROR;
                     model.Error = ($"Error during processing the request. exception={e.GetType().Name}");
+                }
+                finally
+                {
+                    DaoFactory.DisposeDao(artistDao);
                 }
             }
 
@@ -67,6 +72,8 @@ namespace UFO.Server.Webservice.Soap
         [SoapHeader("credentials")]
         public SingleResultModel<ArtistModel> GetDetails(long id)
         {
+            IArtistDao artistDao = DaoFactory.CreateArtistDao();
+            IArtistGroupDao artistGroupDao = DaoFactory.CreateArtistGroupDao();
             SingleResultModel<ArtistModel> model;
             if ((model = HandleAuthentication<SingleResultModel<ArtistModel>>()) == null)
             {
@@ -104,6 +111,11 @@ namespace UFO.Server.Webservice.Soap
                     Console.WriteLine("GetDetails: Error during processing. error: " + e.Message);
                     model.ErrorCode = (int)ErrorCode.UNKNOWN_ERROR;
                     model.Error = ($"Error during processing the request. exception={e.GetType().Name}");
+                }
+                finally
+                {
+                    DaoFactory.DisposeDao(artistDao);
+                    DaoFactory.DisposeDao(artistGroupDao);
                 }
             }
 
