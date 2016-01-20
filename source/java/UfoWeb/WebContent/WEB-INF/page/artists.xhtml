@@ -19,7 +19,7 @@
 				<p:commandButton id="resetFiltersButton" icon="fa fa-close"
 					partialSubmit="true" title="#{msg.reset}"
 					actionListener="#{performancePage.onArtistsSearchReset()}"
-					process="@this" update="@form" />
+					process="@this" update="@form, artistsContainer" />
 			</h:panelGroup>
 			<h:panelGroup id="artistsSearchContainer" layout="block"
 				styleClass="ui-grid ui-grid-responsive" style="margin:10px;">

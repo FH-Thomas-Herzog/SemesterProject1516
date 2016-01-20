@@ -22,7 +22,7 @@
 				<p:commandButton id="resetVenuesFiltersButton" icon="fa fa-close"
 					partialSubmit="true" title="#{msg.reset}"
 					actionListener="#{performancePage.onVenuesSearchReset()}"
-					process="@this" update="@form" />
+					process="@this" update="@form, venuesContainer" />
 			</h:panelGroup>
 			<h:panelGroup id="venuesSearchContainer" layout="block"
 				styleClass="ui-grid ui-grid-responsive" style="margin:10px;">

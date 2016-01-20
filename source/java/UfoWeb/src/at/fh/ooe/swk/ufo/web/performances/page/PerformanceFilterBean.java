@@ -13,6 +13,8 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.primefaces.event.SelectEvent;
+
 import at.fh.ooe.swk.ufo.service.proxy.api.model.PerformanceFilter;
 import at.fh.ooe.swk.ufo.web.application.annotation.ServiceTimeZone;
 import at.fh.ooe.swk.ufo.web.application.model.IdMapperModel;
@@ -30,11 +32,14 @@ public class PerformanceFilterBean implements Serializable {
 	private TimeZone serviceTimeZone;
 
 	private Calendar fromDate;
+	private Calendar toDate;
 	private List<IdMapperModel<Long>> artistIds;
 	private List<IdMapperModel<Long>> venueIds;
 
 	private Calendar minDate;
 	private Calendar maxDate;
+
+	private static final int MAX_DAY_COUNT = 7;
 
 	@PostConstruct
 	public void postConstruct() {
@@ -51,9 +56,8 @@ public class PerformanceFilterBean implements Serializable {
 	public PerformanceFilter createFilter() {
 		final Calendar fromDateTmp = (Calendar) fromDate.clone();
 		fromDateTmp.setTimeZone(serviceTimeZone);
-		final Calendar toDateTmp = (Calendar) fromDate.clone();
+		final Calendar toDateTmp = (Calendar) toDate.clone();
 		toDateTmp.setTimeZone(serviceTimeZone);
-		toDateTmp.add(Calendar.DAY_OF_YEAR, 10); //Just for testing
 		toDateTmp.set(Calendar.HOUR_OF_DAY, 23);
 		toDateTmp.set(Calendar.MINUTE, 59);
 
@@ -98,8 +102,43 @@ public class PerformanceFilterBean implements Serializable {
 	public void reset() {
 		fromDate = Calendar.getInstance();
 		fromDate.set(fromDate.get(Calendar.YEAR), fromDate.get(Calendar.MONTH), fromDate.get(Calendar.DATE), 0, 0);
+		toDate = (Calendar) fromDate.clone();
+		toDate.set(toDate.get(Calendar.YEAR), toDate.get(Calendar.MONTH), toDate.get(Calendar.DATE), 23, 59);
+		toDate.add(Calendar.DAY_OF_YEAR, 7);
+
 		artistIds = new ArrayList<>();
 		venueIds = new ArrayList<>();
+	}
+
+	// ##################################################
+	// Event Lsiteners
+	// ##################################################
+	public void onFromDateSelect(SelectEvent event) {
+		final Date date = (Date) event.getObject();
+		final Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		if (isDayOverflow((Calendar) cal.clone(), (Calendar) toDate.clone())) {
+			toDate = (Calendar) cal.clone();
+		}
+		setFromDate(date);
+	}
+
+	public void onToDateSelect(SelectEvent event) {
+		final Date date = (Date) event.getObject();
+		final Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		if (isDayOverflow((Calendar) fromDate.clone(), (Calendar) cal.clone())) {
+			fromDate = (Calendar) cal.clone();
+		}
+		setToDate(date);
+	}
+
+	// ##################################################
+	// Helper
+	// ##################################################
+	public boolean isDayOverflow(final Calendar from, final Calendar to) {
+		from.add(Calendar.DAY_OF_YEAR, MAX_DAY_COUNT);
+		return (from.compareTo(to) < 0);
 	}
 
 	// ##################################################
@@ -129,11 +168,23 @@ public class PerformanceFilterBean implements Serializable {
 		this.fromDate.setTime(fromDate);
 	}
 
+	public Date getToDate() {
+		return toDate.getTime();
+	}
+
+	public void setToDate(Date toDate) {
+		this.toDate.setTime(toDate);
+	}
+
 	public Date getMinDate() {
 		return minDate.getTime();
 	}
 
 	public Date getMaxDate() {
 		return maxDate.getTime();
+	}
+
+	public int getMaxDayCount() {
+		return MAX_DAY_COUNT;
 	}
 }

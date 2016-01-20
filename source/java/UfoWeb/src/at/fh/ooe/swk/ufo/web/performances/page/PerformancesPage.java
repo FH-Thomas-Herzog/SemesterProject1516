@@ -92,8 +92,7 @@ public class PerformancesPage implements Serializable {
 					return ((artist.getArtistGroup() != null)
 							&& (artist.getArtistGroup().toUpperCase().contains(query)));
 				case ARTIST_CATEGORY:
-					return (artist.getArtistCategory() != null)
-							? artist.getArtistCategory().toUpperCase().contains(query) : Boolean.FALSE;
+					return (artist.getArtistCategory() != null) && (artist.getArtistCategory().toUpperCase().contains(query));
 				case COUNTRY:
 					return (artist.getCountryName() != null) ? artist.getCountryName().toUpperCase().contains(query)
 							: Boolean.FALSE;

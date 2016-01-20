@@ -12,7 +12,7 @@
 				style="min-width: 300px; max-width: 50%;">
 				<!-- Artist Filter -->
 				<div class="ui-grid-row">
-					<div class="ui-grid-col-2" style="padding: 5px;">
+					<div class="ui-grid-col-2" style="padding: 7px;">
 						<p:outputLabel id="artistFilterLabel" value="#{msg.artists}"
 							for="artistFilter" />
 					</div>
@@ -31,14 +31,14 @@
 
 						</p:selectCheckboxMenu>
 					</div>
-					<div class="ui-grid-col-2" style="padding: 5px;">
+					<div class="ui-grid-col-2" style="padding: 10px;">
 						<h:outputText id="artistFilterSelectionMeta"
 							value="#{((empty performanceFilterBean.artistIds) or (performanceFilterBean.artistIds.size() eq performanceSupport.artistItems.size())) ? msg.getItemsSelected(msg.all) : msg.getItemsSelected(performanceFilterBean.artistIds.size()) }" />
 					</div>
 				</div>
 				<!-- Venue Filter -->
 				<div class="ui-grid-row">
-					<div class="ui-grid-col-2" style="padding: 5px;">
+					<div class="ui-grid-col-2" style="padding: 7px;">
 						<p:outputLabel id="venueFilterLabel" value="#{msg.venues}"
 							for="venueFilter" />
 					</div>
@@ -57,26 +57,55 @@
 
 						</p:selectCheckboxMenu>
 					</div>
-					<div class="ui-grid-col-2" style="padding: 5px;">
+					<div class="ui-grid-col-2" style="padding: 10px;">
 						<h:outputText id="venueFilterSelectionMeta"
 							value="#{((empty performanceFilterBean.venueIds) or (performanceFilterBean.venueIds.size() eq performanceSupport.venueItems.size())) ? msg.getItemsSelected(msg.all) : msg.getItemsSelected(performanceFilterBean.artistIds.size()) }" />
 					</div>
 				</div>
 				<!-- Date Filter -->
-				<div class="ui-grid-row">
-					<div class="ui-grid-col-2" style="padding: 5px;">
+				<h:panelGroup id="calendarFilterContainer" styleClass="ui-grid-row">
+					<div class="ui-grid-col-2" style="padding: 7px;">
 						<p:outputLabel id="fromToCalendarFilterLabel" value="#{msg.date}"
-							for="calendarFilter" />
+							for="calendarFromFilterContainer" />
 					</div>
-					<div class="ui-grid-col-10" style="padding: 5px;">
-						<p:calendar id="calendarFilter"
+					<h:panelGroup id="calendarFromFilterContainer" layout="block"
+						styleClass="ui-grid-col-4" style="padding: 5px;">
+						<p:outputLabel value="#{msg.from}" for="calendarFromFilter"
+							style="margin-right: 10px;" />
+						<p:calendar id="calendarFromFilter"
 							value="#{performanceFilterBean.fromDate}"
 							locale="#{languageBean.locale}"
 							mindate="#{performanceFilterBean.minDate}"
 							maxdate="#{performanceFilterBean.maxDate}" pattern="dd.MM.yyyy"
-							style="width: 100%;" />
+							style="width: 100%;">
+							<p:ajax event="dateSelect"
+								listener="#{performanceFilterBean.onFromDateSelect}"
+								global="false" process="calendarFilterContainer"
+								update="calendarFilterContainer" />
+						</p:calendar>
+					</h:panelGroup>
+					<h:panelGroup id="calendartoFilterContainer" layout="block"
+						styleClass="ui-grid-col-4"
+						style="padding: 5px; text-align: right;">
+						<p:outputLabel value="#{msg.to}" for="calendarToFilter"
+							style="margin-right: 10px;" />
+						<p:calendar id="calendarToFilter"
+							value="#{performanceFilterBean.toDate}"
+							locale="#{languageBean.locale}"
+							mindate="#{performanceFilterBean.minDate}"
+							maxdate="#{performanceFilterBean.maxDate}" pattern="dd.MM.yyyy"
+							style="width: 100%;">
+							<p:ajax event="dateSelect"
+								listener="#{performanceFilterBean.onToDateSelect}"
+								global="false" process="calendarFilterContainer"
+								update="calendarFilterContainer" />
+						</p:calendar>
+					</h:panelGroup>
+					<div class="ui-grid-col-2" style="padding: 10px;">
+						<h:outputText id="calendarFilterMeta"
+							value="#{msg.getMaxDays(performanceFilterBean.maxDayCount)}" />
 					</div>
-				</div>
+				</h:panelGroup>
 			</div>
 			<!-- Filter Actions -->
 			<div class="ui-grid-row">
