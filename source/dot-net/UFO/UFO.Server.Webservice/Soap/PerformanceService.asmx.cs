@@ -179,12 +179,13 @@ namespace UFO.Server.Webservice.Soap.Soap
             SingleResultModel<bool?> model = null;
             if ((model = HandleAuthentication<SingleResultModel<bool?>>()) == null)
             {
-                model = new SingleResultModel<bool?>();
+                model = new SingleResultModel<bool?> { Result = false };
                 try
                 {
                     if (securityService.Login(request.Username, request.Password) != null)
                     {
                         performanceService.Delete(request.Id);
+                        model.Result = true;
                     }
                     else
                     {
