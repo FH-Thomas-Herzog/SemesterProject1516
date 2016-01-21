@@ -121,5 +121,73 @@ namespace UFO.Server.Webservice.Soap
 
             return model;
         }
+
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = false)]
+        [SoapHeader("credentials")]
+        public ListResultModel<NameModel<long>> GetSimpleArtistGroups()
+        {
+            IArtistGroupDao artistGroupDao = DaoFactory.CreateArtistGroupDao();
+            ListResultModel<NameModel<long>> model;
+            if ((model = HandleAuthentication<ListResultModel<NameModel<long>>>()) == null)
+            {
+                model = new ListResultModel<NameModel<long>>();
+                try
+                {
+                    IList<ArtistGroup> groups = artistGroupDao.FindAll();
+                    model.Result = groups.Select(item => new NameModel<long>
+                    {
+                        Id = item.Id.Value,
+                        Name = item.Name,
+                    }).ToList();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("GetSimpleArtistGroups: Error during processing. error: " + e.Message);
+                    model.ErrorCode = (int)ErrorCode.UNKNOWN_ERROR;
+                    model.Error = ($"Error during processing the request. exception={e.GetType().Name}");
+                }
+                finally
+                {
+                    DaoFactory.DisposeDao(artistGroupDao);
+                }
+            }
+
+            return model;
+        }
+
+        [WebMethod]
+        [ScriptMethod(UseHttpGet = false)]
+        [SoapHeader("credentials")]
+        public ListResultModel<NameModel<long>> GetSimpleArtistCategories()
+        {
+            IArtistCategoryDao artistCategoryDao = DaoFactory.CreateArtistCategoryDao();
+            ListResultModel<NameModel<long>> model;
+            if ((model = HandleAuthentication<ListResultModel<NameModel<long>>>()) == null)
+            {
+                model = new ListResultModel<NameModel<long>>();
+                try
+                {
+                    IList<ArtistCategory> categories = artistCategoryDao.FindAll();
+                    model.Result = categories.Select(item => new NameModel<long>
+                    {
+                        Id = item.Id.Value,
+                        Name = item.Name,
+                    }).ToList();
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine("GetSimpleArtistCategories: Error during processing. error: " + e.Message);
+                    model.ErrorCode = (int)ErrorCode.UNKNOWN_ERROR;
+                    model.Error = ($"Error during processing the request. exception={e.GetType().Name}");
+                }
+                finally
+                {
+                    DaoFactory.DisposeDao(artistCategoryDao);
+                }
+            }
+
+            return model;
+        }
     }
 }

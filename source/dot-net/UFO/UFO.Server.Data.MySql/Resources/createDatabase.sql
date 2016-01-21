@@ -12,7 +12,7 @@ DROP SCHEMA IF EXISTS `UFO` ;
 -- -----------------------------------------------------
 -- Schema UFO
 -- -----------------------------------------------------
-CREATE SCHEMA IF NOT EXISTS `UFO` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci ;
+CREATE SCHEMA IF NOT EXISTS `UFO` DEFAULT CHARACTER SET utf8 ;
 USE `UFO` ;
 
 -- -----------------------------------------------------
@@ -220,12 +220,14 @@ CREATE TABLE IF NOT EXISTS `UFO`.`PERFORMANCE` (
   `artist_id` INT NOT NULL,
   `venue_id` INT NOT NULL,
   `version` INT NOT NULL DEFAULT 1,
+  `former_venue_id` INT NULL,
   PRIMARY KEY (`id`),
   INDEX `IDX_FK_PERFORMANCE_ARTIST_ID` (`artist_id` ASC),
   INDEX `IDX_FK_PERFORMANCE_VENUE_ID` (`venue_id` ASC),
   INDEX `IDX_FK_PERFORMANCE_CREATION_USER_ID` (`creation_user_id` ASC),
   INDEX `IDX_FK_PERFORMANCE_MODIFICATION_USER_ID` (`modification_user_id` ASC),
   UNIQUE INDEX `IDX_UNIQUE_PERFORMANCE_ID` (`id` ASC),
+  INDEX `IDX_FK_PERFORMANCE_FORMER_VENUE_ID` (`former_venue_id` ASC),
   CONSTRAINT `FK_PERFORMANCE_ARTIST_ID`
     FOREIGN KEY (`artist_id`)
     REFERENCES `UFO`.`ARTIST` (`id`)
@@ -244,6 +246,11 @@ CREATE TABLE IF NOT EXISTS `UFO`.`PERFORMANCE` (
   CONSTRAINT `FK_PERFORMANCE_MODIFICATION_USER_ID`
     FOREIGN KEY (`modification_user_id`)
     REFERENCES `UFO`.`USER` (`id`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION,
+  CONSTRAINT `FK_PERFORMANCE_FORMER_VENUE_ID`
+    FOREIGN KEY (`former_venue_id`)
+    REFERENCES `UFO`.`VENUE` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB

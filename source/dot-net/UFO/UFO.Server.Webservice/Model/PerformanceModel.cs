@@ -28,5 +28,8 @@ namespace UFO.Server.Webservice.Soap.Model
         public ArtistModel Artist { get; set; }
 
         public VenueModel Venue { get; set; }
+
+        [XmlElement(IsNullable = true)]
+        public VenueModel FormerVenue { get; set; }
     }
 }

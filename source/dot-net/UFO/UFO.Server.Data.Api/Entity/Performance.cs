@@ -29,10 +29,13 @@ namespace UFO.Server.Data.Api.Entity
         [Column(Name = "venue_id")]
         public long? VenueId { get; set; }
 
-        [ManyToOne(FkProperty = "ArtistId")]
+        [Column(Name = "former_venue_id")]
+        public long? FormerVenueId { get; set; }
+        
         public Artist Artist { get; set; }
-
-        [ManyToOne(FkProperty = "VenueId")]
+        
         public Venue Venue { get; set; }
+
+        public Venue FormerVenue { get; set; }
     }
 }

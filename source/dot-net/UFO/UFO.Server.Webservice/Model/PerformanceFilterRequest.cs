@@ -22,5 +22,17 @@ namespace UFO.Server.Webservice.Soap.Model
 
         [XmlElement(IsNullable = true)]
         public List<long?> VenueIds { get; set; }
+
+        [XmlElement(IsNullable = true)]
+        public List<long?> ArtistGroupIds { get; set; }
+
+        [XmlElement(IsNullable = true)]
+        public List<long?> ArtistCategoryIds { get; set; }
+
+        [XmlElement(IsNullable = true)]
+        public List<string> Countries { get; set; }
+
+        [XmlElement(IsNullable = true)]
+        public bool? Moved { get; set; }
     }
 }

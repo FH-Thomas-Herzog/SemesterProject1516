@@ -83,7 +83,7 @@ namespace UFO.Server.Webservice.Soap.Soap
                 model = new ListResultModel<VenueModel>();
                 try
                 {
-                    IList<Performance> entities = performanceDao.GetFilteredPerformancesForExport(id, filter.StartDate, filter.EndDate, filter.ArtistIds, filter.VenueIds, true);
+                    IList<Performance> entities = performanceDao.GetFilteredPerformancesForExport(id, filter.StartDate, filter.EndDate, filter.ArtistIds, filter.VenueIds, filter.ArtistGroupIds, filter.ArtistCategoryIds, filter.Countries, true, filter.Moved);
                     IDictionary<Venue, List<Performance>> mapEntities = entities.GroupBy(entity => entity.Venue).ToDictionary(entry => entry.Key, entry => entry.ToList());
                     model.Result = mapEntities.Select(entry =>
                     {

@@ -23,6 +23,6 @@ namespace UFO.Server.Data.Api.Dao
 
         IDictionary<Artist, IList<Performance>> GetAllPerformancesForNotification();
 
-        IList<Performance> GetFilteredPerformancesForExport(long? venueId, DateTime startDate, DateTime endDate, IList<long?> artistIds, IList<long?> venueIds, bool full);
+        IList<Performance> GetFilteredPerformancesForExport(long? venueId, DateTime startDate, DateTime endDate, IList<long?> artistIds, IList<long?> venueIds, IList<long?> artistGroupIds, IList<long?> artistCategoryIds, IList<string> countries, bool full, bool? moved);
     }
 }

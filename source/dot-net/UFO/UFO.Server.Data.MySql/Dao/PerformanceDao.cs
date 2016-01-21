@@ -200,26 +200,32 @@ namespace UFO.Server.Data.MySql.Dao
         }
 
 
-        public IList<Performance> GetFilteredPerformancesForExport(long? venueId, DateTime startDate, DateTime endDate, IList<long?> artistIds, IList<long?> venueIds, bool full)
+        public IList<Performance> GetFilteredPerformancesForExport(long? venueId, DateTime startDate, DateTime endDate, IList<long?> artistIds, IList<long?> venueIds, IList<long?> artistGroupIds, IList<long?> artistCategoryIds, IList<string> countries, bool full, bool? moved)
         {
             try
             {
                 IList<Performance> performances = new List<Performance>();
-                commandBuilder = commandBuilder.WithQuery(" SELECT performance.*, artist.id as artist__id, artist.firstname as artist__firstname, artist.lastname as artist__lastname, "
+                commandBuilder = commandBuilder.WithQuery(" SELECT performance.*, artist.id as artist__id, artist.firstname as artist__firstname, artist.lastname as artist__lastname, artist.country_code as artist__country_code, artist.artist_category_id as artist__artist_category_id, artist.artist_group_id as artist__artist_group_id, "
                                                         + " artistGroup.id artistGroup__id, artistGroup.name artistGroup__name, "
                                                         + " artistCategory.id as artistCategory__id, artistCategory.name as artistCategory__name, "
-                                                        + " venue.id as venue__id, venue.name as venue__name "
+                                                        + " venue.id as venue__id, venue.name as venue__name, "
+                                                        + " former_venue.id as former_venue__id, former_venue.name as former_venue__name "
                                                         + (full ? ", venue.description as venue__description, venue.street as venue__street, venue.zip as venue__zip, venue.city as venue__city, venue.gps_coordinate as venue__gps_coordinate " : "")
                                                         + " FROM ufo.performance performance "
                                                         + " INNER JOIN ufo.artist as artist on performance.artist_id = artist.id "
                                                         + " INNER JOIN ufo.artist_category as artistCategory on artist.artist_category_id = artistCategory.id "
-                                                        + " LEFT OUTER JOIN ufo.artist_group as artistGroup on artist.artist_group_id = artistGroup.id "
+                                                        + $"{(((artistGroupIds != null) && (artistGroupIds.Count > 0)) ? "INNER" : "LEFT OUTER")} JOIN ufo.artist_group as artistGroup on artist.artist_group_id = artistGroup.id "
                                                         + " INNER JOIN ufo.venue as venue on performance.venue_id = venue.id "
+                                                        + " LEFT OUTER JOIN ufo.venue as former_venue on performance.former_venue_id = former_venue.id "
                                                         + " WHERE performance.start_date >= ?startDate "
                                                         + " AND performance.end_date <= ?endDate "
+                                                        + ((moved != null) ? $" AND performance.former_start_date IS {((moved.Value) ? "NOT" : "")} NULL" : "")
                                                         + ((venueId != null) ? " AND venue.id = ?venueId " : "")
                                                         + (((venueIds != null) && (venueIds.Count > 0)) ? ($" AND venue.id IN ({string.Join(",", Enumerable.Range(0, venueIds.Count).Select(i => $"?venue_id_{i}"))}) ") : "")
                                                         + (((artistIds != null) && (artistIds.Count > 0)) ? ($" AND artist.id IN ({string.Join(",", Enumerable.Range(0, artistIds.Count).Select(i => $"?artist_id_{i}"))}) ") : "")
+                                                        + (((countries != null) && (countries.Count > 0)) ? ($" AND UPPER(artist.country_code) IN ({string.Join(",", Enumerable.Range(0, countries.Count).Select(i => $"?artist_country_code_{i}"))}) ") : "")
+                                                        + (((artistGroupIds != null) && (artistGroupIds.Count > 0)) ? ($" AND artistGroup.id IN ({string.Join(",", Enumerable.Range(0, artistGroupIds.Count).Select(i => $"?artistGroup_id_{i}"))}) ") : "")
+                                                        + (((artistCategoryIds != null) && (artistCategoryIds.Count > 0)) ? ($" AND artistCategory.id IN ({string.Join(",", Enumerable.Range(0, artistCategoryIds.Count).Select(i => $"?artistCategory_id_{i}"))}) ") : "")
                                                         + " ORDER BY performance.start_date")
                                                           .SetParameter("?startDate", startDate)
                                                           .SetParameter("?endDate", endDate);
@@ -241,6 +247,27 @@ namespace UFO.Server.Data.MySql.Dao
                         commandBuilder.SetParameter($"?venue_id_{i}", venueIds.ElementAt(i));
                     }
                 }
+                if ((artistGroupIds != null) && (artistGroupIds.Count > 0))
+                {
+                    for (int i = 0; i < artistGroupIds.Count; i++)
+                    {
+                        commandBuilder.SetParameter($"?artistGroup_id_{i}", artistGroupIds.ElementAt(i));
+                    }
+                }
+                if ((artistCategoryIds != null) && (artistCategoryIds.Count > 0))
+                {
+                    for (int i = 0; i < artistCategoryIds.Count; i++)
+                    {
+                        commandBuilder.SetParameter($"?artistCategory_id_{i}", artistCategoryIds.ElementAt(i));
+                    }
+                }
+                if ((countries != null) && (countries.Count > 0))
+                {
+                    for (int i = 0; i < countries.Count; i++)
+                    {
+                        commandBuilder.SetParameter($"?artist_country_code_{i}", countries.ElementAt(i).ToUpper());
+                    }
+                }
 
                 using (IDataReader reader = commandBuilder.ExecuteReader())
                 {
@@ -251,6 +278,7 @@ namespace UFO.Server.Data.MySql.Dao
                         performance.Artist.ArtistGroup = EntityBuilder.CreateFromReader<long?, ArtistGroup>(reader, "artistGroup__");
                         performance.Artist.ArtistCategory = EntityBuilder.CreateFromReader<long?, ArtistCategory>(reader, "artistCategory__");
                         performance.Venue = EntityBuilder.CreateFromReader<long?, Venue>(reader, "venue__");
+                        performance.FormerVenue = EntityBuilder.CreateFromReader<long?, Venue>(reader, "former_venue__");
                         performances.Add(performance);
                     }
 

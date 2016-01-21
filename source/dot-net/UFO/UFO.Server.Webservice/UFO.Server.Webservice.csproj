@@ -92,6 +92,7 @@
     <Compile Include="Model\Base\ListResultModel.cs" />
     <Compile Include="Model\EntityDetailsRequestModel.cs" />
     <Compile Include="Model\LoginModel.cs" />
+    <Compile Include="Model\NameModel.cs" />
     <Compile Include="Model\PerformanceModel.cs" />
     <Compile Include="Model\PerformanceFilterRequest.cs" />
     <Compile Include="Model\PerformanceRequestModel.cs" />

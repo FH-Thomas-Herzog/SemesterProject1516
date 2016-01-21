@@ -94,7 +94,7 @@ namespace UFO.Commander.Service.Impl
                     performance.EndDate.Value.Hour,
                     0,
                     0);
-                
+
                 // Validate if artist has already a performance with the defined date + offset
                 DateTime startDateWithOffset = performance.StartDate.Value;
                 DateTime endDateWithOffset = performance.EndDate.Value;
@@ -104,7 +104,7 @@ namespace UFO.Commander.Service.Impl
                 {
                     throw new ServiceException((int)PerformanceErrorCode.ARTIST_OVERBOOKED);
                 }
-                
+
                 // Validate if other artist has performance on venue
                 if (performanceDao.VenueHasPerformanceOnDate(performance.VenueId.Value, performance.StartDate.Value, performance.EndDate.Value, performance.Id ?? -1))
                 {
@@ -125,6 +125,11 @@ namespace UFO.Commander.Service.Impl
                     {
                         performance.FormerStartDate = performanceDB.StartDate;
                         performance.FormerEndDate = performanceDB.EndDate;
+                    }
+                    // Check if venue has changed
+                    if (performanceDB.VenueId != performance.VenueId)
+                    {
+                        performance.FormerVenueId = performanceDB.VenueId;
                     }
 
                     performanceDB = performanceDao.Update(performance);

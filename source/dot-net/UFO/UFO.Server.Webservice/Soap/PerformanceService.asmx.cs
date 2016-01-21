@@ -45,7 +45,7 @@ namespace UFO.Server.Webservice.Soap.Soap
                 model = new ListResultModel<PerformanceModel>();
                 try
                 {
-                    IList<Performance> performances = performanceDao.GetFilteredPerformancesForExport(null, filter.StartDate, filter.EndDate, filter.ArtistIds, filter.VenueIds, false);
+                    IList<Performance> performances = performanceDao.GetFilteredPerformancesForExport(null, filter.StartDate, filter.EndDate, filter.ArtistIds, filter.VenueIds, filter.ArtistGroupIds, filter.ArtistCategoryIds, filter.Countries, false, filter.Moved);
                     model.Result = performances.Select(item => new PerformanceModel
                     {
                         Id = item.Id.Value,
@@ -59,12 +59,20 @@ namespace UFO.Server.Webservice.Soap.Soap
                             Id = item.Artist.Id.Value,
                             FirstName = item.Artist.Firstname,
                             LastName = item.Artist.Lastname,
+                            CountryCode = item.Artist.CountryCode,
+                            ArtistGroup = ((item.Artist.ArtistGroupId != null) ? item.Artist.ArtistGroup.Name : null),
+                            ArtistCategory = item.Artist.ArtistCategory.Name
                         },
                         Venue = new VenueModel
                         {
                             Id = item.Venue.Id.Value,
                             Name = item.Venue.Name
-                        }
+                        },
+                        FormerVenue = ((item.FormerVenueId != null) ? new VenueModel
+                        {
+                            Id = item.FormerVenue.Id.Value,
+                            Name = item.FormerVenue.Name
+                        } : null)
                     }).ToList();
                 }
                 catch (Exception e)
