@@ -142,6 +142,15 @@ public interface MessagesBundle extends Serializable {
 	@MessageTemplate("{MAX_DAYS}")
 	String getMaxDays(Integer count);
 
+	@MessageTemplate("{MOVED}")
+	String getMoved();
+
+	@MessageTemplate("{NOT_MOVED}")
+	String getNotMoved();
+
+	@MessageTemplate("{STATE}")
+	String getState();
+	
 	@MessageTemplate("{WARNING_PERFORMANCE_MOVED}")
 	String getWarningPerformanceMoved();
 

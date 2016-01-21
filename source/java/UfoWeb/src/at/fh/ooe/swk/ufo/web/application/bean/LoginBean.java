@@ -11,8 +11,8 @@ import javax.inject.Named;
 
 import org.primefaces.context.RequestContext;
 
-import at.fh.ooe.swk.ufo.service.proxy.api.SecurityServiceProxy;
-import at.fh.ooe.swk.ufo.service.proxy.api.model.ResultModel;
+import at.fh.ooe.swk.ufo.service.api.model.ResultModel;
+import at.fh.ooe.swk.ufo.service.api.proxy.SecurityServiceProxy;
 import at.fh.ooe.swk.ufo.web.application.exception.ProxyServiceExceptionHandler;
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 

@@ -1,4 +1,4 @@
-package at.fh.ooe.swk.ufo.service.proxy.impl;
+package at.fh.ooe.swk.ufo.service.impl.proxy;
 
 import java.util.Arrays;
 import java.util.Calendar;
@@ -10,10 +10,11 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
-import at.fh.ooe.swk.ufo.service.proxy.api.PerformanceServiceProxy;
-import at.fh.ooe.swk.ufo.service.proxy.api.model.PerformanceFilter;
-import at.fh.ooe.swk.ufo.service.proxy.api.model.PerformanceServiceRequestModel;
-import at.fh.ooe.swk.ufo.service.proxy.api.model.ResultModel;
+import at.fh.ooe.swk.ufo.service.api.converter.ServiceModelConverter;
+import at.fh.ooe.swk.ufo.service.api.model.PerformanceFilter;
+import at.fh.ooe.swk.ufo.service.api.model.PerformanceServiceRequestModel;
+import at.fh.ooe.swk.ufo.service.api.model.ResultModel;
+import at.fh.ooe.swk.ufo.service.api.proxy.PerformanceServiceProxy;
 import at.fh.ooe.swk.ufo.web.application.annotation.ServiceTimeZone;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
 import at.fh.ooe.swk.ufo.webservice.ListResultModelOfPerformanceModel;
@@ -36,13 +37,10 @@ public class PerformanceServiceProxySoapImpl implements PerformanceServiceProxy 
 	private static final long serialVersionUID = 3140505551983271806L;
 
 	@Inject
-	@ServiceTimeZone
-	private TimeZone serviceTimeZone;
+	private ServiceModelConverter<PerformanceModel, PerformanceViewModel> modelConverter;
 
 	@Inject
 	private transient PerformanceServiceSoap soapService;
-	@Inject
-	private Instance<PerformanceViewModel> perforamnceModelInstance;
 
 	public PerformanceServiceProxySoapImpl() {
 		super();
@@ -55,7 +53,11 @@ public class PerformanceServiceProxySoapImpl implements PerformanceServiceProxy 
 			final ListResultModelOfPerformanceModel soapResult = soapService
 					.getPerformances(new PerformanceFilterRequest(filter.getFromDate(), filter.getToDate(),
 							filter.getArtistIds().toArray(new Long[filter.getArtistIds().size()]),
-							filter.getVenueIds().toArray(new Long[filter.getVenueIds().size()])));
+							filter.getVenueIds().toArray(new Long[filter.getVenueIds().size()]),
+							filter.getArtistGroupIds().toArray(new Long[filter.getArtistGroupIds().size()]),
+							filter.getArtistCategoryIds().toArray(new Long[filter.getArtistCategoryIds().size()]),
+							filter.getCountries().toArray(new String[filter.getCountries().size()]),
+							filter.getMoved()));
 
 			if (soapResult.getErrorCode() != null) {
 				result.setInternalError("Webservice returned error code: " + soapResult.getErrorCode() + " / error: "
@@ -67,8 +69,7 @@ public class PerformanceServiceProxySoapImpl implements PerformanceServiceProxy 
 			if (soapResult.getResult() != null) {
 				// Load performances depending on set filter
 				result.setResult(Arrays.asList(soapResult.getResult()).parallelStream()
-						.map(model -> performanceToViewModel(model, perforamnceModelInstance.get(), serviceTimeZone))
-						.collect(Collectors.toList()));
+						.map(model -> modelConverter.convert(model)).collect(Collectors.toList()));
 			}
 		} catch (Exception e) {
 			result.setInternalError("Could not invoke web service");
@@ -101,8 +102,7 @@ public class PerformanceServiceProxySoapImpl implements PerformanceServiceProxy 
 				result.setError(soapResult.getError());
 			}
 			if (soapResult.getResult() != null) {
-				result.setResult(performanceToViewModel(soapResult.getResult(), perforamnceModelInstance.get(),
-						serviceTimeZone));
+				result.setResult(modelConverter.convert(soapResult.getResult()));
 			}
 		} catch (Exception e) {
 			result.setInternalError("Could not invoke web service");
@@ -136,33 +136,6 @@ public class PerformanceServiceProxySoapImpl implements PerformanceServiceProxy 
 		} catch (Exception e) {
 			result.setInternalError("Could not invoke web service");
 			result.setException(e);
-		}
-
-		return result;
-	}
-
-	public static PerformanceViewModel performanceToViewModel(PerformanceModel model, PerformanceViewModel viewModel,
-			TimeZone timeZone) {
-		PerformanceViewModel result = null;
-		if (model != null) {
-			result = viewModel;
-			final Calendar startDate = model.getStartDate();
-			final Calendar endDate = model.getEndDate();
-			final Calendar formerStartDate = model.getFormerStartDate();
-			final Calendar formerEndDate = model.getFormerEndDate();
-			startDate.setTimeZone(timeZone);
-			endDate.setTimeZone(timeZone);
-			if (formerStartDate != null) {
-				formerStartDate.setTimeZone(timeZone);
-			}
-			if (formerEndDate != null) {
-				formerEndDate.setTimeZone(timeZone);
-			}
-			viewModel.init(model.getId(), model.getVersion(), startDate, formerStartDate, endDate, formerEndDate,
-					model.getVenue().getName(), model.getArtist().getArtistGroup(), "not available yet",
-					(new StringBuilder().append(model.getArtist().getLastName()).append(", ")
-							.append(model.getArtist().getFirstName()).toString()),
-					model.getArtist().getId(), model.getVenue().getId());
 		}
 
 		return result;

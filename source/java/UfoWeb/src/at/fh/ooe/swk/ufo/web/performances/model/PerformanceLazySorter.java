@@ -1,5 +1,6 @@
 package at.fh.ooe.swk.ufo.web.performances.model;
 
+import java.text.Collator;
 import java.util.Comparator;
 
 /**
@@ -46,7 +47,7 @@ public class PerformanceLazySorter implements Comparator<PerformanceRowModel> {
 				value = v1.compareTo(v2);
 			}
 		} else {
-			value = o1.getVenue().label.compareTo(o2.getVenue().getLabel());
+			value = o1.getVenue().getName().toUpperCase().compareTo(o2.getVenue().getName().toUpperCase());
 		}
 		return ascending ? value : (value * -1);
 	}

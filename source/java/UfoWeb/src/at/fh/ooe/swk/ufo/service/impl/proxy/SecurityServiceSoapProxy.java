@@ -1,10 +1,10 @@
-package at.fh.ooe.swk.ufo.service.proxy.impl;
+package at.fh.ooe.swk.ufo.service.impl.proxy;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
-import at.fh.ooe.swk.ufo.service.proxy.api.SecurityServiceProxy;
-import at.fh.ooe.swk.ufo.service.proxy.api.model.ResultModel;
+import at.fh.ooe.swk.ufo.service.api.model.ResultModel;
+import at.fh.ooe.swk.ufo.service.api.proxy.SecurityServiceProxy;
 import at.fh.ooe.swk.ufo.webservice.SecurityServiceSoap;
 import at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean;
 

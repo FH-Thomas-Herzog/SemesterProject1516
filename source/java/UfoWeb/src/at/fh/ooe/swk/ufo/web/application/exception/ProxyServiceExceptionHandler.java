@@ -9,7 +9,7 @@ import javax.inject.Inject;
 
 import org.apache.logging.log4j.Logger;
 
-import at.fh.ooe.swk.ufo.service.proxy.api.model.ResultModel;
+import at.fh.ooe.swk.ufo.service.api.model.ResultModel;
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 
 /**

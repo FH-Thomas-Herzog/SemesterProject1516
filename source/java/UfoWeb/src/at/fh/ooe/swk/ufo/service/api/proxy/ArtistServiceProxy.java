@@ -1,9 +1,10 @@
-package at.fh.ooe.swk.ufo.service.proxy.api;
+package at.fh.ooe.swk.ufo.service.api.proxy;
 
 import java.io.Serializable;
 import java.util.List;
 
-import at.fh.ooe.swk.ufo.service.proxy.api.model.ResultModel;
+import at.fh.ooe.swk.ufo.service.api.model.ResultModel;
+import at.fh.ooe.swk.ufo.web.application.model.SimpleNameViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.ArtistViewModel;
 
 /**
@@ -32,4 +33,19 @@ public interface ArtistServiceProxy extends Serializable {
 	 *             if the id is null
 	 */
 	ResultModel<ArtistViewModel> getArtist(long id);
+
+	/**
+	 * Gets the simple artist groups by its id with full loaded data.
+	 * 
+	 * @return the result holding the loaded artist groups or error information.
+	 */
+	ResultModel<List<SimpleNameViewModel<Long>>> getSimpleArtistGroups();
+
+	/**
+	 * Gets the simple artist categories by its id with full loaded data.
+	 * 
+	 * @return the result holding the loaded artist categories or error
+	 *         information.
+	 */
+	ResultModel<List<SimpleNameViewModel<Long>>> getSimpleArtistCategories();
 }

@@ -16,6 +16,14 @@ public class PerformanceFilterRequest  implements java.io.Serializable {
 
     private java.lang.Long[] venueIds;
 
+    private java.lang.Long[] artistGroupIds;
+
+    private java.lang.Long[] artistCategoryIds;
+
+    private java.lang.String[] countries;
+
+    private java.lang.Boolean moved;
+
     public PerformanceFilterRequest() {
     }
 
@@ -23,11 +31,19 @@ public class PerformanceFilterRequest  implements java.io.Serializable {
            java.util.Calendar startDate,
            java.util.Calendar endDate,
            java.lang.Long[] artistIds,
-           java.lang.Long[] venueIds) {
+           java.lang.Long[] venueIds,
+           java.lang.Long[] artistGroupIds,
+           java.lang.Long[] artistCategoryIds,
+           java.lang.String[] countries,
+           java.lang.Boolean moved) {
            this.startDate = startDate;
            this.endDate = endDate;
            this.artistIds = artistIds;
            this.venueIds = venueIds;
+           this.artistGroupIds = artistGroupIds;
+           this.artistCategoryIds = artistCategoryIds;
+           this.countries = countries;
+           this.moved = moved;
     }
 
 
@@ -126,6 +142,110 @@ public class PerformanceFilterRequest  implements java.io.Serializable {
         this.venueIds[i] = _value;
     }
 
+
+    /**
+     * Gets the artistGroupIds value for this PerformanceFilterRequest.
+     * 
+     * @return artistGroupIds
+     */
+    public java.lang.Long[] getArtistGroupIds() {
+        return artistGroupIds;
+    }
+
+
+    /**
+     * Sets the artistGroupIds value for this PerformanceFilterRequest.
+     * 
+     * @param artistGroupIds
+     */
+    public void setArtistGroupIds(java.lang.Long[] artistGroupIds) {
+        this.artistGroupIds = artistGroupIds;
+    }
+
+    public java.lang.Long getArtistGroupIds(int i) {
+        return this.artistGroupIds[i];
+    }
+
+    public void setArtistGroupIds(int i, java.lang.Long _value) {
+        this.artistGroupIds[i] = _value;
+    }
+
+
+    /**
+     * Gets the artistCategoryIds value for this PerformanceFilterRequest.
+     * 
+     * @return artistCategoryIds
+     */
+    public java.lang.Long[] getArtistCategoryIds() {
+        return artistCategoryIds;
+    }
+
+
+    /**
+     * Sets the artistCategoryIds value for this PerformanceFilterRequest.
+     * 
+     * @param artistCategoryIds
+     */
+    public void setArtistCategoryIds(java.lang.Long[] artistCategoryIds) {
+        this.artistCategoryIds = artistCategoryIds;
+    }
+
+    public java.lang.Long getArtistCategoryIds(int i) {
+        return this.artistCategoryIds[i];
+    }
+
+    public void setArtistCategoryIds(int i, java.lang.Long _value) {
+        this.artistCategoryIds[i] = _value;
+    }
+
+
+    /**
+     * Gets the countries value for this PerformanceFilterRequest.
+     * 
+     * @return countries
+     */
+    public java.lang.String[] getCountries() {
+        return countries;
+    }
+
+
+    /**
+     * Sets the countries value for this PerformanceFilterRequest.
+     * 
+     * @param countries
+     */
+    public void setCountries(java.lang.String[] countries) {
+        this.countries = countries;
+    }
+
+    public java.lang.String getCountries(int i) {
+        return this.countries[i];
+    }
+
+    public void setCountries(int i, java.lang.String _value) {
+        this.countries[i] = _value;
+    }
+
+
+    /**
+     * Gets the moved value for this PerformanceFilterRequest.
+     * 
+     * @return moved
+     */
+    public java.lang.Boolean getMoved() {
+        return moved;
+    }
+
+
+    /**
+     * Sets the moved value for this PerformanceFilterRequest.
+     * 
+     * @param moved
+     */
+    public void setMoved(java.lang.Boolean moved) {
+        this.moved = moved;
+    }
+
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
         if (!(obj instanceof PerformanceFilterRequest)) return false;
@@ -149,7 +269,19 @@ public class PerformanceFilterRequest  implements java.io.Serializable {
               java.util.Arrays.equals(this.artistIds, other.getArtistIds()))) &&
             ((this.venueIds==null && other.getVenueIds()==null) || 
              (this.venueIds!=null &&
-              java.util.Arrays.equals(this.venueIds, other.getVenueIds())));
+              java.util.Arrays.equals(this.venueIds, other.getVenueIds()))) &&
+            ((this.artistGroupIds==null && other.getArtistGroupIds()==null) || 
+             (this.artistGroupIds!=null &&
+              java.util.Arrays.equals(this.artistGroupIds, other.getArtistGroupIds()))) &&
+            ((this.artistCategoryIds==null && other.getArtistCategoryIds()==null) || 
+             (this.artistCategoryIds!=null &&
+              java.util.Arrays.equals(this.artistCategoryIds, other.getArtistCategoryIds()))) &&
+            ((this.countries==null && other.getCountries()==null) || 
+             (this.countries!=null &&
+              java.util.Arrays.equals(this.countries, other.getCountries()))) &&
+            ((this.moved==null && other.getMoved()==null) || 
+             (this.moved!=null &&
+              this.moved.equals(other.getMoved())));
         __equalsCalc = null;
         return _equals;
     }
@@ -189,6 +321,42 @@ public class PerformanceFilterRequest  implements java.io.Serializable {
                 }
             }
         }
+        if (getArtistGroupIds() != null) {
+            for (int i=0;
+                 i<java.lang.reflect.Array.getLength(getArtistGroupIds());
+                 i++) {
+                java.lang.Object obj = java.lang.reflect.Array.get(getArtistGroupIds(), i);
+                if (obj != null &&
+                    !obj.getClass().isArray()) {
+                    _hashCode += obj.hashCode();
+                }
+            }
+        }
+        if (getArtistCategoryIds() != null) {
+            for (int i=0;
+                 i<java.lang.reflect.Array.getLength(getArtistCategoryIds());
+                 i++) {
+                java.lang.Object obj = java.lang.reflect.Array.get(getArtistCategoryIds(), i);
+                if (obj != null &&
+                    !obj.getClass().isArray()) {
+                    _hashCode += obj.hashCode();
+                }
+            }
+        }
+        if (getCountries() != null) {
+            for (int i=0;
+                 i<java.lang.reflect.Array.getLength(getCountries());
+                 i++) {
+                java.lang.Object obj = java.lang.reflect.Array.get(getCountries(), i);
+                if (obj != null &&
+                    !obj.getClass().isArray()) {
+                    _hashCode += obj.hashCode();
+                }
+            }
+        }
+        if (getMoved() != null) {
+            _hashCode += getMoved().hashCode();
+        }
         __hashCodeCalc = false;
         return _hashCode;
     }
@@ -226,6 +394,36 @@ public class PerformanceFilterRequest  implements java.io.Serializable {
         elemField.setMinOccurs(0);
         elemField.setNillable(true);
         elemField.setMaxOccursUnbounded(true);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("artistGroupIds");
+        elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ArtistGroupIds"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "long"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(true);
+        elemField.setMaxOccursUnbounded(true);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("artistCategoryIds");
+        elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ArtistCategoryIds"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "long"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(true);
+        elemField.setMaxOccursUnbounded(true);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("countries");
+        elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "Countries"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(true);
+        elemField.setMaxOccursUnbounded(true);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("moved");
+        elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "Moved"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "boolean"));
+        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
     }
 

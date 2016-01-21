@@ -1,19 +1,21 @@
-package at.fh.ooe.swk.ufo.service.proxy.impl;
+package at.fh.ooe.swk.ufo.service.impl.proxy;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
-import at.fh.ooe.swk.ufo.service.proxy.api.ArtistServiceProxy;
-import at.fh.ooe.swk.ufo.service.proxy.api.model.ResultModel;
+import at.fh.ooe.swk.ufo.service.api.converter.ServiceModelConverter;
+import at.fh.ooe.swk.ufo.service.api.model.ResultModel;
+import at.fh.ooe.swk.ufo.service.api.proxy.ArtistServiceProxy;
+import at.fh.ooe.swk.ufo.web.application.model.SimpleNameViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.ArtistViewModel;
 import at.fh.ooe.swk.ufo.webservice.ArtistModel;
 import at.fh.ooe.swk.ufo.webservice.ArtistServiceSoap;
 import at.fh.ooe.swk.ufo.webservice.ListResultModelOfArtistModel;
+import at.fh.ooe.swk.ufo.webservice.ListResultModelOfNameModelOfInt64;
 import at.fh.ooe.swk.ufo.webservice.SingleResultModelOfArtistModel;
 
 /**
@@ -28,9 +30,9 @@ public class ArtistServiceProxySoapImpl implements ArtistServiceProxy {
 	private static final long serialVersionUID = -7009187978626781712L;
 
 	@Inject
-	private transient ArtistServiceSoap soapService;
+	private ServiceModelConverter<ArtistModel, ArtistViewModel> artistConverter;
 	@Inject
-	private Instance<ArtistViewModel> artistViewModelInstance;
+	private transient ArtistServiceSoap soapService;
 
 	@Override
 	public ResultModel<List<ArtistViewModel>> getSimpleArtists() {
@@ -47,7 +49,7 @@ public class ArtistServiceProxySoapImpl implements ArtistServiceProxy {
 			}
 			if (soapResult.getResult() != null) {
 				result.setResult(Arrays.asList(soapResult.getResult()).parallelStream().map(model -> {
-					return artistToViewModel(model);
+					return artistConverter.convert(model);
 				}).sorted((o1, o2) -> o1.getFullName().compareTo(o2.getFullName())).collect(Collectors.toList()));
 			}
 		} catch (Exception e) {
@@ -72,7 +74,7 @@ public class ArtistServiceProxySoapImpl implements ArtistServiceProxy {
 						+ " / error: " + soapResult.getError());
 			}
 			if (soapResult.getResult() != null) {
-				result.setResult(artistToViewModel(soapResult.getResult()));
+				result.setResult(artistConverter.convert(soapResult.getResult()));
 			}
 		} catch (Exception e) {
 			result.setInternalError("Could not invoke web service");
@@ -82,15 +84,54 @@ public class ArtistServiceProxySoapImpl implements ArtistServiceProxy {
 		return result;
 	}
 
-	private ArtistViewModel artistToViewModel(ArtistModel model) {
-		ArtistViewModel viewModel = null;
-		if (model != null) {
-			viewModel = artistViewModelInstance.get();
-			viewModel.init(model.getId(), model.getFirstName(), model.getLastName(), model.getEmail(),
-					model.getCountryCode(), model.getUrl(), model.getArtistGroup(), model.getArtistCategory(),
-					model.getImage(), model.getImageType());
+	@Override
+	public ResultModel<List<SimpleNameViewModel<Long>>> getSimpleArtistGroups() {
+		ResultModel<List<SimpleNameViewModel<Long>>> result = new ResultModel<>();
+		try {
+			try {
+				result = handleListSimpleModelLongResult(soapService.getSimpleArtistGroups());
+			} catch (Exception e) {
+				result.setInternalError("Could not invoke web service");
+				result.setException(e);
+			}
+		} catch (Exception e) {
+			result.setInternalError("Could not invoke web service");
+			result.setException(e);
 		}
 
-		return viewModel;
+		return result;
+	}
+
+	@Override
+	public ResultModel<List<SimpleNameViewModel<Long>>> getSimpleArtistCategories() {
+		ResultModel<List<SimpleNameViewModel<Long>>> result = new ResultModel<>();
+		try {
+			result = handleListSimpleModelLongResult(soapService.getSimpleArtistCategories());
+		} catch (Exception e) {
+			result.setInternalError("Could not invoke web service");
+			result.setException(e);
+		}
+
+		return result;
+	}
+
+	private ResultModel<List<SimpleNameViewModel<Long>>> handleListSimpleModelLongResult(
+			final ListResultModelOfNameModelOfInt64 soapResult) {
+		final ResultModel<List<SimpleNameViewModel<Long>>> result = new ResultModel<>();
+		if (soapResult.getErrorCode() != null) {
+			result.setInternalError("Webservice returned error code: " + soapResult.getErrorCode() + " / error: "
+					+ soapResult.getError());
+		}
+		if (soapResult.getServiceErrorCode() != null) {
+			result.setInternalError("Webservice returned logical error code: " + soapResult.getServiceErrorCode()
+					+ " / error: " + soapResult.getError());
+		}
+		if (soapResult.getResult() != null) {
+			result.setResult(Arrays.asList(soapResult.getResult()).parallelStream()
+					.map(model -> new SimpleNameViewModel<Long>(model.getId(), model.getName()))
+					.sorted((o1, o2) -> o1.getName().compareTo(o2.getName())).collect(Collectors.toList()));
+		}
+
+		return result;
 	}
 }

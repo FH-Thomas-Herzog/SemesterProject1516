@@ -1,4 +1,4 @@
-package at.fh.ooe.swk.ufo.service.proxy.impl;
+package at.fh.ooe.swk.ufo.service.impl.proxy;
 
 import java.util.Arrays;
 import java.util.Comparator;
@@ -10,9 +10,10 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
-import at.fh.ooe.swk.ufo.service.proxy.api.VenueServiceProxy;
-import at.fh.ooe.swk.ufo.service.proxy.api.model.PerformanceFilter;
-import at.fh.ooe.swk.ufo.service.proxy.api.model.ResultModel;
+import at.fh.ooe.swk.ufo.service.api.converter.ServiceModelConverter;
+import at.fh.ooe.swk.ufo.service.api.model.PerformanceFilter;
+import at.fh.ooe.swk.ufo.service.api.model.ResultModel;
+import at.fh.ooe.swk.ufo.service.api.proxy.VenueServiceProxy;
 import at.fh.ooe.swk.ufo.web.application.annotation.ServiceTimeZone;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.VenueViewModel;
@@ -33,16 +34,10 @@ public class VenueServiceProxySoapImpl implements VenueServiceProxy {
 	private static final long serialVersionUID = -749857516452830218L;
 
 	@Inject
-	@ServiceTimeZone
-	private TimeZone serviceTimeZone;
+	private ServiceModelConverter<VenueModel, VenueViewModel> venueConverter;
 
 	@Inject
 	private transient VenueServiceSoap soapService;
-	@Inject
-	private Instance<VenueViewModel> venueInstance;
-
-	@Inject
-	private Instance<PerformanceViewModel> perforamnceModelInstance;
 
 	@Override
 	public ResultModel<List<VenueViewModel>> getVenues() {
@@ -59,8 +54,7 @@ public class VenueServiceProxySoapImpl implements VenueServiceProxy {
 			}
 			if (soapResult.getResult() != null) {
 				result.setResult(Arrays.asList(soapResult.getResult()).parallelStream()
-						.map(model -> venueToviewModel(model, venueInstance.get(), perforamnceModelInstance,
-								serviceTimeZone))
+						.map(model -> venueConverter.convert(model))
 						.sorted((o1, o2) -> o1.getName().compareTo(o2.getName())).collect(Collectors.toList()));
 			}
 		} catch (Exception e) {
@@ -77,7 +71,10 @@ public class VenueServiceProxySoapImpl implements VenueServiceProxy {
 		try {
 			result = loadVenues(soapService.getVenuesForPerformances(new PerformanceFilterRequest(filter.getFromDate(),
 					filter.getToDate(), filter.getArtistIds().toArray(new Long[filter.getArtistIds().size()]),
-					filter.getVenueIds().toArray(new Long[filter.getVenueIds().size()]))));
+					filter.getVenueIds().toArray(new Long[filter.getVenueIds().size()]),
+					filter.getArtistGroupIds().toArray(new Long[filter.getArtistGroupIds().size()]),
+					filter.getArtistCategoryIds().toArray(new Long[filter.getArtistCategoryIds().size()]),
+					filter.getCountries().toArray(new String[filter.getCountries().size()]), filter.getMoved())));
 		} catch (Exception e) {
 			result.setInternalError("Could not invoke web service");
 			result.setException(e);
@@ -93,7 +90,11 @@ public class VenueServiceProxySoapImpl implements VenueServiceProxy {
 			result = loadVenues(soapService.getVenueForPerformances(id,
 					new PerformanceFilterRequest(filter.getFromDate(), filter.getToDate(),
 							filter.getArtistIds().toArray(new Long[filter.getArtistIds().size()]),
-							filter.getVenueIds().toArray(new Long[filter.getVenueIds().size()]))));
+							filter.getVenueIds().toArray(new Long[filter.getVenueIds().size()]),
+							filter.getArtistGroupIds().toArray(new Long[filter.getArtistGroupIds().size()]),
+							filter.getArtistCategoryIds().toArray(new Long[filter.getArtistCategoryIds().size()]),
+							filter.getCountries().toArray(new String[filter.getCountries().size()]),
+							filter.getMoved())));
 		} catch (Exception e) {
 			result.setInternalError("Could not invoke web service");
 			result.setException(e);
@@ -114,10 +115,8 @@ public class VenueServiceProxySoapImpl implements VenueServiceProxy {
 						+ " / error: " + soapResult.getError());
 			}
 			if (soapResult.getResult() != null) {
-				result.setResult(Arrays
-						.asList(soapResult.getResult()).parallelStream().map(model -> venueToviewModel(model,
-								venueInstance.get(), perforamnceModelInstance, serviceTimeZone))
-						.collect(Collectors.toList()));
+				result.setResult(Arrays.asList(soapResult.getResult()).parallelStream()
+						.map(model -> venueConverter.convert(model)).collect(Collectors.toList()));
 			}
 		} catch (Exception e) {
 			result.setInternalError("Could not invoke web service");
@@ -125,30 +124,5 @@ public class VenueServiceProxySoapImpl implements VenueServiceProxy {
 		}
 
 		return result;
-	}
-
-	private static VenueViewModel venueToviewModel(VenueModel model, VenueViewModel viewModel,
-			Instance<PerformanceViewModel> performanceViewModelInstance, TimeZone timeZone) {
-		VenueViewModel result = null;
-		if (model != null) {
-			result = viewModel;
-			List<PerformanceViewModel> performanceViewModels = null;
-			if (model.getPerformances() != null) {
-				performanceViewModels = Arrays.asList(model.getPerformances()).parallelStream()
-						.map(performance -> PerformanceServiceProxySoapImpl.performanceToViewModel(performance,
-								performanceViewModelInstance.get(), timeZone))
-						.sorted(new Comparator<PerformanceViewModel>() {
-							@Override
-							public int compare(PerformanceViewModel o1, PerformanceViewModel o2) {
-								return o1.getStartDate().compareTo(o2.getStartDate());
-							}
-						}).collect(Collectors.toList());
-			}
-			viewModel.init(model.getId(), model.getName(), model.getFullAddress(), model.getGpsCoordinates(),
-					performanceViewModels);
-		}
-
-		return result;
-
 	}
 }

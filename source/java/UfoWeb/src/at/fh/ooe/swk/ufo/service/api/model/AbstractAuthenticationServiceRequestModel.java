@@ -1,4 +1,4 @@
-package at.fh.ooe.swk.ufo.service.proxy.api.model;
+package at.fh.ooe.swk.ufo.service.api.model;
 
 /**
  * The base class for the service operation request models which require

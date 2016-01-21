@@ -10,11 +10,6 @@
 		<h:form id="venuesForm" prependId="true">
 			<h:panelGroup id="venuesActionsContainer" layout="block"
 				style="margin: 10px;">
-				<p:commandButton id="refreshVenuesButton" icon="fa fa-refresh"
-					partialSubmit="true" title="#{msg.refresh}"
-					actionListener="#{performanceSupport.loadVenueFilterOptions()}"
-					process="@this" update="venuesContainer, :performancefilterContainer"
-					style="margin-right: 10px;" />
 				<p:commandButton id="openVenuesDialogButton" icon="fa fa-map-marker"
 					partialSubmit="true" title="#{msg.clickOpenVenueDetails}"
 					actionListener="#{venueInfoDialog.init(null, null, false)}"

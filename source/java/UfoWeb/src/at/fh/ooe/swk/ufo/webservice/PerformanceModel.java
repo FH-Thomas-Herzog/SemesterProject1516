@@ -1,5 +1,5 @@
 /**
- * PerformanceServiceRequestModel.java
+ * PerformanceModel.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
@@ -24,6 +24,8 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
 
     private at.fh.ooe.swk.ufo.webservice.VenueModel venue;
 
+    private at.fh.ooe.swk.ufo.webservice.VenueModel formerVenue;
+
     public PerformanceModel() {
     }
 
@@ -38,7 +40,8 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
            java.util.Calendar formerStartDate,
            java.util.Calendar formerEndDate,
            at.fh.ooe.swk.ufo.webservice.ArtistModel artist,
-           at.fh.ooe.swk.ufo.webservice.VenueModel venue) {
+           at.fh.ooe.swk.ufo.webservice.VenueModel venue,
+           at.fh.ooe.swk.ufo.webservice.VenueModel formerVenue) {
         super(
             errorCode,
             serviceErrorCode,
@@ -51,11 +54,12 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
         this.formerEndDate = formerEndDate;
         this.artist = artist;
         this.venue = venue;
+        this.formerVenue = formerVenue;
     }
 
 
     /**
-     * Gets the id value for this PerformanceServiceRequestModel.
+     * Gets the id value for this PerformanceModel.
      * 
      * @return id
      */
@@ -65,7 +69,7 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
 
 
     /**
-     * Sets the id value for this PerformanceServiceRequestModel.
+     * Sets the id value for this PerformanceModel.
      * 
      * @param id
      */
@@ -75,7 +79,7 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
 
 
     /**
-     * Gets the version value for this PerformanceServiceRequestModel.
+     * Gets the version value for this PerformanceModel.
      * 
      * @return version
      */
@@ -85,7 +89,7 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
 
 
     /**
-     * Sets the version value for this PerformanceServiceRequestModel.
+     * Sets the version value for this PerformanceModel.
      * 
      * @param version
      */
@@ -95,7 +99,7 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
 
 
     /**
-     * Gets the startDate value for this PerformanceServiceRequestModel.
+     * Gets the startDate value for this PerformanceModel.
      * 
      * @return startDate
      */
@@ -105,7 +109,7 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
 
 
     /**
-     * Sets the startDate value for this PerformanceServiceRequestModel.
+     * Sets the startDate value for this PerformanceModel.
      * 
      * @param startDate
      */
@@ -115,7 +119,7 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
 
 
     /**
-     * Gets the endDate value for this PerformanceServiceRequestModel.
+     * Gets the endDate value for this PerformanceModel.
      * 
      * @return endDate
      */
@@ -125,7 +129,7 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
 
 
     /**
-     * Sets the endDate value for this PerformanceServiceRequestModel.
+     * Sets the endDate value for this PerformanceModel.
      * 
      * @param endDate
      */
@@ -135,7 +139,7 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
 
 
     /**
-     * Gets the formerStartDate value for this PerformanceServiceRequestModel.
+     * Gets the formerStartDate value for this PerformanceModel.
      * 
      * @return formerStartDate
      */
@@ -145,7 +149,7 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
 
 
     /**
-     * Sets the formerStartDate value for this PerformanceServiceRequestModel.
+     * Sets the formerStartDate value for this PerformanceModel.
      * 
      * @param formerStartDate
      */
@@ -155,7 +159,7 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
 
 
     /**
-     * Gets the formerEndDate value for this PerformanceServiceRequestModel.
+     * Gets the formerEndDate value for this PerformanceModel.
      * 
      * @return formerEndDate
      */
@@ -165,7 +169,7 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
 
 
     /**
-     * Sets the formerEndDate value for this PerformanceServiceRequestModel.
+     * Sets the formerEndDate value for this PerformanceModel.
      * 
      * @param formerEndDate
      */
@@ -175,7 +179,7 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
 
 
     /**
-     * Gets the artist value for this PerformanceServiceRequestModel.
+     * Gets the artist value for this PerformanceModel.
      * 
      * @return artist
      */
@@ -185,7 +189,7 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
 
 
     /**
-     * Sets the artist value for this PerformanceServiceRequestModel.
+     * Sets the artist value for this PerformanceModel.
      * 
      * @param artist
      */
@@ -195,7 +199,7 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
 
 
     /**
-     * Gets the venue value for this PerformanceServiceRequestModel.
+     * Gets the venue value for this PerformanceModel.
      * 
      * @return venue
      */
@@ -205,12 +209,32 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
 
 
     /**
-     * Sets the venue value for this PerformanceServiceRequestModel.
+     * Sets the venue value for this PerformanceModel.
      * 
      * @param venue
      */
     public void setVenue(at.fh.ooe.swk.ufo.webservice.VenueModel venue) {
         this.venue = venue;
+    }
+
+
+    /**
+     * Gets the formerVenue value for this PerformanceModel.
+     * 
+     * @return formerVenue
+     */
+    public at.fh.ooe.swk.ufo.webservice.VenueModel getFormerVenue() {
+        return formerVenue;
+    }
+
+
+    /**
+     * Sets the formerVenue value for this PerformanceModel.
+     * 
+     * @param formerVenue
+     */
+    public void setFormerVenue(at.fh.ooe.swk.ufo.webservice.VenueModel formerVenue) {
+        this.formerVenue = formerVenue;
     }
 
     private java.lang.Object __equalsCalc = null;
@@ -244,7 +268,10 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
               this.artist.equals(other.getArtist()))) &&
             ((this.venue==null && other.getVenue()==null) || 
              (this.venue!=null &&
-              this.venue.equals(other.getVenue())));
+              this.venue.equals(other.getVenue()))) &&
+            ((this.formerVenue==null && other.getFormerVenue()==null) || 
+             (this.formerVenue!=null &&
+              this.formerVenue.equals(other.getFormerVenue())));
         __equalsCalc = null;
         return _equals;
     }
@@ -276,6 +303,9 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
         if (getVenue() != null) {
             _hashCode += getVenue().hashCode();
         }
+        if (getFormerVenue() != null) {
+            _hashCode += getFormerVenue().hashCode();
+        }
         __hashCodeCalc = false;
         return _hashCode;
     }
@@ -285,7 +315,7 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
         new org.apache.axis.description.TypeDesc(PerformanceModel.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceServiceRequestModel"));
+        typeDesc.setXmlType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceModel"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("id");
         elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "Id"));
@@ -335,6 +365,12 @@ public class PerformanceModel  extends at.fh.ooe.swk.ufo.webservice.BaseModel  i
         elemField.setXmlType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "VenueModel"));
         elemField.setMinOccurs(0);
         elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("formerVenue");
+        elemField.setXmlName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "FormerVenue"));
+        elemField.setXmlType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "VenueModel"));
+        elemField.setNillable(true);
         typeDesc.addFieldDesc(elemField);
     }
 

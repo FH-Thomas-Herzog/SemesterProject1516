@@ -1,4 +1,4 @@
-package at.fh.ooe.swk.ufo.service.proxy.impl.producer;
+package at.fh.ooe.swk.ufo.service.impl.producer;
 
 import java.io.Serializable;
 import java.net.URL;
@@ -15,7 +15,7 @@ import org.apache.axis.message.SOAPHeaderElement;
 import org.apache.deltaspike.core.api.common.DeltaSpike;
 import org.apache.logging.log4j.Logger;
 
-import at.fh.ooe.swk.ufo.service.proxy.api.PerformanceServiceProxy;
+import at.fh.ooe.swk.ufo.service.api.proxy.PerformanceServiceProxy;
 import at.fh.ooe.swk.ufo.web.application.constants.ContextParameter;
 import at.fh.ooe.swk.ufo.webservice.ArtistServiceLocator;
 import at.fh.ooe.swk.ufo.webservice.ArtistServiceSoap;

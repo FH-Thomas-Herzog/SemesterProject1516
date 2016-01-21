@@ -6,10 +6,11 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:pe="http://primefaces.org/ui/extensions">
 
-	<h:panelGroup id="performancefilterContainer" layout="block">
+	<h:panelGroup id="performanceFilterContainer" layout="block">
 		<h:form id="filterForm" prependId="true">
 			<div class="ui-grid ui-grid-responsive"
 				style="min-width: 300px; max-width: 50%;">
+				
 				<!-- Artist Filter -->
 				<div class="ui-grid-row">
 					<div class="ui-grid-col-2" style="padding: 7px;">
@@ -18,11 +19,11 @@
 					</div>
 					<div class="ui-grid-col-8" style="padding: 5px;">
 						<p:selectCheckboxMenu label="#{msg.pleaseChoose}"
-							id="artistFilter" value="#{performanceFilterBean.artistIds}"
+							id="artistFilter" value="#{performanceFilterBean.artists}"
 							filter="true" filterMatchMode="contains"
-							converter="#{performanceSupport.artistItemConverter}"
-							scrollHeight="300" panelStyle="width:400px" caseSensitive="false"
-							required="false" style="width: 100%">
+							converter="#{artistsItemsConverter}" scrollHeight="300"
+							panelStyle="width:400px" caseSensitive="false" required="false"
+							style="width: 100%">
 
 							<p:ajax event="change" process="@this" global="false"
 								update="artistFilterSelectionMeta" partialSubmit="true" />
@@ -33,9 +34,10 @@
 					</div>
 					<div class="ui-grid-col-2" style="padding: 10px;">
 						<h:outputText id="artistFilterSelectionMeta"
-							value="#{((empty performanceFilterBean.artistIds) or (performanceFilterBean.artistIds.size() eq performanceSupport.artistItems.size())) ? msg.getItemsSelected(msg.all) : msg.getItemsSelected(performanceFilterBean.artistIds.size()) }" />
+							value="#{((empty performanceFilterBean.artists) or (performanceFilterBean.artists.size() eq performanceSupport.artistItems.size())) ? msg.getItemsSelected(msg.all) : msg.getItemsSelected(performanceFilterBean.artists.size()) }" />
 					</div>
 				</div>
+				
 				<!-- Venue Filter -->
 				<div class="ui-grid-row">
 					<div class="ui-grid-col-2" style="padding: 7px;">
@@ -44,9 +46,8 @@
 					</div>
 					<div class="ui-grid-col-8" style="padding: 5px;">
 						<p:selectCheckboxMenu id="venueFilter" label="#{msg.pleaseChoose}"
-							value="#{performanceFilterBean.venueIds}" filter="true"
-							filterMatchMode="contains"
-							converter="#{performanceSupport.venueItemConverter}"
+							value="#{performanceFilterBean.venues}" filter="true"
+							filterMatchMode="contains" converter="#{venuessItemsConverter}"
 							scrollHeight="300" panelStyle="width:400px" caseSensitive="false"
 							style="width:100%">
 
@@ -59,9 +60,90 @@
 					</div>
 					<div class="ui-grid-col-2" style="padding: 10px;">
 						<h:outputText id="venueFilterSelectionMeta"
-							value="#{((empty performanceFilterBean.venueIds) or (performanceFilterBean.venueIds.size() eq performanceSupport.venueItems.size())) ? msg.getItemsSelected(msg.all) : msg.getItemsSelected(performanceFilterBean.artistIds.size()) }" />
+							value="#{((empty performanceFilterBean.venues) or (performanceFilterBean.venues.size() eq performanceSupport.venueItems.size())) ? msg.getItemsSelected(msg.all) : msg.getItemsSelected(performanceFilterBean.venues.size()) }" />
 					</div>
 				</div>
+				
+				<!-- ArtistCategory Filter -->
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-2" style="padding: 7px;">
+						<p:outputLabel id="artistCategoryFilterLabel"
+							value="#{msg.artistCategory}" for="artistCategoryFilter" />
+					</div>
+					<div class="ui-grid-col-8" style="padding: 5px;">
+						<p:selectCheckboxMenu id="artistCategoryFilter"
+							label="#{msg.pleaseChoose}"
+							value="#{performanceFilterBean.artistCategories}" filter="true"
+							filterMatchMode="contains"
+							converter="#{artistCategoryItemsConverter}" scrollHeight="300"
+							panelStyle="width:400px" caseSensitive="false" style="width:100%">
+
+							<p:ajax event="change" process="@this" global="false"
+								update="artistCategoryFilterSelectionMeta" partialSubmit="true" />
+							<f:selectItems value="#{performanceSupport.artistCategoryItems}"
+								var="item" />
+
+						</p:selectCheckboxMenu>
+					</div>
+					<div class="ui-grid-col-2" style="padding: 10px;">
+						<h:outputText id="artistCategoryFilterSelectionMeta"
+							value="#{((empty performanceFilterBean.artistCategories) or (performanceFilterBean.artistCategories.size() eq performanceSupport.artistCategoryItems.size())) ? msg.getItemsSelected(msg.all) : msg.getItemsSelected(performanceFilterBean.artistCategories.size()) }" />
+					</div>
+				</div>
+				
+				<!-- ArtistGroup Filter -->
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-2" style="padding: 7px;">
+						<p:outputLabel id="artistGroupFilterLabel"
+							value="#{msg.artistGroup}" for="artistGroupFilter" />
+					</div>
+					<div class="ui-grid-col-8" style="padding: 5px;">
+						<p:selectCheckboxMenu id="artistGroupFilter"
+							label="#{msg.pleaseChoose}"
+							value="#{performanceFilterBean.artistGroups}" filter="true"
+							filterMatchMode="contains"
+							converter="#{artistGroupItemsConverter}" scrollHeight="300"
+							panelStyle="width:400px" caseSensitive="false" style="width:100%">
+
+							<p:ajax event="change" process="@this" global="false"
+								update="artistGroupFilterSelectionMeta" partialSubmit="true" />
+							<f:selectItems value="#{performanceSupport.artistGroupItems}"
+								var="item" />
+
+						</p:selectCheckboxMenu>
+					</div>
+					<div class="ui-grid-col-2" style="padding: 10px;">
+						<h:outputText id="artistGroupFilterSelectionMeta"
+							value="#{((empty performanceFilterBean.artistGroups) or (performanceFilterBean.artistGroups.size() eq performanceSupport.artistGroupItems.size())) ? msg.getItemsSelected(msg.all) : msg.getItemsSelected(performanceFilterBean.artistGroups.size()) }" />
+					</div>
+				</div>
+				
+				<!-- Country Filter -->
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-2" style="padding: 7px;">
+						<p:outputLabel id="countryFilterLabel" value="#{msg.country}"
+							for="countryFilter" />
+					</div>
+					<div class="ui-grid-col-8" style="padding: 5px;">
+						<p:selectCheckboxMenu id="countryFilter"
+							label="#{msg.pleaseChoose}"
+							value="#{performanceFilterBean.countries}" filter="true"
+							filterMatchMode="contains"
+							converter="#{countryOptionItemsConverter}" scrollHeight="300"
+							panelStyle="width:400px" caseSensitive="false" style="width:100%">
+
+							<p:ajax event="change" process="@this" global="false"
+								update="countryFilterSelectionMeta" partialSubmit="true" />
+							<f:selectItems value="#{countryOptionItems}" var="item" />
+
+						</p:selectCheckboxMenu>
+					</div>
+					<div class="ui-grid-col-2" style="padding: 10px;">
+						<h:outputText id="countryFilterSelectionMeta"
+							value="#{((empty performanceFilterBean.countries) or (performanceFilterBean.countries.size() eq countryOptionItems.size())) ? msg.getItemsSelected(msg.all) : msg.getItemsSelected(performanceFilterBean.countries.size()) }" />
+					</div>
+				</div>
+				
 				<!-- Date Filter -->
 				<h:panelGroup id="calendarFilterContainer" styleClass="ui-grid-row">
 					<div class="ui-grid-col-2" style="padding: 7px;">
@@ -102,22 +184,41 @@
 						</p:calendar>
 					</h:panelGroup>
 					<div class="ui-grid-col-2" style="padding: 10px;">
+						<h:outputText styleClass="fa fa-info"
+							style="color: blue; margin-right: 10px;" />
 						<h:outputText id="calendarFilterMeta"
 							value="#{msg.getMaxDays(performanceFilterBean.maxDayCount)}" />
 					</div>
 				</h:panelGroup>
+
+				<!-- State Filter -->
+				<div class="ui-grid-row">
+					<div class="ui-grid-col-2" style="padding: 7px;">
+						<p:outputLabel id="stateOptionLabel" value="#{msg.state}"
+							for="stateOptionFilter" />
+					</div>
+					<div class="ui-grid-col-8" style="padding: 5px;">
+						<p:selectOneRadio id="stateOptionFilter"
+							value="#{performanceFilterBean.stateOption}" layout="grid"
+							columns="#{performanceSearchOptionItems.size()}">
+							<f:selectItems value="#{performanceSearchOptionItems}" />
+						</p:selectOneRadio>
+					</div>
+					<div class="ui-grid-col-2" style="padding: 10px;"></div>
+				</div>
 			</div>
 			<!-- Filter Actions -->
 			<div class="ui-grid-row">
 				<div class="ui-grid-col-12" style="padding: 5px;">
 					<p:commandButton id="filterButton" icon="fa fa-refresh"
 						title="#{msg.refresh}" action="#{performanceFilterBean.filter()}"
-						process="@form" global="true" update=":performanceContainer"
+						process="@form, :performanceContainer" global="true" update=":performanceContainer"
 						partialSubmit="true" />
 					<p:commandButton id="resetButton" icon="fa fa-close"
 						title="#{msg.reset}" action="#{performanceFilterBean.clear()}"
 						style="margin-left:10px;" process="@this" global="true"
-						update=":performanceContainer" partialSubmit="true" />
+						update=":performanceContainer, :performanceFilterContainer, :artistsForm, :artistsContainer :venuesForm, :venuesContainer"
+						partialSubmit="true" />
 				</div>
 			</div>
 		</h:form>

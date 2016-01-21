@@ -9,6 +9,7 @@ import java.util.Calendar;
 import java.util.Comparator;
 import java.util.GregorianCalendar;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.function.Consumer;
@@ -24,9 +25,9 @@ import javax.inject.Named;
 import org.apache.logging.log4j.Logger;
 import org.primefaces.context.RequestContext;
 
-import at.fh.ooe.swk.ufo.service.proxy.api.ArtistServiceProxy;
-import at.fh.ooe.swk.ufo.service.proxy.api.PerformanceServiceProxy;
-import at.fh.ooe.swk.ufo.service.proxy.api.model.ResultModel;
+import at.fh.ooe.swk.ufo.service.api.model.ResultModel;
+import at.fh.ooe.swk.ufo.service.api.proxy.ArtistServiceProxy;
+import at.fh.ooe.swk.ufo.service.api.proxy.PerformanceServiceProxy;
 import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
 import at.fh.ooe.swk.ufo.web.application.exception.ProxyServiceExceptionHandler;
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
@@ -50,6 +51,8 @@ public class PerformancesPage implements Serializable {
 
 	@Inject
 	private PerformanceSupport support;
+	@Inject
+	private LanguageBean languageBean;
 
 	private String artistSearch;
 	private ArtistViewModel selectedArtist;
@@ -81,8 +84,9 @@ public class PerformancesPage implements Serializable {
 
 	public void onArtistSearch() {
 		if ((artistSearch == null) || (artistSearch.trim().isEmpty())) {
-			onArtistsSearchReset();
+			filteredArtists = null;
 		} else {
+			final Locale locale = languageBean.getLocale();
 			final String query = artistSearch.toUpperCase();
 			filteredArtists = support.getArtists().parallelStream().filter(artist -> {
 				switch (selectedArtistSearchOption) {
@@ -92,10 +96,11 @@ public class PerformancesPage implements Serializable {
 					return ((artist.getArtistGroup() != null)
 							&& (artist.getArtistGroup().toUpperCase().contains(query)));
 				case ARTIST_CATEGORY:
-					return (artist.getArtistCategory() != null) && (artist.getArtistCategory().toUpperCase().contains(query));
+					return (artist.getArtistCategory() != null)
+							&& (artist.getArtistCategory().toUpperCase().contains(query));
 				case COUNTRY:
-					return (artist.getCountryName() != null) ? artist.getCountryName().toUpperCase().contains(query)
-							: Boolean.FALSE;
+					return (artist.getCountryName(locale) != null)
+							? artist.getCountryName(locale).toUpperCase().contains(query) : Boolean.FALSE;
 				default:
 					throw new IllegalArgumentException(
 							"SearchOption: " + selectedArtistSearchOption.name() + " not supported");
@@ -128,7 +133,7 @@ public class PerformancesPage implements Serializable {
 
 	public void onVenueSearch() {
 		if ((venueSearch == null) || (venueSearch.trim().isEmpty())) {
-			onVenuesSearchReset();
+			filteredVenues = null;
 		} else {
 			final String query = venueSearch.toUpperCase();
 			filteredVenues = support.getVenues().parallelStream().filter(venue -> {

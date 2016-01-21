@@ -56,5 +56,17 @@ public class ArtistServiceSoapProxy implements at.fh.ooe.swk.ufo.webservice.Arti
     return artistServiceSoap.getDetails(id);
   }
   
+  public at.fh.ooe.swk.ufo.webservice.ListResultModelOfNameModelOfInt64 getSimpleArtistGroups() throws java.rmi.RemoteException{
+    if (artistServiceSoap == null)
+      _initArtistServiceSoapProxy();
+    return artistServiceSoap.getSimpleArtistGroups();
+  }
+  
+  public at.fh.ooe.swk.ufo.webservice.ListResultModelOfNameModelOfInt64 getSimpleArtistCategories() throws java.rmi.RemoteException{
+    if (artistServiceSoap == null)
+      _initArtistServiceSoapProxy();
+    return artistServiceSoap.getSimpleArtistCategories();
+  }
+  
   
 }

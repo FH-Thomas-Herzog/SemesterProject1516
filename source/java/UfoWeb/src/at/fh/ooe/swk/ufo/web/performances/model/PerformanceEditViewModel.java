@@ -11,7 +11,6 @@ import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 
 import at.fh.ooe.swk.ufo.web.application.annotation.ServiceTimeZone;
 import at.fh.ooe.swk.ufo.web.application.model.IdHolder;
-import at.fh.ooe.swk.ufo.web.application.model.IdMapperModel;
 import at.fh.ooe.swk.ufo.web.performances.page.PerformanceSupport;
 
 @ViewAccessScoped
@@ -23,13 +22,11 @@ public class PerformanceEditViewModel implements IdHolder<Long> {
 	@Inject
 	@ServiceTimeZone
 	private TimeZone serviecTimeZone;
-	@Inject
-	private PerformanceSupport support;
 
 	private Long id;
 	private Long version;
-	private IdMapperModel<Long> artist;
-	private IdMapperModel<Long> venue;
+	private ArtistViewModel artist;
+	private VenueViewModel venue;
 	private Calendar date;
 	private Integer hour;
 
@@ -54,8 +51,8 @@ public class PerformanceEditViewModel implements IdHolder<Long> {
 
 		id = model.getId();
 		version = model.getVersion();
-		artist = support.getArtistIdMapperForId(model.getArtistId());
-		venue = support.getVenueItMapperForId(model.getVenueId());
+		artist = model.getArtist();
+		venue = model.getVenue();
 		date = model.getStartDate();
 		hour = model.getStartDate().get(Calendar.HOUR_OF_DAY);
 	}
@@ -77,19 +74,19 @@ public class PerformanceEditViewModel implements IdHolder<Long> {
 		return version;
 	}
 
-	public IdMapperModel<Long> getArtist() {
+	public ArtistViewModel getArtist() {
 		return artist;
 	}
 
-	public void setArtist(IdMapperModel<Long> artist) {
+	public void setArtist(ArtistViewModel artist) {
 		this.artist = artist;
 	}
 
-	public IdMapperModel<Long> getVenue() {
+	public VenueViewModel getVenue() {
 		return venue;
 	}
 
-	public void setVenue(IdMapperModel<Long> venue) {
+	public void setVenue(VenueViewModel venue) {
 		this.venue = venue;
 	}
 

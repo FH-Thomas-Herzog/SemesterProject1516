@@ -1,32 +1,27 @@
 package at.fh.ooe.swk.ufo.web.performances.model;
 
 import java.util.Calendar;
-import java.util.TimeZone;
 
 import javax.enterprise.context.Dependent;
-import javax.inject.Inject;
 
-import at.fh.ooe.swk.ufo.web.application.annotation.ServiceTimeZone;
-import at.fh.ooe.swk.ufo.web.application.model.IdHolder;
+import at.fh.ooe.swk.ufo.web.application.model.AbstractIdHolderModel;
+import at.fh.ooe.swk.ufo.webservice.ArtistModel;
 
 @Dependent
-public class PerformanceViewModel implements Comparable<PerformanceViewModel>, IdHolder<Long> {
+public class PerformanceViewModel extends AbstractIdHolderModel<Long> implements Comparable<PerformanceViewModel> {
 
 	private static final long serialVersionUID = 3692624909190619132L;
 
-	private Long id;
 	private Long version;
 	private Calendar startDate;
 	private Calendar formerStartDate;
 	private Calendar endDate;
 	private Calendar formerEndDate;
 	private boolean moved;
-	private String venueName;
-	private String groupName;
-	private String categoryName;
-	private String name;
-	private Long artistId;
-	private Long venueId;
+
+	private ArtistViewModel artist;
+	private VenueViewModel venue;
+	private VenueViewModel formerVenue;
 
 	private Calendar now;
 
@@ -35,8 +30,7 @@ public class PerformanceViewModel implements Comparable<PerformanceViewModel>, I
 	}
 
 	public void init(Long id, Long version, Calendar startDate, Calendar formerStartDate, Calendar endDate,
-			Calendar formerEndDate, String venueName, String groupName, String categoryName, String name, Long artistId,
-			Long venueId) {
+			Calendar formerEndDate, ArtistViewModel artist, VenueViewModel venue, VenueViewModel formerVenue) {
 		now = Calendar.getInstance();
 
 		this.id = id;
@@ -45,13 +39,11 @@ public class PerformanceViewModel implements Comparable<PerformanceViewModel>, I
 		this.formerStartDate = formerStartDate;
 		this.endDate = endDate;
 		this.formerEndDate = formerEndDate;
-		this.venueName = venueName;
-		this.groupName = groupName;
-		this.categoryName = categoryName;
-		this.name = name;
-		this.artistId = artistId;
-		this.venueId = venueId;
+		this.formerEndDate = formerEndDate;
 		this.moved = formerStartDate != null;
+		this.artist = artist;
+		this.venue = venue;
+		this.formerVenue = formerVenue;
 	}
 
 	// ##################################################
@@ -59,7 +51,7 @@ public class PerformanceViewModel implements Comparable<PerformanceViewModel>, I
 	// ##################################################
 	@Override
 	public int compareTo(PerformanceViewModel o) {
-		return name.compareTo(o.name);
+		return artist.getFullName().compareTo(o.getArtist().getFullName());
 	}
 
 	public boolean isInPast() {
@@ -69,10 +61,6 @@ public class PerformanceViewModel implements Comparable<PerformanceViewModel>, I
 	// ##################################################
 	// Getter and Setter
 	// ##################################################
-	public Long getId() {
-		return id;
-	}
-
 	public void setId(Long id) {
 		this.id = id;
 	}
@@ -105,52 +93,15 @@ public class PerformanceViewModel implements Comparable<PerformanceViewModel>, I
 		return moved;
 	}
 
-	public String getVenueName() {
-		return venueName;
+	public ArtistViewModel getArtist() {
+		return artist;
 	}
 
-	public String getName() {
-		return name;
+	public VenueViewModel getVenue() {
+		return venue;
 	}
 
-	public String getGroupName() {
-		return groupName;
-	}
-
-	public String getCategoryName() {
-		return categoryName;
-	}
-
-	public Long getArtistId() {
-		return artistId;
-	}
-
-	public Long getVenueId() {
-		return venueId;
-	}
-
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		PerformanceViewModel other = (PerformanceViewModel) obj;
-		if (id == null) {
-			if (other.id != null)
-				return false;
-		} else if (!id.equals(other.id))
-			return false;
-		return true;
+	public VenueViewModel getFormerVenue() {
+		return formerVenue;
 	}
 }

@@ -22,7 +22,7 @@ public class PerformanceServiceLocator extends org.apache.axis.client.Service im
     }
 
     // Use to get a proxy class for PerformanceServiceSoap
-    private java.lang.String PerformanceServiceSoap_address = "http://localhost:7750/Soap/PerformanceServiceProxy.asmx";
+    private java.lang.String PerformanceServiceSoap_address = "http://localhost:7750/Soap/PerformanceService.asmx";
 
     public java.lang.String getPerformanceServiceSoapAddress() {
         return PerformanceServiceSoap_address;
@@ -105,7 +105,7 @@ public class PerformanceServiceLocator extends org.apache.axis.client.Service im
     }
 
     public javax.xml.namespace.QName getServiceName() {
-        return new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceServiceProxy");
+        return new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceService");
     }
 
     private java.util.HashSet ports = null;

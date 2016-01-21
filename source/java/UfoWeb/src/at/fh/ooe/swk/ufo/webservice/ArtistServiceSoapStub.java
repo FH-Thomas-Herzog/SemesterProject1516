@@ -16,7 +16,7 @@ public class ArtistServiceSoapStub extends org.apache.axis.client.Stub implement
     static org.apache.axis.description.OperationDesc [] _operations;
 
     static {
-        _operations = new org.apache.axis.description.OperationDesc[2];
+        _operations = new org.apache.axis.description.OperationDesc[4];
         _initOperationDesc1();
     }
 
@@ -42,6 +42,24 @@ public class ArtistServiceSoapStub extends org.apache.axis.client.Stub implement
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
         _operations[1] = oper;
+
+        oper = new org.apache.axis.description.OperationDesc();
+        oper.setName("GetSimpleArtistGroups");
+        oper.setReturnType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ListResultModelOfNameModelOfInt64"));
+        oper.setReturnClass(at.fh.ooe.swk.ufo.webservice.ListResultModelOfNameModelOfInt64.class);
+        oper.setReturnQName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "GetSimpleArtistGroupsResult"));
+        oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
+        oper.setUse(org.apache.axis.constants.Use.LITERAL);
+        _operations[2] = oper;
+
+        oper = new org.apache.axis.description.OperationDesc();
+        oper.setName("GetSimpleArtistCategories");
+        oper.setReturnType(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ListResultModelOfNameModelOfInt64"));
+        oper.setReturnClass(at.fh.ooe.swk.ufo.webservice.ListResultModelOfNameModelOfInt64.class);
+        oper.setReturnQName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "GetSimpleArtistCategoriesResult"));
+        oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
+        oper.setUse(org.apache.axis.constants.Use.LITERAL);
+        _operations[3] = oper;
 
     }
 
@@ -83,6 +101,15 @@ public class ArtistServiceSoapStub extends org.apache.axis.client.Stub implement
             cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
             cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
 
+            qName = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ArrayOfNameModelOfInt64");
+            cachedSerQNames.add(qName);
+            cls = at.fh.ooe.swk.ufo.webservice.NameModelOfInt64[].class;
+            cachedSerClasses.add(cls);
+            qName = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "NameModelOfInt64");
+            qName2 = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "NameModelOfInt64");
+            cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
+            cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
+
             qName = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ArtistModel");
             cachedSerQNames.add(qName);
             cls = at.fh.ooe.swk.ufo.webservice.ArtistModel.class;
@@ -100,6 +127,20 @@ public class ArtistServiceSoapStub extends org.apache.axis.client.Stub implement
             qName = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ListResultModelOfArtistModel");
             cachedSerQNames.add(qName);
             cls = at.fh.ooe.swk.ufo.webservice.ListResultModelOfArtistModel.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "ListResultModelOfNameModelOfInt64");
+            cachedSerQNames.add(qName);
+            cls = at.fh.ooe.swk.ufo.webservice.ListResultModelOfNameModelOfInt64.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "NameModelOfInt64");
+            cachedSerQNames.add(qName);
+            cls = at.fh.ooe.swk.ufo.webservice.NameModelOfInt64.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
@@ -238,6 +279,74 @@ public class ArtistServiceSoapStub extends org.apache.axis.client.Stub implement
                 return (at.fh.ooe.swk.ufo.webservice.SingleResultModelOfArtistModel) _resp;
             } catch (java.lang.Exception _exception) {
                 return (at.fh.ooe.swk.ufo.webservice.SingleResultModelOfArtistModel) org.apache.axis.utils.JavaUtils.convert(_resp, at.fh.ooe.swk.ufo.webservice.SingleResultModelOfArtistModel.class);
+            }
+        }
+  } catch (org.apache.axis.AxisFault axisFaultException) {
+  throw axisFaultException;
+}
+    }
+
+    public at.fh.ooe.swk.ufo.webservice.ListResultModelOfNameModelOfInt64 getSimpleArtistGroups() throws java.rmi.RemoteException {
+        if (super.cachedEndpoint == null) {
+            throw new org.apache.axis.NoEndPointException();
+        }
+        org.apache.axis.client.Call _call = createCall();
+        _call.setOperation(_operations[2]);
+        _call.setUseSOAPAction(true);
+        _call.setSOAPActionURI("https://webservice.ufo.swk.ooe.fh.at/GetSimpleArtistGroups");
+        _call.setEncodingStyle(null);
+        _call.setProperty(org.apache.axis.client.Call.SEND_TYPE_ATTR, Boolean.FALSE);
+        _call.setProperty(org.apache.axis.AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
+        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
+        _call.setOperationName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "GetSimpleArtistGroups"));
+
+        setRequestHeaders(_call);
+        setAttachments(_call);
+ try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {});
+
+        if (_resp instanceof java.rmi.RemoteException) {
+            throw (java.rmi.RemoteException)_resp;
+        }
+        else {
+            extractAttachments(_call);
+            try {
+                return (at.fh.ooe.swk.ufo.webservice.ListResultModelOfNameModelOfInt64) _resp;
+            } catch (java.lang.Exception _exception) {
+                return (at.fh.ooe.swk.ufo.webservice.ListResultModelOfNameModelOfInt64) org.apache.axis.utils.JavaUtils.convert(_resp, at.fh.ooe.swk.ufo.webservice.ListResultModelOfNameModelOfInt64.class);
+            }
+        }
+  } catch (org.apache.axis.AxisFault axisFaultException) {
+  throw axisFaultException;
+}
+    }
+
+    public at.fh.ooe.swk.ufo.webservice.ListResultModelOfNameModelOfInt64 getSimpleArtistCategories() throws java.rmi.RemoteException {
+        if (super.cachedEndpoint == null) {
+            throw new org.apache.axis.NoEndPointException();
+        }
+        org.apache.axis.client.Call _call = createCall();
+        _call.setOperation(_operations[3]);
+        _call.setUseSOAPAction(true);
+        _call.setSOAPActionURI("https://webservice.ufo.swk.ooe.fh.at/GetSimpleArtistCategories");
+        _call.setEncodingStyle(null);
+        _call.setProperty(org.apache.axis.client.Call.SEND_TYPE_ATTR, Boolean.FALSE);
+        _call.setProperty(org.apache.axis.AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
+        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
+        _call.setOperationName(new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "GetSimpleArtistCategories"));
+
+        setRequestHeaders(_call);
+        setAttachments(_call);
+ try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {});
+
+        if (_resp instanceof java.rmi.RemoteException) {
+            throw (java.rmi.RemoteException)_resp;
+        }
+        else {
+            extractAttachments(_call);
+            try {
+                return (at.fh.ooe.swk.ufo.webservice.ListResultModelOfNameModelOfInt64) _resp;
+            } catch (java.lang.Exception _exception) {
+                return (at.fh.ooe.swk.ufo.webservice.ListResultModelOfNameModelOfInt64) org.apache.axis.utils.JavaUtils.convert(_resp, at.fh.ooe.swk.ufo.webservice.ListResultModelOfNameModelOfInt64.class);
             }
         }
   } catch (org.apache.axis.AxisFault axisFaultException) {

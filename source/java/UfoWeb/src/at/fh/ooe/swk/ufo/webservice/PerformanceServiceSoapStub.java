@@ -94,8 +94,8 @@ public class PerformanceServiceSoapStub extends org.apache.axis.client.Stub impl
             cachedSerQNames.add(qName);
             cls = at.fh.ooe.swk.ufo.webservice.PerformanceModel[].class;
             cachedSerClasses.add(cls);
-            qName = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceServiceRequestModel");
-            qName2 = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceServiceRequestModel");
+            qName = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceModel");
+            qName2 = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceModel");
             cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
             cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
 
@@ -127,7 +127,7 @@ public class PerformanceServiceSoapStub extends org.apache.axis.client.Stub impl
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-            qName = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceServiceRequestModel");
+            qName = new javax.xml.namespace.QName("https://webservice.ufo.swk.ooe.fh.at/", "PerformanceModel");
             cachedSerQNames.add(qName);
             cls = at.fh.ooe.swk.ufo.webservice.PerformanceModel.class;
             cachedSerClasses.add(cls);

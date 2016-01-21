@@ -1,8 +1,8 @@
-package at.fh.ooe.swk.ufo.service.proxy.api;
+package at.fh.ooe.swk.ufo.service.api.proxy;
 
 import java.io.Serializable;
 
-import at.fh.ooe.swk.ufo.service.proxy.api.model.ResultModel;
+import at.fh.ooe.swk.ufo.service.api.model.ResultModel;
 
 /**
  * The proxy for the security service;

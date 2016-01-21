@@ -18,11 +18,11 @@ import org.primefaces.model.LazyDataModel;
 import org.primefaces.model.SortOrder;
 
 import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
-import at.fh.ooe.swk.ufo.web.application.model.IdLabelModel;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceColumnModel;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceLazySorter;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceRowModel;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
+import at.fh.ooe.swk.ufo.web.performances.model.VenueViewModel;
 
 /**
  * This class represents the lazy data model for performance models
@@ -121,8 +121,8 @@ public class PerformanceLazyDataTableModel extends LazyDataModel<PerformanceRowM
 		performancestartHours = new HashSet<>();
 
 		// Map to venues
-		Map<IdLabelModel<Long>, List<PerformanceViewModel>> map = performances.parallelStream()
-				.collect(Collectors.groupingBy(i -> new IdLabelModel<Long>(i.getVenueId(), i.getVenueName())));
+		Map<VenueViewModel, List<PerformanceViewModel>> map = performances.parallelStream()
+				.collect(Collectors.groupingBy(i -> i.getVenue()));
 
 		// Build row model where each model holds value for dynamic columns
 		// mapped to their start hour

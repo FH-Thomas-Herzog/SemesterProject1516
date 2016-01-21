@@ -1,11 +1,11 @@
-package at.fh.ooe.swk.ufo.service.proxy.api;
+package at.fh.ooe.swk.ufo.service.api.proxy;
 
 import java.io.Serializable;
 import java.util.List;
 
-import at.fh.ooe.swk.ufo.service.proxy.api.model.PerformanceFilter;
-import at.fh.ooe.swk.ufo.service.proxy.api.model.PerformanceServiceRequestModel;
-import at.fh.ooe.swk.ufo.service.proxy.api.model.ResultModel;
+import at.fh.ooe.swk.ufo.service.api.model.PerformanceFilter;
+import at.fh.ooe.swk.ufo.service.api.model.PerformanceServiceRequestModel;
+import at.fh.ooe.swk.ufo.service.api.model.ResultModel;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
 
 /**

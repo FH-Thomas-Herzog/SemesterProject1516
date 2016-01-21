@@ -3,7 +3,6 @@ package at.fh.ooe.swk.ufo.web.performances.model;
 import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
-import java.io.Serializable;
 import java.net.URL;
 import java.util.Base64;
 import java.util.Locale;
@@ -18,6 +17,7 @@ import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
 import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
+import at.fh.ooe.swk.ufo.web.application.model.AbstractIdHolderModel;
 
 /**
  * The artist view model which
@@ -26,7 +26,7 @@ import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
  * @date Jan 19, 2016
  */
 @Dependent
-public class ArtistViewModel implements Serializable {
+public class ArtistViewModel extends AbstractIdHolderModel<Long> {
 
 	private static final long serialVersionUID = -8103911126863772972L;
 
@@ -35,10 +35,7 @@ public class ArtistViewModel implements Serializable {
 	private transient ServletContext servletContext;
 	@Inject
 	private Logger log;
-	@Inject
-	private LanguageBean languageBean;
 
-	private Long id;
 	private String fullName;
 	private String firstName;
 	private String lastName;
@@ -65,7 +62,9 @@ public class ArtistViewModel implements Serializable {
 		this.fullName = new StringBuilder().append((lastName == null) ? "" : lastName).append(", ")
 				.append((firstName == null) ? "" : firstName).toString();
 		this.email = email;
-		this.locale = new Locale("", countryCode);
+		if (countryCode != null) {
+			this.locale = new Locale("", countryCode);
+		}
 		if ((url != null) && (!url.isEmpty())) {
 			try {
 				this.url = new URL(url);
@@ -107,14 +106,6 @@ public class ArtistViewModel implements Serializable {
 		return createStreamedContentForImage();
 	}
 
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
 	public String getFullName() {
 		return fullName;
 	}
@@ -131,8 +122,8 @@ public class ArtistViewModel implements Serializable {
 		return email;
 	}
 
-	public String getCountryName() {
-		return (this.locale != null) ? this.locale.getDisplayCountry() : null;
+	public String getCountryName(final Locale locale) {
+		return (this.locale != null) ? this.locale.getDisplayCountry(locale) : null;
 	}
 
 	public String getUrl() {

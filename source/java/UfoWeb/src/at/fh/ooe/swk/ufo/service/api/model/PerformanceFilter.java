@@ -1,4 +1,4 @@
-package at.fh.ooe.swk.ufo.service.proxy.api.model;
+package at.fh.ooe.swk.ufo.service.api.model;
 
 import java.util.Calendar;
 import java.util.List;
@@ -18,4 +18,12 @@ public interface PerformanceFilter {
 	List<Long> getArtistIds();
 
 	List<Long> getVenueIds();
+
+	List<Long> getArtistGroupIds();
+
+	List<Long> getArtistCategoryIds();
+
+	List<String> getCountries();
+	
+	Boolean getMoved();
 }

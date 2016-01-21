@@ -10,12 +10,6 @@
 		<h:form id="artistsForm" prependId="true">
 			<h:panelGroup id="artistActionsContainer" layout="block"
 				style="margin: 10px;">
-				<p:commandButton id="refreshArtistsButton" icon="fa fa-refresh"
-					partialSubmit="true" title="#{msg.refresh}"
-					actionListener="#{performanceSupport.loadArtistFilterOptions()}"
-					process="@this"
-					update="artistsContainer, :performancefilterContainer"
-					style="margin-right: 10px;" />
 				<p:commandButton id="resetFiltersButton" icon="fa fa-close"
 					partialSubmit="true" title="#{msg.reset}"
 					actionListener="#{performancePage.onArtistsSearchReset()}"

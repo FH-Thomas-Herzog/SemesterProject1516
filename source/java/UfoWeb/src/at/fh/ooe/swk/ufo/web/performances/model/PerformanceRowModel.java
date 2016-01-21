@@ -5,8 +5,6 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Objects;
 
-import at.fh.ooe.swk.ufo.web.application.model.IdLabelModel;
-
 /**
  * Row model for performances which maps the perforamnces to their start hour
  * which is the mapping to the corresponding dynamic column.
@@ -16,10 +14,10 @@ import at.fh.ooe.swk.ufo.web.application.model.IdLabelModel;
  */
 public class PerformanceRowModel {
 
-	private final IdLabelModel<Long> venue;
+	private final VenueViewModel venue;
 	private final Map<Integer, List<PerformanceViewModel>> map;
 
-	public PerformanceRowModel(IdLabelModel<Long> venue, Map<Integer, List<PerformanceViewModel>> map) {
+	public PerformanceRowModel(VenueViewModel venue, Map<Integer, List<PerformanceViewModel>> map) {
 		super();
 		Objects.requireNonNull(venue, "Venue must be given");
 		Objects.requireNonNull(venue, "Performances map must be given");
@@ -48,19 +46,27 @@ public class PerformanceRowModel {
 			final List<PerformanceViewModel> models = map.get(startHour);
 			if ((models != null) && (!models.isEmpty())) {
 				for (PerformanceViewModel model : models) {
-					if (model.getName().toUpperCase().contains(filter.toUpperCase())) {
+					if ((model.getArtist() != null)
+							&& (model.getArtist().getFullName().toUpperCase().contains(filter.toUpperCase()))) {
+						return Boolean.TRUE;
+					} else if ((model.getArtist().getArtistGroup() != null)
+							&& (model.getArtist().getArtistGroup().toUpperCase().contains(filter.toUpperCase()))) {
+						return Boolean.TRUE;
+					} else if ((model.getArtist().getArtistCategory() != null)
+							&& (model.getArtist().getArtistCategory().toUpperCase().contains(filter.toUpperCase()))) {
 						return Boolean.TRUE;
 					}
 				}
 			}
 		}
+
 		return Boolean.FALSE;
 	}
 
 	// ##################################################
 	// Getter and Setter
 	// ##################################################
-	public IdLabelModel getVenue() {
+	public VenueViewModel getVenue() {
 		return venue;
 	}
 

@@ -2,24 +2,22 @@ package at.fh.ooe.swk.ufo.web.performances.page;
 
 import java.io.Serializable;
 import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.UUID;
-import java.util.Map.Entry;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Instance;
@@ -30,21 +28,19 @@ import javax.faces.model.SelectItemGroup;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.joda.time.format.DateTimeFormat;
-import org.primefaces.component.datatable.feature.DataTableFeatureKey;
-
-import at.fh.ooe.swk.ufo.service.proxy.api.ArtistServiceProxy;
-import at.fh.ooe.swk.ufo.service.proxy.api.PerformanceServiceProxy;
-import at.fh.ooe.swk.ufo.service.proxy.api.VenueServiceProxy;
-import at.fh.ooe.swk.ufo.service.proxy.api.model.ResultModel;
+import at.fh.ooe.swk.ufo.service.api.model.ResultModel;
+import at.fh.ooe.swk.ufo.service.api.proxy.ArtistServiceProxy;
+import at.fh.ooe.swk.ufo.service.api.proxy.PerformanceServiceProxy;
+import at.fh.ooe.swk.ufo.service.api.proxy.VenueServiceProxy;
 import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
 import at.fh.ooe.swk.ufo.web.application.converter.SelectItemEnumConverter;
 import at.fh.ooe.swk.ufo.web.application.converter.SelectItemIdHolderLongConverter;
-import at.fh.ooe.swk.ufo.web.application.converter.SelectItemIdMapperModelConverter;
+import at.fh.ooe.swk.ufo.web.application.converter.SelectItemObjectConverter;
 import at.fh.ooe.swk.ufo.web.application.exception.ProxyServiceExceptionHandler;
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
-import at.fh.ooe.swk.ufo.web.application.model.IdMapperModel;
+import at.fh.ooe.swk.ufo.web.application.model.SimpleNameViewModel;
 import at.fh.ooe.swk.ufo.web.performances.constants.ArtistSearchOption;
+import at.fh.ooe.swk.ufo.web.performances.constants.PerformanceSearchOption;
 import at.fh.ooe.swk.ufo.web.performances.constants.VenueSearchOption;
 import at.fh.ooe.swk.ufo.web.performances.model.ArtistViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
@@ -77,8 +73,13 @@ public class PerformanceSupport implements Serializable {
 
 	private List<PerformanceLazyDataTableModel> performanceTableModels = new ArrayList<>();
 	private List<PerformanceViewModel> performances = new ArrayList<>();
+	private List<SimpleNameViewModel<Long>> artistGroups = new ArrayList<>();
+	private List<SimpleNameViewModel<Long>> artistCategories = new ArrayList<>();
 	private List<ArtistViewModel> artists = new ArrayList<>();
 	private List<VenueViewModel> venues = new ArrayList<>();
+
+	private List<SelectItem> artistGroupItems = new ArrayList<>();
+	private List<SelectItem> artistCategoryItems = new ArrayList<>();
 	private List<SelectItem> artistItems = new ArrayList<>();
 	private List<SelectItem> venueItems = new ArrayList<>();
 
@@ -91,8 +92,10 @@ public class PerformanceSupport implements Serializable {
 
 	@PostConstruct
 	public void init() {
-		loadArtistFilterOptions();
-		loadVenueFilterOptions();
+		loadSimpleArtists();
+		loadSimpleVenues();
+		loadSimpleArtistGroups();
+		loadSimpleArtistCategories();
 		loadPerformances();
 	}
 
@@ -137,6 +140,44 @@ public class PerformanceSupport implements Serializable {
 
 	@Produces
 	@RequestScoped
+	@Named("performanceSearchOptionItems")
+	public List<SelectItem> getPerformanceSearchOtpionItems() {
+		final List<SelectItem> items = new ArrayList<>(ArtistSearchOption.values().length);
+		items.add(new SelectItem(PerformanceSearchOption.ALL, bundle.getAll()));
+		items.add(new SelectItem(PerformanceSearchOption.MOVED, bundle.getMoved()));
+		items.add(new SelectItem(PerformanceSearchOption.NOT_MOVED, bundle.getNotMoved()));
+
+		return items;
+	}
+
+	@Produces
+	@RequestScoped
+	@Named("performanceSearchOptionItemsConverter")
+	public Converter getPerformanceSearchOtpionItemsConverter(
+			final @Named("performanceSearchOptionItems") List<SelectItem> items) {
+		return new SelectItemEnumConverter(items, bundle);
+	}
+
+	@Produces
+	@RequestScoped
+	@Named("countryOptionItems")
+	public List<SelectItem> getCountrySearchOtpionItems() {
+		final Locale locale = languageBean.getLocale();
+		return Arrays.asList(Locale.getISOCountries()).parallelStream().map(country -> new Locale("", country))
+				.collect(Collectors.toList()).parallelStream()
+				.map(l -> new SelectItem(l, l.getDisplayCountry(locale), l.getCountry().toUpperCase()))
+				.sorted(new SelectItemComparator()).collect(Collectors.toList());
+	}
+
+	@Produces
+	@RequestScoped
+	@Named("countryOptionItemsConverter")
+	public Converter getCountrySearchOtpionItemsConverter(final @Named("countryOptionItems") List<SelectItem> items) {
+		return new SelectItemObjectConverter(items, bundle);
+	}
+
+	@Produces
+	@RequestScoped
 	@Named("performanceItems")
 	public List<SelectItemGroup> getPerformanceItems() {
 		final Calendar now = Calendar.getInstance();
@@ -154,8 +195,8 @@ public class PerformanceSupport implements Serializable {
 		// Create items groups
 		groups.entrySet().forEach(entry -> {
 			final List<SelectItem> groupedItems = entry.getValue().parallelStream()
-					.map(m -> new SelectItem(m,
-							new StringBuilder(m.getVenueName()).append(" - ").append(m.getName()).toString()))
+					.map(m -> new SelectItem(m, new StringBuilder(m.getVenue().getName()).append(" - ")
+							.append(m.getArtist().getFullName()).toString()))
 					.sorted(new SelectItemComparator()).collect(Collectors.toList());
 			final SelectItemGroup group = new SelectItemGroup(dateTimeFormatter.format(entry.getKey().getTime()), "",
 					Boolean.FALSE, groupedItems.toArray(new SelectItem[groupedItems.size()]));
@@ -176,7 +217,35 @@ public class PerformanceSupport implements Serializable {
 				bundle);
 	}
 
-	public void loadArtistFilterOptions() {
+	@Produces
+	@RequestScoped
+	@Named("artistsItemsConverter")
+	public Converter getArtistItemConverter() {
+		return new SelectItemIdHolderLongConverter(artistItems, bundle);
+	}
+
+	@Produces
+	@RequestScoped
+	@Named("venuesItemsConverter")
+	public Converter getVenueItemConverter() {
+		return new SelectItemIdHolderLongConverter(venueItems, bundle);
+	}
+
+	@Produces
+	@RequestScoped
+	@Named("artistGroupItemsConverter")
+	public Converter getArtistGroupItemConverter() {
+		return new SelectItemIdHolderLongConverter(artistGroupItems, bundle);
+	}
+
+	@Produces
+	@RequestScoped
+	@Named("artistCategoryItemsConverter")
+	public Converter getArtistCategoryItemConverter() {
+		return new SelectItemIdHolderLongConverter(artistCategoryItems, bundle);
+	}
+
+	public void loadSimpleArtists() {
 		artists = new ArrayList<>();
 		artistItems = new ArrayList<>();
 		// Caused context not active if used in lambda expression
@@ -190,14 +259,13 @@ public class PerformanceSupport implements Serializable {
 				final String label = new StringBuilder(artist.getLastName()).append(", ").append(artist.getFirstName())
 						.toString();
 				final String description = new StringBuilder(artist.getEmail()).append("( ")
-						.append(artist.getCountryName()).append(")").toString();
-				return new SelectItem(new IdMapperModel<Long>(artist.getId(), UUID.randomUUID().toString()), label,
-						description);
+						.append(artist.getCountryName(locale)).append(")").toString();
+				return new SelectItem(artist, label, description);
 			}).sorted(new SelectItemComparator()).collect(Collectors.toList());
 		}
 	}
 
-	public void loadVenueFilterOptions() {
+	public void loadSimpleVenues() {
 		venues = new ArrayList<>();
 		venueItems = new ArrayList<>();
 
@@ -207,9 +275,36 @@ public class PerformanceSupport implements Serializable {
 		if (result.getResult() != null) {
 			venues = result.getResult();
 			venueItems = venues.parallelStream().map(venue -> {
-				return new SelectItem(new IdMapperModel<Long>(venue.getId(), UUID.randomUUID().toString()),
-						venue.getName(), venue.getAddress());
+				return new SelectItem(venue, venue.getName(), venue.getAddress());
 			}).sorted(new SelectItemComparator()).collect(Collectors.toList());
+		}
+	}
+
+	public void loadSimpleArtistGroups() {
+		artistGroups = new ArrayList<>();
+		artistGroupItems = new ArrayList<>();
+
+		final ResultModel<List<SimpleNameViewModel<Long>>> result = artistServiceProxy.getSimpleArtistGroups();
+		proxyExceptionHandler.handleException(null, result);
+
+		if (result.getResult() != null) {
+			artistGroups = result.getResult();
+			artistGroupItems = artistGroups.parallelStream().map(item -> new SelectItem(item, item.getName()))
+					.sorted(new SelectItemComparator()).collect(Collectors.toList());
+		}
+	}
+
+	public void loadSimpleArtistCategories() {
+		artistCategories = new ArrayList<>();
+		artistCategoryItems = new ArrayList<>();
+
+		final ResultModel<List<SimpleNameViewModel<Long>>> result = artistServiceProxy.getSimpleArtistCategories();
+		proxyExceptionHandler.handleException(null, result);
+
+		if (result.getResult() != null) {
+			artistCategories = result.getResult();
+			artistCategoryItems = artistCategories.parallelStream().map(item -> new SelectItem(item, item.getName()))
+					.sorted(new SelectItemComparator()).collect(Collectors.toList());
 		}
 	}
 
@@ -261,38 +356,22 @@ public class PerformanceSupport implements Serializable {
 		}
 	}
 
-	public IdMapperModel<Long> getArtistIdMapperForId(long id) {
-		for (SelectItem selectItem : artistItems) {
-			final IdMapperModel<Long> model = (IdMapperModel<Long>) selectItem.getValue();
-			if (model.getId().equals(id)) {
-				return (IdMapperModel<Long>) selectItem.getValue();
-			}
-		}
-		return null;
+	public ArtistViewModel getArtistIdMapperForId(long id) {
+		final List<ArtistViewModel> filtered = artists.parallelStream().filter(artist -> artist.getId().equals(id))
+				.collect(Collectors.toList());
+		return (!filtered.isEmpty()) ? filtered.get(0) : null;
 	}
 
-	public IdMapperModel<Long> getVenueItMapperForId(long id) {
-		for (SelectItem selectItem : venueItems) {
-			final IdMapperModel<Long> model = (IdMapperModel<Long>) selectItem.getValue();
-			if (model.getId().equals(id)) {
-				return (IdMapperModel<Long>) selectItem.getValue();
-			}
-		}
-		return null;
+	public VenueViewModel getVenueItMapperForId(long id) {
+		final List<VenueViewModel> filtered = venues.parallelStream().filter(venue -> venue.getId().equals(id))
+				.collect(Collectors.toList());
+		return (!filtered.isEmpty()) ? filtered.get(0) : null;
 	}
 
 	public VenueViewModel getVenueViewForId(long id) {
 		final List<VenueViewModel> filtered = venues.parallelStream()
 				.filter(venue -> Long.valueOf(id).equals(venue.getId())).collect(Collectors.toList());
 		return (!filtered.isEmpty()) ? filtered.get(0) : null;
-	}
-
-	public Converter getArtistItemConverter() {
-		return new SelectItemIdMapperModelConverter(artistItems, bundle);
-	}
-
-	public Converter getVenueItemConverter() {
-		return new SelectItemIdMapperModelConverter(venueItems, bundle);
 	}
 
 	public List<SelectItem> getArtistItems() {
@@ -314,4 +393,21 @@ public class PerformanceSupport implements Serializable {
 	public List<PerformanceLazyDataTableModel> getPerformanceTableModels() {
 		return performanceTableModels;
 	}
+
+	public List<SimpleNameViewModel<Long>> getArtistGroups() {
+		return artistGroups;
+	}
+
+	public List<SimpleNameViewModel<Long>> getArtistCategories() {
+		return artistCategories;
+	}
+
+	public List<SelectItem> getArtistGroupItems() {
+		return artistGroupItems;
+	}
+
+	public List<SelectItem> getArtistCategoryItems() {
+		return artistCategoryItems;
+	}
+
 }

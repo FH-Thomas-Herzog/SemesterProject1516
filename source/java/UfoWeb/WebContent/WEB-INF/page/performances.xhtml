@@ -8,10 +8,6 @@
 
 	<h:panelGroup id="performanceContainer" layout="block">
 		<h:form id="performancesForm" prependId="true">
-			<!-- <ui:repeat id="performanceDays"
-			rendered="#{not empty performanceSupport.performanceTableModels}"
-			value="#{performanceSupport.performanceTableModels}" var="item">
- -->
 			<p:accordionPanel
 				rendered="#{not empty performanceSupport.performanceTableModels}"
 				value="#{performanceSupport.performanceTableModels}" var="item"
@@ -44,13 +40,13 @@
 						</f:facet>
 						<p:ajax event="filter" process="@this" partialSubmit="true" />
 
-						<p:column sortable="true" sortBy="#{row.venue.label}"
-							filterable="true" filterBy="#{row.venue.label}"
+						<p:column sortable="true" sortBy="#{row.venue.name}"
+							filterable="true" filterBy="#{row.venue.name}"
 							style="text-align: left;">
 							<f:facet name="header">
 								<h:outputText value="#{msg.venue}" style="margin-right: 10px;" />
 								<p:commandLink
-									action="#{venueInfoDialog.init(null, item.date,true)}"
+									action="#{venueInfoDialog.init(null, item.date, true)}"
 									styleClass="fa fa-map-marker fa-3x" style="color: red;"
 									global="true" process="@this" update=":dialogGroup"
 									title="#{msg.openVenueDialog}"
@@ -61,7 +57,7 @@
 								global="true" update=":dialogGroup" process="@this"
 								styleClass="fa fa-map-marker fa-3x"
 								style="margin-right: 10px; color:red;" />
-							<h:outputText value="#{row.venue.label}" />
+							<h:outputText value="#{row.venue.name}" />
 						</p:column>
 
 						<p:columns value="#{item.columns}" var="column"

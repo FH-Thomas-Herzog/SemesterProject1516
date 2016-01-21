@@ -11,7 +11,6 @@ import javax.faces.model.SelectItem;
 
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 import at.fh.ooe.swk.ufo.web.application.model.IdHolder;
-import at.fh.ooe.swk.ufo.web.application.model.IdMapperModel;
 
 /**
  * 
