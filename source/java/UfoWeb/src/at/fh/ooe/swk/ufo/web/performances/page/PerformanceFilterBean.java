@@ -16,8 +16,8 @@ import javax.inject.Named;
 
 import org.primefaces.event.SelectEvent;
 
+import at.fh.ooe.swk.ufo.service.api.annotation.ServiceTimeZone;
 import at.fh.ooe.swk.ufo.service.api.model.PerformanceFilter;
-import at.fh.ooe.swk.ufo.web.application.annotation.ServiceTimeZone;
 import at.fh.ooe.swk.ufo.web.application.model.SimpleNameViewModel;
 import at.fh.ooe.swk.ufo.web.performances.constants.PerformanceSearchOption;
 import at.fh.ooe.swk.ufo.web.performances.model.ArtistViewModel;

@@ -1,7 +1,7 @@
 package at.fh.ooe.swk.ufo.web.application.constants;
 
 /**
- * Specifies the used context parameters in the web.xml
+ * Specifies the used context parameters in the web.xml.
  * 
  * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
  * @date Jan 19, 2016

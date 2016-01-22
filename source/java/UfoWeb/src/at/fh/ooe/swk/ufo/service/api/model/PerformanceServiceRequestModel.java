@@ -3,7 +3,7 @@ package at.fh.ooe.swk.ufo.service.api.model;
 import java.util.Calendar;
 
 /**
- * The request model for the perfomance save/delete operation.
+ * The request model for the performance save/delete operation.
  * 
  * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
  * @date Jan 19, 2016
@@ -20,8 +20,8 @@ public class PerformanceServiceRequestModel extends AbstractAuthenticationServic
 		super();
 	}
 
-	public PerformanceServiceRequestModel(String username, String password, String languageCode, Long id, Long version, Long artistId,
-			Long venueId, Calendar startDate) {
+	public PerformanceServiceRequestModel(String username, String password, String languageCode, Long id, Long version,
+			Long artistId, Long venueId, Calendar startDate) {
 		super(username, password, languageCode);
 		this.id = id;
 		this.version = version;

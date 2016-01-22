@@ -17,7 +17,7 @@ import at.fh.ooe.swk.ufo.web.application.exception.ProxyServiceExceptionHandler;
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 
 /**
- * This beans handles the login and logout actions
+ * This beans handles the login and logout actions.
  * 
  * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
  * @date Jan 19, 2016

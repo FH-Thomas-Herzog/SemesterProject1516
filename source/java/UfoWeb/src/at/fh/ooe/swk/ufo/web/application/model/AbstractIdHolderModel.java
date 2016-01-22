@@ -1,5 +1,14 @@
 package at.fh.ooe.swk.ufo.web.application.model;
 
+/**
+ * The abstract implementation of the {@link IdHolder} interface and provides
+ * proper implementation of hash and equals.
+ * 
+ * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
+ * @date Jan 22, 2016
+ * @param <T>
+ *            the id holder type
+ */
 public abstract class AbstractIdHolderModel<T> implements IdHolder<T> {
 
 	private static final long serialVersionUID = -5802365979985934316L;
@@ -8,7 +17,6 @@ public abstract class AbstractIdHolderModel<T> implements IdHolder<T> {
 
 	public AbstractIdHolderModel() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
 
 	public AbstractIdHolderModel(T id) {

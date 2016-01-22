@@ -65,7 +65,7 @@ public class GlobalExceptionHandler extends ExceptionHandlerWrapper {
 				i.remove();
 			}
 		}
-		// parent hanle
+		// parent handle
 		getWrapped().handle();
 	}
 }

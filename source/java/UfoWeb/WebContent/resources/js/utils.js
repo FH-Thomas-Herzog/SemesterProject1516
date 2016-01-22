@@ -25,3 +25,14 @@ function stopEnterKeyForText(evt) {
 			: null);
 	return !((isEnterKey(evt)) && (node.type == 'text'));
 }
+
+function resetMultileTables(name, count) {
+	for (var i = 0; i < count; i++) {
+		var fullName = name + i;
+		var table = PF(fullName);
+		if (table) {
+			table.clearFilters();
+		}
+	}
+	return true;
+}

@@ -10,10 +10,14 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 
 /**
- * Converter for {@link SelectItem} which hold object values
+ * Converter for {@link SelectItem} which hold object values. It calls toString
+ * on the object for creating string representation.
  * 
  * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
  * @date Jan 19, 2016
@@ -22,6 +26,8 @@ public class SelectItemObjectConverter implements Converter {
 
 	private final MessagesBundle bundle;
 	private final List<SelectItem> items;
+
+	private static final Logger log = LogManager.getLogger(SelectItemEnumConverter.class);
 
 	public SelectItemObjectConverter(List<SelectItem> items, MessagesBundle bundle) {
 		super();
@@ -44,6 +50,7 @@ public class SelectItemObjectConverter implements Converter {
 				}
 			}
 		} catch (Exception e) {
+			log.error("Conversion of object failed with an exception", e);
 			throw new ConverterException(
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getErrorUnexpected(), ""));
 		}

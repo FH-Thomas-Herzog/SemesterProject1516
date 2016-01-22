@@ -348,10 +348,12 @@ public class PerformanceSupport implements Serializable {
 				};
 			});
 			// Prepare table pages for each date
+			int idx = 0;
 			for (Entry<Calendar, List<PerformanceViewModel>> entry : sortedMap.entrySet()) {
 				final PerformanceLazyDataTableModel table = dataTableSubPageInstances.get();
-				table.init(entry.getKey(), entry.getValue());
+				table.init(idx, entry.getKey(), entry.getValue());
 				performanceTableModels.add(table);
+				idx++;
 			}
 		}
 	}

@@ -1,13 +1,10 @@
 package at.fh.ooe.swk.ufo.service.impl.proxy;
 
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import at.fh.ooe.swk.ufo.service.api.converter.ServiceModelConverter;
@@ -15,7 +12,6 @@ import at.fh.ooe.swk.ufo.service.api.model.PerformanceFilter;
 import at.fh.ooe.swk.ufo.service.api.model.PerformanceServiceRequestModel;
 import at.fh.ooe.swk.ufo.service.api.model.ResultModel;
 import at.fh.ooe.swk.ufo.service.api.proxy.PerformanceServiceProxy;
-import at.fh.ooe.swk.ufo.web.application.annotation.ServiceTimeZone;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
 import at.fh.ooe.swk.ufo.webservice.ListResultModelOfPerformanceModel;
 import at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest;
@@ -26,7 +22,7 @@ import at.fh.ooe.swk.ufo.webservice.SingleResultModelOfNullableOfBoolean;
 import at.fh.ooe.swk.ufo.webservice.SingleResultModelOfPerformanceModel;
 
 /**
- * The perforamnce proxy implementation for the soap service.
+ * The performance proxy implementation for the soap service.
  * 
  * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
  * @date Jan 19, 2016

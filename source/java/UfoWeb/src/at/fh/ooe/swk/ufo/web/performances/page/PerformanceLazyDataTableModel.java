@@ -38,6 +38,7 @@ public class PerformanceLazyDataTableModel extends LazyDataModel<PerformanceRowM
 	@Inject
 	private LanguageBean languageBean;
 
+	private int idx;
 	private int dataCount = 0;
 	private Calendar date;
 	private List<PerformanceColumnModel> columns;
@@ -57,8 +58,9 @@ public class PerformanceLazyDataTableModel extends LazyDataModel<PerformanceRowM
 	 * @throws IllegalArgumentException
 	 *             if performances list is empty
 	 */
-	public void init(final Calendar header, final List<PerformanceViewModel> performances) {
+	public void init(int idx, final Calendar header, final List<PerformanceViewModel> performances) {
 		Objects.requireNonNull(performances, "DataTabelSubPage needs performances to be given");
+		this.idx = idx;
 		this.performances = performances;
 		if (performances.isEmpty()) {
 			throw new IllegalArgumentException("Performances must not be empty");
@@ -175,4 +177,9 @@ public class PerformanceLazyDataTableModel extends LazyDataModel<PerformanceRowM
 	public long getDataCount() {
 		return dataCount;
 	}
+
+	public int getIdx() {
+		return idx;
+	}
+
 }

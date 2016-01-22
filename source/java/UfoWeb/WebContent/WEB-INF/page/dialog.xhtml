@@ -187,7 +187,8 @@
 			style="padding: 10px;">
 
 			<p:ajax event="close" listener="#{performanceEditDialog.onClose()}"
-				global="true" async="true" partialSubmit="true" process="@this"
+				global="true" async="true" partialSubmit="true"
+				process="@this, :performanceContainer"
 				update=":dialogGroup, :performanceContainer" />
 
 			<h:panelGroup id="formContainer"

@@ -1,7 +1,8 @@
 package at.fh.ooe.swk.ufo.service.api.model;
 
 /**
- * The result model for the service results.
+ * The result model for the service results. It holds the information about a
+ * possible occurred error and/or the result.
  * 
  * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
  * @date Jan 19, 2016

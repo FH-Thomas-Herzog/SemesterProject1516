@@ -16,6 +16,8 @@ import at.fh.ooe.swk.ufo.web.application.constants.ContextParameter;
 @WebListener
 public class StartupListener implements ServletContextListener {
 
+	private static final Locale FALLBACK_LOCALE = Locale.GERMAN;
+
 	/**
 	 * Default constructor.
 	 */
@@ -32,10 +34,13 @@ public class StartupListener implements ServletContextListener {
 	 * @see ServletContextListener#contextInitialized(ServletContextEvent)
 	 */
 	public void contextInitialized(ServletContextEvent arg0) {
-		// Sets the default locale
+		// Sets the default locale defined by web.xml
 		final String localeString = arg0.getServletContext().getInitParameter(ContextParameter.LOCALE.key);
-		final Locale locale = LocaleUtils.toLocale(localeString);
-		Locale.setDefault(locale);
+		if (localeString == null) {
+			Locale.setDefault(LocaleUtils.toLocale(localeString));
+		} else {
+			Locale.setDefault(FALLBACK_LOCALE);
+		}
 
 		// Set truststore here because arguments didn't work. Shouldn't be here
 		System.setProperty("javax.net.ssl.trustStore",

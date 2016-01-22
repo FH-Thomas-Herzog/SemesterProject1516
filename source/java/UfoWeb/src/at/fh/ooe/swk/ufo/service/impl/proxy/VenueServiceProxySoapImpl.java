@@ -1,21 +1,16 @@
 package at.fh.ooe.swk.ufo.service.impl.proxy;
 
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
-import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
 import at.fh.ooe.swk.ufo.service.api.converter.ServiceModelConverter;
 import at.fh.ooe.swk.ufo.service.api.model.PerformanceFilter;
 import at.fh.ooe.swk.ufo.service.api.model.ResultModel;
 import at.fh.ooe.swk.ufo.service.api.proxy.VenueServiceProxy;
-import at.fh.ooe.swk.ufo.web.application.annotation.ServiceTimeZone;
-import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.VenueViewModel;
 import at.fh.ooe.swk.ufo.webservice.ListResultModelOfVenueModel;
 import at.fh.ooe.swk.ufo.webservice.PerformanceFilterRequest;

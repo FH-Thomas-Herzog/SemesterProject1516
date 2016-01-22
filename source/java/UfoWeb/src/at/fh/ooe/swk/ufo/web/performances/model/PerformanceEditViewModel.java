@@ -9,7 +9,7 @@ import javax.inject.Named;
 
 import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 
-import at.fh.ooe.swk.ufo.web.application.annotation.ServiceTimeZone;
+import at.fh.ooe.swk.ufo.service.api.annotation.ServiceTimeZone;
 import at.fh.ooe.swk.ufo.web.application.model.IdHolder;
 import at.fh.ooe.swk.ufo.web.performances.page.PerformanceSupport;
 

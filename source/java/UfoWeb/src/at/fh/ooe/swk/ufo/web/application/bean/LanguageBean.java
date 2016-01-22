@@ -8,7 +8,8 @@ import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
 
 /**
- * This beans holds the locale information for the current seassion.
+ * This beans holds the locale information for the current session.<br>
+ * Here we could switch the language if implemented.
  * 
  * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
  * @date Jan 19, 2016

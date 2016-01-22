@@ -10,13 +10,19 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
+import at.fh.ooe.swk.ufo.service.api.annotation.ServiceTimeZone;
 import at.fh.ooe.swk.ufo.service.api.converter.ServiceModelConverter;
-import at.fh.ooe.swk.ufo.web.application.annotation.ServiceTimeZone;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.VenueViewModel;
 import at.fh.ooe.swk.ufo.webservice.PerformanceModel;
 import at.fh.ooe.swk.ufo.webservice.VenueModel;
 
+/**
+ * The soap model converter for venue models.
+ * 
+ * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
+ * @date Jan 22, 2016
+ */
 @ApplicationScoped
 public class VenueSoapServiceModelConverter implements ServiceModelConverter<VenueModel, VenueViewModel> {
 

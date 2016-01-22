@@ -9,20 +9,26 @@ import javax.faces.convert.Converter;
 import javax.faces.convert.ConverterException;
 import javax.faces.model.SelectItem;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 import at.fh.ooe.swk.ufo.web.application.model.IdHolder;
 
 /**
+ * Base implementation for {@link IdHolder} types.
  * 
  * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
  * @date Jan 19, 2016
  */
-public abstract class SelectItemIdHolderConverter<T> implements Converter {
+public abstract class AbstractSelectItemIdHolderConverter<T> implements Converter {
 
 	private final MessagesBundle bundle;
 	private final List<SelectItem> items;
 
-	public SelectItemIdHolderConverter(List<SelectItem> items, MessagesBundle bundle) {
+	private static final Logger log = LogManager.getLogger(SelectItemEnumConverter.class);
+
+	public AbstractSelectItemIdHolderConverter(List<SelectItem> items, MessagesBundle bundle) {
 		super();
 		this.items = items;
 		this.bundle = bundle;
@@ -41,6 +47,7 @@ public abstract class SelectItemIdHolderConverter<T> implements Converter {
 				}
 			}
 		} catch (Exception e) {
+			log.error("Conversionof id holder value failed with an exception", e);
 			throw new ConverterException(
 					new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getErrorUnexpected(), ""));
 		}
@@ -57,7 +64,21 @@ public abstract class SelectItemIdHolderConverter<T> implements Converter {
 		return getIdAsString(((IdHolder<T>) value).getId());
 	}
 
+	/**
+	 * Gets the id as a string representation.
+	 * 
+	 * @param id
+	 *            the id to get string representation for.
+	 * @return the string representation of the id
+	 */
 	protected abstract String getIdAsString(T id);
 
+	/**
+	 * Gets the id from the string representation.
+	 * 
+	 * @param value
+	 *            the string value to convert to id instance
+	 * @return the created id instance
+	 */
 	protected abstract T getIdAsObject(String value);
 }

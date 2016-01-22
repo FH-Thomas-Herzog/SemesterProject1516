@@ -17,10 +17,10 @@ import org.apache.logging.log4j.Logger;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.SelectEvent;
 
+import at.fh.ooe.swk.ufo.service.api.annotation.ServiceTimeZone;
 import at.fh.ooe.swk.ufo.service.api.model.PerformanceServiceRequestModel;
 import at.fh.ooe.swk.ufo.service.api.model.ResultModel;
 import at.fh.ooe.swk.ufo.service.api.proxy.PerformanceServiceProxy;
-import at.fh.ooe.swk.ufo.web.application.annotation.ServiceTimeZone;
 import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
 import at.fh.ooe.swk.ufo.web.application.bean.UserContextModel;
 import at.fh.ooe.swk.ufo.web.application.exception.ProxyServiceExceptionHandler;

@@ -29,10 +29,10 @@ import com.google.maps.GeoApiContext;
 import com.google.maps.GeocodingApi;
 import com.google.maps.model.GeocodingResult;
 
+import at.fh.ooe.swk.ufo.service.api.annotation.ServiceTimeZone;
 import at.fh.ooe.swk.ufo.service.api.model.PerformanceFilter;
 import at.fh.ooe.swk.ufo.service.api.model.ResultModel;
 import at.fh.ooe.swk.ufo.service.api.proxy.VenueServiceProxy;
-import at.fh.ooe.swk.ufo.web.application.annotation.ServiceTimeZone;
 import at.fh.ooe.swk.ufo.web.application.constants.ContextParameter;
 import at.fh.ooe.swk.ufo.web.application.exception.ProxyServiceExceptionHandler;
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;

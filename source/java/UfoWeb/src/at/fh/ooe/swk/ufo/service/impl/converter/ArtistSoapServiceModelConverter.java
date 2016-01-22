@@ -8,6 +8,12 @@ import at.fh.ooe.swk.ufo.service.api.converter.ServiceModelConverter;
 import at.fh.ooe.swk.ufo.web.performances.model.ArtistViewModel;
 import at.fh.ooe.swk.ufo.webservice.ArtistModel;
 
+/**
+ * The soap model converter for artist soap models.
+ * 
+ * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
+ * @date Jan 22, 2016
+ */
 @ApplicationScoped
 public class ArtistSoapServiceModelConverter implements ServiceModelConverter<ArtistModel, ArtistViewModel> {
 

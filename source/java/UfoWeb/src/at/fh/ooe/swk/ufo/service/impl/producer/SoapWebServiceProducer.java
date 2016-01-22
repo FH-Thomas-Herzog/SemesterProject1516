@@ -2,6 +2,7 @@ package at.fh.ooe.swk.ufo.service.impl.producer;
 
 import java.io.Serializable;
 import java.net.URL;
+import java.util.TimeZone;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
@@ -15,7 +16,7 @@ import org.apache.axis.message.SOAPHeaderElement;
 import org.apache.deltaspike.core.api.common.DeltaSpike;
 import org.apache.logging.log4j.Logger;
 
-import at.fh.ooe.swk.ufo.service.api.proxy.PerformanceServiceProxy;
+import at.fh.ooe.swk.ufo.service.api.annotation.ServiceTimeZone;
 import at.fh.ooe.swk.ufo.web.application.constants.ContextParameter;
 import at.fh.ooe.swk.ufo.webservice.ArtistServiceLocator;
 import at.fh.ooe.swk.ufo.webservice.ArtistServiceSoap;
@@ -31,7 +32,8 @@ import at.fh.ooe.swk.ufo.webservice.VenueServiceSoap;
 import at.fh.ooe.swk.ufo.webservice.VenueServiceSoapStub;
 
 /**
- * This clss produces the soap service instances for the proxy services.
+ * The cdi producer for producing the soap service instances and its related
+ * resources. It depends on a injectable {@link ServletContext}.
  * 
  * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
  * @date Jan 9, 2016
@@ -54,11 +56,16 @@ public class SoapWebServiceProducer implements Serializable {
 	private URL venueServiceURL;
 	private URL securityServiceURL;
 
+	private String serviceTimeZone;
 	private ArtistServiceLocator artistServiceLocator;
 	private PerformanceServiceLocator performanceServiceLocator;
 	private VenueServiceLocator venueServiceLocator;
 	private SecurityServiceLocator securityServiceLocator;
 
+	/**
+	 * Initializes the producer by retrieving the service urls from the servlet
+	 * context.
+	 */
 	@PostConstruct
 	public void postContruct() {
 		// Get authentication data from web.xml
@@ -67,6 +74,13 @@ public class SoapWebServiceProducer implements Serializable {
 
 		if ((username == null) || (password == null)) {
 			throw new IllegalStateException("Username and password need to be provided via web.xml");
+		}
+
+		// Get set service timezone
+		String serviceTimeZone = servletContext.getInitParameter(ContextParameter.SERVICE_TIMEZONE_KEY.key);
+		// Assume UTC time zone
+		if (serviceTimeZone == null) {
+			serviceTimeZone = "UTC";
 		}
 
 		// Get webservice-urls from web.xml
@@ -143,6 +157,13 @@ public class SoapWebServiceProducer implements Serializable {
 			log.error("Could not produce the '" + SecurityServiceSoap.class.getName() + "' instance", e);
 			return null;
 		}
+	}
+
+	@Produces
+	@Dependent
+	@ServiceTimeZone
+	public TimeZone produceTimeZone() {
+		return TimeZone.getTimeZone(serviceTimeZone);
 	}
 
 	/**

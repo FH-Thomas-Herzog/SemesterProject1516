@@ -14,7 +14,7 @@ import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 
 /**
  * The exception handler which handles the service exceptions which are
- * dtermined from the service result instance.
+ * determined from the service result instance.
  * 
  * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
  * @date Jan 19, 2016
