@@ -89,7 +89,7 @@ namespace UFO.Server.Webservice.Soap.Soap
                     {
                         Venue venue = entry.Key;
                         List<Performance> performances = entry.Value;
-                        return new VenueModel
+                        VenueModel venueModel = new VenueModel
                         {
                             Id = venue.Id.Value,
                             Name = venue.Name,
@@ -114,6 +114,8 @@ namespace UFO.Server.Webservice.Soap.Soap
                                 }
                             }).ToList()
                         };
+                        venueModel.Performances.Sort((o1, o2) => o1.StartDate.CompareTo(o2.StartDate));
+                        return venueModel;
                     }).ToList();
                 }
                 catch (Exception e)
