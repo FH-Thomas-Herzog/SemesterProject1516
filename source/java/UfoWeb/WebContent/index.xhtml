@@ -47,16 +47,20 @@
 	<ui:define name="endContent">
 		<h:form id="menuStackForm" prependId="true">
 			<p:stack id="menuStack" icon="/resources/images/stack.png"
-				expanded="#{utxModel.logged ? true : false}">
-				<p:menuitem value="#{msg.login}" rendered="#{not utxModel.logged}"
-					global="true" update=":dialogGroup"
-					oncomplete="PF('loginDialog').show();">
+				expanded="true">
+				<p:menuitem value="#{msg.login}"
+					icon="resources/images/lock_small.png"
+					rendered="#{not utxModel.logged}" global="true"
+					update=":dialogGroup" oncomplete="PF('loginDialog').show();">
 					<p:resetInput target=":dialogGroup" />
 				</p:menuitem>
-				<p:menuitem value="#{msg.logout}" rendered="#{utxModel.logged}"
+				<p:menuitem value="#{msg.logout}"
+					icon="resources/images/lock_small.png"
+					rendered="#{utxModel.logged}"
 					actionListener="#{loginBean.logout()}" partialSubmit="true"
 					global="true" update=":performanceContainer, @form" />
 				<p:menuitem value="#{msg.performances}"
+					icon="resources/images/edit_small.png"
 					rendered="#{utxModel.logged}"
 					actionListener="#{performanceEditDialog.init(null)}" global="true"
 					update=":dialogGroup" partialSubmit="true"

@@ -4,6 +4,7 @@ import java.util.Iterator;
 
 import javax.faces.FacesException;
 import javax.faces.application.FacesMessage;
+import javax.faces.application.ViewExpiredException;
 import javax.faces.context.ExceptionHandler;
 import javax.faces.context.ExceptionHandlerWrapper;
 import javax.faces.context.FacesContext;
@@ -54,9 +55,28 @@ public class GlobalExceptionHandler extends ExceptionHandlerWrapper {
 			final FacesContext fc = FacesContext.getCurrentInstance();
 
 			try {
-				log.error("Critical Exception!", t);
-				fc.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getErrorUnexpected(), ""));
-				fc.renderResponse();
+				// Handle ajax request error
+				if (fc.getPartialViewContext().isAjaxRequest()) {
+					// Handle ViewExpiredException by recreating of the view.
+					if (t instanceof ViewExpiredException) {
+						fc.addMessage(null,
+								new FacesMessage(FacesMessage.SEVERITY_INFO, bundle.getErrorViewExpired(), ""));
+						fc.getExternalContext()
+								.redirect(fc.getExternalContext().getRequestContextPath() + "/index.xhtml");
+						log.error("Handled ViewExpiredException on ajax request", t);
+					} else {
+						log.error("Critical Exception!", t);
+						fc.addMessage(null,
+								new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getErrorUnexpected(), ""));
+						fc.renderResponse();
+						log.error("Handled critical exception on ajax request", t);
+					}
+				}
+				// Handle initial call error
+				else {
+					fc.getExternalContext().redirect(fc.getExternalContext().getRequestContextPath() + "/error.xhtml");
+					log.error("Handled exception on view init", t);
+				}
 
 			} catch (Exception e) {
 				log.error(GlobalExceptionHandler.class.getName() + " could not handle exception", t);

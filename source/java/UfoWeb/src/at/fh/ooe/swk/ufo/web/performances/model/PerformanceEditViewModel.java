@@ -2,26 +2,24 @@ package at.fh.ooe.swk.ufo.web.performances.model;
 
 import java.util.Calendar;
 import java.util.Objects;
-import java.util.TimeZone;
 
-import javax.inject.Inject;
 import javax.inject.Named;
 
 import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 
-import at.fh.ooe.swk.ufo.service.api.annotation.ServiceTimeZone;
 import at.fh.ooe.swk.ufo.web.application.model.IdHolder;
-import at.fh.ooe.swk.ufo.web.performances.page.PerformanceSupport;
 
+/**
+ * ViewScoped edit view bean for editing performances.
+ * 
+ * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
+ * @date Jan 23, 2016
+ */
 @ViewAccessScoped
 @Named("performanceEditViewModel")
 public class PerformanceEditViewModel implements IdHolder<Long> {
 
 	private static final long serialVersionUID = 1994942977872442719L;
-
-	@Inject
-	@ServiceTimeZone
-	private TimeZone serviecTimeZone;
 
 	private Long id;
 	private Long version;
@@ -30,20 +28,30 @@ public class PerformanceEditViewModel implements IdHolder<Long> {
 	private Calendar date;
 	private Integer hour;
 
+	/**
+	 * Initializes and indicates a new performances will be created.
+	 * 
+	 * @param now
+	 *            the now date time.
+	 * @param startHour
+	 *            the min start hour value
+	 */
 	public void init(Calendar now, int startHour) {
 		Objects.requireNonNull(now);
 
 		reset();
 
-		// prepare initial date
 		date = Calendar.getInstance();
 		date.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DATE), 0, 0, 0);
-		// prepare times
 		hour = startHour;
-
-		date.setTimeZone(serviecTimeZone);
 	}
 
+	/**
+	 * Initializes this model with an existing performance.
+	 * 
+	 * @param model
+	 *            the performance view model to retrieve data from
+	 */
 	public void init(PerformanceViewModel model) {
 		Objects.requireNonNull(model);
 
@@ -57,6 +65,9 @@ public class PerformanceEditViewModel implements IdHolder<Long> {
 		hour = model.getStartDate().get(Calendar.HOUR_OF_DAY);
 	}
 
+	/**
+	 * Resets this view model.
+	 */
 	public void reset() {
 		id = null;
 		version = null;
@@ -66,6 +77,9 @@ public class PerformanceEditViewModel implements IdHolder<Long> {
 		hour = null;
 	}
 
+	// ####################################################
+	// Getter and Setter
+	// ####################################################
 	public Long getId() {
 		return id;
 	}

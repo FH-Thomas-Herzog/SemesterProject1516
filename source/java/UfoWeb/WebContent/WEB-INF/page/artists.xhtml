@@ -11,7 +11,7 @@
 			<h:panelGroup id="artistActionsContainer" layout="block"
 				style="margin: 10px;">
 				<p:commandButton id="resetFiltersButton" icon="fa fa-close"
-					partialSubmit="true" title="#{msg.reset}"
+					partialSubmit="true" title="#{msg.resetFilters}"
 					actionListener="#{performancePage.onArtistsSearchReset()}"
 					process="@this" update="@form, artistsContainer" />
 			</h:panelGroup>
@@ -61,7 +61,14 @@
 						title="#{msg.clickOpenArtistDetails}"
 						actionListener="#{performancePage.prepareArtistDialog(artist.id)}"
 						process="@this" global="true" update=":dialogGroup" />
-					<h:outputText value="#{artist.fullName}" title="#{artist.email}" />
+					<h:outputText id="artistFullName" value="#{artist.fullName}">
+						<pe:tooltip for="artistFullName" shared="false"
+							atPosition="top center" myPosition="bottom center">
+							<ui:include src="templates/artist_meta_data.xhtml">
+								<ui:param name="model" value="#{artist}" />
+							</ui:include>
+						</pe:tooltip>
+					</h:outputText>
 				</h:panelGrid>
 			</p:dataList>
 		</h:panelGroup>

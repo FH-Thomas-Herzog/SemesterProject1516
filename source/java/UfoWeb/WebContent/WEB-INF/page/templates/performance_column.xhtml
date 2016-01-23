@@ -20,21 +20,9 @@
 				myPosition="bottom center">
 				<h:outputText value="#{msg.clickOpenArtistDetails}"
 					style="font-weight: bold; color: red; font-size: medium" />
-				<h:panelGrid id="artistTooltipGrid" columns="2" cellspacing="5"
-					border="0" style="margin: 10px; font-size: medium">
-					<h:outputText value="#{msg.artistGroup}" style="font-weight: bold;" />
-					<h:outputText
-						value="#{not empty model.artist.artistGroup ? model.artist.artistGroup : ' - '}" />
-
-					<h:outputText value="#{msg.artistCategory}"
-						style="font-weight: bold;" />
-					<h:outputText
-						value="#{not empty model.artist.artistCategory ? model.artist.artistCategory : ' - '}" />
-
-					<h:outputText value="#{msg.country}" style="font-weight: bold;" />
-					<h:outputText
-						value="#{not empty model.artist.getCountryName(languageBean.locale) ? model.artist.getCountryName(languageBean.locale) : ' - '}" />
-				</h:panelGrid>
+				<ui:include src="artist_meta_data.xhtml">
+					<ui:param name="model" value="#{model.artist}"/>
+				</ui:include>
 			</pe:tooltip>
 		</p:commandLink>
 

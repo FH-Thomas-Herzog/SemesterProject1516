@@ -15,7 +15,7 @@
 					actionListener="#{venueInfoDialog.init(null, null, false)}"
 					process="@this" update=":dialogGroup" style="margin-right: 10px;" />
 				<p:commandButton id="resetVenuesFiltersButton" icon="fa fa-close"
-					partialSubmit="true" title="#{msg.reset}"
+					partialSubmit="true" title="#{msg.resetFilters}"
 					actionListener="#{performancePage.onVenuesSearchReset()}"
 					process="@this" update="@form, venuesContainer" />
 			</h:panelGroup>

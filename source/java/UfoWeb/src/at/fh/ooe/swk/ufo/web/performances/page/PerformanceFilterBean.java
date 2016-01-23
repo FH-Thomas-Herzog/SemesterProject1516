@@ -10,10 +10,10 @@ import java.util.TimeZone;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
 
+import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 import org.primefaces.event.SelectEvent;
 
 import at.fh.ooe.swk.ufo.service.api.annotation.ServiceTimeZone;
@@ -23,7 +23,13 @@ import at.fh.ooe.swk.ufo.web.performances.constants.PerformanceSearchOption;
 import at.fh.ooe.swk.ufo.web.performances.model.ArtistViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.VenueViewModel;
 
-@SessionScoped
+/**
+ * The page filter bean which manages the provided global filters.
+ * 
+ * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
+ * @date Jan 23, 2016
+ */
+@ViewAccessScoped
 @Named("performanceFilterBean")
 public class PerformanceFilterBean implements Serializable {
 
@@ -34,6 +40,9 @@ public class PerformanceFilterBean implements Serializable {
 	@Inject
 	@ServiceTimeZone
 	private TimeZone serviceTimeZone;
+
+	@Inject
+	private PerformancesPage page;
 
 	private PerformanceSearchOption stateOption;
 	private Calendar fromDate;
@@ -130,11 +139,13 @@ public class PerformanceFilterBean implements Serializable {
 	// ##################################################
 	public void filter() {
 		support.loadPerformances();
+		page.setActiveAccordionIdx(null);
 	}
 
 	public void clear() {
 		reset();
 		support.init();
+		page.setActiveAccordionIdx(null);
 	}
 
 	public void reset() {
@@ -153,7 +164,7 @@ public class PerformanceFilterBean implements Serializable {
 	}
 
 	// ##################################################
-	// Event Lsiteners
+	// Event Listeners
 	// ##################################################
 	public void onFromDateSelect(SelectEvent event) {
 		final Date date = (Date) event.getObject();

@@ -4,8 +4,6 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.TimeZone;
 
-import javax.enterprise.inject.Instance;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ValueChangeEvent;
@@ -15,7 +13,6 @@ import javax.inject.Named;
 import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 import org.apache.logging.log4j.Logger;
 import org.primefaces.context.RequestContext;
-import org.primefaces.event.SelectEvent;
 
 import at.fh.ooe.swk.ufo.service.api.annotation.ServiceTimeZone;
 import at.fh.ooe.swk.ufo.service.api.model.PerformanceServiceRequestModel;
@@ -28,6 +25,13 @@ import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceEditViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
 
+/**
+ * The edit view dialog bean which handdles the perforamnces save/delete
+ * actions.
+ * 
+ * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
+ * @date Jan 23, 2016
+ */
 @ViewAccessScoped
 @Named("performanceEditDialog")
 public class PerformanceEditDialogBean implements Serializable {
@@ -64,6 +68,13 @@ public class PerformanceEditDialogBean implements Serializable {
 	private Integer startHour;
 	private Boolean started;
 
+	/**
+	 * Initializes this edit view bean with the given model. If null it
+	 * indicates a new perforamnces is intended.
+	 * 
+	 * @param model
+	 *            the model to initialize this handler. May be null
+	 */
 	public void init(PerformanceViewModel model) {
 		reset();
 		this.selectedPerformance = model;
@@ -95,30 +106,26 @@ public class PerformanceEditDialogBean implements Serializable {
 		final Calendar startDate = editViewModel.getDate();
 		startDate.set(Calendar.HOUR_OF_DAY, editViewModel.getHour());
 
-		try {
-			// prepare request
-			startDate.setTimeZone(serviceTimeZone);
-			final PerformanceServiceRequestModel model = new PerformanceServiceRequestModel();
-			model.setUsername(utx.getUsername());
-			model.setPassword(utx.getPassword());
-			model.setLanguageCode(languageBean.getLocale().getLanguage());
-			model.setId(editViewModel.getId());
-			model.setVersion(editViewModel.getVersion());
-			model.setArtistId(editViewModel.getArtist().getId());
-			model.setVenueId(editViewModel.getVenue().getId());
-			model.setStartDate(startDate);
+		// prepare request
+		startDate.setTimeZone(serviceTimeZone);
+		final PerformanceServiceRequestModel model = new PerformanceServiceRequestModel();
+		model.setUsername(utx.getUsername());
+		model.setPassword(utx.getPassword());
+		model.setLanguageCode(languageBean.getLocale().getLanguage());
+		model.setId(editViewModel.getId());
+		model.setVersion(editViewModel.getVersion());
+		model.setArtistId(editViewModel.getArtist().getId());
+		model.setVenueId(editViewModel.getVenue().getId());
+		model.setStartDate(startDate);
 
-			// Call web service
-			ResultModel<PerformanceViewModel> result = performanceService.save(model);
+		// Call web service
+		ResultModel<PerformanceViewModel> result = performanceService.save(model);
+		proxaExceptionHanlder.handleException(clientId, result);
 
-			// Handle response
-			if ((!proxaExceptionHanlder.handleException(clientId, result)) && (result.getResult() != null)) {
-				init(result.getResult());
-				RequestContext.getCurrentInstance().execute("updateFilterAndContent();");
-			}
-		} catch (Exception e) {
-			log.error("Could not save perforamnce", e);
-			fc.addMessage(clientId, new FacesMessage(FacesMessage.SEVERITY_ERROR, bundle.getErrorUnexpected(), ""));
+		// Handle response
+		if (result.getResult() != null) {
+			init(result.getResult());
+			RequestContext.getCurrentInstance().execute("updateFilterAndContent();");
 		}
 	}
 

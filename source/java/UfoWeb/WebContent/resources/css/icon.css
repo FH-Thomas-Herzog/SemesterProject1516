@@ -1,9 +1,18 @@
 .ufo-icon-small-info {
-	background-image: url("#{resource['images/info_25_25.png']}") !important;
+	background-image: url("#{resource['images/info_25_25.png']}");
 }
+
 .ufo-icon-small-warn {
-	background-image: url("#{resource['images/warn_25_25.png']}") !important;
+	background-image: url("#{resource['images/warn_25_25.png']}");
 }
+
 .ufo-icon-small-maps {
-	background-image: url("#{resource['images/maps_25_25.png']}") !important;
+	background-image: url("#{resource['images/maps_25_25.png']}");
+}
+
+.ufo-internal-error {
+	background: url("#{resource['images/internal_error.jpg']}") no-repeat
+		center center;
+	height: 400px;
+	width: 400px;
 }

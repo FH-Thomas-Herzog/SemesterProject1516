@@ -16,11 +16,12 @@ import org.apache.logging.log4j.Logger;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 
-import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
 import at.fh.ooe.swk.ufo.web.application.model.AbstractIdHolderModel;
 
 /**
- * The artist view model which
+ * The artist view model. CDI Dependent scoped bean because we want to use
+ * injection here. No problem is still a strong referenced bean, not part of an
+ * context at all.
  * 
  * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
  * @date Jan 19, 2016
@@ -54,6 +55,20 @@ public class ArtistViewModel extends AbstractIdHolderModel<Long> {
 		super();
 	}
 
+	/**
+	 * Initializes this model.
+	 * 
+	 * @param id
+	 * @param firstName
+	 * @param lastName
+	 * @param email
+	 * @param countryCode
+	 * @param url
+	 * @param artistGroup
+	 * @param artistCategory
+	 * @param imageBase64
+	 * @param imageType
+	 */
 	public void init(Long id, String firstName, String lastName, String email, String countryCode, String url,
 			String artistGroup, String artistCategory, String imageBase64, String imageType) {
 		this.id = id;
@@ -122,6 +137,14 @@ public class ArtistViewModel extends AbstractIdHolderModel<Long> {
 		return email;
 	}
 
+	/**
+	 * Got ContextNotActiveExceptions during conversion therefore locale must be
+	 * provided and cannot be retrieved from language bean.
+	 * 
+	 * @param locale
+	 *            the locale for localization
+	 * @return the localized country display name
+	 */
 	public String getCountryName(final Locale locale) {
 		return (this.locale != null) ? this.locale.getDisplayCountry(locale) : null;
 	}

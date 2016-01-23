@@ -65,8 +65,8 @@ public interface MessagesBundle extends Serializable {
 	@MessageTemplate("{FILTER}")
 	String getFilter();
 
-	@MessageTemplate("{RESET}")
-	String getReset();
+	@MessageTemplate("{RESET_FILTERS}")
+	String getResetFilters();
 
 	@MessageTemplate("{OPTIONS}")
 	String getOptions();
@@ -187,4 +187,13 @@ public interface MessagesBundle extends Serializable {
 
 	@MessageTemplate("{ERROR_UNEXPECTED}")
 	String getErrorUnexpected();
+
+	@MessageTemplate("{ERROR_VIEW_EXPIRED}")
+	String getErrorViewExpired();
+
+	@MessageTemplate("{ERROR_INTERNAL}")
+	String getErrorInternal();
+
+	@MessageTemplate("{RETURN_TO_MAIN_PAGE}")
+	String getReturnToMainPage();
 }

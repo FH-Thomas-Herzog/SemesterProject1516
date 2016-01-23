@@ -10,14 +10,12 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
 import javax.enterprise.inject.Instance;
@@ -46,6 +44,15 @@ import at.fh.ooe.swk.ufo.web.performances.model.ArtistViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.VenueViewModel;
 
+/**
+ * The support bean which holds all of the loaded data and provides the data in
+ * several formats such as SelectItem list.<br>
+ * Here we could manage the loading behavior since all beans and pages use this
+ * beans for retrieving their data.
+ * 
+ * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
+ * @date Jan 23, 2016
+ */
 @SessionScoped
 @Named("performanceSupport")
 public class PerformanceSupport implements Serializable {
@@ -83,13 +90,23 @@ public class PerformanceSupport implements Serializable {
 	private List<SelectItem> artistItems = new ArrayList<>();
 	private List<SelectItem> venueItems = new ArrayList<>();
 
+	/**
+	 * SelectItem comparator which sorts the items by their label.
+	 * 
+	 * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
+	 * @date Jan 23, 2016
+	 */
 	public static class SelectItemComparator implements Comparator<SelectItem> {
 		@Override
 		public int compare(SelectItem o1, SelectItem o2) {
-			return o1.getLabel().compareTo(o2.getLabel());
+			return o1.getLabel().toUpperCase().compareTo(o2.getLabel().toUpperCase());
 		}
 	}
 
+	/**
+	 * Initializes this bean after session start by loading all of the data by
+	 * the default filter
+	 */
 	@PostConstruct
 	public void init() {
 		loadSimpleArtists();
@@ -99,6 +116,15 @@ public class PerformanceSupport implements Serializable {
 		loadPerformances();
 	}
 
+	// ##################################################
+	// Search options producer
+	// ##################################################
+	/**
+	 * Produces the artist search options per request since the locale could
+	 * have changed.
+	 * 
+	 * @return the produced collection of {@link SelectItem}
+	 */
 	@Produces
 	@RequestScoped
 	@Named("artistSearchOptionItems")
@@ -112,6 +138,12 @@ public class PerformanceSupport implements Serializable {
 		return items;
 	}
 
+	/**
+	 * Produces the artist search options converter. Each component should have
+	 * its own converter instance.
+	 * 
+	 * @return the converter for the artist search options
+	 */
 	@Produces
 	@RequestScoped
 	@Named("artistSearchOptionItemsConverter")
@@ -120,6 +152,12 @@ public class PerformanceSupport implements Serializable {
 		return new SelectItemEnumConverter(items, bundle);
 	}
 
+	/**
+	 * Produces the venue search options per request since the locale could have
+	 * changed.
+	 * 
+	 * @return the produced collection of {@link SelectItem}
+	 */
 	@Produces
 	@RequestScoped
 	@Named("venueSearchOptionItems")
@@ -131,6 +169,12 @@ public class PerformanceSupport implements Serializable {
 		return items;
 	}
 
+	/**
+	 * Produces the venue search options converter. Each component should have
+	 * its own converter instance.
+	 * 
+	 * @return the converter for the venue search options
+	 */
 	@Produces
 	@RequestScoped
 	@Named("venueSearchOptionItemsConverter")
@@ -138,6 +182,12 @@ public class PerformanceSupport implements Serializable {
 		return new SelectItemEnumConverter(items, bundle);
 	}
 
+	/**
+	 * Produces the performance search options per request since the locale
+	 * could have changed.
+	 * 
+	 * @return the produced collection of {@link SelectItem}
+	 */
 	@Produces
 	@RequestScoped
 	@Named("performanceSearchOptionItems")
@@ -150,6 +200,15 @@ public class PerformanceSupport implements Serializable {
 		return items;
 	}
 
+	// ##################################################
+	// view model select item producer
+	// ##################################################
+	/**
+	 * Produces the performances search options converter. Each component should
+	 * have its own converter instance.
+	 * 
+	 * @return the converter for the performances search options
+	 */
 	@Produces
 	@RequestScoped
 	@Named("performanceSearchOptionItemsConverter")
@@ -158,10 +217,16 @@ public class PerformanceSupport implements Serializable {
 		return new SelectItemEnumConverter(items, bundle);
 	}
 
+	/**
+	 * Produces the country select items per request since the locale could have
+	 * changed.
+	 * 
+	 * @return the produced collection of {@link SelectItem}
+	 */
 	@Produces
 	@RequestScoped
 	@Named("countryOptionItems")
-	public List<SelectItem> getCountrySearchOtpionItems() {
+	public List<SelectItem> getCountryItems() {
 		final Locale locale = languageBean.getLocale();
 		return Arrays.asList(Locale.getISOCountries()).parallelStream().map(country -> new Locale("", country))
 				.collect(Collectors.toList()).parallelStream()
@@ -169,13 +234,24 @@ public class PerformanceSupport implements Serializable {
 				.sorted(new SelectItemComparator()).collect(Collectors.toList());
 	}
 
+	/**
+	 * Produces the country converter. Each component should have its own
+	 * converter instance.
+	 * 
+	 * @return the converter for the performances search options
+	 */
 	@Produces
 	@RequestScoped
 	@Named("countryOptionItemsConverter")
-	public Converter getCountrySearchOtpionItemsConverter(final @Named("countryOptionItems") List<SelectItem> items) {
+	public Converter getCountryItemsConverter(final @Named("countryOptionItems") List<SelectItem> items) {
 		return new SelectItemObjectConverter(items, bundle);
 	}
 
+	/**
+	 * Produces the performances select items
+	 * 
+	 * @return the produced collection of {@link SelectItem}
+	 */
 	@Produces
 	@RequestScoped
 	@Named("performanceItems")
@@ -208,6 +284,12 @@ public class PerformanceSupport implements Serializable {
 		return items;
 	}
 
+	/**
+	 * Produces the performances items converter. Each component should have its
+	 * own converter instance.
+	 * 
+	 * @return the converter for the performances items
+	 */
 	@Produces
 	@RequestScoped
 	@Named("performanceItemsConverter")
@@ -217,6 +299,12 @@ public class PerformanceSupport implements Serializable {
 				bundle);
 	}
 
+	/**
+	 * Produces the artists items converter. Each component should have its own
+	 * converter instance.
+	 * 
+	 * @return the converter for the artists items
+	 */
 	@Produces
 	@RequestScoped
 	@Named("artistsItemsConverter")
@@ -224,6 +312,12 @@ public class PerformanceSupport implements Serializable {
 		return new SelectItemIdHolderLongConverter(artistItems, bundle);
 	}
 
+	/**
+	 * Produces the venue items converter. Each component should have its own
+	 * converter instance.
+	 * 
+	 * @return the converter for the venue items
+	 */
 	@Produces
 	@RequestScoped
 	@Named("venuesItemsConverter")
@@ -231,6 +325,12 @@ public class PerformanceSupport implements Serializable {
 		return new SelectItemIdHolderLongConverter(venueItems, bundle);
 	}
 
+	/**
+	 * Produces the artist groups items converter. Each component should have
+	 * its own converter instance.
+	 * 
+	 * @return the converter for the artist groups items
+	 */
 	@Produces
 	@RequestScoped
 	@Named("artistGroupItemsConverter")
@@ -238,6 +338,12 @@ public class PerformanceSupport implements Serializable {
 		return new SelectItemIdHolderLongConverter(artistGroupItems, bundle);
 	}
 
+	/**
+	 * Produces the artist category items converter. Each component should have
+	 * its own converter instance.
+	 * 
+	 * @return the converter for the artist category items
+	 */
 	@Produces
 	@RequestScoped
 	@Named("artistCategoryItemsConverter")
@@ -245,6 +351,12 @@ public class PerformanceSupport implements Serializable {
 		return new SelectItemIdHolderLongConverter(artistCategoryItems, bundle);
 	}
 
+	// ##################################################
+	// Load methods
+	// ##################################################
+	/**
+	 * Performs the load of the artists.
+	 */
 	public void loadSimpleArtists() {
 		artists = new ArrayList<>();
 		artistItems = new ArrayList<>();
@@ -265,6 +377,9 @@ public class PerformanceSupport implements Serializable {
 		}
 	}
 
+	/**
+	 * Performs the load of the venues
+	 */
 	public void loadSimpleVenues() {
 		venues = new ArrayList<>();
 		venueItems = new ArrayList<>();
@@ -280,6 +395,9 @@ public class PerformanceSupport implements Serializable {
 		}
 	}
 
+	/**
+	 * Performs the load of the artist groups
+	 */
 	public void loadSimpleArtistGroups() {
 		artistGroups = new ArrayList<>();
 		artistGroupItems = new ArrayList<>();
@@ -294,6 +412,9 @@ public class PerformanceSupport implements Serializable {
 		}
 	}
 
+	/**
+	 * Performs the load of the artist categories.
+	 */
 	public void loadSimpleArtistCategories() {
 		artistCategories = new ArrayList<>();
 		artistCategoryItems = new ArrayList<>();
@@ -308,6 +429,9 @@ public class PerformanceSupport implements Serializable {
 		}
 	}
 
+	/**
+	 * Performs the load of the performances.
+	 */
 	public void loadPerformances() {
 		performances = new ArrayList<>();
 		performanceTableModels = new ArrayList<>();
@@ -351,31 +475,25 @@ public class PerformanceSupport implements Serializable {
 			int idx = 0;
 			for (Entry<Calendar, List<PerformanceViewModel>> entry : sortedMap.entrySet()) {
 				final PerformanceLazyDataTableModel table = dataTableSubPageInstances.get();
-				table.init(idx, entry.getKey(), entry.getValue());
+				table.init(entry.getKey(), entry.getValue());
 				performanceTableModels.add(table);
 				idx++;
 			}
 		}
 	}
 
-	public ArtistViewModel getArtistIdMapperForId(long id) {
-		final List<ArtistViewModel> filtered = artists.parallelStream().filter(artist -> artist.getId().equals(id))
-				.collect(Collectors.toList());
-		return (!filtered.isEmpty()) ? filtered.get(0) : null;
-	}
-
-	public VenueViewModel getVenueItMapperForId(long id) {
-		final List<VenueViewModel> filtered = venues.parallelStream().filter(venue -> venue.getId().equals(id))
-				.collect(Collectors.toList());
-		return (!filtered.isEmpty()) ? filtered.get(0) : null;
-	}
-
+	// ##################################################
+	// Helper
+	// ##################################################
 	public VenueViewModel getVenueViewForId(long id) {
 		final List<VenueViewModel> filtered = venues.parallelStream()
 				.filter(venue -> Long.valueOf(id).equals(venue.getId())).collect(Collectors.toList());
 		return (!filtered.isEmpty()) ? filtered.get(0) : null;
 	}
 
+	// ##################################################
+	// Getter and Setter
+	// ##################################################
 	public List<SelectItem> getArtistItems() {
 		return artistItems;
 	}

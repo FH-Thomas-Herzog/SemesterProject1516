@@ -23,6 +23,13 @@
     </script>
 </h:head>
 <h:body style="height: 100%">
+	<h:panelGroup id="messageGroup" layout="block">
+		<p:growl id="globalErrorMessageRow" autoUpdate="true"
+			globalOnly="true" showSummary="true" sticky="true" severity="error" />
+		<p:growl id="globalInfoMessageRow" autoUpdate="true" globalOnly="true"
+			showSummary="true" life="2000" severity="info" />
+	</h:panelGroup>
+
 	<h:form id="remoteCommandForm" prependId="true">
 		<!-- update=":filterContentContainer, :performanceContainer" -->
 		<p:remoteCommand name="updateFilterAndContent" global="false"
@@ -75,13 +82,6 @@
 				<h:outputText value="#{coreMsg.loadingPage}" />
 			</h:panelGrid>
 		</p:dialog>
-	</h:panelGroup>
-
-	<h:panelGroup id="messageGroup" layout="block">
-		<p:growl id="globalErrorMessageRow" autoUpdate="true"
-			globalOnly="true" showSummary="true" sticky="true" severity="error" />
-		<p:growl id="globalInfoMessageRow" autoUpdate="true" globalOnly="true"
-			showSummary="true" life="2000" severity="info" />
 	</h:panelGroup>
 
 	<h:panelGroup id="endContentContainer">

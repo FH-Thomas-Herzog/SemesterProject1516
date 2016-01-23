@@ -3,7 +3,6 @@ package at.fh.ooe.swk.ufo.web.performances.page;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -25,7 +24,7 @@ import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.VenueViewModel;
 
 /**
- * This class represents the lazy data model for performance models
+ * This class represents the lazy data model for performance models.
  * 
  * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
  * @date Jan 7, 2016
@@ -38,7 +37,6 @@ public class PerformanceLazyDataTableModel extends LazyDataModel<PerformanceRowM
 	@Inject
 	private LanguageBean languageBean;
 
-	private int idx;
 	private int dataCount = 0;
 	private Calendar date;
 	private List<PerformanceColumnModel> columns;
@@ -47,27 +45,27 @@ public class PerformanceLazyDataTableModel extends LazyDataModel<PerformanceRowM
 	private Set<Integer> performancestartHours;
 
 	/**
-	 * Initializes this data model
+	 * Initializes this data model.
 	 * 
-	 * @param date
-	 *            the table date
 	 * @param performances
 	 *            the list of performances
+	 * @param date
+	 *            the table date
+	 * 
 	 * @throws NullPointerException
 	 *             if performances are null
 	 * @throws IllegalArgumentException
 	 *             if performances list is empty
 	 */
-	public void init(int idx, final Calendar header, final List<PerformanceViewModel> performances) {
+	public void init(final Calendar header, final List<PerformanceViewModel> performances) {
 		Objects.requireNonNull(performances, "DataTabelSubPage needs performances to be given");
-		this.idx = idx;
 		this.performances = performances;
 		if (performances.isEmpty()) {
 			throw new IllegalArgumentException("Performances must not be empty");
 		}
 		this.dataCount = performances.size();
 		this.date = header;
-		buildRows(performances);
+		buildRows();
 		buildColumns(performances.get(0).getStartDate().get(Calendar.HOUR_OF_DAY),
 				performances.get(performances.size() - 1).getStartDate().get(Calendar.HOUR_OF_DAY));
 	}
@@ -78,6 +76,7 @@ public class PerformanceLazyDataTableModel extends LazyDataModel<PerformanceRowM
 	@Override
 	public List<PerformanceRowModel> load(int first, int pageSize, String sortField, SortOrder sortOrder,
 			Map<String, Object> filters) {
+		// Copy all rows to work on
 		List<PerformanceRowModel> data = new ArrayList<>(rows.size());
 
 		// Apply filters
@@ -98,7 +97,7 @@ public class PerformanceLazyDataTableModel extends LazyDataModel<PerformanceRowM
 				startHour = columns.get(Integer.valueOf(sortField)).getStartHour();
 			} catch (NumberFormatException e) {
 			}
-			Collections.sort(data, new PerformanceLazySorter(startHour,
+			data.sort(new PerformanceLazySorter(startHour,
 					(SortOrder.ASCENDING.equals(sortOrder)) ? Boolean.TRUE : Boolean.FALSE));
 		}
 
@@ -115,10 +114,10 @@ public class PerformanceLazyDataTableModel extends LazyDataModel<PerformanceRowM
 	// ##################################################
 	/**
 	 * Builds the rows where each row holds the related venue and a map of
-	 * performances mapped to the start hour. The resulting rows filter the
+	 * performances mapped to their start hour. The resulting rows filter the
 	 * columns later on.
 	 */
-	private void buildRows(final List<PerformanceViewModel> performances) {
+	private void buildRows() {
 		rows = new ArrayList<>();
 		performancestartHours = new HashSet<>();
 
@@ -143,6 +142,11 @@ public class PerformanceLazyDataTableModel extends LazyDataModel<PerformanceRowM
 	/**
 	 * Builds the columns depending on the resulted rows. Means no column will
 	 * be added where at least one performance occurs.
+	 * 
+	 * @param firstStartHour
+	 *            the first start hour
+	 * @param lastStartHour
+	 *            the last start hour
 	 */
 	private void buildColumns(int firstStartHour, int lastStartHour) {
 		columns = new ArrayList<>();
@@ -177,9 +181,4 @@ public class PerformanceLazyDataTableModel extends LazyDataModel<PerformanceRowM
 	public long getDataCount() {
 		return dataCount;
 	}
-
-	public int getIdx() {
-		return idx;
-	}
-
 }

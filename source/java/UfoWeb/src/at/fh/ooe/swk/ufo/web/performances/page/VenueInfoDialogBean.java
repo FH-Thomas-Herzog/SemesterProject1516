@@ -8,7 +8,6 @@ import java.util.Objects;
 import java.util.TimeZone;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Inject;
@@ -16,6 +15,7 @@ import javax.inject.Named;
 import javax.servlet.ServletContext;
 
 import org.apache.deltaspike.core.api.common.DeltaSpike;
+import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 import org.apache.logging.log4j.Logger;
 import org.primefaces.context.RequestContext;
 import org.primefaces.event.CloseEvent;
@@ -39,11 +39,12 @@ import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 import at.fh.ooe.swk.ufo.web.performances.model.VenueViewModel;
 
 /**
+ * Manages the venue info dialog bean.
  * 
  * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
  * @date Jan 9, 2016
  */
-@SessionScoped
+@ViewAccessScoped
 @Named("venueInfoDialog")
 public class VenueInfoDialogBean implements Serializable {
 
@@ -92,9 +93,16 @@ public class VenueInfoDialogBean implements Serializable {
 	}
 
 	/**
-	 * Initializes with the given artist id
+	 * Initializes with the given venue id
 	 * 
 	 * @param id
+	 *            the venue id. May be null
+	 * @param date
+	 *            the date of the performances where the venue has been
+	 *            selected.
+	 * @param withPerforamnces
+	 *            true if the related performances shall be displayed, false
+	 *            otherwise
 	 */
 	public void init(Long id, Calendar date, boolean withPerforamnces) {
 		reset();
@@ -171,7 +179,7 @@ public class VenueInfoDialogBean implements Serializable {
 				setLocationFromGeocoding(venue);
 			}
 
-			// set marker on map
+			// set marker on map if location is present
 			if (venue.getLocation() != null) {
 				if (defaultLocation == null) {
 					defaultLocation = venue.getLocation();
@@ -188,6 +196,7 @@ public class VenueInfoDialogBean implements Serializable {
 					final String title = sb.toString();
 					final Marker marker = new Marker(latLng, title);
 					marker.setData(venue);
+					// primefaces forces the id to prefix it with 'marker'
 					marker.setId("marker_" + venue.getId().toString());
 					map.getMarkers().add(marker);
 				} catch (Exception e) {
@@ -232,12 +241,21 @@ public class VenueInfoDialogBean implements Serializable {
 		withPerformances = Boolean.FALSE;
 	}
 
+	/**
+	 * We do not want to get the performances only for the given date and not
+	 * all filtered tables since this dialog will show at most only the related
+	 * performances for the owning table.
+	 * 
+	 * @param date
+	 *            the date of the performances where this dialog has been
+	 *            invoked
+	 * @return the modified filter
+	 */
 	private PerformanceFilter createModifiedFilter(final Calendar date) {
-		date.setTimeZone(serviceTimeZone);
 		final PerformanceFilter filter = filterBean.createFilter();
 		final Calendar toDate = (Calendar) date.clone();
 		toDate.set(Calendar.HOUR_OF_DAY, 23);
-		toDate.set(Calendar.HOUR_OF_DAY, 59);
+		toDate.set(Calendar.MINUTE, 59);
 		return new PerformanceFilter() {
 
 			@Override

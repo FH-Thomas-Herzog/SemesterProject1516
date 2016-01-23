@@ -5,8 +5,15 @@ import java.util.Calendar;
 import javax.enterprise.context.Dependent;
 
 import at.fh.ooe.swk.ufo.web.application.model.AbstractIdHolderModel;
-import at.fh.ooe.swk.ufo.webservice.ArtistModel;
 
+/**
+ * The performances view model. CDI Dependent scoped bean because we want to use
+ * injection here. No problem is still a strong referenced bean, not part of an
+ * context at all.
+ * 
+ * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
+ * @date Jan 23, 2016
+ */
 @Dependent
 public class PerformanceViewModel extends AbstractIdHolderModel<Long> implements Comparable<PerformanceViewModel> {
 
@@ -29,6 +36,19 @@ public class PerformanceViewModel extends AbstractIdHolderModel<Long> implements
 		super();
 	}
 
+	/**
+	 * Initializes this view model.
+	 * 
+	 * @param id
+	 * @param version
+	 * @param startDate
+	 * @param formerStartDate
+	 * @param endDate
+	 * @param formerEndDate
+	 * @param artist
+	 * @param venue
+	 * @param formerVenue
+	 */
 	public void init(Long id, Long version, Calendar startDate, Calendar formerStartDate, Calendar endDate,
 			Calendar formerEndDate, ArtistViewModel artist, VenueViewModel venue, VenueViewModel formerVenue) {
 		now = Calendar.getInstance();

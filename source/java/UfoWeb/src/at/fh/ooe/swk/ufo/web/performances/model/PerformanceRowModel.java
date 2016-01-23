@@ -6,8 +6,8 @@ import java.util.Map.Entry;
 import java.util.Objects;
 
 /**
- * Row model for performances which maps the perforamnces to their start hour
- * which is the mapping to the corresponding dynamic column.
+ * Row model for performances which maps the performances to their start hour
+ * which is the mapping to the corresponding dynamic columns.
  * 
  * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
  * @date Jan 7, 2016
@@ -30,7 +30,7 @@ public class PerformanceRowModel {
 	// Helper
 	// ##################################################
 	/**
-	 * PErforms the filtering on the row model for the dynmaic columns.
+	 * Performs the filtering on the row model for the dynmaic columns.
 	 * 
 	 * @param filters
 	 *            the filter map
@@ -41,6 +41,7 @@ public class PerformanceRowModel {
 	 */
 	public boolean containsFilteredValue(Map<String, Object> filters, List<PerformanceColumnModel> columns) {
 		for (Entry<String, Object> entry : filters.entrySet()) {
+			boolean valid = Boolean.FALSE;
 			final String filter = (String) entry.getValue();
 			final int startHour = columns.get(Integer.valueOf(entry.getKey())).getStartHour();
 			final List<PerformanceViewModel> models = map.get(startHour);
@@ -48,19 +49,24 @@ public class PerformanceRowModel {
 				for (PerformanceViewModel model : models) {
 					if ((model.getArtist() != null)
 							&& (model.getArtist().getFullName().toUpperCase().contains(filter.toUpperCase()))) {
-						return Boolean.TRUE;
-					} else if ((model.getArtist().getArtistGroup() != null)
+						valid = Boolean.TRUE;
+					}
+					if ((model.getArtist().getArtistGroup() != null)
 							&& (model.getArtist().getArtistGroup().toUpperCase().contains(filter.toUpperCase()))) {
-						return Boolean.TRUE;
-					} else if ((model.getArtist().getArtistCategory() != null)
+						valid = Boolean.TRUE;
+					}
+					if ((model.getArtist().getArtistCategory() != null)
 							&& (model.getArtist().getArtistCategory().toUpperCase().contains(filter.toUpperCase()))) {
-						return Boolean.TRUE;
+						valid = Boolean.TRUE;
 					}
 				}
 			}
+			if (!valid) {
+				return Boolean.FALSE;
+			}
 		}
 
-		return Boolean.FALSE;
+		return Boolean.TRUE;
 	}
 
 	// ##################################################

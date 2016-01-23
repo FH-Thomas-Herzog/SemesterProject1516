@@ -77,7 +77,7 @@ public class SoapWebServiceProducer implements Serializable {
 		}
 
 		// Get set service timezone
-		String serviceTimeZone = servletContext.getInitParameter(ContextParameter.SERVICE_TIMEZONE_KEY.key);
+		serviceTimeZone = servletContext.getInitParameter(ContextParameter.SERVICE_TIMEZONE_KEY.key);
 		// Assume UTC time zone
 		if (serviceTimeZone == null) {
 			serviceTimeZone = "UTC";

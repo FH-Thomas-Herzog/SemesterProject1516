@@ -1,42 +1,34 @@
 package at.fh.ooe.swk.ufo.web.performances.page;
 
 import java.io.Serializable;
-import java.text.Format;
-import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Comparator;
-import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.function.Consumer;
 import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.SessionScoped;
-import javax.enterprise.inject.Instance;
-import javax.faces.context.FacesContext;
 import javax.inject.Inject;
 import javax.inject.Named;
 
-import org.apache.logging.log4j.Logger;
+import org.apache.deltaspike.core.api.scope.ViewAccessScoped;
 import org.primefaces.context.RequestContext;
 
 import at.fh.ooe.swk.ufo.service.api.model.ResultModel;
 import at.fh.ooe.swk.ufo.service.api.proxy.ArtistServiceProxy;
-import at.fh.ooe.swk.ufo.service.api.proxy.PerformanceServiceProxy;
 import at.fh.ooe.swk.ufo.web.application.bean.LanguageBean;
 import at.fh.ooe.swk.ufo.web.application.exception.ProxyServiceExceptionHandler;
-import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 import at.fh.ooe.swk.ufo.web.performances.constants.ArtistSearchOption;
 import at.fh.ooe.swk.ufo.web.performances.constants.VenueSearchOption;
 import at.fh.ooe.swk.ufo.web.performances.model.ArtistViewModel;
-import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.VenueViewModel;
 
+/**
+ * The main page bean which handles common actions on the page which are not
+ * managed by an separate bean.
+ * 
+ * @author Thomas Herzog <s1310307011@students.fh-hagenberg.at>
+ * @date Jan 23, 2016
+ */
 @SessionScoped
 @Named("performancePage")
 public class PerformancesPage implements Serializable {
@@ -63,6 +55,8 @@ public class PerformancesPage implements Serializable {
 	private VenueSearchOption selectedVenueSearchOption;
 	private List<VenueViewModel> filteredVenues;
 
+	private Integer activeAccordionIdx;
+
 	public PerformancesPage() {
 		super();
 	}
@@ -76,12 +70,18 @@ public class PerformancesPage implements Serializable {
 	// ##################################################
 	// Artist section
 	// ##################################################
+	/**
+	 * Reset the artist search to its defaults.
+	 */
 	public void onArtistsSearchReset() {
 		selectedArtistSearchOption = ArtistSearchOption.NAME;
 		filteredArtists = null;
 		artistSearch = null;
 	}
 
+	/**
+	 * Performs the search on the artists list.
+	 */
 	public void onArtistSearch() {
 		if ((artistSearch == null) || (artistSearch.trim().isEmpty())) {
 			filteredArtists = null;
@@ -109,6 +109,12 @@ public class PerformancesPage implements Serializable {
 		}
 	}
 
+	/**
+	 * Prepares the artist dialog by loading the full artist with all data.
+	 * 
+	 * @param id
+	 *            the artist id to load and display in the dialog
+	 */
 	public void prepareArtistDialog(Long id) {
 		selectedArtist = null;
 		ResultModel<ArtistViewModel> result = artistServiceProxy.getArtist(id);
@@ -118,6 +124,9 @@ public class PerformancesPage implements Serializable {
 		}
 	}
 
+	/**
+	 * Resetst he selected artist after dialog was closed.
+	 */
 	public void onArtistDialogClose() {
 		selectedArtist = null;
 	}
@@ -125,12 +134,18 @@ public class PerformancesPage implements Serializable {
 	// ##################################################
 	// Venue section
 	// ##################################################
+	/**
+	 * REsets the venue filter to its defaults.
+	 */
 	public void onVenuesSearchReset() {
 		selectedVenueSearchOption = VenueSearchOption.NAME;
 		filteredVenues = null;
 		venueSearch = null;
 	}
 
+	/**
+	 * Performs the search on the venue list.
+	 */
 	public void onVenueSearch() {
 		if ((venueSearch == null) || (venueSearch.trim().isEmpty())) {
 			filteredVenues = null;
@@ -196,6 +211,14 @@ public class PerformancesPage implements Serializable {
 
 	public List<VenueViewModel> getFilteredVenues() {
 		return filteredVenues;
+	}
+
+	public Integer getActiveAccordionIdx() {
+		return activeAccordionIdx;
+	}
+
+	public void setActiveAccordionIdx(Integer activeAccordionIdx) {
+		this.activeAccordionIdx = activeAccordionIdx;
 	}
 
 }

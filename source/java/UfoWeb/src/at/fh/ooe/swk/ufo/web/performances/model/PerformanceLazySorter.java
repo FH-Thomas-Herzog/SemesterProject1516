@@ -1,6 +1,5 @@
 package at.fh.ooe.swk.ufo.web.performances.model;
 
-import java.text.Collator;
 import java.util.Comparator;
 
 /**
