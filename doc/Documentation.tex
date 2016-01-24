@@ -658,7 +658,17 @@ Es wurde eine eigene \emph{JsfExceptionHandlerFactory} und eine eigener \emph{Js
 	\caption{faces-config.xml}
 	\xmlSourceFile{\webContent/WEB-INF/faces-config.xml}
 \end{code}
-\ \newpage
+\ \newline
+Zusätzlich zu diesen Konfigurationen muss beim Start des Tomcat-Servers JVM-Argumente hinzugefügt werden, damit der Zugriff auf die SOAP-Services über SSL funktioniert.
+\newline
+\newline
+\emph{javax.net.ssl.trustStore}
+\newline
+\emph{javax.net.ssl.trustStorePassword}
+\newline
+\newline
+Siehe hierzu die Datei \emph{tomcat-config.txt} im Java-Web-Project Root-Verzeichnis. Der Truststore muss natürlich das aktuell von IIS verwendete Zertifikat importieren.
+\newpage
 
 \subsubsection{Web-Service-Proxy-Architektur}
 Folgende Architektur wurde implementiert um die SOAP-Service Instanzen von der View-Logik zu abstrahieren.
