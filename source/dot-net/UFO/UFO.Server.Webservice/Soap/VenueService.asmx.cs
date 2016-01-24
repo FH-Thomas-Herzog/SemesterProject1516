@@ -95,23 +95,33 @@ namespace UFO.Server.Webservice.Soap.Soap
                             Name = venue.Name,
                             FullAddress = (new StringBuilder(venue.Street).Append(", ").Append(venue.Zip).Append(venue.City).Append(" AT").ToString()),
                             GpsCoordinates = venue.GpsCoordinate,
-                            Performances = performances.Select(entity => new PerformanceModel
+                            Performances = performances.Select(item => new PerformanceModel
                             {
-                                Id = entity.Id.Value,
-                                StartDate = entity.StartDate.Value,
-                                EndDate = entity.EndDate.Value,
-                                FormerStartDate = entity.FormerStartDate,
+                                Id = item.Id.Value,
+                                Version = item.Version.Value,
+                                StartDate = item.StartDate.Value,
+                                EndDate = item.EndDate.Value,
+                                FormerStartDate = item.FormerStartDate,
+                                FormerEndDate = item.FormerEndDate,
                                 Artist = new ArtistModel
                                 {
-                                    Id = entity.Artist.Id.Value,
-                                    FirstName = entity.Artist.Firstname,
-                                    LastName = entity.Artist.Lastname,
+                                    Id = item.Artist.Id.Value,
+                                    FirstName = item.Artist.Firstname,
+                                    LastName = item.Artist.Lastname,
+                                    CountryCode = item.Artist.CountryCode,
+                                    ArtistGroup = ((item.Artist.ArtistGroupId != null) ? item.Artist.ArtistGroup.Name : null),
+                                    ArtistCategory = item.Artist.ArtistCategory.Name
                                 },
                                 Venue = new VenueModel
                                 {
-                                    Id = entity.Venue.Id.Value,
-                                    Name = entity.Venue.Name
-                                }
+                                    Id = item.Venue.Id.Value,
+                                    Name = item.Venue.Name
+                                },
+                                FormerVenue = ((item.FormerVenueId != null) ? new VenueModel
+                                {
+                                    Id = item.FormerVenue.Id.Value,
+                                    Name = item.FormerVenue.Name
+                                } : null)
                             }).ToList()
                         };
                         venueModel.Performances.Sort((o1, o2) => o1.StartDate.CompareTo(o2.StartDate));

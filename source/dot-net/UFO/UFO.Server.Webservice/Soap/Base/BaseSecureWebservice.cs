@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Resources;
-using System.Web;
-using System.Web.Services;
 using UFO.Server.Webservice.Soap.Model.Base;
 using UFO.Server.Webservice.Soap.Soap.Authentication;
 

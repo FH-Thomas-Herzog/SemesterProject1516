@@ -36,6 +36,7 @@
 % the default java directory structure and the main packages
 \newcommand{\dotNetRoot}{../source/dot-net}
 \newcommand{\javaRoot}{../source/java}
+\newcommand{\webContent}{\javaRoot/UfoWeb/WebContent}
 \newcommand{\imagesRoot}{images}
 % the default subsection headers
 \newcommand{\ideaSection}{Lösungsidee}
@@ -56,7 +57,6 @@
 	baselinestretch=1,
 	fontsize=\footnotesize
 }
-\newmintinline[inlineJava]{java}{}
 \newminted[javaSource]{java}{
 	breaklines=true, 
 	tabsize=2,
@@ -83,6 +83,8 @@
 	baselinestretch=1,
 	fontsize=\footnotesize
 }
+\newmintinline[inlineJava]{java}{}
+\newmintinline[inlineXml]{xml}{}
 % =============================================
 % Page Style, Footers & Headers, Title
 % =============================================
@@ -601,5 +603,534 @@ Sollten Sie versuchen eine Aufführung anzulegen/speichern und der Artist hat be
 	{Artist überbucht}
 \end{figure}
 \end{enumerate}
+\ \newpage
+
+\subsection{Ausbaustufe 3}
+Folgender Teil dieser Dokumentation dokumentiert den dritten Teil der Ausbaustufe. In diesem Teil der Ausbaustufe musste die Web-Anwendung für \emph{UFO} implementiert werden. Dazu wurden folgende Technologien und Frameworks verwendet:
+\begin{enumerate}
+	\item\emph{Myfaces}
+	\newline
+	Java-Server-Faces Implementierung von Apache
+	\item\emph{Weld}
+	\newline
+	Context and Dependency Injection Implementierung von Apache
+	\item\emph{Deltaspike}
+	\newline
+	Open-Source CDI-Extension Library, die nützliche Features für eine CDI-Anwendung zur Verfügung stellt.
+	\item\emph{Google-Maps-Services}
+	\newline
+	Google Java-API für Geocoding.
+	\item\emph{Jackson-Json}
+	\newline
+	Open-Source Framework für JSON Mappings
+	\item\emph{log4j}
+	\newline
+	Apache Logging Framework
+	\item\emph{Apache-Commons}
+	\newline
+	Eine Sammlung von common Libraries von Apache wie z.B.: common-collections.
+	\item\emph{Primefaces}
+	\newline
+	Bekannte Open-Source JSF-Komponentenlibary
+\end{enumerate}
 \ \newline
+In dieser Anwendung wurde \emph{CDI} verwendet, damit Abhängigkeiten und Ressourcen über 
+Injizierung den Beans zur verfügung gestellt werden konnten. Diese Abhängigkeiten können vom CDI-Container kontextabhängig (verschiedene Scopes) werden. Daher wurde entschlossen CDI in die Anwendung zu integrieren. Dies stellte sich nicht als schwierig heraus, da neben den notwendigen Abhängigkeiten nur geringfügige Konfiguration in der \emph{web.xml} von Nöten war.
+\newline
+\newline
+\emph{Deltaspike} ist eine Erweiterung für CDI und stellt nützliche Features zur Verfügung. Es wurde hierbei das Feature \emph{Type-Safe-Messages} verwendet, dass erlaubt über ein Interface ein \emph{MessageBundle} zu definieren, welches auch über CDI und \emph{EL} verfügbar ist. Hierbei wird über eine CDI-Extension beim Start des Containers dynamisch ein Bean an den Container gebunden, wobei keine explizite Implementierung dieses Beans von Nöten ist.
+\newline
+\newline
+\emph{Google-Maps-Services} wurde dazu verwendet um die Koordinaten der Spielstätten aufzulösen, die keine Koordinaten aber Adressen zur Verfügung stellen. Dadurch können auch diese Spielstätten auf der verwendeten Google-Map angezeigt werden. Die Genauigkeit hängt aber hierbei von den zur Verfügung gestellten Adressdaten ab und natürlich von dem gelieferten Resultat des Geocoding.
+\newpage
+\subsubsection{Konfiguration}
+Die Konfiguration erfolgte hauptsächlich in der \emph{web.xml}. Es wurde vollständig darauf verzichtet die Navigation über die \emph{faces-config.xml} zu implementieren, da einerseits diese Art der Konfiguration mir zu komplex und unflexibel erscheint und andererseits die Anwendung als Single-Page-Anwendung implementiert wurde und daher keine Navigation erforderlich ist.
+\newline
+\newline
+In der \emph{web.xml} wurden alle Konfiguration für die SOAP-Services vorgenommen wie die URLs, die verwendete Zeitzone, den verwendeten Namespace und die Authentifizierungsdaten der Web-Anwendung für die SOAP-Zugriffe. Da es Unterschiede bei der Interpretation der Datumsinformationen in \emph{.NET} (UTC) und \emph{Java} (GMT) gab, musste die Zeitzone konfigurierbar gemacht werden, damit bei der Überfügung von den SOAP-Models in die View-Models die Datumsinformationen mit der richtigen Zeitzone interpretiert werden konnten. Da die Adressen der Services sich ändern könnten wurden diese Adressen ebenfalls in der \emph{web.xml} für jeden Service einzeln konfigurierbar gemacht.  
+\begin{code} 
+	\caption{web.xml}
+	\xmlSourceFile{\webContent/WEB-INF/web.xml}
+\end{code}
+\ \newpage
+Es wurde eine eigene \emph{JsfExceptionHandlerFactory} und eine eigener \emph{JsfExceptionHandler} implementiert sodass die Exceptions nicht mehr an den Client gesendet werden und diese ebenfalls wie gewünscht behandelt werden können. Diese \emph{JsfExceptionHandlerFactory}, die die \emph{JsfExceptionHandler} Instanz erstellt wurde in der \emph{faces-config.xml} registriert.
+\begin{code}
+	\caption{faces-config.xml}
+	\xmlSourceFile{\webContent/WEB-INF/faces-config.xml}
+\end{code}
+\ \newpage
+
+\subsubsection{Web-Service-Proxy-Architektur}
+Folgende Architektur wurde implementiert um die SOAP-Service Instanzen von der View-Logik zu abstrahieren.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.9]{\imagesRoot/service-architecture.JPG}
+	\caption
+	{Service-Proxy-Architecture}
+\end{figure}
+\ \newline
+Durch diese Architektur wird gewährleistet, dass die Remote-Service Abhängigkeiten vollständig von den View-Beans abstrahiert sind und diese ausgetauscht werden können ohne diese Beans modifizieren zu müssen. Es wurden Konverter eingeführt, die die Remote-Service-Models in die View-Models überführen und nötige Aufbereitungen und Konvertierungen vornehmen. 
+\newline
+\newline
+Die Service-Proxy Instanzen werden über CDI injiziert und wurden als
+\newline
+\inlineJava{javax.enterprise.context.ApplicationScoped} deklariert, was zur Folge hat das diese Instanzen nur einmalig innerhalb der Anwendungslebenszeit erstellt werden. Dies ist als gleichwertig mit einer Singleton-Instanz anzusehen. Mit den Konvertern wurde gleich verfahren.
+\newline
+\newline
+Im Gegensatz zu den Service-Proxy werden die SOAP-Service-Instanzen über einen Producer erstellt, da hier noch Konfigurationen von Nöten sind und daher die Instanzen nicht von CDI selbst erstellt werden können. Dank \emph{Deltaspike} ist man in der Lage sich den \emph{ServletContext} in CDI-Beans injizieren zu lassen, wobei hier der herkömmliche Ansatz der Konfiguration umgedreht wird. Also nicht ein \emph{ServletContextListener} liest die Init-Parameter aus und konfiguriert ein Bean sondern der Producer liest die Init-Parameter aus und  konfiguriert die zu erstellenden Instanzen. Dies ist ein guter Ansatz da für den Client die Factory im Verborgenen bleibt was der Grundsätzliche Gedanke von \emph{IOC} (Inversion-Of-Control) ist.
+\newline
+\newline
+Die \emph{SOAP-Service} Implementierungen wurden mit dem Standardtool von Eclipse generiert (Apache-Axis), was zwar eine relative alte Implementierung darstellt aber ausreichend für den Anwendungszweck war.
+\newline
+\newline
+Folgende Paketstruktur wurde für die Service-Proxy Ressourcen eingeführt:
+\begin{enumerate}
+	\item\emph{at.fh.ooe.swk.ufo.service.api}
+	\newline
+	Enthält die Spezifikation für die Service-Proxy Ressourcen.
+	\item\emph{at.fh.ooe.swk.ufo.servce.impl}
+	\newline
+	Enthält die Implementierung der Service-Proxy-Spezifikation
+\end{enumerate}
+\newpage
+
+\subsubsection{Web-Application-Resources}
+Da es über die gesamte Anwendung hinweg gemeinsam genutzte Ressourcen gibt wurden diese in einem Paket \emph{at.fh.ooe.swk.ufo.web.application.*} zusammengefasst. Hier sind Ressourcen wie folgt gebündelt:
+\begin{enumerate}
+	\item\emph{at.fh.ooe.swk.ufo.web.application.bean}
+	\newline
+	Enthält die Beans für den Login, Repräsentation eines eingeloggten BenutzerIn sowie das LanguageBean für die Verwaltung der verwendeten Sprache.
+	\item\emph{at.fh.ooe.swk.ufo.web.application.converter}
+	\newline
+	Enthält die Konverter, die über die über die gesamte Anwendung hinweg genutzt werden können und keine Referenzen auf spezielle Models beinhalten. Z.B.: Konverter für \emph{SelectItem} Instanzen, die als Value Object, Enum Instanzen halten.
+	\item\emph{at.fh.ooe.swk.ufo.web.application.model}
+	\newline
+	Nachdem jedes View-Model eine Entität darstellt und diese auch über eine Id verfügen wurde ein Interface namens \inlineJava{IdHolder<T>} eingeführt, sowie eine abstrakte Klasse
+	\newline \inlineJava{AbstractIdHolderModel<T> implements IdHolder<T>}, die dieses Interface und die Methoden \emph{hash}, \emph{equals} sowie Getter und Setter für die Id implementiert.
+	\item\emph{at.fh.ooe.swk.ufo.web.application.constants}
+	\newline
+	Alle definierten Kontextparameter wurden als Enumeration abgebildet. Somit sind diese Parameter nur an zwei Stellen definiert. Einmal in der \emph{web.xml} und ein zweites Mal in der Enumeration.
+	\item\emph{at.fh.ooe.swk.ufo.web.application.exceptions}
+	\newline
+	Enthält die implementierte \emph{JsfExceptionHandlerFactory} und den implementierten \emph{JsfExceptionHandler} für das Behandeln unbehandelter Exceptions. Dadurch wird das rendern der Exceptions zum Client unterdrückt.
+	\item\emph{at.fh.ooe.swk.ufo.web.application.listener}
+	\newline
+	Enthält den \emph{ServletContextListener}, der die \emph{Default Locale} der VM auf die definierte \emph{Locale} in der \emph{web.xml} setzt
+	\item\emph{at.fh.ooe.swk.ufo..web.application.message}
+	\newline
+	Enthält die Deltaspike \emph{MessageBundle} Interfaces und dazugehörigen \emph{RessourceBundles}. Dadurch wird Multilingualität von der Anwendung unterstützt.
+	\item\emph{at.fh.ooe.swk.ufo.web.application.producer}
+	\newline
+	Enthält die Producer, die gemeinsam genutzte Ressourcen kontextabhängig produzieren.
+\end{enumerate}  
+\ \newline
+Es wurde ein JSF-Template implementiert, welches das Layout und die gemeinsam genutzten View-Ressourcen definiert wie: Loading-Dialog und Message-Komponenten. Diese Ressourcen wurden in das Verzeichnis \emph{WEB-INF/templates} gelegt, da diese nicht von außen verfügbar sein sollen und alle Ressourcen in \emph{WEB-INF} implizit von einem Zugriff geschützt sind.
+\ \newpage
+
+\subsubsection{Performances-Resources}
+Die gesamten Ressourcen der Performance Ansichten wurden in einem Paket mit folgender Struktur gebündelt.
+\begin{enumerate}
+	\item\emph{at.fh.ooe.swk.ufo.web.performance.constants}
+	\newline
+	Enthält die Konstanten für die bereitgestellten Suchoptionen, die in Form von Enumerationen abgebildet wurden.
+	\item\emph{at.fh.ooe.swk.ufo.web.performance.model}
+	\newline
+	Enthält alle \emph{View-Models} sowie \emph{Edit-View-Models}, die in den Performance Ansichten verwendet werden.
+	\item\emph{at.fh.ooe.swk.ufo.web.performance.page}
+	\newline
+	Enthält alle \emph{Backing-Beans} für die einzelnen Ansichten, die deren Verhalten steuern bzw, die zur Verfügung gestellten Aktionen bereitstellen. Somit ist \emph{Interaktionslogik} von der \emph{Präsentationslogik} vollständig getrennt.
+	\item\emph{at.fh.ooe.swk.ufo.web.performance.support}
+	\newline
+	Enthält das \emph{Support-Bean}, in dem die gesamte Ladelogik implementiert ist, sowie die Producer Methoden, die die Performance spezifischen Ressourcen bereitstellt. Dadurch werden die \emph{Backing-Beans} von der Ladelogik befreit.	
+\end{enumerate}	
+\ \newline
+Die einzelnen Teile der Ansichten wurden in eigenen \emph{*.xhtml} Dateien implementiert, die im den Verzeichnis \emph{WEB-INF/page} gehalten werden. Lediglich die \emph{index.xhtml}, die die Komposition der Anwendung darstellt, wurde im Root-Verzeichnis platziert und somit die einzige Möglichkeit des Zugriffs auf die Anwendung. Wiederverwendbare Teile wurden wiederum als Kompositionen definiert wie z.B.: die Tooltip Informationen, die an mehreren Stellen verwendet werden.
+\newpage
+
+\subsubsection{Multilingualität}
+Die gesamte Anwendung unterstützt Multilingualität, obwohl anzumerken ist, dass nur eine Sprache implementiert wurde. Nicht desto trotz können andere Sprachen implementiert werden. Es wurde hierbei der Mechanismus \emph{Type-Safe-Messages} von \emph{Deltaspike} verwendet, welche eine CDI Extension darstellt. Im folgenden ist ein Ausschnitt des Interfaces \inlineJava{MessagesBundle.java} angeführt. 
+\begin{listing}[H]    
+\caption{MessageBundle.java}    
+\begin{minted}{java}
+@MessageBundle
+@Named("msg")
+public interface MessagesBundle extends Serializable {
+
+	@MessageTemplate("{UFO_PROGRAM}")
+	String getUfoProgram();
+}
+\end{minted}
+\end{listing}
+\ \newline
+Folgende Auflistung beschreibt die verwendeten Annotationen im Interface, die dazu verwendet werden um das MessageBundle zu konfigurieren.
+\begin{enumerate}
+	\item\emph{\inlineJava{@MessageBundle}}
+	\newline
+	Annotation, die der Deltaspike-CDI-Extension mitteilt, dass es sich hierbei um eine MessageBundle handelt.
+	\item\emph{\inlineJava{@ApplicationScoped}}
+	\newline
+	CDI-Scope-Annotation, die Deltaspike mitteilt eine Bean zu erstellen, welches nur einmalig über die Anwendungslebenszeit existiert.
+	\item\emph{\inlineJava{@Named("msg")}}
+	\newline
+	CDI-Annotation, die dieses Bean über \emph{Expression-Language} zur Verfügung stellt. Wird von der Deltaspike-CDI-Extension bei der Bean-Erstellung berücksichtigt.
+	\item\emph{\inlineJava{@MessageTemplate}}
+	\newline
+	Deltaspike spezifische Annotation, die den Key in der RessourceBundle Datei darstellt.
+\end{enumerate} 
+\ \newline
+Die enthaltenen Getter-Methoden müssen der Java-Bean-Convention folgen damit diese in EL-Expressions verwendet werden können. Um andere Sprachen zu unterstützen müssen jetzt lediglich nur noch die ResourceBundle Dateien für die einzelnen Sprachen angelegt werden. Des weiteren sollte vielleicht ein eigener \inlineJava{org.apache.deltaspike.core.api.message.LocaleResolver} implementiert werden, der die Locale vielleicht aus dem FacesContext auflöst. Es wird in dem oben angeführten Beispiel der bereits mitgelieferte \inlineJava{org.apache.deltaspike.core.impl.message.DefaultLocaleResolver} verwendet, der die VM-Default-Locale verwendet.
+\newline
+\newline
+Folgendes Beispiel zeigt die Verwendung des Interfaces \inlineJava{MessagesBundle.java} in \emph{*.xhtml}.
+\begin{listing}[H]    
+\caption{MessageBundle Verwendung in *.xhmtl Dateien}   
+\begin{minted}{xml}
+<h:outputText value="#{msg.firstName}" style="font-weight: bold;" />
+\end{minted}
+\end{listing}
+\ \newpage
+
+\subsubsection{Security}
+Die SOAP-Webservices sind über SSL verfügbar, daher musste dem Tomcat-Server eine Truststore-Datei zur Verfügung gestellt werden, die das trusted Zertifikat des SOAP-Servers enthält. Es wurde hierbei in VisualStudio eingestellt, dass die SOAP-Services SSL unterstützen. Sie sind auch noch über HTTP verfügbar, dies sollte aber bei einem Release unterbunden werden. Ebenfalls ist die Web-Anwendung nur über SSL erreichbar, was durch eine Konfiguration in der Tomcat \emph{server.xml} und in der \emph{web.xml} erreicht wurde.
+\begin{listing}[H]    
+\caption{server.xml}    
+\begin{minted}{xml}
+	<Connector  SSLEnabled="true" 
+			clientAuth="false" 
+			keyAlias="ufo"
+			keystoreFile="conf/keystore.jks" 
+			keystorePass="ufo" 
+			keystoreType="jks"
+			maxThreads="150" 
+			port="8443" 
+			protocol="org.apache.coyote.http11.Http11NioProtocol"
+			scheme="https" 
+			secure="true" 
+			sslProtocol="TLS" />
+\end{minted}
+\end{listing}
+
+\begin{listing}[H]    
+\caption{web.xml}    
+\begin{minted}{xml}
+	<!-- Allow SSL only -->
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Protected Context</web-resource-name>
+			<url-pattern>/*</url-pattern>
+		</web-resource-collection>
+		<!-- auth-constraint goes here if you requre authentication -->
+		<user-data-constraint>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+\end{minted}
+\end{listing}
+\ \newline
+Des weiteren sind die SOAP-Services nicht offen verfügbar sondern die einzelnen Anwendung müssen registriert sein, ansonsten liefert der Webservice kein Daten zurück. Man kann darüber streiten ob die Daten offen Verfügbar sein sollen, aber in dieser Anwendung sind sie es nicht. Die Zugangsdaten für die Web-Anwendung sind in der \emph{web.xml} definiert und auf der .NET Seite in der \emph{web.config}, wobei hier angemerkt sei, dass dieser Ansatz nur für dieses Beispiel Anwendung finden sollte. Mann sollte hierbei in der Lage sein die Zugangsdaten der Anwendung dynamisch zum Beispiel aus einer Datenbank zu ziehen und sie nicht statisch in einer Konfigurationsdatei halten. Bei einem Deployment einer Web-Anwendung könnte für diese die Zugangsdaten erstellt und in einer Datenbank gespeichert werden.
+\newpage
+\begin{listing}
+\caption{Auszug aus SoapWebServiceProducer.java}
+\begin{minted}{java}
+@ApplicationScoped
+public class SoapWebServiceProducer implements Serializable {
+
+	@Inject
+	@DeltaSpike
+	private ServletContext servletContext;
+
+	private String username;
+	private String password;
+
+	@PostConstruct
+	public void postContruct() {
+		// Get authentication data from web.xml
+		username = servletContext.getInitParameter(
+			ContextParameter.WEBSERVICE_USERNAME.key);
+		password = servletContext.getInitParameter(
+			ContextParameter.WEBSERVICE_PASSWORD.key);
+		...
+	}
+	
+	...
+	
+	private SOAPHeaderElement createSoapHeader() throws Exception {
+		SOAPHeaderElement authentication = new SOAPHeaderElement(
+				xmlNamespace,
+				"Credentials");
+		SOAPElement node = authentication.addChildElement("Username");
+		node.addTextNode(username);
+		SOAPElement node2 = authentication.addChildElement("Password");
+		node2.addTextNode(password);
+
+		return authentication;
+	}
+}
+\end{minted}
+\end{listing} 
+\ \newline
+Die Authentifizierungsdaten für die Web-Anwendung werden hierbei über einen SOAP-Header an die Soap-Services übermittelt, die diesen Header auswerten und überprüfen ob es sich um eine registrierten Anwendung handelt.
+\newpage
+\begin{code}
+	\caption{BaseSecureWebservice.cs}
+	\javaSourceFile{\dotNetRoot/UFO/UFO.Server.Webservice/Soap/Base/BaseSecureWebservice.cs}
+\end{code}
+\ \newpage
+\begin{listing}
+\caption{Auszug auf PerformanceWebservice.cs}
+\begin{minted}{java}
+	[WebMethod]
+        [ScriptMethod(UseHttpGet = false)]
+        [SoapHeader("credentials")]
+        public ListResultModel<PerformanceModel> GetPerformances(
+        	PerformanceFilterRequest filter)
+        {
+            IPerformanceDao performanceDao = DaoFactory.CreatePerformanceDao();
+            ListResultModel<PerformanceModel> model = null;
+            if ((model = HandleAuthentication<ListResultModel<PerformanceModel>>()) 
+            	== null)
+            {
+            	...
+            }
+            ...
+        }
+\end{minted}
+\end{listing}
+\ \newline
+\inlineJava{BaseSecureWebservice.cs} beinhaltet den Property, der das SOAP-Header-Model darstellt, sowie die Authentifizierungsmethode, die auch das Resultat im Falle einer  fehlgeschlagenen Authentifizierung aufbereitet. Der konkrete Webservice erbt von dieser Klasse und stellt die Daten nur im Falle einer gültigen Authentifizierung zur Verfügung. 
+\newline
+\newline
+Der SOAP-Header wird hierbei vom ASP.NET Framwork über das Attribute \inlineJava{[SoapHeader("credentials")]} in den korrespondierenden Property mit dem definierten Namen injiziert.
+\newpage
+
+\subsubsection{SOAP-Services}
+Die ASP.NET Soap-Services resultieren immer eine Instanz von \inlineJava{BaseModel.cs}, von der wiederum zwei Klassen ableiten \inlineJava{SingelResultMode.cs} und \inlineJava{ListResultModel.cs}, die jeweils ein Single oder List Resultat halten. Die Basisklasse hält etwaige Informationen über einen Fehler, der in der Web-Anwendung ausgewertet werden könnte. Dadurch sind die Anwendungen, die die Daten abrufen, in der Lage etwaige Fehler korrekt auszuwerten und darauf zu reagieren, da die Fehlerinformationen mit übermittelt werden, wobei aber der Stacktrace ausgeschlossen wurde und nur die Message der Exception übermittelt wird.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.9]{\imagesRoot/soap-model-references.JPG}
+	\caption
+	{SOAP-Model-Referenzen}
+\end{figure}
+\ \newline
+Wie in der Grafik ersichtlich gibt es keine Referenzen zwischen den Entity-Models und der Web-Anwendung. Es werden alle DAO-Resultate in die entsprechenden SOAP-Models überführt. Somit ist die SOAP-Zugriffsschicht entkoppelt von der Datenbankzugriffsschicht und Änderungen am Datenmodell wirken sich nicht direkt auf die SOAP-Zugriffsschicht aus. Lediglich das Mapping zwischen den Models muss angepasst werden.
+\newline
+\newline
+Es wird sich auf die implizite Konvertierung, die von ASP.NET bereitgestellt wird verlassen, jedoch wurden auch einige XML-Attribute verwendet, wenn z.B.:SOAP-Model-Properties als nullable markiert bzw. dessen XML-Repräsentation definiert werden musste. 
+\newpage
+\subsubsection{Web-View}
+Im folgenden wird der Aufbau der Web-View beschrieben. Die Web-View besteht zwar aus mehreren Templates ist jedoch als Single-Page implementiert. Die einzelnen Teile der Seite sind über ein Layout von einander getrennt. Diese Teile lassen sich ein und ausklappen.
+\begin{figure}[h]
+	\centering
+	\includegraphics[angle=90, scale=0.36]{\imagesRoot/web-view-full.JPG}
+	\caption
+	{Vollständige View mit allen Layout-Parts aufgeklappt}
+\end{figure}
+\ \newpage
+Natürlich ist nicht ratsam alle Teile auf zu klappen sondern nur die Teile, die die Informationen bereitstellen, die man benötigt. Lediglich der Center-Content lässt sich nicht weg klappen. Dieser enthält die Tabelle mit allen Aufführungen. Im folgenden werden die einzelnen Teile der Webseite beschrieben.
+
+\paragraph{Filter}
+\ \newline
+Die folgende Abbildung zeigt die globalen Filter, die die Aufführungsdaten global filtern. Die Daten werden hierbei vom SOAP-Service mit den gesetzten Filtern erneut geladen.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.6]{\imagesRoot/web-view-filter.JPG}
+	\caption
+	{Globale Filter}
+\end{figure}
+\ \newline
+Es stehen hierbei mehrere Filteroptionen zur Verfügung, die alle auf die zu ladenden Daten angewendet werden. Rechts von den Filtern ist die Anzahl der gewählten Optionen angeführt, wobei angemerkt sei, dass wenn keine Optionen ausgewählt wurde es denselben Effekt hat, als währen alle Einträge ausgewählt worden. Der Datumsbereich wurde auf sieben Tage beschränkt. Das Spektakel finden zwar nur an einem Tag statt, jedoch steht es den Entwicklern offen es auch gegebenenfalls für mehrere Tage konfigurieren. Die AnwenderInnen sollten jedoch trotzdem in der Auswahl der Tage eingeschränkt sein, da es einerseits die Performance negativ beeinflussen würde und andererseits es der Übersicht nicht dienlich ist, sich alle tage in einem Jahr anzeigen zu lassen.
+\newpage
+
+\paragraph{Artisten}
+\ \newline
+Dieser Teil der Anwendung zeigt alle verfügbaren Artisten an, die aktiv sind. Es wird hierbei keine Vorfilterung vorgenommen. Auch hier stehen mehrere Option für die Filterung zur Verfügung.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.6]{\imagesRoot/web-view-artists.JPG}
+	\caption
+	{Übersicht Artisten}
+\end{figure}
+\ \newline
+Die Filterung kann entweder nach dem Namen, Artistengruppe, Artistenkategory und des Landes des Artisten erfolgen. Über einen Tooltip werden die wichtigsten Details des Artisten angezeigt. Über den Info-Icon kann ein Dialog geöffnet werden, der alle Details eines Artisten anzeigt. Der Button setzt den gesetzten Filter auf die Standardeinstellungen zurück.
+
+\paragraph{Übersicht Spielstätten}
+\ \newline 
+Dieser Teil der Anwendung zeigt alle verfügbaren Spielstätten an. Es wird hierbei keine Vorfilterung vorgenommen. Auch hier stehen mehrere Option für die Filterung zur Verfügung.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.6]{\imagesRoot/web-view-venues.JPG}
+	\caption
+	{Übersicht Spielstätten}
+\end{figure}
+\ \newline
+Es kann hier nachdem Namen und der Adresse gefiltert werden. Über einen Tooltip wird die Adresse der Spielstätte angezeigt. Über den Marker-Icon oder den Button mit den Marker-Icon kann der Dialog mit den Spielstättendetails geöffnet werden, wobei über den Marker-Icon nur die dazugehörige Spielstätten Details angezeigt werden und beim Button alle aktuell sichtbaren Spielstätten.
+\newpage
+
+\paragraph{Übersicht Aufführungen}
+\ \newline 
+Der Hauptteil der Seite sind die Aufführungen, die gruppiert nach deren Aufführungsdatum in einem Akkordion angezeigt werden. In der Tabelle werden nur die Aufführungszeiten angezeigt bei denen es mindestens eine Aufführung auf einer Spielstätte gibt. sollte dies nicht der Fall sein, so wird diese Spalte ausgeblendet.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.35]{\imagesRoot/web-view-performances.JPG}
+	\caption
+	{Übersicht Artisten}
+\end{figure}
+\ \newline
+Die Aufführungen werden nach dem Spielstätten (Zeilen) und dessen Aufführungszeiten (Spalte) tabellarisch angezeigt. 
+\newline
+\newline
+Folgende Aktionen stehen in dieser Ansicht für nicht eingeloggte Benutzer zur Verfügung.
+\begin{enumerate}
+	\item\emph{Dialog Artistendetails öffnen}
+	\newline
+	Durch das Klicken auf einen Artistennamen in einer Spalte öffnet sich der Dialog mit den Artistendetails
+	\item\emph{Dialog einzelner Spielstättendetails öffnen}
+	\newline
+	Durch das Klicken auf einen Marker-Icon, der sich neben den Namen der Spielstätte befindet, öffnet sich ein Dialog mit den Spielstättendetails, wobei hier auch eine einfache Auflistung der Aufführungen an diesem Aufführungstag auf diese Spielstätte angeführt ist.
+	\item\emph{Dialog aller Spielstättendetails öffnen}
+	\newline
+	Durch das Klicken auf einen Marker-Icon, der sich im Tabellenkopf befindet, öffnet sich ein Dialog mit den Spielstättendetails, wobei hier alle in der Tabelle befindlichen Spielstätten angezeigt werden so wie auch deren Aufführungen an diesem Aufführungstag.
+\end{enumerate}
+\ \newline
+Folgende Aktionen stehen eingeloggten Benutzern zur Verfügung:
+\begin{enumerate}
+	\item\emph{Dialog zum Ändern einer/aller einzelnen der Aufführungen öffnen}
+	\newline
+	Durch das Klicken auf den Edit-Icon entweder neben dem Artistennamen einer Spalte oder dem Tabellenkopf kann ein Dialog geöffnet werden, über den die Aufführung geändert werden kann.
+\end{enumerate}
+\ \newline
+Hierbei sei angemerkt das der Edit-Icon in den einzelnen Aufführungen nur ersichtlich wenn diese auch in der Zukunft liegen. Aufführungen die in der Vergangenheit liegen oder zu diesem Zeitpunkt stattfinden können nicht bearbeitet werden.
+\newpage
+Sollte ein Warn-Icon neben den Artistennamen einer Aufführung angezeigt werden, so wurde dieser verschoben, wobei die jeweils die Informationen der letzten Aufführungsdaten über einen Tooltip angezeigt werden.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.6]{\imagesRoot/web-view-performances-warn.JPG}
+	\caption
+	{Tooltip Warnung}
+\end{figure}
+\ \newline
+Wenn man mit dem Cursor über einen Artistennamen in der Tabelle fährt, so wird ein Tooltip mit den wichtigsten Artistendetails angezeigt.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.6]{\imagesRoot/web-view-performances-artist.JPG}
+	\caption
+	{Tooltip Artist}
+\end{figure}
+\ \newpage
+
+\paragraph{Menü}
+\ \newline 
+Am unteren rechten Ende der Seite befindet sich ein sogenanntes Stack-Menu welches die Möglichkeit bietet, Aktionen auszuführen.
+\newline
+\newline
+Sollte kein BenutzerIn eingeloggt sein, so sieht das Menü wie folgt aus.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.6]{\imagesRoot/web-view-stack-menu-not-logged.JPG}
+	\caption
+	{Stack Menü wenn nicht eingeloggt}
+\end{figure}
+\ \newline
+Sollte ein BenutzerIn bereits eingeloggt sein, so sieht das Menü wie folgt aus.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.6]{\imagesRoot/web-view-stack-menu-logged.JPG}
+	\caption
+	{Stack Menü wenn eingeloggt}
+\end{figure}
+\ \newline
+Durch Klicken auf den Korb kann das Menü auch weg geklappt werden.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.6]{\imagesRoot/web-view-stack-menu-collapsed.JPG}
+	\caption
+	{Stack Menü zusammengeklappt}
+\end{figure}
+\ \newpage
+
+\paragraph{Login}
+\ \newline 
+Für registrierte BenutzerInnen steht die Möglichkeit zur Verfügung  sich einzuloggen, damit diese BenutzerInnen Aufführungen anlegen und bestehende Aufführungen ändern können. Durch das Klicken auf das Login Menü wird ein Dialog geöffnet, über den man sich einloggen kann.
+Durch Klicken auf das Loginmenü wird der Login Dialog geöffnet.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.7]{\imagesRoot/web-view-dialog-login.JPG}
+	\caption
+	{Login Dialog}
+\end{figure}
+\ \newline
+Sollten keine Daten eingegeben worden sein, so werden die Eingabefelder entsprechen markiert.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.7]{\imagesRoot/web-view-dialog-login-invalid.JPG}
+	\caption
+	{Fehlerhafte Eingabe}
+\end{figure}
+\ \newline
+Sollte der Login aufgrund fehlerhafter Login Daten fehlschlagen, so wird dies über eine Meldung angezeigt.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.7]{\imagesRoot/web-view-dialog-login-failed.JPG}
+	\caption
+	{Login fehlgeschlagen}
+\end{figure}
+\ \newline
+Nachdem einem erfolgreichen Login wird wieder auf die Hauptseite zurückgekehrt und der Dialog wird geschlossen. Anschließend stehen im Menü alle Funktionen für einen eingeloggten BenutzerIn zur Verfügung. Ebenso werden die Icons in der Aufführungstabelle angezeigt, über die der Aufführungsdialog angezeigt werden kann.
+\newpage
+
+\paragraph{Aufführung anlegen/bearbeiten}
+\ \newline 
+Über einen Dialog können bestehende Aufführungen bearbeitet sowie neue Aufführungen angelegt werden. Sollte der Dialog über den Edit-Icon in einer Spalte der Aufführungstabelle angelegt werden so wird diese Aufführung im Dialog gesetzt. Ansonsten wird ein leeres Formular angezeigt die AnwenderInnen können über eine Auswahl eine Aufführung auswählen. Diese Auswahl beschränkt sich auf die Aufführungen, die einerseits in der Seite zu sehen sind und andererseits auf die Aufführungen, die geändert werden dürfen.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.7]{\imagesRoot/web-view-dialog-performance.JPG}
+	\caption
+	{Dialog Aufführung anlegen/bearbeiten}
+\end{figure}
+\ \newline
+Sollten die eingegebene Daten ungültig sein, so werden die Eingabefelder dementsprechend markiert.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.7]{\imagesRoot/web-view-dialog-performance-invalid.JPG}
+	\caption
+	{Ungültige Eingabe}
+\end{figure}
+\ \newpage
+Sollte die Aufführung aufgrund eines logischen Fehlers fehlschlagen, so wird die eine entsprechende Meldung angezeigt.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.7]{\imagesRoot/web-view-dialog-performance-failed.JPG}
+	\caption
+	{Fehlgeschlagene logische Prüfung}
+\end{figure}
+\ \newpage
+
+\paragraph{Dialog Spielstätte}
+\ \newline 
+Es können die Spielstätten in einem Dialog angezeigt werden wobei es hier zwei Möglichkeiten gibt:
+\begin{enumerate}
+	\item\emph{Mit Aufführungsdaten}
+	\newline
+	Sollte der Dialog über die Aufführungstabelle geöffnet werden, so sind hier die Aufführungsdetails der Spielstätte(n) am Aufführungstag angeführt. Durch das Öffnen des Dialogs über den Tabellenkopf werden alle Spielstätten dieser Tabelle angeführt, ansonsten nur eine einzeln. 
+	\item\emph{Ohne Aufführungsdaten}
+	\newline
+	Sollte der Dialog über die Spielstättenauswahl geöffnet werden, so werden hier lediglich die Spielstättendaten angezeigt.
+\end{enumerate}
+\ \newline
+Die Spielstätten werden hierbei auf einer Google-Maps angezeigt, wobei im Falle mit den Aufführungsdetails die einzelnen Spielstätten auch ausgewählt werden können und die dementsprechenden Ausführungsdetails ausgewählt werden.
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.6]{\imagesRoot/web-view-dialog-venues-performances.JPG}
+	\caption
+	{Spielstätten Dialog mit Aufführungsdetails}
+\end{figure}
+\ \newline
+Auch in dieser Tabelle werden über Tooltips Informationen des Artisten sowie auch von verschobenen Aufführungen angezeigt.
+ \newpage
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.6]{\imagesRoot/web-view-dialog-venues.JPG}
+	\caption
+	{Spielstätten Dialog ohne Aufführungsdetails}
+\end{figure}
 \end{document} 

@@ -115,6 +115,15 @@ namespace UFO.Commander.Service.Api.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Das Startdatum der Aufführung liegt in der Vergangenheit.
+        /// </summary>
+        public static string PERFORMANCE_IN_PAST {
+            get {
+                return ResourceManager.GetString("PERFORMANCE_IN_PAST", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auf dieser Spilstätte findet bereits eine Aufführung statt.
         /// </summary>
         public static string VENUE_OVERBOOKED {

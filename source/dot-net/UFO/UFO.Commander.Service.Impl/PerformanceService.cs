@@ -79,6 +79,12 @@ namespace UFO.Commander.Service.Impl
                     throw new ServiceException((int)PerformanceErrorCode.PERFORMANCE_DATE_INVALID);
                 }
 
+                //Validate if in past
+                if ((performance.StartDate.Value.CompareTo(DateTime.Now) <= 0))
+                {
+                    throw new ServiceException((int)PerformanceErrorCode.PERFORMANCE_IN_PAST);
+                }
+
                 // Clear eventually added millis and seconds
                 performance.StartDate = new DateTime(
                     performance.StartDate.Value.Year,
@@ -129,6 +135,9 @@ namespace UFO.Commander.Service.Impl
                     // Check if venue has changed
                     if (performanceDB.VenueId != performance.VenueId)
                     {
+                        // Also if just venue has changed, the dates needs to be set
+                        performance.FormerStartDate = performanceDB.StartDate;
+                        performance.FormerEndDate = performanceDB.EndDate;
                         performance.FormerVenueId = performanceDB.VenueId;
                     }
 

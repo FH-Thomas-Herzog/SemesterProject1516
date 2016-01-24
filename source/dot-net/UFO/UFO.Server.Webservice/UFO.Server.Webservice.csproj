@@ -98,6 +98,11 @@
     <Compile Include="Model\PerformanceRequestModel.cs" />
     <Compile Include="Model\VenueModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Properties\Resource.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resource.resx</DependentUpon>
+    </Compile>
     <Compile Include="Soap\ArtistService.asmx.cs">
       <DependentUpon>ArtistService.asmx</DependentUpon>
     </Compile>
@@ -137,6 +142,12 @@
       <Project>{73254840-8215-4a04-92ff-6bf34b605674}</Project>
       <Name>UFO.Server.Data.MySql</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resource.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resource.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

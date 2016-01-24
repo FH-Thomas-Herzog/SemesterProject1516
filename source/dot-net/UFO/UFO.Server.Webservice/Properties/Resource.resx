@@ -117,28 +117,13 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="ARTIST_OVERBOOKED" xml:space="preserve">
-    <value>Der Artist hat bereits eine Führung zu diesem Zeitpunkt oder die einzuhaltende Pause  zwischen den Aufführungen wurde unterschritten</value>
+  <data name="ConcurrentUpdate" xml:space="preserve">
+    <value>Der Eintrag wurde in der Zwischenziet geändert</value>
   </data>
-  <data name="Email_NotifyChange_Content" xml:space="preserve">
-    <value>Folgende Auflistung zeigt Ihre angelegten/geänderten Vorstellungen.</value>
+  <data name="EntityNotFound" xml:space="preserve">
+    <value>Der Eintrag wurde nicht gefunden</value>
   </data>
-  <data name="Email_NotifyChange_Subject" xml:space="preserve">
-    <value>Prgammänderungen !!!!!</value>
-  </data>
-  <data name="NOTIFICATION_ERROR" xml:space="preserve">
-    <value>Das Versenden der E-Mails ist fehlgeschlagen</value>
-  </data>
-  <data name="PERFORMANCE_ALREADY_STARTED" xml:space="preserve">
-    <value>Die Aufführung wurde bereits gestartet</value>
-  </data>
-  <data name="PERFORMANCE_DATE_INVALID" xml:space="preserve">
-    <value>Das Aufführungsdatum ist ungültig</value>
-  </data>
-  <data name="PERFORMANCE_IN_PAST" xml:space="preserve">
-    <value>Das Startdatum der Aufführung liegt in der Vergangenheit</value>
-  </data>
-  <data name="VENUE_OVERBOOKED" xml:space="preserve">
-    <value>Auf dieser Spilstätte findet bereits eine Aufführung statt</value>
+  <data name="UnknownError" xml:space="preserve">
+    <value>Es ist ein unbekannter Fehler aufgetreten</value>
   </data>
 </root>

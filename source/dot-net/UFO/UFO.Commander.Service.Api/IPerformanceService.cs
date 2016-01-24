@@ -14,7 +14,8 @@ namespace UFO.Commander.Service.Api
         PERFORMANCE_DATE_INVALID = 1,
         ARTIST_OVERBOOKED = 2,
         NOTIFICATION_ERROR= 3,
-        VENUE_OVERBOOKED = 4
+        VENUE_OVERBOOKED = 4,
+        PERFORMANCE_IN_PAST = 5
     };
 
     public interface IPerformanceService : IService
