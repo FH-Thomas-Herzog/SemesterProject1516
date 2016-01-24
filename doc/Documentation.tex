@@ -605,7 +605,7 @@ Sollten Sie versuchen eine Aufführung anzulegen/speichern und der Artist hat be
 \end{enumerate}
 \ \newpage
 
-\subsection{Ausbaustufe 3}
+\subsection{Ausbaustufe 3 (JSF-Web-View)}
 Folgender Teil dieser Dokumentation dokumentiert den dritten Teil der Ausbaustufe. In diesem Teil der Ausbaustufe musste die Web-Anwendung für \emph{UFO} implementiert werden. Dazu wurden folgende Technologien und Frameworks verwendet:
 \begin{enumerate}
 	\item\emph{Myfaces}
@@ -668,7 +668,12 @@ Zusätzlich zu diesen Konfigurationen muss beim Start des Tomcat-Servers JVM-Arg
 \newline
 \newline
 Siehe hierzu die Datei \emph{tomcat-config.txt} im Java-Web-Project Root-Verzeichnis. Der Truststore muss natürlich das aktuell von IIS verwendete Zertifikat importieren.
-\newpage
+\newline
+\newline
+Es wurde in diesem Projekt auf ein Dependency-Tool wie Maven verzichtet, daher ist es notwendig in \emph{WEB-INF/lib} die über einen Link bereitgestellten Libraries hinzuzufügen. 
+\newline
+\url{https://onedrive.live.com/redir?resid=276EBD293636242A!6318&authkey=!AJXVx9S5WBfFQlA&ithint=folder%2cjar}
+\ \newpage
 
 \subsubsection{Web-Service-Proxy-Architektur}
 Folgende Architektur wurde implementiert um die SOAP-Service Instanzen von der View-Logik zu abstrahieren.
@@ -1142,5 +1147,26 @@ Auch in dieser Tabelle werden über Tooltips Informationen des Artisten sowie au
 	\includegraphics[scale=0.6]{\imagesRoot/web-view-dialog-venues.JPG}
 	\caption
 	{Spielstätten Dialog ohne Aufführungsdetails}
+\end{figure}
+\ \newpage
+\paragraph{Sequencediagramm-Filter}
+\ \newline
+Folgendes Diagramm illustriert den Prozess des Filterns über den globalen Filter
+\begin{figure}[h]
+	\centering
+	\includegraphics[scale=0.7]{\imagesRoot/sequence-filter.JPG}
+	\caption
+	{Sequence-Diagramm-Filter}
+\end{figure}
+\ \newpage
+
+\paragraph{Sequencediagram-Login}
+\ \newline
+Folgendes Sequencediagram illustriert den Prozess des Logins.
+\begin{figure}[h]
+	\centering
+	\includegraphics[angle=90, scale=0.7]{\imagesRoot/sequence-login.JPG}
+	\caption
+	{Sequence-Diagramm-Login}
 \end{figure}
 \end{document} 
