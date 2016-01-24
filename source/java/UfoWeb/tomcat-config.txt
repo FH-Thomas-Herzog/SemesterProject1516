@@ -1,5 +1,6 @@
 -- Enabled ssl on connector
--- keystore file in eclipse Server folder
+-- keystore.jks / truststore file in eclipse Server folder
 -- pass=ufo
 <Connector SSLEnabled="true" clientAuth="false" keyAlias="ufo" keystoreFile="conf/keystore.jks" keystorePass="ufo" keystoreType="jks" maxThreads="150" port="8443" protocol="org.apache.coyote.http11.Http11NioProtocol" scheme="https" secure="true" sslProtocol="TLS"/>
-  
+-- jvm arguments for truststore
+ -Djavax.net.ssl.trustStore="D:\worspaces\fh-swe-project-workspace\.metadata\.plugins\org.eclipse.wst.server.core\tmp1\conf\truststore.jks" -Djavax.net.ssl.trustStorePassword=ufo
