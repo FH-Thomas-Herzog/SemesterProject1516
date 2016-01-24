@@ -32,6 +32,7 @@
                    Grid.Column="0"
                    Grid.Row="0"
                    Margin="5"
+                   FontWeight="Bold"
                    Text="{x:Static p:Resources.Firstname}"/>
         <TextBox Name="FirstName" 
                  Grid.Row="0" 
@@ -45,6 +46,7 @@
                    Grid.Row="1"
                    Grid.Column="0"
                    Margin="5"
+                   FontWeight="Bold"
                    Text="{x:Static p:Resources.Lastname}"/>
         <TextBox Name="LastName" 
                  Grid.Row="1" 
@@ -58,6 +60,7 @@
                    Grid.Row="2"
                    Grid.Column="0"
                    Margin="5"
+                   FontWeight="Bold"
                    Text="{x:Static p:Resources.Email}"/>
         <TextBox Name="Email" 
                  Grid.Row="2" 
@@ -71,6 +74,7 @@
                    Grid.Row="3"
                    Grid.Column="0"
                    Margin="5"
+                   FontWeight="Bold"
                    Text="{x:Static p:Resources.ArtistGruop}"/>
         <ComboBox Name="ArtistGroupSelection"
                   Grid.Row="3"
@@ -85,6 +89,7 @@
                    Grid.Row="4"
                    Grid.Column="0"
                    Margin="5"
+                   FontWeight="Bold"
                    Text="{x:Static p:Resources.ArtistCategory}"/>
         <ComboBox Name="ArtistCategorySelection"
                   Grid.Row="4"
@@ -99,6 +104,7 @@
                    Grid.Row="5"
                    Grid.Column="0"
                    Margin="5"
+                   FontWeight="Bold"
                    Text="{x:Static p:Resources.Country}"/>
         <ComboBox Name="CountrySelection"
                   Grid.Row="5"
@@ -113,6 +119,7 @@
                    Grid.Row="6"
                    Grid.Column="0"
                    Margin="5"
+                   FontWeight="Bold"
                    Text="{x:Static p:Resources.Image}"/>
         <Button Name="ArtistImageButton"
                    Grid.Row="6"
@@ -129,6 +136,7 @@
                    Grid.Row="7"
                    Grid.Column="0"
                    Margin="5"
+                   FontWeight="Bold"
                    Text="{x:Static p:Resources.Url}"/>
         <TextBox Name="Url" 
                  Grid.Row="7" 

@@ -219,6 +219,8 @@ namespace UFO.Server.Data.MySql.Dao
                                                         + " LEFT OUTER JOIN ufo.venue as former_venue on performance.former_venue_id = former_venue.id "
                                                         + " WHERE performance.start_date >= ?startDate "
                                                         + " AND performance.end_date <= ?endDate "
+                                                        + " AND artist.deleted_flag = 0 "
+                                                        + " AND venue.deleted_flag = 0 "
                                                         + ((moved != null) ? $" AND performance.former_start_date IS {((moved.Value) ? "NOT" : "")} NULL" : "")
                                                         + ((venueId != null) ? " AND venue.id = ?venueId " : "")
                                                         + (((venueIds != null) && (venueIds.Count > 0)) ? ($" AND venue.id IN ({string.Join(",", Enumerable.Range(0, venueIds.Count).Select(i => $"?venue_id_{i}"))}) ") : "")

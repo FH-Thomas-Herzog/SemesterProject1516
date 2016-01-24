@@ -115,6 +115,7 @@
                        Grid.Row="1"
                        Grid.Column="0"
                        Margin="5"
+                   FontWeight="Bold"
                        Text="{x:Static p:Resources.Artist}"/>
             <ComboBox Name="ArtistSelection"
                       Grid.Row="1"
@@ -128,6 +129,7 @@
                        Grid.Row="2"
                        Grid.Column="0"
                        Margin="5"
+                       FontWeight="Bold"
                        Text="{x:Static p:Resources.Venue}"/>
             <ComboBox Name="VenueSelection"
                       Grid.Row="2"
@@ -141,6 +143,7 @@
                        Grid.Row="3"
                        Grid.Column="0"
                        Margin="5"
+                       FontWeight="Bold"
                        Text="{x:Static p:Resources.StartEndDate}"/>
             <Grid Margin="5"
                   Grid.Row="3"
@@ -164,10 +167,9 @@
                                      VerticalAlignment="Center"
                                      AllowTextInput="False"
                                      TimeFormat="Custom"
-                                     TimeFormatString="hh"
+                                     TimeFormatString="HH"
                                      ShowButtonSpinner="False"
                                      TimePickerShowButtonSpinner="False"
-                                     Minimum="{Binding MinimumStartDate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                      Value="{Binding ViewModel.StartDate, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 <TextBlock Name="To"
                            Grid.Row="1"
@@ -180,10 +182,9 @@
                                      VerticalAlignment="Center"
                                      IsReadOnly="True"
                                      TimeFormat="Custom"
-                                     TimeFormatString="hh"
+                                     TimeFormatString="HH"
                                      ShowButtonSpinner="False"
                                      TimePickerShowButtonSpinner="False"
-                                     Minimum="{Binding MinimumStartDate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                                      Value="{Binding ViewModel.EndDate, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
             </Grid>
             <!-- Actions -->

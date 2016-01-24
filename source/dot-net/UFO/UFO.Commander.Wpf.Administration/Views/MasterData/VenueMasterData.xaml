@@ -28,6 +28,7 @@
                    Grid.Row="0"
                    Grid.Column="0"
                    Margin="5"
+                   FontWeight="Bold"
                    Text="{x:Static p:Resources.Name}"/>
         <TextBox Name="NameMember" 
                  Grid.Row="0" 
@@ -41,6 +42,7 @@
                    Grid.Row="1"
                    Grid.Column="0"
                    Margin="5"
+                   FontWeight="Bold"
                    Text="{x:Static p:Resources.Street}"/>
         <TextBox Name="Street" 
                  Grid.Row="1" 
@@ -55,6 +57,7 @@
                    Grid.Row="2"
                    Grid.Column="0"
                    Margin="5"
+                   FontWeight="Bold"
                    Text="{x:Static p:Resources.Zip}"/>
         <TextBox Name="Zip" 
                  Grid.Row="2" 
@@ -69,6 +72,7 @@
                    Grid.Row="3"
                    Grid.Column="0"
                    Margin="5"
+                   FontWeight="Bold"
                    Text="{x:Static p:Resources.City}"/>
         <TextBox Name="City" 
                  Grid.Row="3" 
@@ -83,6 +87,7 @@
                    Grid.Row="4"
                    Grid.Column="0"
                    Margin="5"
+                   FontWeight="Bold"
                    Text="{x:Static p:Resources.GpsCoordinate}"/>
         <TextBox Name="GpsCoordinate" 
                  Grid.Row="4" 

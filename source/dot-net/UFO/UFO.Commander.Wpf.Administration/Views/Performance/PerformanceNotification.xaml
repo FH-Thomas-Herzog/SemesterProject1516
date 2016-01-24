@@ -24,6 +24,7 @@
                    Grid.Row="0"
                    Grid.Column="0"
                    Margin="5"
+                   FontWeight="Bold"
                    Text="{x:Static p:Resources.Subject}"/>
         <TextBox Name="Subject" 
                  Grid.Row="0" 
@@ -37,6 +38,7 @@
                    Grid.Row="1"
                    Grid.Column="0"
                    Margin="5"
+                   FontWeight="Bold"
                    Text="{x:Static p:Resources.Content}"/>
         <TextBox Name="Content" 
                  Grid.Row="1" 

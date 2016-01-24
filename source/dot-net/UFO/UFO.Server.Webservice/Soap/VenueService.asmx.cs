@@ -39,7 +39,7 @@ namespace UFO.Server.Webservice.Soap.Soap
                 model = new ListResultModel<VenueModel>();
                 try
                 {
-                    IList<Venue> venues = venueDao.FindAll();
+                    IList<Venue> venues = venueDao.FindAllActive();
                     model.Result = venues.Select(venue => new VenueModel
                     {
                         Id = venue.Id.Value,

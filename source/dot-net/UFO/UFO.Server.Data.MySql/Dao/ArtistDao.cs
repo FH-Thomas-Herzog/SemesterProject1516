@@ -34,6 +34,7 @@ namespace UFO.Server.Data.MySql.Dao
                                                                + " from ufo.artist as artist "
                                                                + " LEFT OUTER JOIN ufo.artist_group as g on g.id = artist.artist_group_id "
                                                                + " LEFT OUTER JOIN ufo.artist_category as c on c.id = artist.artist_category_id "
+                                                               + " WHERE artist.deleted_flag = 0 "
                                                                + " ORDER BY CONCAT(artist.lastname, CONCAT(', ', artist.firstname))")
                                                      .ExecuteReader())
             {

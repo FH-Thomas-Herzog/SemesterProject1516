@@ -25,6 +25,7 @@
                    Grid.Row="0"
                    Grid.Column="0"
                    Margin="5"
+                   FontWeight="Bold"
                    Text="{x:Static p:Resources.Username}"/>
         <TextBox Name="Username" 
                  Grid.Row="0" 
@@ -39,6 +40,7 @@
                    Grid.Row="1"
                    Grid.Column="0"
                    Margin="5"
+                   FontWeight="Bold"
                    Text="{x:Static p:Resources.Password}"/>
         <PasswordBox Name="Password" 
                  Grid.Row="1" 
