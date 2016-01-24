@@ -37,6 +37,7 @@ import at.fh.ooe.swk.ufo.web.application.constants.ContextParameter;
 import at.fh.ooe.swk.ufo.web.application.exception.ProxyServiceExceptionHandler;
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 import at.fh.ooe.swk.ufo.web.performances.model.VenueViewModel;
+import at.fh.ooe.swk.ufo.web.performances.support.PerformanceSupport;
 
 /**
  * Manages the venue info dialog bean.

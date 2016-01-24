@@ -7,6 +7,7 @@
 	xmlns:pe="http://primefaces.org/ui/extensions">
 
 <h:head>
+	<title>#{msg.ufoProgram}</title>
 	<meta http-equiv="cache-control" content="no-cache" />
 	<meta http-equiv="expires" content="0" />
 	<meta http-equiv="pragma" content="no-cache" />
@@ -21,6 +22,12 @@
 	<script type="text/javascript">
     document.onkeypress = stopEnterKeyForText; 
     </script>
+	<!-- Primefaces-extensions has fixed width which we don't want -->
+	<style type="text/css">
+.ui-tooltip {
+	max-width: 400px;
+}
+</style>
 </h:head>
 <h:body style="height: 100%">
 	<h:panelGroup id="messageGroup" layout="block">

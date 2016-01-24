@@ -27,7 +27,7 @@ SET @venueOffset = LAST_INSERT_ID();
 -- create artists (freemarker used model holds set category/group id value)
 <#list artists as artist>
 INSERT INTO ufo.artist (firstname, lastname, email, country_code, image, image_file_type, url, artist_category_id, artist_group_id, creation_user_id, modification_user_id) 
-VALUES ('${artist.firstName}', '${artist.lastName}', '${artist.email}', '${artist.countryCode}', ${artist.image}, ${artist.imageFileType}, ${artist.url}, (@artistCategoryOffset - ${artist.getArtistCategoryId(artistCategoryCount)}), (@artistGroupOffset - ${artist.getArtistGroupId(artistGroupCount)}), @userId, @userId);
+VALUES ('${artist.firstName}', '${artist.lastName}', '${artist.email}', '${artist.countryCode}', ${artist.image}, ${artist.imageFileType}, ${artist.url}, ${artist.getArtistCategoryId(artistCategoryCount)}, ${artist.getArtistGroupId(artistGroupCount)}, @userId, @userId);
 -- SET @artistId = LAST_INSERT_ID();
 -- user for artist
 -- INSERT INTO ufo.user(firstname, lastname, username, password, email, creation_user_id, modification_user_id, user_type) 

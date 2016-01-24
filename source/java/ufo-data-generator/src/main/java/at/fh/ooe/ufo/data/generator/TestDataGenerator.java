@@ -1,5 +1,6 @@
 package at.fh.ooe.ufo.data.generator;
 
+import java.awt.HeadlessException;
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -25,6 +26,7 @@ import java.util.Map.Entry;
 import java.util.Objects;
 import java.util.Random;
 
+import org.apache.commons.codec.binary.Hex;
 import org.mindrot.jbcrypt.BCrypt;
 
 import freemarker.template.Configuration;
@@ -95,12 +97,11 @@ public class TestDataGenerator {
 		}
 
 		public int getArtistId() {
-			if (artistId > artistCount) {
-				artistId = (toggled) ? 1 : 2;
-				toggled = !toggled;
+			if (artistId >= artistCount) {
+				artistId = 1;
 			}
-			final int tmp = artistId;
-			artistId = artistId + 2;
+			int tmp = artistId;
+			artistId++;
 			return tmp;
 		}
 	}
@@ -147,7 +148,7 @@ public class TestDataGenerator {
 		private final String lastName;
 		private final String email;
 		private final String countryCode;
-		private final String image = DEFAULT_IMAGE;
+		private String image; // = DEFAULT_IMAGE;
 		private final String imageFileType = IMAGE_TYPE;
 		private final String url;
 		private int artistCategoryId;
@@ -158,7 +159,7 @@ public class TestDataGenerator {
 		private final Random random = new Random();
 
 		private static final String DEFAULT_IMAGE;
-		private static final String DEFAULT_URL = "<rootServer>/UFO/Common/defaultLink.xhtml";
+		private static final String DEFAULT_URL = "https://google.at";
 
 		static {
 			final URL url = getResourceURL(ROOT_LOCATION + IMAGE_FILE);
@@ -177,27 +178,22 @@ public class TestDataGenerator {
 			}
 		}
 
-		public Artist(String name, String email, String countryCode) {
+		public Artist(String firstname, String lastname, String email, String countryCode, String image) {
 			super();
 			this.email = email;
 			this.countryCode = countryCode;
 			this.url = DEFAULT_URL;
-			String[] splitName = name.split(" ");
-			if (splitName.length == 2) {
-				firstName = splitName[0];
-				lastName = splitName[1];
-			} else {
-				firstName = name;
-				lastName = "";
-			}
+			this.firstName = firstname;
+			this.lastName = lastname;
+			this.image = image;
 		}
 
 		public int getArtistGroupId(int max) {
-			return (artistGroupId = ((int) (random.nextInt(1000) % max)));
+			return (artistGroupId = ((int) (random.nextInt(max) + 1)));
 		}
 
 		public int getArtistCategoryId(int max) {
-			return (artistCategoryId = ((int) (random.nextInt(1000) % max)));
+			return (artistCategoryId = ((int) (random.nextInt(max) + 1)));
 		}
 
 		public int getArtistCategoryId() {
@@ -266,7 +262,7 @@ public class TestDataGenerator {
 		parameters.put("artistGroups", artistGroups);
 		parameters.put("artists", artists);
 		parameters.put("venues", venues);
-		parameters.put("performance", new Performance(venues.size()));
+		parameters.put("performance", new Performance(artists.size()));
 		parameters.put("adminPassword", PASSWORD_ENCRYPTED);
 
 		final Configuration config = new Configuration();
@@ -304,12 +300,12 @@ public class TestDataGenerator {
 		return entries;
 	}
 
-	private static List<Artist> loadArtistData() {
+	private static List<Artist> loadArtistData() throws Throwable {
 		final List<String[]> data = readData(ROOT_LOCATION + ARTIST_DATA);
 		final List<Artist> entries = new LinkedList<>();
 
 		for (String[] string : data) {
-			entries.add(new Artist(string[0], string[1], string[2]));
+			entries.add(new Artist(string[0], string[1], string[2], string[3], string[4]));
 		}
 
 		return entries;

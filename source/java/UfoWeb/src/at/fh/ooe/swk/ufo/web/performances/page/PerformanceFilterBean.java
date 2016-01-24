@@ -22,6 +22,7 @@ import at.fh.ooe.swk.ufo.web.application.model.SimpleNameViewModel;
 import at.fh.ooe.swk.ufo.web.performances.constants.PerformanceSearchOption;
 import at.fh.ooe.swk.ufo.web.performances.model.ArtistViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.VenueViewModel;
+import at.fh.ooe.swk.ufo.web.performances.support.PerformanceSupport;
 
 /**
  * The page filter bean which manages the provided global filters.

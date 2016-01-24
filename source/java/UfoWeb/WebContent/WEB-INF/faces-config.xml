@@ -8,6 +8,8 @@
 		<message-bundle>at.fh.ooe.swk.ufo.web.application.message.MessageBundle</message-bundle>
 	</application>
 	<factory>
+		<!-- Custom exception handler factory which provides our custom exception 
+			handler -->
 		<exception-handler-factory>
 			at.fh.ooe.swk.ufo.web.application.exception.GlobalExceptionHandlerFactory
 		</exception-handler-factory>

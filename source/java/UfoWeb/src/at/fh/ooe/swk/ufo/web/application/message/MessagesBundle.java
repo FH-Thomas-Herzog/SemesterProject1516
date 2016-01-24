@@ -2,6 +2,7 @@ package at.fh.ooe.swk.ufo.web.application.message;
 
 import java.io.Serializable;
 
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Named;
 
 import org.apache.deltaspike.core.api.message.MessageBundle;
@@ -17,8 +18,12 @@ import org.apache.deltaspike.core.api.message.MessageTemplate;
  * @date Jan 19, 2016
  */
 @MessageBundle
+@ApplicationScoped
 @Named("msg")
 public interface MessagesBundle extends Serializable {
+
+	@MessageTemplate("{UFO_PROGRAM}")
+	String getUfoProgram();
 
 	@MessageTemplate("{NAME}")
 	String getName();

@@ -1,0 +1,45 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+
+	<h:panelGroup layout="block" style="margin: 10px; width: 100%">
+		<h:outputText value="#{msg.warningPerformanceMoved}"
+			style="font-weight: bold; color: red; font-size: medium" />
+		<h:panelGrid columns="#{not empty model.formerVenue ? 3 : 2}"
+			cellspacing="5" border="0" style="margin: 10px; font-size: medium">
+			<h:outputText value="#{msg.from}:" style="font-weight: bold;" />
+			<h:outputText rendered="#{not empty model.formerVenue}"
+				value="#{model.formerVenue.name}" />
+			<h:column>
+				<h:outputText value="#{model.formerStartDate.time}">
+					<f:convertDateTime type="both" dateStyle="medium" timeStyle="short"
+						locale="#{languageBean.locale}" />
+				</h:outputText>
+				<h:outputText value=" - " />
+				<h:outputText value="#{model.formerEndDate.time}">
+					<f:convertDateTime type="time" timeStyle="short"
+						locale="#{languageBean.locale}" />
+				</h:outputText>
+			</h:column>
+
+			<h:outputText value="#{msg.at}:" style="font-weight: bold;" />
+			<h:outputText rendered="#{not empty model.formerVenue}"
+				value="#{model.venue.name}" />
+			<h:column>
+				<h:outputText value="#{model.startDate.time}">
+					<f:convertDateTime type="both" dateStyle="medium" timeStyle="short"
+						locale="#{languageBean.locale}" />
+				</h:outputText>
+				<h:outputText value=" - " />
+				<h:outputText value="#{model.endDate.time}">
+					<f:convertDateTime type="time" timeStyle="short"
+						locale="#{languageBean.locale}" />
+				</h:outputText>
+			</h:column>
+		</h:panelGrid>
+	</h:panelGroup>
+</ui:composition>

@@ -49,6 +49,7 @@ public class SoapWebServiceProducer implements Serializable {
 	@Inject
 	private Logger log;
 
+	private String xmlNamespace;
 	private String username;
 	private String password;
 	private URL artistServiceURL;
@@ -81,6 +82,12 @@ public class SoapWebServiceProducer implements Serializable {
 		// Assume UTC time zone
 		if (serviceTimeZone == null) {
 			serviceTimeZone = "UTC";
+		}
+
+		// Get webservice namespace
+		xmlNamespace = servletContext.getInitParameter(ContextParameter.WEBSERVICE_NAMESPACE.key);
+		if (xmlNamespace == null) {
+			throw new IllegalArgumentException("XML-Namespace needs to be defined");
 		}
 
 		// Get webservice-urls from web.xml
@@ -118,7 +125,7 @@ public class SoapWebServiceProducer implements Serializable {
 	}
 
 	@Produces
-	@Dependent
+	@ApplicationScoped
 	public PerformanceServiceSoap producePerformanceService() {
 		try {
 			PerformanceServiceSoapStub service = (PerformanceServiceSoapStub) performanceServiceLocator
@@ -132,7 +139,7 @@ public class SoapWebServiceProducer implements Serializable {
 	}
 
 	@Produces
-	@Dependent
+	@ApplicationScoped
 	public VenueServiceSoap produceVenueService() {
 		try {
 			VenueServiceSoapStub service = (VenueServiceSoapStub) venueServiceLocator
@@ -146,7 +153,7 @@ public class SoapWebServiceProducer implements Serializable {
 	}
 
 	@Produces
-	@Dependent
+	@ApplicationScoped
 	public SecurityServiceSoap produceSecurityService() {
 		try {
 			SecurityServiceSoapStub service = (SecurityServiceSoapStub) securityServiceLocator
@@ -174,7 +181,7 @@ public class SoapWebServiceProducer implements Serializable {
 	 *             if the header element could not be created
 	 */
 	private SOAPHeaderElement createSoapHeader() throws Exception {
-		SOAPHeaderElement authentication = new SOAPHeaderElement("https://webservice.ufo.swk.ooe.fh.at/",
+		SOAPHeaderElement authentication = new SOAPHeaderElement(xmlNamespace,
 				"Credentials");
 		SOAPElement node = authentication.addChildElement("Username");
 		node.addTextNode(username);

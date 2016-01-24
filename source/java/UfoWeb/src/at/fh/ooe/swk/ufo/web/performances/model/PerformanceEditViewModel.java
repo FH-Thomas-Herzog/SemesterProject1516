@@ -33,17 +33,15 @@ public class PerformanceEditViewModel implements IdHolder<Long> {
 	 * 
 	 * @param now
 	 *            the now date time.
-	 * @param startHour
-	 *            the min start hour value
 	 */
-	public void init(Calendar now, int startHour) {
+	public void init(Calendar now) {
 		Objects.requireNonNull(now);
 
 		reset();
 
 		date = Calendar.getInstance();
 		date.set(now.get(Calendar.YEAR), now.get(Calendar.MONTH), now.get(Calendar.DATE), 0, 0, 0);
-		hour = startHour;
+		hour = 1;
 	}
 
 	/**

@@ -41,10 +41,5 @@ public class StartupListener implements ServletContextListener {
 		} else {
 			Locale.setDefault(FALLBACK_LOCALE);
 		}
-
-		// Set truststore here because arguments didn't work. Shouldn't be here
-		System.setProperty("javax.net.ssl.trustStore",
-				"C:\\Users\\herzo\\Applications\\apache-tomcat-8.0.27\\truststore.jks");
-		System.setProperty("javax.net.ssl.trustStorePassword", "ufo");
 	}
 }

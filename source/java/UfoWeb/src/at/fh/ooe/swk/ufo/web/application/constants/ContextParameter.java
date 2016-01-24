@@ -7,6 +7,7 @@ package at.fh.ooe.swk.ufo.web.application.constants;
  * @date Jan 19, 2016
  */
 public enum ContextParameter {
+	WEBSERVICE_NAMESPACE("ufo.webservice.namespace"),
 	WEBSERVICE_USERNAME("ufo.webservice.username"),
 	WEBSERVICE_PASSWORD("ufo.webservice.password"),
 	WEBSERVICE_ARTIST_SERVICE("ufo.webservice.artistService"),

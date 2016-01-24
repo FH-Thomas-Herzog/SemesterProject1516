@@ -6,11 +6,6 @@
 	xmlns:p="http://primefaces.org/ui"
 	xmlns:pe="http://primefaces.org/ui/extensions">
 
-	<style type="text/css">
-.ui-tooltip {
-	max-width: 400px;
-}
-</style>
 	<h:panelGroup rendered="#{not empty model}">
 		<p:commandLink id="infoLink"
 			actionListener="#{pageBean.prepareArtistDialog(model.artist.id)}"
@@ -21,7 +16,7 @@
 				<h:outputText value="#{msg.clickOpenArtistDetails}"
 					style="font-weight: bold; color: red; font-size: medium" />
 				<ui:include src="artist_meta_data.xhtml">
-					<ui:param name="model" value="#{model.artist}"/>
+					<ui:param name="model" value="#{model.artist}" />
 				</ui:include>
 			</pe:tooltip>
 		</p:commandLink>
@@ -35,49 +30,14 @@
 			oncomplete="PF('editPerformanceDialog').show();">
 			<p:resetInput target=":dialogGroup" />
 		</p:commandLink>
-		<h:panelGroup id="movedWarning" layout="block"
-			styleClass="fa fa-warning" style="margin-left: 10px; color:red;"
+		<h:panelGroup id="performanceMetaContainer" styleClass="fa fa-warning"
+			layout="block" style="color:red; margin-left: 10px;"
 			rendered="#{model.moved}">
 			<pe:tooltip shared="false" atPosition="top center"
-				myPosition="bottom center" for="movedWarning">
-				<h:panelGroup id="tooltipContentContainer" layout="block"
-					style="margin: 10px; width: 100%">
-					<h:outputText value="#{msg.warningPerformanceMoved}"
-						style="font-weight: bold; color: red; font-size: medium" />
-					<h:panelGrid id="tooltipGrid"
-						columns="#{not empty model.formerVenue ? 3 : 2}" cellspacing="5"
-						border="0" style="margin: 10px; font-size: medium">
-						<h:outputText value="#{msg.from}:" style="font-weight: bold;" />
-						<h:outputText rendered="#{not empty model.formerVenue}"
-							value="#{model.formerVenue.name}" />
-						<h:column>
-							<h:outputText value="#{model.formerStartDate.time}">
-								<f:convertDateTime type="both" dateStyle="medium"
-									timeStyle="short" locale="#{languageBean.locale}" />
-							</h:outputText>
-							<h:outputText value=" - " />
-							<h:outputText value="#{model.formerEndDate.time}">
-								<f:convertDateTime type="time" timeStyle="short"
-									locale="#{languageBean.locale}" />
-							</h:outputText>
-						</h:column>
-
-						<h:outputText value="#{msg.at}:" style="font-weight: bold;" />
-						<h:outputText rendered="#{not empty model.formerVenue}"
-							value="#{model.venue.name}" />
-						<h:column>
-							<h:outputText value="#{model.startDate.time}">
-								<f:convertDateTime type="both" dateStyle="medium"
-									timeStyle="short" locale="#{languageBean.locale}" />
-							</h:outputText>
-							<h:outputText value=" - " />
-							<h:outputText value="#{model.endDate.time}">
-								<f:convertDateTime type="time" timeStyle="short"
-									locale="#{languageBean.locale}" />
-							</h:outputText>
-						</h:column>
-					</h:panelGrid>
-				</h:panelGroup>
+				myPosition="bottom center" for="performanceMetaContainer">
+				<ui:include src="performance_meta_data.xhtml">
+					<ui:param name="model" value="#{model}" />
+				</ui:include>
 			</pe:tooltip>
 		</h:panelGroup>
 	</h:panelGroup>

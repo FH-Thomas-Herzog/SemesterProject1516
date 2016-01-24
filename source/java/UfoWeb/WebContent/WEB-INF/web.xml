@@ -4,17 +4,21 @@
 	xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
 	id="WebApp_ID" version="3.1">
 	<display-name>UfoWeb</display-name>
+	<!-- Session timeout config -->
 	<session-config>
 		<session-timeout>30</session-timeout>
 	</session-config>
+	<!-- Bind CDI BeanMaanger to CDI -->
 	<resource-env-ref>
 		<resource-env-ref-name>BeanManager</resource-env-ref-name>
 		<resource-env-ref-type>javax.enterprise.inject.spi.BeanManager</resource-env-ref-type>
 	</resource-env-ref>
+	<!-- Default locale used by app -->
 	<context-param>
 		<param-name>Locale</param-name>
 		<param-value>de_DE</param-value>
 	</context-param>
+	<!-- Remote Service configuration -->
 	<context-param>
 		<param-name>service.timezone</param-name>
 		<param-value>UTC</param-value>
@@ -26,6 +30,10 @@
 	<context-param>
 		<param-name>ufo.webservice.password</param-name>
 		<param-value>j678ZllHOB1z~/.9eoZs@8gg,Ocl-Bqi</param-value>
+	</context-param>
+	<context-param>
+		<param-name>ufo.webservice.namespace</param-name>
+		<param-value>https://webservice.ufo.swk.ooe.fh.at/</param-value>
 	</context-param>
 	<context-param>
 		<param-name>ufo.webservice.artistService</param-name>
@@ -47,10 +55,20 @@
 		<param-name>google.map.api.key</param-name>
 		<param-value>AIzaSyBPniHSAOZLz2g1MuQO6N2d4S11GA6r4bA</param-value>
 	</context-param>
+	<!-- Myfaces JSf configuration -->
 	<context-param>
 		<param-name>org.apache.myfaces.PRETTY_HTML</param-name>
 		<param-value>true</param-value>
 	</context-param>
+	<context-param>
+		<param-name>org.apache.myfaces.USE_ENCRYPTION</param-name>
+		<param-value>true</param-value>
+	</context-param>
+	<context-param>
+		<param-name>org.apache.myfaces.CACHE_EL_EXPRESSIONS</param-name>
+		<param-value>alwaysRecompile</param-value>
+	</context-param>
+	<!-- Standard JSf configuration -->
 	<context-param>
 		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
 		<param-value>server</param-value>
@@ -71,14 +89,7 @@
 		<param-name>javax.faces.FACELETS_REFRESH_PERIOD</param-name>
 		<param-value>1</param-value>
 	</context-param>
-	<context-param>
-		<param-name>org.apache.myfaces.USE_ENCRYPTION</param-name>
-		<param-value>true</param-value>
-	</context-param>
-	<context-param>
-		<param-name>org.apache.myfaces.CACHE_EL_EXPRESSIONS</param-name>
-		<param-value>alwaysRecompile</param-value>
-	</context-param>
+	<!-- Primefaces configuration -->
 	<context-param>
 		<param-name>primefaces.THEME</param-name>
 		<param-value>bootstrap</param-value>
@@ -87,9 +98,11 @@
 		<param-name>primefaces.FONT_AWESOME</param-name>
 		<param-value>true</param-value>
 	</context-param>
+	<!-- Log4j web module context listener -->
 	<listener>
 		<listener-class>org.apache.logging.log4j.web.Log4jServletContextListener</listener-class>
 	</listener>
+	<!-- FacesServlet for a*.xhtml files enabled -->
 	<servlet>
 		<servlet-name>Faces Servlet</servlet-name>
 		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -99,6 +112,7 @@
 		<servlet-name>Faces Servlet</servlet-name>
 		<url-pattern>*.xhtml</url-pattern>
 	</servlet-mapping>
+	<!-- Log4j web module filter configuration -->
 	<filter>
 		<filter-name>log4jServletFilter</filter-name>
 		<filter-class>org.apache.logging.log4j.web.Log4jServletFilter</filter-class>
@@ -111,7 +125,20 @@
 		<dispatcher>INCLUDE</dispatcher>
 		<dispatcher>ERROR</dispatcher>
 	</filter-mapping>
+	<!-- Welcome file list -->
 	<welcome-file-list>
 		<welcome-file>index.xhtml</welcome-file>
 	</welcome-file-list>
+
+	<!-- Allow SSL only -->
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Protected Context</web-resource-name>
+			<url-pattern>/*</url-pattern>
+		</web-resource-collection>
+		<!-- auth-constraint goes here if you requre authentication -->
+		<user-data-constraint>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
 </web-app>

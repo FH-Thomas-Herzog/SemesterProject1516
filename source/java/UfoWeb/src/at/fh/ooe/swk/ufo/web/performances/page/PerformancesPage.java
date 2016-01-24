@@ -21,6 +21,7 @@ import at.fh.ooe.swk.ufo.web.performances.constants.ArtistSearchOption;
 import at.fh.ooe.swk.ufo.web.performances.constants.VenueSearchOption;
 import at.fh.ooe.swk.ufo.web.performances.model.ArtistViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.VenueViewModel;
+import at.fh.ooe.swk.ufo.web.performances.support.PerformanceSupport;
 
 /**
  * The main page bean which handles common actions on the page which are not

@@ -101,13 +101,16 @@
 					<h:column>
 						<h:outputLink
 							rendered="#{not empty performancePage.selectedArtist.url}"
-							value="#{performancePage.selectedArtist.url}" />
+							value="#{performancePage.selectedArtist.url}" target="blank">
+							#{performancePage.selectedArtist.url}
+							</h:outputLink>
 					</h:column>
 				</h:panelGrid>
 			</h:panelGroup>
 		</p:dialog>
 	</h:form>
 
+	<!-- Dialog for displaying venue(s) and their related performances -->
 	<h:form id="venueDialogForm" prependId="true">
 		<p:dialog id="venueInfoDialogID"
 			rendered="#{not empty venueInfoDialog.venues}"
@@ -168,15 +171,33 @@
 							<f:convertDateTime type="time" locale="#{languageBean.locale}"
 								for="startDate" />
 						</h:outputText>
+						<h:panelGroup id="performanceMetaContainer"
+							styleClass="fa fa-warning" layout="block"
+							style="color:red; margin-left: 10px;" rendered="#{item.moved}">
+							<pe:tooltip shared="false" atPosition="top center"
+								myPosition="bottom center" for="performanceMetaContainer">
+								<ui:include src="templates/performance_meta_data.xhtml">
+									<ui:param name="model" value="#{item}" />
+								</ui:include>
+							</pe:tooltip>
+						</h:panelGroup>
 					</p:column>
 					<p:column headerText="#{msg.artist}">
-						<h:outputText value="(#{item.artist.fullName})" />
+						<h:outputText id="artistInfo" value="#{item.artist.fullName}">
+							<pe:tooltip for="artistInfo" shared="false"
+								atPosition="top center" myPosition="bottom center">
+								<ui:include src="templates/artist_meta_data.xhtml">
+									<ui:param name="model" value="#{item.artist}" />
+								</ui:include>
+							</pe:tooltip>
+						</h:outputText>
 					</p:column>
 				</p:dataTable>
 			</p:carousel>
 		</p:dialog>
 	</h:form>
 
+	<!-- Dialog for editing/creation of performances -->
 	<h:form id="editPerformanceForm" prependId="true">
 		<p:dialog id="editPerformanceDialogID"
 			rendered="#{(utxModel.logged) and (performanceEditDialog.started)}"
@@ -294,7 +315,7 @@
 							value="#{performanceEditViewModel.venue}" filter="true"
 							filterMatchMode="contains" required="true"
 							converter="#{performanceSupport.venueItemConverter}"
-							scrollHeight="300" panelStyle="width:400px" caseSensitive="true"
+							scrollHeight="300" panelStyle="width:400px" caseSensitive="false"
 							style="width:90%;">
 
 							<f:selectItem itemLabel="#{msg.pleaseChoose}" itemValue="#{null}" />
@@ -331,8 +352,7 @@
 					</div>
 					<div class="ui-grid-col-7" style="padding: 5px;">
 						<p:spinner id="fromHour" value="#{performanceEditViewModel.hour}"
-							min="#{performanceEditDialog.startHour}" max="23" stepFactor="1"
-							suffix=":00" />
+							min="1" max="23" stepFactor="1" suffix=":00" />
 					</div>
 					<div class="ui-grid-col-1" style="padding: 5px;">
 						<p:message for="date" display="icon" />

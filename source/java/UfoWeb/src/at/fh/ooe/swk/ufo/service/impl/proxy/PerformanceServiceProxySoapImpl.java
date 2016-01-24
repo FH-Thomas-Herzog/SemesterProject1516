@@ -123,6 +123,7 @@ public class PerformanceServiceProxySoapImpl implements PerformanceServiceProxy 
 			if (soapResult.getErrorCode() != null) {
 				result.setInternalError("Webservice returned error code: " + soapResult.getErrorCode() + " / error: "
 						+ result.getError());
+				result.setErrorCode(soapResult.getErrorCode());
 			}
 			if (soapResult.getServiceErrorCode() != null) {
 				result.setError(soapResult.getError());

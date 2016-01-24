@@ -11,6 +11,7 @@ package at.fh.ooe.swk.ufo.service.api.model;
 public class ResultModel<T> {
 
 	public String error;
+	public Integer errorCode;
 	public String internalError;
 	public Exception exception;
 
@@ -26,6 +27,14 @@ public class ResultModel<T> {
 
 	public void setError(String error) {
 		this.error = error;
+	}
+
+	public Integer getErrorCode() {
+		return errorCode;
+	}
+
+	public void setErrorCode(Integer errorCode) {
+		this.errorCode = errorCode;
 	}
 
 	public String getInternalError() {

@@ -24,6 +24,7 @@ import at.fh.ooe.swk.ufo.web.application.exception.ProxyServiceExceptionHandler;
 import at.fh.ooe.swk.ufo.web.application.message.MessagesBundle;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceEditViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
+import at.fh.ooe.swk.ufo.web.performances.support.PerformanceSupport;
 
 /**
  * The edit view dialog bean which handdles the perforamnces save/delete
@@ -65,7 +66,6 @@ public class PerformanceEditDialogBean implements Serializable {
 	private PerformanceViewModel selectedPerformance;
 	private Calendar minDate;
 	private Calendar maxDate;
-	private Integer startHour;
 	private Boolean started;
 
 	/**
@@ -86,7 +86,7 @@ public class PerformanceEditDialogBean implements Serializable {
 
 		// init edit view
 		if (model == null) {
-			editViewModel.init(now, 1);
+			editViewModel.init(now);
 		} else {
 			editViewModel.init(model);
 		}
@@ -120,12 +120,15 @@ public class PerformanceEditDialogBean implements Serializable {
 
 		// Call web service
 		ResultModel<PerformanceViewModel> result = performanceService.save(model);
-		proxaExceptionHanlder.handleException(clientId, result);
 
 		// Handle response
-		if (result.getResult() != null) {
+		if ((!proxaExceptionHanlder.handleException(clientId, result))) {
 			init(result.getResult());
-			RequestContext.getCurrentInstance().execute("updateFilterAndContent();");
+		}
+		// Reload data in case of error
+		if (result.getErrorCode() != null) {
+			support.init();
+			init(null);
 		}
 	}
 
@@ -146,7 +149,10 @@ public class PerformanceEditDialogBean implements Serializable {
 		proxaExceptionHanlder.handleException(clientId, result);
 		if (result.getResult() != null) {
 			init(null);
-			RequestContext.getCurrentInstance().execute("updateFilterAndContent();");
+		}
+		// Reload data in case of error
+		if (result.getErrorCode() != null) {
+			support.init();
 		}
 	}
 
@@ -170,7 +176,6 @@ public class PerformanceEditDialogBean implements Serializable {
 		selectedPerformance = null;
 		minDate = null;
 		maxDate = null;
-		startHour = null;
 
 		editViewModel.reset();
 
@@ -186,10 +191,6 @@ public class PerformanceEditDialogBean implements Serializable {
 
 	public Calendar getMaxDate() {
 		return maxDate;
-	}
-
-	public Integer getStartHour() {
-		return startHour;
 	}
 
 	public Boolean getStarted() {

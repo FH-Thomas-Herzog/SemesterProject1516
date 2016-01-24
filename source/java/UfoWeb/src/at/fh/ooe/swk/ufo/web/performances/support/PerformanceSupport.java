@@ -1,4 +1,4 @@
-package at.fh.ooe.swk.ufo.web.performances.page;
+package at.fh.ooe.swk.ufo.web.performances.support;
 
 import java.io.Serializable;
 import java.text.DateFormat;
@@ -43,6 +43,8 @@ import at.fh.ooe.swk.ufo.web.performances.constants.VenueSearchOption;
 import at.fh.ooe.swk.ufo.web.performances.model.ArtistViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.PerformanceViewModel;
 import at.fh.ooe.swk.ufo.web.performances.model.VenueViewModel;
+import at.fh.ooe.swk.ufo.web.performances.page.PerformanceFilterBean;
+import at.fh.ooe.swk.ufo.web.performances.page.PerformanceLazyDataTableModel;
 
 /**
  * The support bean which holds all of the loaded data and provides the data in
